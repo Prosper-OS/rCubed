@@ -4,7 +4,7 @@ package classes
     import flash.display.BitmapData;
     import flash.display.Sprite;
 
-    public class HiResGameReceptor extends GameReceptor
+    public dynamic class HiResGameReceptor extends GameReceptor
     {
         private var _hiResNote:Sprite;
 
