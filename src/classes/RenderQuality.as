@@ -25,6 +25,11 @@ package classes
             target.cacheAsBitmapMatrix = cacheMatrix();
         }
 
+        public static function useHiResDefaultNotes(noteskin:int):Boolean
+        {
+            return noteskin == 1;
+        }
+
         public static function cacheMatrix():Matrix
         {
             return new Matrix(SUPERSAMPLE_SCALE, 0, 0, SUPERSAMPLE_SCALE);
