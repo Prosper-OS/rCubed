@@ -9,8 +9,8 @@ package game.controls
 
     public class AccuracyBar extends GameControl
     {
-        private static const PERSPECTIVE_TOP:Number = 0.90;
-        private static const PERSPECTIVE_BOTTOM:Number = 1.10;
+        private static const PERSPECTIVE_TOP:Number = 0.70;
+        private static const PERSPECTIVE_BOTTOM:Number = 1.00;
 
         private var options:GameOptions;
 
@@ -100,12 +100,12 @@ package game.controls
         {
             this.graphics.clear();
 
-            this.graphics.lineStyle(1, 0xFFFFFF, 0.08);
-            this.graphics.beginFill(0xBFD8FF, 0.018);
+            this.graphics.lineStyle(1, 0xFFFFFF, 0.045);
+            this.graphics.beginFill(0xBFD8FF, 0.006);
             drawPerspectiveQuad(this.graphics, -(_width / 2), _width, -(_height / 2), _height);
             this.graphics.endFill();
 
-            this.graphics.lineStyle(1, 0xFFFFFF, 0.2);
+            this.graphics.lineStyle(1, 0xFFFFFF, 0.13);
             this.graphics.moveTo(0, -(_height / 2));
             this.graphics.lineTo(0, (_height / 2));
 
@@ -187,7 +187,7 @@ package game.controls
             if (options.judgeWindow)
                 judge = options.judgeWindow;
 
-            this.graphics.lineStyle(1, 0xFFFFFF, 0.13);
+            this.graphics.lineStyle(1, 0xFFFFFF, 0.075);
 
             for (var jn:int = 1; jn < judge.length - 1; jn++)
             {

@@ -11,8 +11,8 @@ package game.controls
     public class GameplayDepthBackground extends Sprite
     {
         private static const FLOW_COUNT:int = 6;
-        private static const TOP_SCALE:Number = 0.90;
-        private static const BOTTOM_SCALE:Number = 1.10;
+        private static const TOP_SCALE:Number = 0.70;
+        private static const BOTTOM_SCALE:Number = 1.00;
 
         private var _baseLayer:Sprite;
         private var _flowLayer:Sprite;
@@ -55,7 +55,7 @@ package game.controls
             else if (mode == ComboHypeOverlay.MODE_OFF)
                 modeScale = 0.36;
 
-            alpha = 0.82 + comboLevel * 0.12;
+            alpha = 0.68 + comboLevel * 0.08;
             updateFlowSprites(comboLevel, modeScale);
             drawRunway(comboLevel, modeScale);
         }
@@ -72,6 +72,7 @@ package game.controls
             addChild(_baseLayer);
             addChild(_flowLayer);
             addChild(_runwayLayer);
+            _baseLayer.alpha = 0.82;
 
             var matrix:Matrix = new Matrix();
             matrix.createGradientBox(Main.GAME_WIDTH, Main.GAME_HEIGHT, Math.PI / 2, 0, 0);
@@ -79,11 +80,11 @@ package game.controls
             _baseLayer.graphics.drawRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
             _baseLayer.graphics.endFill();
 
-            _baseLayer.graphics.beginFill(0x0DDCFF, 0.055);
-            _baseLayer.graphics.drawEllipse(-90, 54, 310, 150);
+            _baseLayer.graphics.beginFill(0x0DDCFF, 0.018);
+            _baseLayer.graphics.drawEllipse(-70, 72, 240, 110);
             _baseLayer.graphics.endFill();
-            _baseLayer.graphics.beginFill(0xFF2FB9, 0.042);
-            _baseLayer.graphics.drawEllipse(Main.GAME_WIDTH - 220, 310, 310, 190);
+            _baseLayer.graphics.beginFill(0xB34DFF, 0.014);
+            _baseLayer.graphics.drawEllipse(Main.GAME_WIDTH - 176, 330, 230, 126);
             _baseLayer.graphics.endFill();
             RenderQuality.cacheDisplayObject(_baseLayer);
 
@@ -103,25 +104,33 @@ package game.controls
 
         private function updateFlowSprites(comboLevel:Number, modeScale:Number):void
         {
-            var speed:Number = 34 + comboLevel * 64;
-            var bandWidth:Number = 240 + comboLevel * 150;
-            var bandHeight:Number = 34 + comboLevel * 32;
+            if (comboLevel < 0.18)
+            {
+                _flowLayer.visible = false;
+                return;
+            }
+
+            var energy:Number = (comboLevel - 0.18) / 0.82;
+            var speed:Number = 18 + energy * 38;
+            var bandWidth:Number = 110 + energy * 86;
+            var bandHeight:Number = 5 + energy * 12;
             var cycle:Number = Main.GAME_WIDTH + bandWidth * 2;
             var offset:Number = (_phase * speed) % cycle;
 
+            _flowLayer.visible = true;
             for (var i:int = 0; i < FLOW_COUNT; i++)
             {
                 var flow:Sprite = _flowSprites[i];
                 var depth:Number = (i + 1) / FLOW_COUNT;
                 var xPos:Number = -bandWidth + ((offset + i * 145) % cycle);
-                var yPos:Number = 72 + i * 64 + Math.sin(_phase * 1.8 + i) * 18;
+                var yPos:Number = 78 + i * 58 + Math.sin(_phase * 1.5 + i) * 12;
 
                 flow.x = xPos;
                 flow.y = yPos;
                 flow.scaleX = (bandWidth / 300) * (0.75 + depth * 0.35);
                 flow.scaleY = (bandHeight / 56) * (0.75 + depth * 0.25);
-                flow.alpha = (0.05 + comboLevel * 0.12) * modeScale * (1 - i * 0.08);
-                tintSprite(flow, rgbColor(_phase + i * 1.25));
+                flow.alpha = (0.002 + energy * 0.008) * modeScale * (1 - i * 0.08);
+                tintSprite(flow, ambientColor(_phase + i * 0.6));
             }
         }
 
@@ -136,9 +145,9 @@ package game.controls
             var topHalf:Number = _laneWidth * TOP_SCALE * 0.5;
             var bottomHalf:Number = _laneWidth * BOTTOM_SCALE * 0.5;
             var pulse:Number = (Math.sin(_phase * 3.1) + 1) * 0.5;
-            var baseAlpha:Number = (0.12 + comboLevel * 0.16) * modeScale;
+            var baseAlpha:Number = (0.035 + comboLevel * 0.055) * modeScale;
 
-            g.beginFill(0x72DFFF, 0.03 + comboLevel * 0.035 * modeScale);
+            g.beginFill(0x72DFFF, (0.006 + comboLevel * 0.012) * modeScale);
             g.moveTo(centerX - topHalf, topY);
             g.lineTo(centerX + topHalf, topY);
             g.lineTo(centerX + bottomHalf, bottomY);
@@ -146,7 +155,7 @@ package game.controls
             g.lineTo(centerX - topHalf, topY);
             g.endFill();
 
-            g.lineStyle(2 + comboLevel * 3, 0xFFFFFF, baseAlpha * 0.45, true);
+            g.lineStyle(1 + comboLevel * 1.4, 0xFFFFFF, baseAlpha * 0.36, true);
             g.moveTo(centerX - topHalf, topY);
             g.lineTo(centerX - bottomHalf, bottomY);
             g.moveTo(centerX + topHalf, topY);
@@ -155,7 +164,7 @@ package game.controls
             for (var lane:int = 1; lane < 4; lane++)
             {
                 var ratio:Number = lane / 4;
-                g.lineStyle(1, rgbColor(_phase + lane * 0.85), baseAlpha * 0.42, true);
+                g.lineStyle(1, ambientColor(_phase + lane * 0.28), baseAlpha * 0.45, true);
                 g.moveTo(interp(centerX - topHalf, centerX + topHalf, ratio), topY);
                 g.lineTo(interp(centerX - bottomHalf, centerX + bottomHalf, ratio), bottomY);
             }
@@ -167,13 +176,13 @@ package game.controls
                 t = Math.pow(t, 1.85);
                 var y:Number = interp(topY, bottomY, t);
                 var half:Number = interp(topHalf, bottomHalf, t);
-                var lineAlpha:Number = (0.09 + comboLevel * 0.11) * modeScale * (0.35 + t * 0.9);
-                g.lineStyle(1 + t * 3, rgbColor(_phase + i * 0.62), lineAlpha, true);
+                var lineAlpha:Number = (0.012 + comboLevel * 0.024) * modeScale * (0.2 + t * 0.68);
+                g.lineStyle(1 + t * 1.5, ambientColor(_phase + i * 0.22), lineAlpha, true);
                 g.moveTo(centerX - half, y);
                 g.lineTo(centerX + half, y);
             }
 
-            g.lineStyle(5 + comboLevel * 7, rgbColor(_phase + 2.4), (0.035 + pulse * 0.06 + comboLevel * 0.09) * modeScale, true);
+            g.lineStyle(2 + comboLevel * 4, ambientColor(_phase + 0.8), (0.018 + pulse * 0.018 + comboLevel * 0.035) * modeScale, true);
             g.moveTo(centerX - bottomHalf * 0.92, bottomY - 6);
             g.lineTo(centerX + bottomHalf * 0.92, bottomY - 6);
         }
@@ -194,6 +203,15 @@ package game.controls
             var r:uint = Math.round((Math.sin(t) * 0.5 + 0.5) * 255);
             var g:uint = Math.round((Math.sin(t + 2.094) * 0.5 + 0.5) * 255);
             var b:uint = Math.round((Math.sin(t + 4.188) * 0.5 + 0.5) * 255);
+            return (r << 16) | (g << 8) | b;
+        }
+
+        private function ambientColor(t:Number):uint
+        {
+            var mix:Number = (Math.sin(t) * 0.5 + 0.5);
+            var r:uint = Math.round(20 + mix * 52);
+            var g:uint = Math.round(150 + mix * 58);
+            var b:uint = Math.round(185 + mix * 48);
             return (r << 16) | (g << 8) | b;
         }
     }

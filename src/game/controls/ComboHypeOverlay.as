@@ -15,8 +15,8 @@ package game.controls
         private static const FLOW_COUNT:int = 5;
         private static const MAX_PARTICLES:int = 120;
         private static const MAX_PARTICLES_REDUCED:int = 44;
-        private static const LANE_TOP_SCALE:Number = 0.90;
-        private static const LANE_BOTTOM_SCALE:Number = 1.10;
+        private static const LANE_TOP_SCALE:Number = 0.70;
+        private static const LANE_BOTTOM_SCALE:Number = 1.00;
 
         private var _combo:int = 0;
         private var _score:int = 0;
@@ -242,7 +242,7 @@ package game.controls
         private function hypeLevel(combo:int):Number
         {
             if (combo < 12)
-                return 0.05;
+                return 0;
 
             if (combo < 64)
                 return 0.08 + ((combo - 12) / 52 * 0.2);
@@ -291,29 +291,35 @@ package game.controls
         {
             var w:Number = Main.GAME_WIDTH;
             var h:Number = Main.GAME_HEIGHT;
-            var a:Number = (_mode == MODE_FULL ? 0.035 : 0.015) + level * (_mode == MODE_FULL ? 0.075 : 0.025);
-            var flowW:Number = 180 + level * 160;
-            var flowH:Number = 54 + beat * 20;
+            if (level < 0.08)
+            {
+                _flowLayer.visible = false;
+                return;
+            }
+
+            var a:Number = (level - 0.08) * (_mode == MODE_FULL ? 0.055 : 0.018);
+            var flowW:Number = 90 + level * 150;
+            var flowH:Number = 16 + beat * 12;
             var offset:Number = (_phase * 42) % (w + flowW);
 
             _flowLayer.visible = true;
-            _flowWash.alpha = 0.16 + level * 0.08;
+            _flowWash.alpha = 0.035 + level * 0.035;
 
             _floorBand.y = h - 96 - beat * 16 + 30;
-            _floorBand.scaleY = (34 + beat * 18) / 60;
-            _floorBand.alpha = level * (_mode == MODE_FULL ? 0.09 : 0.03);
+            _floorBand.scaleY = (18 + beat * 10) / 60;
+            _floorBand.alpha = level * (_mode == MODE_FULL ? 0.025 : 0.01);
             tintSprite(_floorBand, rgbColor(_phase + 1.7));
 
             for (var i:int = 0; i < FLOW_COUNT; i++)
             {
                 var flow:Sprite = _flowSprites[i];
-                var xPos:Number = -flowW + ((offset + i * 165) % (w + flowW * 2));
-                var yPos:Number = 58 + i * 92 + Math.sin(_phase * 1.4 + i) * 28;
+                var xPos:Number = -flowW + ((offset + i * 182) % (w + flowW * 2));
+                var yPos:Number = 82 + i * 76 + Math.sin(_phase * 1.4 + i) * 16;
                 flow.x = xPos + flowW * 0.5;
                 flow.y = yPos + flowH * 0.5;
                 flow.scaleX = flowW / 340;
                 flow.scaleY = flowH / 100;
-                flow.alpha = Math.max(0, a * (0.58 - i * 0.045));
+                flow.alpha = Math.max(0, a * (0.42 - i * 0.035));
                 tintSprite(flow, rgbColor(_phase + i * 1.35));
             }
         }

@@ -29,8 +29,8 @@ package game.controls
         public static const P_LEFT:int = 1 << 1;
         public static const P_RIGHT:int = 1 << 2;
         public static const P_BOTTOM:int = 1 << 3;
-        private static const DEPTH_POSITION_FACTOR:Number = 0.10;
-        private static const DEPTH_SCALE_FACTOR:Number = 0.10;
+        private static const DEPTH_POSITION_FACTOR:Number = 0.30;
+        private static const DEPTH_SCALE_FACTOR:Number = 0.16;
 
         private var _gvars:GlobalVariables = GlobalVariables.instance;
         private var _noteskins:Noteskins = Noteskins.instance;
@@ -377,9 +377,10 @@ package game.controls
             updateOffsetRef = (note.POSITION - position) / 1000 * 300 * scrollSpeed;
             updateBaseOffsetRef = (position - note.SPAWN_PROGRESS) / (note.POSITION - note.SPAWN_PROGRESS);
             updateDepthRef = Math.max(0, Math.min(1, updateBaseOffsetRef));
+            var depthEase:Number = updateDepthRef * updateDepthRef;
 
-            var laneDepthScale:Number = (1 - DEPTH_POSITION_FACTOR) + (updateDepthRef * DEPTH_POSITION_FACTOR);
-            var noteDepthScale:Number = (1 - (DEPTH_SCALE_FACTOR * 0.5)) + (updateDepthRef * DEPTH_SCALE_FACTOR);
+            var laneDepthScale:Number = (1 - DEPTH_POSITION_FACTOR) + (depthEase * DEPTH_POSITION_FACTOR);
+            var noteDepthScale:Number = (1 - DEPTH_SCALE_FACTOR) + (depthEase * DEPTH_SCALE_FACTOR);
             var baseNoteScale:Number = 1;
 
             if (options.noteScale != 1.0)
