@@ -12,7 +12,6 @@ package game.controls
         public static const MODE_REDUCED:String = "reduced";
         public static const MODE_OFF:String = "off";
 
-        private static const FLOW_COUNT:int = 5;
         private static const MAX_PARTICLES:int = 120;
         private static const MAX_PARTICLES_REDUCED:int = 44;
         private static const LANE_TOP_SCALE:Number = 0.70;
@@ -31,13 +30,8 @@ package game.controls
         private var _laneWidth:Number = 0;
         private var _laneHeight:Number = 0;
 
-        private var _flowLayer:Sprite;
         private var _vectorLayer:Sprite;
         private var _particleLayer:Sprite;
-        private var _scanlineLayer:Sprite;
-        private var _flowWash:Sprite;
-        private var _floorBand:Sprite;
-        private var _flowSprites:Vector.<Sprite> = new <Sprite>[];
 
         private var _particleSprites:Vector.<Sprite> = new <Sprite>[];
         private var _particleActive:Vector.<Boolean> = new Vector.<Boolean>(MAX_PARTICLES, true);
@@ -85,8 +79,6 @@ package game.controls
                 shakeY = 0;
                 alpha = 0;
                 _vectorLayer.graphics.clear();
-                _flowLayer.visible = false;
-                _scanlineLayer.visible = false;
             }
         }
 
@@ -146,8 +138,6 @@ package game.controls
             if (visibleLevel < 0.015 && _activeParticles == 0)
             {
                 _vectorLayer.graphics.clear();
-                _flowLayer.visible = false;
-                _scanlineLayer.visible = false;
                 return;
             }
 
@@ -156,60 +146,21 @@ package game.controls
 
         private function buildCachedLayers():void
         {
-            _flowLayer = createLayer();
             _vectorLayer = createLayer();
             _particleLayer = createLayer();
-            _scanlineLayer = createLayer();
 
-            addChild(_flowLayer);
             addChild(_vectorLayer);
             addChild(_particleLayer);
-            addChild(_scanlineLayer);
 
-            _flowWash = new Sprite();
-            _flowWash.graphics.beginFill(0x06111F, 1);
-            _flowWash.graphics.drawRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
-            _flowWash.graphics.endFill();
-            RenderQuality.cacheDisplayObject(_flowWash);
-            _flowLayer.addChild(_flowWash);
-
-            _floorBand = new Sprite();
-            _floorBand.graphics.beginFill(0xFFFFFF, 1);
-            _floorBand.graphics.drawRect(0, -30, Main.GAME_WIDTH, 60);
-            _floorBand.graphics.endFill();
-            RenderQuality.cacheDisplayObject(_floorBand);
-            _flowLayer.addChild(_floorBand);
-
-            for (var i:int = 0; i < FLOW_COUNT; i++)
-            {
-                var flow:Sprite = new Sprite();
-                flow.graphics.beginFill(0xFFFFFF, 1);
-                flow.graphics.drawEllipse(-170, -50, 340, 100);
-                flow.graphics.endFill();
-                flow.blendMode = BlendMode.ADD;
-                flow.mouseEnabled = false;
-                RenderQuality.cacheDisplayObject(flow);
-                _flowLayer.addChild(flow);
-                _flowSprites.push(flow);
-            }
-
-            _scanlineLayer.graphics.lineStyle(1, 0xFFFFFF, 1, true);
-            for (var y:Number = -18; y < Main.GAME_HEIGHT + 36; y += 18)
-            {
-                _scanlineLayer.graphics.moveTo(0, y);
-                _scanlineLayer.graphics.lineTo(Main.GAME_WIDTH, y);
-            }
-            RenderQuality.cacheDisplayObject(_scanlineLayer);
-            _scanlineLayer.visible = false;
-
-            for (i = 0; i < MAX_PARTICLES; i++)
+            for (var i:int = 0; i < MAX_PARTICLES; i++)
             {
                 var particle:Sprite = new Sprite();
                 particle.graphics.beginFill(0xFFFFFF, 0.82);
-                particle.graphics.drawCircle(0, 0, 6);
+                particle.graphics.drawRect(-1.8, -7, 3.6, 14);
                 particle.graphics.endFill();
                 particle.graphics.lineStyle(1, 0xFFFFFF, 0.55, true);
-                particle.graphics.drawCircle(0, 0, 2.3);
+                particle.graphics.moveTo(0, -7);
+                particle.graphics.lineTo(0, 7);
                 particle.blendMode = BlendMode.ADD;
                 particle.mouseEnabled = false;
                 particle.visible = false;
@@ -276,105 +227,16 @@ package game.controls
             var pulseLevel:Number = Math.min(1, level + _pulse + _hitFlash * 0.38);
             var beat:Number = (Math.sin(_phase * 3) + 1) * 0.5;
 
-            updateFlowSprites(pulseLevel, beat);
-            updateScanlines(level);
-
             var g:Graphics = _vectorLayer.graphics;
             g.clear();
-            drawGlassHudFrame(g, pulseLevel);
             drawLaneGlass(g, pulseLevel);
             drawLaneEdges(g, 3 + (pulseLevel * 11), 0.12 + (pulseLevel * 0.36), 0.1 + (pulseLevel * 0.3), pulseLevel, beat);
             drawHitFlash(g);
         }
 
-        private function updateFlowSprites(level:Number, beat:Number):void
-        {
-            var h:Number = Main.GAME_HEIGHT;
-            if (level < 0.32)
-            {
-                _flowLayer.visible = false;
-                return;
-            }
-
-            var flowLevel:Number = (level - 0.32) / 0.68;
-            var a:Number = flowLevel * (_mode == MODE_FULL ? 0.018 : 0.006);
-            var flowW:Number = Math.min(_laneWidth * 0.62, 70 + flowLevel * 96);
-            var flowH:Number = 7 + beat * 5;
-            var centerX:Number = _laneX + _laneWidth * 0.5;
-            var topY:Number = Math.max(42, _laneY + 18);
-            var bottomY:Number = Math.min(Main.GAME_HEIGHT - 24, _laneY + _laneHeight - 12);
-
-            _flowLayer.visible = true;
-            _flowWash.alpha = 0.01 + flowLevel * 0.012;
-
-            _floorBand.y = h - 96 - beat * 16 + 30;
-            _floorBand.scaleY = (8 + beat * 5) / 60;
-            _floorBand.alpha = flowLevel * (_mode == MODE_FULL ? 0.004 : 0.0015);
-            tintSprite(_floorBand, rgbColor(_phase + 1.7));
-
-            for (var i:int = 0; i < FLOW_COUNT; i++)
-            {
-                var flow:Sprite = _flowSprites[i];
-                var depth:Number = ((i / FLOW_COUNT) + ((_phase * (0.35 + flowLevel * 0.7)) % 1)) % 1;
-                var yPos:Number = topY + ((bottomY - topY) * Math.pow(depth, 1.28));
-                var xDrift:Number = Math.sin(_phase * 1.5 + i * 1.72) * _laneWidth * 0.16 * (LANE_TOP_SCALE + ((LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * depth));
-                flow.x = centerX + xDrift;
-                flow.y = yPos;
-                flow.scaleX = (flowW / 340) * (0.68 + depth * 0.36);
-                flow.scaleY = (flowH / 100) * (0.76 + depth * 0.22);
-                flow.alpha = Math.max(0, a * (0.28 - i * 0.026));
-                tintSprite(flow, rgbColor(_phase + i * 1.35));
-            }
-        }
-
-        private function updateScanlines(level:Number):void
-        {
-            if (level < 0.3)
-            {
-                _scanlineLayer.visible = false;
-                return;
-            }
-
-            _scanlineLayer.visible = true;
-            _scanlineLayer.alpha = (level - 0.3) * (_mode == MODE_FULL ? 0.09 : 0.03);
-            _scanlineLayer.y = (_phase * 18) % 18;
-        }
-
-        private function drawGlassHudFrame(g:Graphics, level:Number):void
-        {
-            var w:Number = Main.GAME_WIDTH;
-            var h:Number = Main.GAME_HEIGHT;
-            var a:Number = 0.035 + level * 0.07;
-            var colorA:uint = rgbColor(_phase);
-            var colorB:uint = rgbColor(_phase + 2.2);
-
-            g.beginFill(0xFFFFFF, 0.008 + level * 0.012);
-            g.drawRect(0, 0, w, 44);
-            g.drawRect(0, h - 42, w, 42);
-            g.endFill();
-
-            g.lineStyle(1, 0xFFFFFF, 0.055 + level * 0.06, true);
-            g.moveTo(0, 44);
-            g.lineTo(w, 44);
-            g.moveTo(0, h - 42);
-            g.lineTo(w, h - 42);
-
-            g.lineStyle(2 + level * 2, colorA, a, true);
-            g.moveTo(12, 45);
-            g.lineTo(178 + level * 110, 45);
-            g.moveTo(w - 12, h - 43);
-            g.lineTo(w - 178 - level * 110, h - 43);
-
-            g.lineStyle(1 + level * 1.5, colorB, a * 0.55, true);
-            g.moveTo(w - 12, 45);
-            g.lineTo(w - 142 - level * 80, 45);
-            g.moveTo(12, h - 43);
-            g.lineTo(142 + level * 80, h - 43);
-        }
-
         private function drawLaneGlass(g:Graphics, level:Number):void
         {
-            if (_laneWidth <= 0 || _laneHeight <= 0)
+            if (!hasLaneBounds())
                 return;
 
             var a:Number = (_mode == MODE_FULL ? 0.028 : 0.012) + level * (_mode == MODE_FULL ? 0.06 : 0.022);
@@ -399,6 +261,9 @@ package game.controls
 
         private function drawLaneEdges(g:Graphics, thickness:Number, edgeAlpha:Number, pillAlpha:Number, level:Number, beat:Number):void
         {
+            if (!hasLaneBounds())
+                return;
+
             var top:Number = _laneY;
             var heightValue:Number = _laneHeight;
             var bottom:Number = top + heightValue;
@@ -461,25 +326,28 @@ package game.controls
 
         private function drawHitFlash(g:Graphics):void
         {
-            if (_hitFlash < 0.02)
+            if (_hitFlash < 0.02 || !hasLaneBounds())
                 return;
 
-            var h:Number = Main.GAME_HEIGHT;
-            var w:Number = Main.GAME_WIDTH;
             var band:Number = 10 + _hitFlash * 24;
-            var centerY:Number = h * 0.5 + Math.sin(_phase * 2.4) * 24;
+            var centerY:Number = _laneY + _laneHeight * 0.5 + Math.sin(_phase * 2.4) * Math.min(24, _laneHeight * 0.04);
+            var left:Number = lanePerspectiveX(0, centerY, 16);
+            var right:Number = lanePerspectiveX(1, centerY, 16);
 
             g.beginFill(_hitColor, _hitFlash * (_mode == MODE_FULL ? 0.045 : 0.018));
-            g.drawRect(0, centerY - band * 0.5, w, band);
+            g.drawRect(left, centerY - band * 0.5, right - left, band);
             g.endFill();
 
             g.lineStyle(1 + _hitFlash * 2, 0xFFFFFF, _hitFlash * (_mode == MODE_FULL ? 0.055 : 0.02), true);
-            g.moveTo(0, centerY);
-            g.lineTo(w, centerY);
+            g.moveTo(left, centerY);
+            g.lineTo(right, centerY);
         }
 
         private function spawnBurstParticles(score:int, dir:String):void
         {
+            if (!hasLaneBounds())
+                return;
+
             var count:int = _mode == MODE_FULL ? 10 : 4;
             if (_combo > 96)
                 count += _mode == MODE_FULL ? 7 : 2;
@@ -609,6 +477,11 @@ package game.controls
             }
 
             return lanePerspectiveX((idx + 0.5) / 4, _laneY + _laneHeight * 0.5);
+        }
+
+        private function hasLaneBounds():Boolean
+        {
+            return _laneWidth > 0 && _laneHeight > 0;
         }
 
         private function lanePerspectiveX(ratio:Number, yPos:Number, gutter:Number = 0):Number
