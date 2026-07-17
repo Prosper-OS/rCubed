@@ -60,6 +60,9 @@ package classes
             drawCore(g, palette, sx, sy, strokeScale);
             body.filters = [new GlowFilter(palette.outline, 0.45, 4, 4, 1.6, 3), new GlowFilter(palette.rim, 0.22, 8, 8, 1.2, 3)];
             addChild(body);
+
+            RenderQuality.cacheDisplayObject(body);
+            RenderQuality.cacheDisplayObject(this);
         }
 
         private static function getPalette(colorName:String):Object

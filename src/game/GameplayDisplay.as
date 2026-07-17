@@ -193,6 +193,10 @@ package game
 
         public var noteBoxOffset:Point = new Point();
         public var noteBoxPositionDefault:Object;
+        private var _laneGuideDynamic:Boolean = false;
+        private var _laneGuideInitialized:Boolean = false;
+        private var _accuracyGuideBaseX:Number = 0;
+        private var _accuracyGuideBaseY:Number = 0;
 
         public var GAME_STATE:uint = GAME_WAIT;
 
@@ -1786,12 +1790,17 @@ package game
 
             layoutManager.interfacePosition(mpuiFFRScores, GameLayoutManager.LAYOUT_MP_FFR_SCORE);
 
+            _laneGuideDynamic = options.modEnabled("wave") || options.modEnabled("tap_pulse");
+            _laneGuideInitialized = false;
             updateLaneGuideEffects();
         }
 
         private function updateLaneGuideEffects():void
         {
             if (!uiNoteField)
+                return;
+
+            if (_laneGuideInitialized && !_laneGuideDynamic)
                 return;
 
             var rect:Rectangle = uiNoteField.getLaneGuideRect(this);
@@ -1803,13 +1812,17 @@ package game
                 if (Math.abs(uiAccuracyBar.height - rect.height) > 0.5)
                     uiAccuracyBar.height = rect.height;
 
-                uiAccuracyBar.x = rect.x + rect.width / 2;
-                uiAccuracyBar.y = rect.y + rect.height / 2;
+                _accuracyGuideBaseX = rect.x + rect.width / 2;
+                _accuracyGuideBaseY = rect.y + rect.height / 2;
+                uiAccuracyBar.x = _accuracyGuideBaseX;
+                uiAccuracyBar.y = _accuracyGuideBaseY;
                 uiAccuracyBar.rotation = 0;
             }
 
             if (uiComboHype)
                 uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
+
+            _laneGuideInitialized = true;
         }
 
         private function updateTapPulseOffset():void
@@ -1839,8 +1852,8 @@ package game
 
             if (uiAccuracyBar)
             {
-                uiAccuracyBar.x += shakeX;
-                uiAccuracyBar.y += shakeY;
+                uiAccuracyBar.x = _accuracyGuideBaseX + shakeX;
+                uiAccuracyBar.y = _accuracyGuideBaseY + shakeY;
             }
 
             if (uiComboHype)

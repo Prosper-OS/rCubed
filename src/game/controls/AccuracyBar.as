@@ -20,6 +20,7 @@ package game.controls
 
         private var _colors:Array;
         private var _flashLayer:Sprite;
+        private var _flashPool:Array = [];
 
         public function AccuracyBar(options:GameOptions, parent:DisplayObjectContainer):void
         {
@@ -63,8 +64,7 @@ package game.controls
         {
             while (_flashLayer != null && _flashLayer.numChildren > 0)
             {
-                TweenLite.killTweensOf(_flashLayer.getChildAt(0));
-                _flashLayer.removeChildAt(0);
+                releaseAccuracyFlash(_flashLayer.getChildAt(0) as Sprite);
             }
         }
 
@@ -114,10 +114,12 @@ package game.controls
 
         private function buildAccuracyFlash(color:uint, xPos:Number):Sprite
         {
-            var flash:Sprite = new Sprite();
+            var flash:Sprite = _flashPool.length > 0 ? _flashPool.pop() : new Sprite();
             flash.mouseEnabled = false;
             flash.mouseChildren = false;
             flash.blendMode = BlendMode.ADD;
+            flash.visible = true;
+            flash.graphics.clear();
 
             var g:Graphics = flash.graphics;
             var widthHalf:Number = _width / 2;
@@ -154,8 +156,25 @@ package game.controls
 
         private function removeAccuracyFlash(flash:Sprite):void
         {
-            if (flash != null && flash.parent != null)
+            releaseAccuracyFlash(flash);
+        }
+
+        private function releaseAccuracyFlash(flash:Sprite):void
+        {
+            if (flash == null)
+                return;
+
+            TweenLite.killTweensOf(flash);
+
+            if (flash.parent != null)
                 flash.parent.removeChild(flash);
+
+            flash.visible = false;
+            flash.alpha = 1;
+            flash.scaleX = flash.scaleY = 1;
+
+            if (_flashPool.length < 24)
+                _flashPool.push(flash);
         }
 
         public function drawJudgeRegions():void
