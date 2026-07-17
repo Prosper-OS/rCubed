@@ -289,7 +289,6 @@ package game.controls
 
         private function updateFlowSprites(level:Number, beat:Number):void
         {
-            var w:Number = Main.GAME_WIDTH;
             var h:Number = Main.GAME_HEIGHT;
             if (level < 0.08)
             {
@@ -298,9 +297,11 @@ package game.controls
             }
 
             var a:Number = (level - 0.08) * (_mode == MODE_FULL ? 0.055 : 0.018);
-            var flowW:Number = 90 + level * 150;
+            var flowW:Number = Math.min(_laneWidth * 0.78, 90 + level * 150);
             var flowH:Number = 16 + beat * 12;
-            var offset:Number = (_phase * 42) % (w + flowW);
+            var centerX:Number = _laneX + _laneWidth * 0.5;
+            var topY:Number = Math.max(42, _laneY + 18);
+            var bottomY:Number = Math.min(Main.GAME_HEIGHT - 24, _laneY + _laneHeight - 12);
 
             _flowLayer.visible = true;
             _flowWash.alpha = 0.035 + level * 0.035;
@@ -313,12 +314,13 @@ package game.controls
             for (var i:int = 0; i < FLOW_COUNT; i++)
             {
                 var flow:Sprite = _flowSprites[i];
-                var xPos:Number = -flowW + ((offset + i * 182) % (w + flowW * 2));
-                var yPos:Number = 82 + i * 76 + Math.sin(_phase * 1.4 + i) * 16;
-                flow.x = xPos + flowW * 0.5;
-                flow.y = yPos + flowH * 0.5;
-                flow.scaleX = flowW / 340;
-                flow.scaleY = flowH / 100;
+                var depth:Number = ((i / FLOW_COUNT) + ((_phase * (0.5 + level * 1.2)) % 1)) % 1;
+                var yPos:Number = topY + ((bottomY - topY) * Math.pow(depth, 1.28));
+                var xDrift:Number = Math.sin(_phase * 1.5 + i * 1.72) * _laneWidth * 0.16 * (LANE_TOP_SCALE + ((LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * depth));
+                flow.x = centerX + xDrift;
+                flow.y = yPos;
+                flow.scaleX = (flowW / 340) * (0.68 + depth * 0.36);
+                flow.scaleY = (flowH / 100) * (0.76 + depth * 0.22);
                 flow.alpha = Math.max(0, a * (0.42 - i * 0.035));
                 tintSprite(flow, rgbColor(_phase + i * 1.35));
             }

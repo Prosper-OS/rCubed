@@ -80,12 +80,6 @@ package game.controls
             _baseLayer.graphics.drawRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
             _baseLayer.graphics.endFill();
 
-            _baseLayer.graphics.beginFill(0x0DDCFF, 0.018);
-            _baseLayer.graphics.drawEllipse(-70, 72, 240, 110);
-            _baseLayer.graphics.endFill();
-            _baseLayer.graphics.beginFill(0xB34DFF, 0.014);
-            _baseLayer.graphics.drawEllipse(Main.GAME_WIDTH - 176, 330, 230, 126);
-            _baseLayer.graphics.endFill();
             RenderQuality.cacheDisplayObject(_baseLayer);
 
             for (var i:int = 0; i < FLOW_COUNT; i++)
@@ -111,23 +105,25 @@ package game.controls
             }
 
             var energy:Number = (comboLevel - 0.18) / 0.82;
-            var speed:Number = 18 + energy * 38;
-            var bandWidth:Number = 110 + energy * 86;
+            var speed:Number = 0.7 + energy * 1.25;
+            var bandWidth:Number = Math.min(_laneWidth * 0.82, 110 + energy * 86);
             var bandHeight:Number = 5 + energy * 12;
-            var cycle:Number = Main.GAME_WIDTH + bandWidth * 2;
-            var offset:Number = (_phase * speed) % cycle;
+            var topY:Number = Math.max(42, _laneY + 18);
+            var bottomY:Number = Math.min(Main.GAME_HEIGHT - 24, _laneY + _laneHeight - 12);
+            var centerX:Number = _laneX + _laneWidth * 0.5;
 
             _flowLayer.visible = true;
             for (var i:int = 0; i < FLOW_COUNT; i++)
             {
                 var flow:Sprite = _flowSprites[i];
-                var depth:Number = (i + 1) / FLOW_COUNT;
-                var xPos:Number = -bandWidth + ((offset + i * 145) % cycle);
-                var yPos:Number = 78 + i * 58 + Math.sin(_phase * 1.5 + i) * 12;
+                var depth:Number = ((i / FLOW_COUNT) + ((_phase * speed) % 1)) % 1;
+                var yPos:Number = interp(topY, bottomY, Math.pow(depth, 1.35));
+                var laneScale:Number = TOP_SCALE + ((BOTTOM_SCALE - TOP_SCALE) * depth);
+                var xDrift:Number = Math.sin(_phase * 1.8 + i * 1.37) * _laneWidth * 0.12 * laneScale;
 
-                flow.x = xPos;
+                flow.x = centerX + xDrift;
                 flow.y = yPos;
-                flow.scaleX = (bandWidth / 300) * (0.75 + depth * 0.35);
+                flow.scaleX = (bandWidth / 300) * (0.7 + depth * 0.34);
                 flow.scaleY = (bandHeight / 56) * (0.75 + depth * 0.25);
                 flow.alpha = (0.002 + energy * 0.008) * modeScale * (1 - i * 0.08);
                 tintSprite(flow, ambientColor(_phase + i * 0.6));
