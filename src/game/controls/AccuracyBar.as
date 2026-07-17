@@ -1,29 +1,15 @@
 package game.controls
 {
-    import flash.display.Bitmap;
-    import flash.display.BitmapData;
+    import com.greensock.TweenLite;
+    import flash.display.BlendMode;
     import flash.display.DisplayObjectContainer;
-    import flash.display.Shape;
-    import flash.geom.ColorTransform;
-    import flash.geom.Rectangle;
+    import flash.display.Graphics;
+    import flash.display.Sprite;
     import game.GameOptions;
 
     public class AccuracyBar extends GameControl
     {
-        private static var CLEAR_TRANSFORM:ColorTransform = new ColorTransform(1, 1, 1, 0);
-        private static var ADJUST_TRANSFORM:ColorTransform;
-
         private var options:GameOptions;
-
-        private var _renderTarget:Shape;
-        private var _displayBM:Bitmap;
-        private var _displayBMD:BitmapData;
-        private var _alphaArea:Rectangle;
-
-        private var fade_tick:int = 33;
-        private var fade_timer:int = 0;
-
-        private const LINE_WIDTH:int = 3;
 
         private var bound_lower:int = -117;
         private var bound_upper:int = 117;
@@ -33,6 +19,7 @@ package game.controls
         private var _height:Number = 16;
 
         private var _colors:Array;
+        private var _flashLayer:Sprite;
 
         public function AccuracyBar(options:GameOptions, parent:DisplayObjectContainer):void
         {
@@ -50,30 +37,35 @@ package game.controls
             _colors[25] = options.judgeColors[2];
             _colors[5] = options.judgeColors[3];
 
-            // Setup ColorTransform for Fade
-            ADJUST_TRANSFORM = new ColorTransform(1, 1, 1, options.accuracyBarFadeFactor);
-            _renderTarget = new Shape();
-            _alphaArea = new Rectangle(0, 0, _width, _height);
+            _flashLayer = new Sprite();
+            _flashLayer.mouseEnabled = false;
+            _flashLayer.mouseChildren = false;
+            _flashLayer.blendMode = BlendMode.ADD;
 
             draw();
         }
 
         public function onScoreSignal(_score:int, _judgeMS:int):void
         {
-            // Judge Accuracy Lines
-            _renderTarget.graphics.clear();
+            var color:uint = _colors[_score] != null ? _colors[_score] : 0xFFFFFF;
+            var xPos:Number = (_judgeMS / bound_range * (_width - 6));
+            xPos = Math.max(-(_width / 2), Math.min(_width / 2, xPos));
 
-            _renderTarget.graphics.beginFill(_colors[_score], 1);
-            _renderTarget.graphics.drawRect((_judgeMS / bound_range * (_width - LINE_WIDTH)) + (_width / 2), 0, LINE_WIDTH, _height);
-            _renderTarget.graphics.endFill();
+            var flash:Sprite = buildAccuracyFlash(color, xPos);
+            flash.scaleX = 0.06;
+            flash.alpha = 0.95;
+            _flashLayer.addChild(flash);
 
-            _displayBMD.draw(_renderTarget);
-            _displayBMD.colorTransform(_alphaArea, ADJUST_TRANSFORM);
+            TweenLite.to(flash, 0.045, {scaleX: 1, alpha: 1, useFrames: false, onComplete: fadeAccuracyFlash, onCompleteParams: [flash]});
         }
 
         public function onResetSignal():void
         {
-            _displayBMD.colorTransform(_alphaArea, CLEAR_TRANSFORM);
+            while (_flashLayer != null && _flashLayer.numChildren > 0)
+            {
+                TweenLite.killTweensOf(_flashLayer.getChildAt(0));
+                _flashLayer.removeChildAt(0);
+            }
         }
 
         /**
@@ -105,28 +97,65 @@ package game.controls
         {
             this.graphics.clear();
 
-            this.graphics.lineStyle(1, 0xFFFFFF, 0.13);
-            this.graphics.beginFill(0xFFFFFF, 0.02);
-            this.graphics.drawRect(-(_width / 2), -(_height / 2), _width, _height);
+            this.graphics.lineStyle(1, 0xFFFFFF, 0.08);
+            this.graphics.beginFill(0xBFD8FF, 0.018);
+            this.graphics.drawRoundRect(-(_width / 2), -(_height / 2), _width, _height, 18, 18);
             this.graphics.endFill();
 
-            this.graphics.lineStyle(1, 0xFFFFFF, 0.35);
-            this.graphics.moveTo(0, -(_height / 2) - 8);
-            this.graphics.lineTo(0, (_height / 2) + 8);
+            this.graphics.lineStyle(1, 0xFFFFFF, 0.2);
+            this.graphics.moveTo(0, -(_height / 2));
+            this.graphics.lineTo(0, (_height / 2));
 
             drawJudgeRegions();
 
-            // Setup Bitmap for Display
-            if (_displayBM != null)
-                removeChild(_displayBM);
+            if (_flashLayer.parent != this)
+                addChild(_flashLayer);
+        }
 
-            _displayBMD = new BitmapData(_width, _height, true, 0)
-            _displayBM = new Bitmap(_displayBMD);
+        private function buildAccuracyFlash(color:uint, xPos:Number):Sprite
+        {
+            var flash:Sprite = new Sprite();
+            flash.mouseEnabled = false;
+            flash.mouseChildren = false;
+            flash.blendMode = BlendMode.ADD;
 
-            _displayBM.x = -(_width / 2);
-            _displayBM.y = -(_height / 2);
+            var g:Graphics = flash.graphics;
+            var widthHalf:Number = _width / 2;
+            var heightHalf:Number = _height / 2;
+            var coreHeight:Number = _height;
 
-            addChild(_displayBM);
+            g.beginFill(color, 0.07);
+            g.drawRoundRect(-widthHalf, -heightHalf, _width, _height, 24, 24);
+            g.endFill();
+
+            g.beginFill(color, 0.16);
+            g.drawRoundRect(xPos - 38, -heightHalf, 76, _height, 18, 18);
+            g.endFill();
+
+            g.beginFill(0xFFFFFF, 0.12);
+            g.drawRoundRect(-widthHalf, -6, _width, 12, 12, 12);
+            g.endFill();
+
+            g.beginFill(color, 0.68);
+            g.drawRect(xPos - 2, -heightHalf, 4, coreHeight);
+            g.endFill();
+
+            g.beginFill(0xFFFFFF, 0.76);
+            g.drawRect(xPos - 0.75, -heightHalf, 1.5, coreHeight);
+            g.endFill();
+
+            return flash;
+        }
+
+        private function fadeAccuracyFlash(flash:Sprite):void
+        {
+            TweenLite.to(flash, 0.16, {scaleX: 1.18, alpha: 0, useFrames: false, onComplete: removeAccuracyFlash, onCompleteParams: [flash]});
+        }
+
+        private function removeAccuracyFlash(flash:Sprite):void
+        {
+            if (flash != null && flash.parent != null)
+                flash.parent.removeChild(flash);
         }
 
         public function drawJudgeRegions():void
@@ -149,14 +178,12 @@ package game.controls
         override public function set width(val:Number):void
         {
             _width = Math.max(1, val);
-            _alphaArea.width = _width;
             draw();
         }
 
         override public function set height(val:Number):void
         {
             _height = Math.max(1, val);
-            _alphaArea.height = _height;
             draw();
         }
 

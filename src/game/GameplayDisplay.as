@@ -1639,6 +1639,9 @@ package game
             GPU_PIXEL_BITMAP = new Bitmap(GPU_PIXEL_BMD);
             addChild(GPU_PIXEL_BITMAP);
 
+            uiAccuracyBar = new AccuracyBar(options, this);
+            uiAccuracyBar.visible = options.displayAccuracyBar;
+
             uiNoteField = new NoteBox(song, options, this);
             uiNoteField.position();
 
@@ -1672,8 +1675,6 @@ package game
             uiNoteCountStatic = new TextStatic(_lang.string("game_combo_total"), this);
             uiNoteCountStatic.visible = options.displayComboTotal;
 
-            uiAccuracyBar = new AccuracyBar(options, this);
-            uiAccuracyBar.visible = options.displayAccuracyBar;
             uiComboHype = new ComboHypeOverlay(this);
 
             uiProgressDisplay = new ProgressBarGame(this, 161, 9, 458, 20, 4, 0x545454, 0.1);
@@ -1747,6 +1748,11 @@ package game
                 uiNoteField.reset();
                 this.removeChild(uiNoteField);
                 uiNoteField = null;
+            }
+            if (uiAccuracyBar)
+            {
+                this.removeChild(uiAccuracyBar);
+                uiAccuracyBar = null;
             }
             if (uiScreenCut)
             {
