@@ -2,12 +2,14 @@ package classes
 {
     import com.greensock.TweenLite;
     import flash.display.BitmapData;
+    import flash.display.BlendMode;
     import flash.display.Sprite;
     import flash.geom.ColorTransform;
 
     public dynamic class HiResGameReceptor extends GameReceptor
     {
         private var _hiResNote:Sprite;
+        private var _hitNote:Sprite;
 
         public function HiResGameReceptor(dir:String, receptorWidth:Number = 64, receptorHeight:Number = 64)
         {
@@ -22,17 +24,31 @@ package classes
             _hiResNote.x = -(receptorWidth / 2);
             _hiResNote.y = -(receptorHeight / 2);
             addChild(_hiResNote);
+
+            _hitNote = new HiResArrowNote("white", receptorWidth, receptorHeight);
+            _hitNote.x = -(receptorWidth / 2);
+            _hitNote.y = -(receptorHeight / 2);
+            _hitNote.alpha = 0;
+            _hitNote.blendMode = BlendMode.ADD;
+            addChild(_hitNote);
         }
 
         override public function playAnimation(color:uint):void
         {
             TweenLite.killTweensOf(_hiResNote);
-            _hiResNote.scaleX = _hiResNote.scaleY = 1;
-            var colorTransform:ColorTransform = _hiResNote.transform.colorTransform;
+            TweenLite.killTweensOf(_hitNote);
+
+            _hiResNote.scaleX = _hiResNote.scaleY = 1.18;
+            _hitNote.scaleX = _hitNote.scaleY = 1.18;
+            _hitNote.alpha = 0.96;
+
+            var colorTransform:ColorTransform = _hitNote.transform.colorTransform;
             colorTransform.color = color;
-            _hiResNote.transform.colorTransform = colorTransform;
-            _hiResNote.scaleX = _hiResNote.scaleY = 1.3;
-            TweenLite.to(_hiResNote, (0.045 / animationSpeed), {scaleX: 1, scaleY: 1, tint: null, useFrames: false});
+            _hitNote.transform.colorTransform = colorTransform;
+
+            TweenLite.to(_hiResNote, (0.045 / animationSpeed), {scaleX: 1, scaleY: 1, useFrames: false});
+            TweenLite.to(_hitNote, (0.045 / animationSpeed), {scaleX: 1, scaleY: 1, useFrames: false});
+            TweenLite.to(_hitNote, (0.22 / animationSpeed), {alpha: 0, useFrames: false});
         }
 
         public function playScoreAnimation(score:int, configuredColor:uint):void
@@ -66,8 +82,11 @@ package classes
         {
             if (_hiResNote != null && contains(_hiResNote))
                 removeChild(_hiResNote);
+            if (_hitNote != null && contains(_hitNote))
+                removeChild(_hitNote);
 
             _hiResNote = null;
+            _hitNote = null;
             super.dispose();
         }
 

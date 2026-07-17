@@ -47,6 +47,7 @@ package game
         public var displaySongProgress:Boolean = true;
         public var displaySongProgressText:Boolean = false;
         public var displayMultiplayerScores:Boolean = true;
+        public var visualHypeMode:String = "full";
 
         public var judgeColors:Array = [0x78ef29, 0x12e006, 0x01aa0f, 0xf99800, 0xfe0000, 0x804100];
         public var comboColors:Array = [0x0099CC, 0x00AD00, 0xFCC200, 0xC7FB30, 0x6C6C6C, 0xF99800, 0xB06100, 0x990000, 0xDC00C2]; // Normal, FC, AAA, SDG, BlackFlag, AvFlag, BooFlag, MissFlag, RawGood
@@ -133,6 +134,7 @@ package game
             displaySongProgress = user.DISPLAY_SONGPROGRESS;
             displaySongProgressText = user.DISPLAY_SONGPROGRESS_TEXT;
             displayMultiplayerScores = user.DISPLAY_MULTIPLAYER_SCORES;
+            visualHypeMode = user.visualHypeMode;
 
             judgeColors = user.judgeColors.concat();
             comboColors = user.comboColors.concat();
@@ -254,6 +256,7 @@ package game
             settings["viewGameTopBar"] = displayGameTopBar;
             settings["viewGameBottomBar"] = displayGameBottomBar;
             settings["viewAccuracyBar"] = displayAccuracyBar;
+            settings["visualHypeMode"] = visualHypeMode;
             settings["speed"] = scrollSpeed;
             settings["judgeSpeed"] = judgeSpeed;
             settings["receptorSpeed"] = receptorSpeed;
@@ -352,6 +355,8 @@ package game
                 displayGameBottomBar = settings["viewGameBottomBar"];
             if (settings["viewAccuracyBar"] != null)
                 displayAccuracyBar = settings["viewAccuracyBar"];
+            if (settings["visualHypeMode"] != null)
+                visualHypeMode = settings["visualHypeMode"];
 
             if (settings["viewJudgeAnimations"] != null)
                 displayJudgeAnimations = settings["viewJudgeAnimations"];

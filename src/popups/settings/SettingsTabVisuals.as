@@ -5,6 +5,7 @@ package popups.settings
     import classes.ui.BoxSlider;
     import classes.ui.ScrollPaneContent;
     import classes.ui.Text;
+    import com.bit101.components.ComboBox;
     import flash.events.Event;
     import flash.events.MouseEvent;
 
@@ -42,6 +43,9 @@ package popups.settings
 
         private var optionAccuracyBarFadeFactor:BoxSlider;
         private var textAccuracyBarFadeFactor:Text;
+
+        private var optionHypeMode:ComboBox;
+        private var hypeModeOptions:Array = [{label: "Full", data: "full"}, {label: "Reduced", data: "reduced"}, {label: "Off", data: "off"}];
 
         private var optionReceptorSpeed:BoxSlider;
         private var textReceptorSpeed:Text;
@@ -118,6 +122,20 @@ package popups.settings
             /// Col 2
             xOff = 310;
             yOff = 15;
+
+            new Text(container, xOff, yOff, "Hype Effects", 14);
+            yOff += 25;
+
+            new Text(container, xOff + 23, yOff, "In-song hype");
+            optionHypeMode = new ComboBox(container, xOff + 126, yOff - 2, "Full", hypeModeOptions);
+            optionHypeMode.setSize(126, 22);
+            optionHypeMode.openPosition = ComboBox.BOTTOM;
+            optionHypeMode.fontSize = 11;
+            optionHypeMode.numVisibleItems = hypeModeOptions.length;
+            optionHypeMode.addEventListener(Event.SELECT, hypeModeSelect);
+            yOff += 31;
+
+            yOff += drawSeperator(container, xOff, 266, yOff, -3, 5);
 
             new Text(container, xOff, yOff, _lang.string("options_gameplay_mp_display"), 14);
             yOff += 25;
@@ -255,6 +273,8 @@ package popups.settings
             optionJudgeScale.slideValue = _gvars.activeUser.judgeScale;
             textJudgeScale.text = _gvars.activeUser.judgeScale.toFixed(2) + "x";
 
+            optionHypeMode.selectedItemByData = _gvars.activeUser.visualHypeMode;
+
             legacySongsCheck.checked = _gvars.activeUser.DISPLAY_LEGACY_SONGS;
             explicitSongsCheck.checked = _gvars.activeUser.DISPLAY_EXPLICIT_SONGS;
             unrankedSongsCheck.checked = _gvars.activeUser.DISPLAY_UNRANKED_SONGS;
@@ -290,6 +310,14 @@ package popups.settings
                 e.target.checked = !e.target.checked;
                 _gvars.activeUser.DISPLAY_UNRANKED_SONGS = !_gvars.activeUser.DISPLAY_UNRANKED_SONGS;
             }
+
+            parent.checkValidMods();
+        }
+
+        private function hypeModeSelect(e:Event):void
+        {
+            if (optionHypeMode.selectedItem && optionHypeMode.selectedItem.hasOwnProperty("data"))
+                _gvars.activeUser.visualHypeMode = optionHypeMode.selectedItem.data;
 
             parent.checkValidMods();
         }

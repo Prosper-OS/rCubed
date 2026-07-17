@@ -155,6 +155,7 @@ package classes
         public var songRate:Number = 1;
         public var gameLayout:Object = {};
         public var accuracyBarFadeFactor:Number = 0.95;
+        public var visualHypeMode:String = "full";
 
         //- Permissions
         public var isActiveUser:Boolean;
@@ -732,6 +733,9 @@ package classes
             if (_settings.accuracyBarFadeFactor != null)
                 this.accuracyBarFadeFactor = _settings.accuracyBarFadeFactor;
 
+            if (_settings.visualHypeMode != null)
+                this.visualHypeMode = _settings.visualHypeMode;
+
             if (_settings.screencutPosition != null)
                 this.screencutPosition = _settings.screencutPosition;
 
@@ -861,6 +865,7 @@ package classes
             gameSave.keys = [this.keyLeft, this.keyDown, this.keyUp, this.keyRight, this.keyRestart, this.keyQuit, this.keyOptions];
 
             gameSave.accuracyBarFadeFactor = this.accuracyBarFadeFactor;
+            gameSave.visualHypeMode = this.visualHypeMode;
             gameSave.receptorSpeed = this.receptorSpeed;
             gameSave.judgeSpeed = this.judgeSpeed;
             gameSave.judgeScale = this.judgeScale;

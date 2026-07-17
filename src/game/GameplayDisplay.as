@@ -828,6 +828,7 @@ package game
         {
             // UI Updates
             uiJudge.updateJudge(e);
+            var didUpdatePlay:Boolean = false;
 
             // Gameplay Logic
             switch (GAME_STATE)
@@ -870,14 +871,8 @@ package game
                     else
                         stopClips(uiSongBackground, 2 + song.musicStartFrames - GLOBAL_OFFSET_FRAMES + GAME_FRAME * options.songRate);
 
-                    if (options.modEnabled("tap_pulse"))
-                    {
-                        noteBoxOffset.x = Math.max(Math.min(Math.abs(noteBoxOffset.x) < 0.5 ? 0 : (noteBoxOffset.x * 0.992), uiNoteField.positionOffsetMax.max_x), uiNoteField.positionOffsetMax.min_x);
-                        noteBoxOffset.y = Math.max(Math.min(Math.abs(noteBoxOffset.y) < 0.5 ? 0 : (noteBoxOffset.y * 0.992), uiNoteField.positionOffsetMax.max_y), uiNoteField.positionOffsetMax.min_y);
-
-                        uiNoteField.x = noteBoxPositionDefault.x + noteBoxOffset.x;
-                        uiNoteField.y = noteBoxPositionDefault.y + noteBoxOffset.y;
-                    }
+                    updateTapPulseOffset();
+                    applyFieldVisualOffset(0, 0);
 
                     updateLaneGuideEffects();
                     uiNoteField.update(GAME_TIME);
@@ -885,6 +880,7 @@ package game
                     if (uiProgressDisplay.visible)
                         uiProgressDisplay.update(GAME_FRAME / gameLastNoteFrame, false);
 
+                    didUpdatePlay = true;
                     break;
 
                 case GAME_END:
@@ -897,7 +893,11 @@ package game
             }
 
             if (uiComboHype)
+            {
                 uiComboHype.tick(GAME_FRAME);
+                if (didUpdatePlay)
+                    applyFieldVisualOffset(uiComboHype.shakeX, uiComboHype.shakeY);
+            }
 
             e.stopImmediatePropagation();
         }
@@ -1675,7 +1675,7 @@ package game
             uiNoteCountStatic = new TextStatic(_lang.string("game_combo_total"), this);
             uiNoteCountStatic.visible = options.displayComboTotal;
 
-            uiComboHype = new ComboHypeOverlay(this);
+            uiComboHype = new ComboHypeOverlay(this, options.visualHypeMode);
 
             uiProgressDisplay = new ProgressBarGame(this, 161, 9, 458, 20, 4, 0x545454, 0.1);
             uiProgressDisplay.visible = options.displaySongProgress || options.replay;
@@ -1810,6 +1810,44 @@ package game
 
             if (uiComboHype)
                 uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
+        }
+
+        private function updateTapPulseOffset():void
+        {
+            if (!uiNoteField)
+                return;
+
+            if (options.modEnabled("tap_pulse"))
+            {
+                noteBoxOffset.x = Math.max(Math.min(Math.abs(noteBoxOffset.x) < 0.5 ? 0 : (noteBoxOffset.x * 0.992), uiNoteField.positionOffsetMax.max_x), uiNoteField.positionOffsetMax.min_x);
+                noteBoxOffset.y = Math.max(Math.min(Math.abs(noteBoxOffset.y) < 0.5 ? 0 : (noteBoxOffset.y * 0.992), uiNoteField.positionOffsetMax.max_y), uiNoteField.positionOffsetMax.min_y);
+            }
+            else
+            {
+                noteBoxOffset.x = 0;
+                noteBoxOffset.y = 0;
+            }
+        }
+
+        private function applyFieldVisualOffset(shakeX:Number, shakeY:Number):void
+        {
+            if (uiNoteField && noteBoxPositionDefault)
+            {
+                uiNoteField.x = noteBoxPositionDefault.x + noteBoxOffset.x + shakeX;
+                uiNoteField.y = noteBoxPositionDefault.y + noteBoxOffset.y + shakeY;
+            }
+
+            if (uiAccuracyBar)
+            {
+                uiAccuracyBar.x += shakeX;
+                uiAccuracyBar.y += shakeY;
+            }
+
+            if (uiComboHype)
+            {
+                uiComboHype.x = shakeX;
+                uiComboHype.y = shakeY;
+            }
         }
 
         public function interfaceSetupEditor():void
@@ -2218,7 +2256,7 @@ package game
                 hitMaxCombo = hitCombo;
 
             if (uiComboHype)
-                uiComboHype.onJudge(hitCombo, score);
+                uiComboHype.onJudge(hitCombo, score, dir);
 
             if (score == -10)
                 gameReplayHit.push(0);
