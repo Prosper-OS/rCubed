@@ -43,6 +43,7 @@ package game
     import flash.events.SecurityErrorEvent;
     import flash.events.TimerEvent;
     import flash.geom.Point;
+    import flash.geom.Rectangle;
     import flash.net.URLLoader;
     import flash.net.URLLoaderDataFormat;
     import flash.net.URLRequest;
@@ -827,8 +828,6 @@ package game
         {
             // UI Updates
             uiJudge.updateJudge(e);
-            if (uiComboHype)
-                uiComboHype.tick(GAME_FRAME);
 
             // Gameplay Logic
             switch (GAME_STATE)
@@ -880,6 +879,7 @@ package game
                         uiNoteField.y = noteBoxPositionDefault.y + noteBoxOffset.y;
                     }
 
+                    updateLaneGuideEffects();
                     uiNoteField.update(GAME_TIME);
 
                     if (uiProgressDisplay.visible)
@@ -895,6 +895,9 @@ package game
                     restartGame();
                     break;
             }
+
+            if (uiComboHype)
+                uiComboHype.tick(GAME_FRAME);
 
             e.stopImmediatePropagation();
         }
@@ -1658,7 +1661,6 @@ package game
             uiCombo.visible = options.displayCombo;
             uiComboStatic = new TextStatic(_lang.string("game_combo"), this);
             uiComboStatic.visible = options.displayCombo;
-            uiComboHype = new ComboHypeOverlay(this);
 
             uiRawGoods = new RawGoods(options, this);
             uiRawGoods.visible = options.displayRawGoods;
@@ -1672,6 +1674,7 @@ package game
 
             uiAccuracyBar = new AccuracyBar(options, this);
             uiAccuracyBar.visible = options.displayAccuracyBar;
+            uiComboHype = new ComboHypeOverlay(this);
 
             uiProgressDisplay = new ProgressBarGame(this, 161, 9, 458, 20, 4, 0x545454, 0.1);
             uiProgressDisplay.visible = options.displaySongProgress || options.replay;
@@ -1776,6 +1779,31 @@ package game
             layoutManager.interfacePosition(uiJudge, GameLayoutManager.LAYOUT_JUDGE);
 
             layoutManager.interfacePosition(mpuiFFRScores, GameLayoutManager.LAYOUT_MP_FFR_SCORE);
+
+            updateLaneGuideEffects();
+        }
+
+        private function updateLaneGuideEffects():void
+        {
+            if (!uiNoteField)
+                return;
+
+            var rect:Rectangle = uiNoteField.getLaneGuideRect(this);
+            if (uiAccuracyBar)
+            {
+                if (Math.abs(uiAccuracyBar.width - rect.width) > 0.5)
+                    uiAccuracyBar.width = rect.width;
+
+                if (Math.abs(uiAccuracyBar.height - rect.height) > 0.5)
+                    uiAccuracyBar.height = rect.height;
+
+                uiAccuracyBar.x = rect.x + rect.width / 2;
+                uiAccuracyBar.y = rect.y + rect.height / 2;
+                uiAccuracyBar.rotation = 0;
+            }
+
+            if (uiComboHype)
+                uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
         }
 
         public function interfaceSetupEditor():void

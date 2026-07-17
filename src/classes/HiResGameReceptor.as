@@ -3,6 +3,7 @@ package classes
     import com.greensock.TweenLite;
     import flash.display.BitmapData;
     import flash.display.Sprite;
+    import flash.geom.ColorTransform;
 
     public dynamic class HiResGameReceptor extends GameReceptor
     {
@@ -25,8 +26,13 @@ package classes
 
         override public function playAnimation(color:uint):void
         {
+            TweenLite.killTweensOf(_hiResNote);
             _hiResNote.scaleX = _hiResNote.scaleY = 1;
-            TweenLite.to(_hiResNote, (0.1 / animationSpeed), {scaleX: 1.25, scaleY: 1.25, tint: color, useFrames: false, onComplete: playAnimationShrink});
+            var colorTransform:ColorTransform = _hiResNote.transform.colorTransform;
+            colorTransform.color = color;
+            _hiResNote.transform.colorTransform = colorTransform;
+            _hiResNote.scaleX = _hiResNote.scaleY = 1.3;
+            TweenLite.to(_hiResNote, (0.045 / animationSpeed), {scaleX: 1, scaleY: 1, tint: null, useFrames: false});
         }
 
         public function playScoreAnimation(score:int, configuredColor:uint):void
@@ -54,11 +60,6 @@ package classes
                     break;
             }
             playAnimation(color);
-        }
-
-        private function playAnimationShrink():void
-        {
-            TweenLite.to(_hiResNote, (0.066 / animationSpeed), {scaleX: 1, scaleY: 1, tint: null, useFrames: false});
         }
 
         override public function dispose():void

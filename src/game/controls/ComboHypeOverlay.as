@@ -11,6 +11,10 @@ package game.controls
         private var _level:Number = 0;
         private var _pulse:Number = 0;
         private var _phase:Number = 0;
+        private var _laneX:Number = 0;
+        private var _laneY:Number = 0;
+        private var _laneWidth:Number = 0;
+        private var _laneHeight:Number = 0;
 
         public function ComboHypeOverlay(parent:Sprite):void
         {
@@ -21,6 +25,14 @@ package game.controls
             mouseChildren = false;
             blendMode = BlendMode.ADD;
             alpha = 0;
+        }
+
+        public function setLaneBounds(xPos:Number, yPos:Number, laneWidth:Number, laneHeight:Number):void
+        {
+            _laneX = xPos;
+            _laneY = yPos;
+            _laneWidth = Math.max(64, laneWidth);
+            _laneHeight = Math.max(64, laneHeight);
         }
 
         public function onJudge(combo:int, score:int):void
@@ -71,80 +83,69 @@ package game.controls
 
         private function drawOverlay(g:Graphics, level:Number):void
         {
-            var w:Number = Main.GAME_WIDTH;
-            var h:Number = Main.GAME_HEIGHT;
             var pulseLevel:Number = Math.min(1, level + _pulse);
             var beat:Number = (Math.sin(_phase * 3) + 1) * 0.5;
-            var edgeAlpha:Number = 0.12 + (pulseLevel * 0.24);
-            var pillAlpha:Number = 0.08 + (pulseLevel * 0.22);
-            var thickness:Number = 2 + (pulseLevel * 5);
+            var edgeAlpha:Number = 0.12 + (pulseLevel * 0.34);
+            var pillAlpha:Number = 0.1 + (pulseLevel * 0.28);
+            var thickness:Number = 3 + (pulseLevel * 9);
 
-            drawRgbFrame(g, w, h, thickness, edgeAlpha, beat);
-            drawPills(g, w, h, pillAlpha, beat);
-            drawCornerBursts(g, w, h, pulseLevel, beat);
-            drawScanlines(g, w, h, level);
+            drawLaneEdges(g, thickness, edgeAlpha, pillAlpha, pulseLevel, beat);
+            drawScanlines(g, level);
         }
 
-        private function drawRgbFrame(g:Graphics, w:Number, h:Number, thickness:Number, a:Number, beat:Number):void
+        private function drawLaneEdges(g:Graphics, thickness:Number, edgeAlpha:Number, pillAlpha:Number, level:Number, beat:Number):void
         {
-            var inset:Number;
+            var left:Number = _laneX;
+            var right:Number = _laneX + _laneWidth;
+            var top:Number = _laneY;
+            var heightValue:Number = _laneHeight;
+            var segmentHeight:Number = 34 + level * 38;
+            var segmentGap:Number = 26 - level * 10;
+            var yOffset:Number = (_phase * 34) % (segmentHeight + segmentGap);
+            var i:int;
+            var y:Number;
             var color:uint;
-            for (var i:int = 0; i < 3; i++)
+
+            for (i = 0; i < 4; i++)
             {
-                inset = 5 + (i * 8) + (beat * 2);
-                color = rgbColor(_phase + i * 2.1);
-                g.lineStyle(thickness - i * 0.8, color, a * (1 - i * 0.18), true);
-                g.drawRoundRect(inset, inset, w - inset * 2, h - inset * 2, 22 + i * 7, 22 + i * 7);
+                color = rgbColor(_phase + i * 1.65);
+                g.lineStyle(Math.max(1, thickness - i * 1.2), color, edgeAlpha * (1 - i * 0.18), true);
+                g.moveTo(left - i * 3, top);
+                g.lineTo(left - i * 3, top + heightValue);
+                g.moveTo(right + i * 3, top);
+                g.lineTo(right + i * 3, top + heightValue);
             }
-        }
 
-        private function drawPills(g:Graphics, w:Number, h:Number, a:Number, beat:Number):void
-        {
-            var pillWidth:Number = 92 + (beat * 28);
-            var pillHeight:Number = 7;
-            var margin:Number = 18;
-            var lanes:Array = [0.16, 0.36, 0.62, 0.84];
-
-            for (var i:int = 0; i < lanes.length; i++)
+            for (y = top - yOffset; y < top + heightValue; y += segmentHeight + segmentGap)
             {
-                var xPos:Number = (w * lanes[i]) - pillWidth / 2;
-                var yTop:Number = margin + (i % 2) * 10;
-                var yBottom:Number = h - margin - pillHeight - (i % 2) * 10;
-                var color:uint = rgbColor(_phase + i * 1.55);
+                var drawY:Number = Math.max(top, y);
+                var drawHeight:Number = Math.min(segmentHeight + beat * 12, top + heightValue - drawY);
+                if (drawHeight <= 0)
+                    continue;
 
-                g.lineStyle(1, 0xFFFFFF, a * 0.75, true);
-                g.beginFill(color, a);
-                g.drawRoundRect(xPos, yTop, pillWidth, pillHeight, pillHeight, pillHeight);
+                color = rgbColor(_phase + y * 0.024);
+                g.lineStyle(1, 0xFFFFFF, pillAlpha * 0.65, true);
+                g.beginFill(color, pillAlpha);
+                g.drawRoundRect(left - thickness * 0.9, drawY, thickness * 1.8, drawHeight, thickness * 1.8, thickness * 1.8);
                 g.endFill();
 
-                g.beginFill(rgbColor(_phase + i * 1.55 + 1.1), a * 0.9);
-                g.drawRoundRect(w - xPos - pillWidth, yBottom, pillWidth, pillHeight, pillHeight, pillHeight);
+                g.beginFill(rgbColor(_phase + y * 0.024 + 1.25), pillAlpha);
+                g.drawRoundRect(right - thickness * 0.9, drawY, thickness * 1.8, drawHeight, thickness * 1.8, thickness * 1.8);
                 g.endFill();
             }
-        }
 
-        private function drawCornerBursts(g:Graphics, w:Number, h:Number, level:Number, beat:Number):void
-        {
-            var len:Number = 42 + level * 80 + beat * 16;
-            var a:Number = 0.07 + level * 0.18;
-            var colors:Array = [0x00F5FF, 0xFF2BD6, 0xB6FF2E, 0x7B61FF];
-
-            for (var i:int = 0; i < 4; i++)
+            if (level > 0.55)
             {
-                g.lineStyle(3 + level * 4, colors[i], a, true);
-                var x:Number = (i == 1 || i == 2) ? w : 0;
-                var y:Number = i >= 2 ? h : 0;
-                var sx:int = x == 0 ? 1 : -1;
-                var sy:int = y == 0 ? 1 : -1;
-
-                g.moveTo(x, y + sy * 34);
-                g.lineTo(x + sx * len, y + sy * 34);
-                g.moveTo(x + sx * 34, y);
-                g.lineTo(x + sx * 34, y + sy * len);
+                var capAlpha:Number = (level - 0.55) * 0.28;
+                g.lineStyle(2 + level * 4, rgbColor(_phase + 3), capAlpha, true);
+                g.moveTo(left, top + 16);
+                g.lineTo(right, top + 16);
+                g.moveTo(left, top + heightValue - 16);
+                g.lineTo(right, top + heightValue - 16);
             }
         }
 
-        private function drawScanlines(g:Graphics, w:Number, h:Number, level:Number):void
+        private function drawScanlines(g:Graphics, level:Number):void
         {
             if (level < 0.45)
                 return;
@@ -152,10 +153,10 @@ package game.controls
             var a:Number = (level - 0.45) * 0.1;
             var offset:Number = (_phase * 18) % 18;
             g.lineStyle(1, 0xFFFFFF, a, true);
-            for (var y:Number = offset; y < h; y += 18)
+            for (var y:Number = _laneY + offset; y < _laneY + _laneHeight; y += 18)
             {
-                g.moveTo(0, y);
-                g.lineTo(w, y);
+                g.moveTo(_laneX, y);
+                g.lineTo(_laneX + _laneWidth, y);
             }
         }
 

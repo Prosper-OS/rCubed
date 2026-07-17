@@ -10,10 +10,12 @@ package game.controls
     import classes.ui.BoxSlider;
     import classes.ui.Text;
     import com.flashfla.utils.GameNotePool;
+    import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
     import flash.display.MovieClip;
     import flash.events.Event;
     import flash.geom.Point;
+    import flash.geom.Rectangle;
     import flash.utils.getTimer;
     import game.GameOptions;
 
@@ -468,6 +470,31 @@ package game.controls
         public function resetNoteCount(value:int):void
         {
             noteCount = value;
+        }
+
+        public function getLaneGuideRect(targetSpace:DisplayObject):Rectangle
+        {
+            var minX:Number = Math.min(leftReceptor.x, downReceptor.x, upReceptor.x, rightReceptor.x);
+            var maxX:Number = Math.max(leftReceptor.x, downReceptor.x, upReceptor.x, rightReceptor.x);
+            var laneSpacing:Number = Math.max(1, (maxX - minX) / 3);
+
+            if (laneSpacing <= 1)
+                laneSpacing = Math.max(1, options.receptorSpacing);
+
+            var localLeft:Number = minX - (laneSpacing / 2);
+            var localRight:Number = maxX + (laneSpacing / 2);
+            var leftPoint:Point = localToGlobal(new Point(localLeft, 0));
+            var rightPoint:Point = localToGlobal(new Point(localRight, 0));
+
+            if (targetSpace != null)
+            {
+                leftPoint = targetSpace.globalToLocal(leftPoint);
+                rightPoint = targetSpace.globalToLocal(rightPoint);
+            }
+
+            var rectX:Number = Math.min(leftPoint.x, rightPoint.x);
+            var rectWidth:Number = Math.max(64, Math.abs(rightPoint.x - leftPoint.x));
+            return new Rectangle(rectX, 0, rectWidth, Main.GAME_HEIGHT);
         }
 
         public function position():void
