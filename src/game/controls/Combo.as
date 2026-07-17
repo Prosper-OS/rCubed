@@ -1,5 +1,6 @@
 package game.controls
 {
+    import classes.RenderQuality;
     import classes.ui.BoxCheck;
     import classes.ui.Text;
     import com.flashfla.utils.ColorUtil;
@@ -57,6 +58,7 @@ package game.controls
             fieldShadow.y = 2;
             fieldShadow.text = "0";
             addChild(fieldShadow);
+            RenderQuality.cacheDisplayObject(fieldShadow);
 
             field = new TextField();
             field.defaultTextFormat = new TextFormat(Fonts.BASE_FONT_CJK, 50, colors[2], true);
@@ -68,6 +70,7 @@ package game.controls
             field.y = 0;
             field.text = "0";
             addChild(field);
+            RenderQuality.cacheDisplayObject(field);
 
             lastText = field.text;
 

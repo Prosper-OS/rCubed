@@ -56,7 +56,7 @@ package classes.chart
             modHalfTime = options.modEnabled("halftime");
             modNoBackground = options.modEnabled("nobackground");
             modIsolation = options.isolation;
-            modOffset = options.offsetGlobal != 0;
+            modOffset = options.chartOffset != 0;
             modRate = options.songRate != 1;
             modJudgeWindow = Boolean(options.judgeWindow);
 
@@ -150,7 +150,7 @@ package classes.chart
 
             if (modOffset)
             {
-                var goffset:int = Math.round(options.offsetGlobal);
+                var goffset:int = Math.round(options.chartOffset);
                 frame += goffset;
                 pos += goffset / 30;
             }

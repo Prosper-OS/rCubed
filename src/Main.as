@@ -10,6 +10,7 @@ package
     import classes.Language;
     import classes.Noteskins;
     import classes.Playlist;
+    import classes.RenderQuality;
     import classes.Site;
     import classes.User;
     import classes.ui.BoxButton;
@@ -138,6 +139,7 @@ package
             TweenPlugin.activate([TintPlugin, AutoAlphaPlugin]);
             TweenLite.defaultOverwrite = "all";
             stage.stageFocusRect = false;
+            RenderQuality.configureStage(stage);
 
             //- Load Air Items
             _gvars.loadAirOptions();

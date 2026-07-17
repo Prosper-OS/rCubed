@@ -154,6 +154,7 @@ package classes.replay
                     }
                 }
                 jsonSettings.viewOffset = 0;
+                jsonSettings.visualDelay = 0;
                 jsonSettings.judgeOffset = 0;
                 this.settings = jsonSettings;
             }
@@ -179,6 +180,7 @@ package classes.replay
                 jsonSettings.gap = Number(tempSettings[2][0]);
                 jsonSettings.noteskin = Number(tempSettings[2][3]);
                 jsonSettings.viewOffset = 0;
+                jsonSettings.visualDelay = 0;
                 jsonSettings.judgeOffset = 0;
                 this.settings = jsonSettings;
             }

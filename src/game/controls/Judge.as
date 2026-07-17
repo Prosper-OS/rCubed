@@ -1,9 +1,9 @@
 package game.controls
 {
+    import classes.RenderQuality;
     import com.greensock.TweenLite;
     import flash.display.DisplayObjectContainer;
     import flash.events.Event;
-    import flash.geom.Matrix;
     import flash.text.AntiAliasType;
     import flash.text.TextField;
     import flash.text.TextFieldAutoSize;
@@ -62,8 +62,8 @@ package game.controls
             field.y = -30;
             field.visible = true;
             field.alpha = 1;
-            field.cacheAsBitmapMatrix = new Matrix();
-            addChild(field)
+            addChild(field);
+            RenderQuality.cacheDisplayObject(field);
 
             //updateDisplay();
 

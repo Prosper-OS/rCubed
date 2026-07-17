@@ -25,6 +25,7 @@ package game
         public var accuracyBarFadeFactor:Number = 0.95;
 
         public var offsetGlobal:Number = 0;
+        public var visualDelay:Number = 0;
         public var offsetJudge:Number = 0;
         public var autoJudgeOffset:Boolean = false;
 
@@ -110,6 +111,7 @@ package game
             accuracyBarFadeFactor = user.accuracyBarFadeFactor;
 
             offsetGlobal = user.GLOBAL_OFFSET;
+            visualDelay = user.VISUAL_DELAY;
             offsetJudge = user.JUDGE_OFFSET;
             autoJudgeOffset = user.AUTO_JUDGE_OFFSET;
 
@@ -231,6 +233,7 @@ package game
             var i:int;
             var settings:Object = {};
             settings["viewOffset"] = offsetGlobal;
+            settings["visualDelay"] = visualDelay;
             settings["judgeOffset"] = offsetJudge;
             settings["autoJudgeOffset"] = autoJudgeOffset;
             settings["viewJudge"] = displayJudge;
@@ -321,6 +324,7 @@ package game
             accuracyBarFadeFactor = settings["accuracyBarFadeFactor"] || 0.95;
 
             offsetGlobal = settings["viewOffset"] || 0;
+            visualDelay = settings["visualDelay"] || 0;
             offsetJudge = settings["judgeOffset"] || 0;
             autoJudgeOffset = settings["autoJudgeOffset"] || false;
 
@@ -409,6 +413,11 @@ package game
         public function getNewNoteColor(color:String):String
         {
             return noteSwapColors[color];
+        }
+
+        public function get chartOffset():Number
+        {
+            return offsetGlobal + visualDelay;
         }
     }
 }

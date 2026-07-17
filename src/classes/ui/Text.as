@@ -1,5 +1,6 @@
 package classes.ui
 {
+    import classes.RenderQuality;
     import flash.display.DisplayObjectContainer;
     import flash.display.Sprite;
     import flash.text.AntiAliasType;
@@ -47,6 +48,7 @@ package classes.ui
             //_textTF.border = true;
             //_textTF.borderColor = 0xFF0000;
             this.addChild(_textTF);
+            RenderQuality.cacheDisplayObject(_textTF);
 
             draw();
         }

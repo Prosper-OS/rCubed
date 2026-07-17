@@ -625,15 +625,16 @@ package game
             {
                 options.offsetJudge = 0;
                 options.offsetGlobal = 0;
+                options.visualDelay = 0;
                 options.isAutoplay = true;
             }
 
             reverseMod = options.modEnabled("reverse");
 
             JUDGE_OFFSET_FRAMES = Math.round(options.offsetJudge);
-            GLOBAL_OFFSET_FRAMES = Math.round(options.offsetGlobal);
+            GLOBAL_OFFSET_FRAMES = Math.round(options.chartOffset);
 
-            GLOBAL_OFFSET_MS = (options.offsetGlobal - GLOBAL_OFFSET_FRAMES) * 1000 / 30;
+            GLOBAL_OFFSET_MS = (options.chartOffset - GLOBAL_OFFSET_FRAMES) * 1000 / 30;
             JUDGE_OFFSET_MS = options.offsetJudge * 1000 / 30;
 
             judgeSettings = buildJudgeNodes(options.judgeWindow ? options.judgeWindow : Constant.JUDGE_WINDOW);

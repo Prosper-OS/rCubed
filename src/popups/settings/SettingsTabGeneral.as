@@ -34,6 +34,7 @@ package popups.settings
         private var optionMenuVolume:BoxSlider;
 
         private var optionOffset:ValidatedText;
+        private var optionVisualDelay:ValidatedText;
         private var optionJudgeOffset:ValidatedText;
         private var optionJudgeOffsetAuto:BoxCheck;
         private var optionAutofail:Array;
@@ -95,6 +96,13 @@ package popups.settings
             yOff += 22;
 
             optionOffset = new ValidatedText(container, xOff, yOff, 130, 20, ValidatedText.R_FLOAT, changeHandler);
+            yOff += 30;
+
+            //- Visual Delay
+            new Text(container, xOff, yOff, "Visual Delay");
+            yOff += 22;
+
+            optionVisualDelay = new ValidatedText(container, xOff, yOff, 130, 20, ValidatedText.R_FLOAT, changeHandler);
             yOff += 30;
 
             //- Judge Offset
@@ -283,6 +291,9 @@ package popups.settings
             // Set Offset
             optionOffset.text = _gvars.activeUser.GLOBAL_OFFSET.toString();
 
+            // Set Visual Delay
+            optionVisualDelay.text = _gvars.activeUser.VISUAL_DELAY.toString();
+
             // Set Judge Offset
             optionJudgeOffset.text = _gvars.activeUser.JUDGE_OFFSET.toString();
 
@@ -387,6 +398,11 @@ package popups.settings
             else if (e.target == optionOffset)
             {
                 _gvars.activeUser.GLOBAL_OFFSET = optionOffset.validate(0);
+            }
+
+            else if (e.target == optionVisualDelay)
+            {
+                _gvars.activeUser.VISUAL_DELAY = optionVisualDelay.validate(0);
             }
 
             else if (e.target == optionJudgeOffset)

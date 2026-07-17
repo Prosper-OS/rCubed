@@ -18,14 +18,15 @@ package classes
         {
             this.DIR = dir;
 
-            DRAW_MATRIX.tx = -(bitmap.width >> 1);
-            DRAW_MATRIX.ty = -(bitmap.height >> 1);
+            var logicalWidth:Number = bitmap.width / RenderQuality.SUPERSAMPLE_SCALE;
+            var logicalHeight:Number = bitmap.height / RenderQuality.SUPERSAMPLE_SCALE;
+            DRAW_MATRIX = RenderQuality.bitmapFillMatrix(-(logicalWidth / 2), -(logicalHeight / 2));
 
             _note = new Sprite();
-            _note.graphics.beginBitmapFill(bitmap, DRAW_MATRIX, false);
-            _note.graphics.drawRect(-(bitmap.width >> 1), -(bitmap.height >> 1), bitmap.width, bitmap.height);
+            _note.graphics.beginBitmapFill(bitmap, DRAW_MATRIX, false, true);
+            _note.graphics.drawRect(-(logicalWidth / 2), -(logicalHeight / 2), logicalWidth, logicalHeight);
             _note.graphics.endFill();
-            _note.cacheAsBitmap = true;
+            RenderQuality.cacheDisplayObject(_note);
             this.addChild(_note);
         }
 

@@ -1,5 +1,6 @@
 package game.controls
 {
+    import classes.RenderQuality;
     import classes.ui.BoxCheck;
     import classes.ui.Text;
     import flash.display.DisplayObjectContainer;
@@ -34,6 +35,7 @@ package game.controls
             field.y = 0;
             field.text = "0";
             addChild(field);
+            RenderQuality.cacheDisplayObject(field);
 
             lastText = field.text;
         }

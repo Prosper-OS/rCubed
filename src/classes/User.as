@@ -86,6 +86,7 @@ package classes
 
         //- Game Data
         public var GLOBAL_OFFSET:Number = 0;
+        public var VISUAL_DELAY:Number = 0;
         public var JUDGE_OFFSET:Number = 0;
         public var AUTO_JUDGE_OFFSET:Boolean = false;
         public var DISPLAY_JUDGE:Boolean = true;
@@ -599,6 +600,9 @@ package classes
             if (_settings.viewOffset != null)
                 this.GLOBAL_OFFSET = _settings.viewOffset;
 
+            if (_settings.visualDelay != null)
+                this.VISUAL_DELAY = _settings.visualDelay;
+
             if (_settings.judgeOffset != null)
                 this.JUDGE_OFFSET = _settings.judgeOffset;
 
@@ -825,6 +829,7 @@ package classes
             var gameSave:Object = {};
             gameSave.language = this.language;
             gameSave.viewOffset = this.GLOBAL_OFFSET;
+            gameSave.visualDelay = this.VISUAL_DELAY;
             gameSave.judgeOffset = this.JUDGE_OFFSET;
             gameSave.autoJudgeOffset = this.AUTO_JUDGE_OFFSET;
             gameSave.viewGenreFlag = this.DISPLAY_GENRE_FLAG;

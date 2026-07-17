@@ -10,7 +10,6 @@ package classes
     import flash.events.IOErrorEvent;
     import flash.filesystem.File;
     import flash.geom.Matrix;
-    import flash.geom.Point;
     import flash.geom.Rectangle;
     import flash.utils.ByteArray;
     import game.noteskins.*;
@@ -181,7 +180,9 @@ package classes
                     return drawBitmapNote(_data[noteskin]["notes"][color][direction]);
                 }
 
-                return new _data[noteskin]["notes"][color][direction];
+                var note:Sprite = new _data[noteskin]["notes"][color][direction];
+                RenderQuality.cacheDisplayObject(note);
+                return note;
             }
             catch (e:Error)
             {
@@ -211,7 +212,9 @@ package classes
                 if (_data[noteskin]["type"] == TYPE_BITMAP)
                     return new GameReceptor(direction, _data[noteskin]["receptor"][direction]);
 
-                return new _data[noteskin]["receptor"][direction];
+                var receptor:MovieClip = new _data[noteskin]["receptor"][direction];
+                RenderQuality.cacheDisplayObject(receptor);
+                return receptor;
             }
             catch (e:Error)
             {
@@ -228,11 +231,10 @@ package classes
         private function drawBitmapNote(bmd:BitmapData):Sprite
         {
             var n:Sprite = new Sprite();
-            n.graphics.beginBitmapFill(bmd, null, false);
-            n.graphics.drawRect(0, 0, bmd.width, bmd.height);
+            n.graphics.beginBitmapFill(bmd, RenderQuality.bitmapFillMatrix(), false, true);
+            n.graphics.drawRect(0, 0, bmd.width / RenderQuality.SUPERSAMPLE_SCALE, bmd.height / RenderQuality.SUPERSAMPLE_SCALE);
             n.graphics.endFill();
-            n.cacheAsBitmap = true;
-            n.cacheAsBitmapMatrix = new Matrix();
+            RenderQuality.cacheDisplayObject(n);
             n.mouseEnabled = false;
             n.doubleClickEnabled = false;
             n.tabEnabled = false;
@@ -532,8 +534,10 @@ package classes
                     }
                     else
                     {
-                        var note_canvas:BitmapData = new BitmapData(cell_width, cell_height, true, 0);
-                        note_canvas.copyPixels(bmd, new Rectangle(note_pos[0] * cell_width, note_pos[1] * cell_height, cell_width, cell_height), new Point(0, 0), null, null, true);
+                        var scale:int = RenderQuality.SUPERSAMPLE_SCALE;
+                        var note_canvas:BitmapData = new BitmapData(cell_width * scale, cell_height * scale, true, 0);
+                        var note_matrix:Matrix = new Matrix(scale, 0, 0, scale, -note_pos[0] * cell_width * scale, -note_pos[1] * cell_height * scale);
+                        note_canvas.draw(bmd, note_matrix, null, null, new Rectangle(0, 0, note_canvas.width, note_canvas.height), true);
                         out[color][dir] = note_canvas;
                         cuts[note_pos[0] + "x" + note_pos[1]] = out[color][dir];
                     }
