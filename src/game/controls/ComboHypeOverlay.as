@@ -290,38 +290,39 @@ package game.controls
         private function updateFlowSprites(level:Number, beat:Number):void
         {
             var h:Number = Main.GAME_HEIGHT;
-            if (level < 0.08)
+            if (level < 0.32)
             {
                 _flowLayer.visible = false;
                 return;
             }
 
-            var a:Number = (level - 0.08) * (_mode == MODE_FULL ? 0.055 : 0.018);
-            var flowW:Number = Math.min(_laneWidth * 0.78, 90 + level * 150);
-            var flowH:Number = 16 + beat * 12;
+            var flowLevel:Number = (level - 0.32) / 0.68;
+            var a:Number = flowLevel * (_mode == MODE_FULL ? 0.018 : 0.006);
+            var flowW:Number = Math.min(_laneWidth * 0.62, 70 + flowLevel * 96);
+            var flowH:Number = 7 + beat * 5;
             var centerX:Number = _laneX + _laneWidth * 0.5;
             var topY:Number = Math.max(42, _laneY + 18);
             var bottomY:Number = Math.min(Main.GAME_HEIGHT - 24, _laneY + _laneHeight - 12);
 
             _flowLayer.visible = true;
-            _flowWash.alpha = 0.035 + level * 0.035;
+            _flowWash.alpha = 0.01 + flowLevel * 0.012;
 
             _floorBand.y = h - 96 - beat * 16 + 30;
-            _floorBand.scaleY = (18 + beat * 10) / 60;
-            _floorBand.alpha = level * (_mode == MODE_FULL ? 0.025 : 0.01);
+            _floorBand.scaleY = (8 + beat * 5) / 60;
+            _floorBand.alpha = flowLevel * (_mode == MODE_FULL ? 0.004 : 0.0015);
             tintSprite(_floorBand, rgbColor(_phase + 1.7));
 
             for (var i:int = 0; i < FLOW_COUNT; i++)
             {
                 var flow:Sprite = _flowSprites[i];
-                var depth:Number = ((i / FLOW_COUNT) + ((_phase * (0.5 + level * 1.2)) % 1)) % 1;
+                var depth:Number = ((i / FLOW_COUNT) + ((_phase * (0.35 + flowLevel * 0.7)) % 1)) % 1;
                 var yPos:Number = topY + ((bottomY - topY) * Math.pow(depth, 1.28));
                 var xDrift:Number = Math.sin(_phase * 1.5 + i * 1.72) * _laneWidth * 0.16 * (LANE_TOP_SCALE + ((LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * depth));
                 flow.x = centerX + xDrift;
                 flow.y = yPos;
                 flow.scaleX = (flowW / 340) * (0.68 + depth * 0.36);
                 flow.scaleY = (flowH / 100) * (0.76 + depth * 0.22);
-                flow.alpha = Math.max(0, a * (0.42 - i * 0.035));
+                flow.alpha = Math.max(0, a * (0.28 - i * 0.026));
                 tintSprite(flow, rgbColor(_phase + i * 1.35));
             }
         }
@@ -343,28 +344,28 @@ package game.controls
         {
             var w:Number = Main.GAME_WIDTH;
             var h:Number = Main.GAME_HEIGHT;
-            var a:Number = 0.08 + level * 0.18;
+            var a:Number = 0.035 + level * 0.07;
             var colorA:uint = rgbColor(_phase);
             var colorB:uint = rgbColor(_phase + 2.2);
 
-            g.beginFill(0xFFFFFF, 0.02 + level * 0.025);
+            g.beginFill(0xFFFFFF, 0.008 + level * 0.012);
             g.drawRect(0, 0, w, 44);
             g.drawRect(0, h - 42, w, 42);
             g.endFill();
 
-            g.lineStyle(1.5, 0xFFFFFF, 0.12 + level * 0.16, true);
+            g.lineStyle(1, 0xFFFFFF, 0.055 + level * 0.06, true);
             g.moveTo(0, 44);
             g.lineTo(w, 44);
             g.moveTo(0, h - 42);
             g.lineTo(w, h - 42);
 
-            g.lineStyle(3 + level * 4, colorA, a, true);
+            g.lineStyle(2 + level * 2, colorA, a, true);
             g.moveTo(12, 45);
             g.lineTo(178 + level * 110, 45);
             g.moveTo(w - 12, h - 43);
             g.lineTo(w - 178 - level * 110, h - 43);
 
-            g.lineStyle(2 + level * 3, colorB, a * 0.78, true);
+            g.lineStyle(1 + level * 1.5, colorB, a * 0.55, true);
             g.moveTo(w - 12, 45);
             g.lineTo(w - 142 - level * 80, 45);
             g.moveTo(12, h - 43);
@@ -465,14 +466,14 @@ package game.controls
 
             var h:Number = Main.GAME_HEIGHT;
             var w:Number = Main.GAME_WIDTH;
-            var band:Number = 26 + _hitFlash * 68;
+            var band:Number = 10 + _hitFlash * 24;
             var centerY:Number = h * 0.5 + Math.sin(_phase * 2.4) * 24;
 
-            g.beginFill(_hitColor, _hitFlash * (_mode == MODE_FULL ? 0.2 : 0.08));
+            g.beginFill(_hitColor, _hitFlash * (_mode == MODE_FULL ? 0.045 : 0.018));
             g.drawRect(0, centerY - band * 0.5, w, band);
             g.endFill();
 
-            g.lineStyle(2 + _hitFlash * 7, 0xFFFFFF, _hitFlash * (_mode == MODE_FULL ? 0.26 : 0.1), true);
+            g.lineStyle(1 + _hitFlash * 2, 0xFFFFFF, _hitFlash * (_mode == MODE_FULL ? 0.055 : 0.02), true);
             g.moveTo(0, centerY);
             g.lineTo(w, centerY);
         }
