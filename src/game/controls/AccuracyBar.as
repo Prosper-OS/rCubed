@@ -9,6 +9,9 @@ package game.controls
 
     public class AccuracyBar extends GameControl
     {
+        private static const PERSPECTIVE_TOP:Number = 0.90;
+        private static const PERSPECTIVE_BOTTOM:Number = 1.10;
+
         private var options:GameOptions;
 
         private var bound_lower:int = -117;
@@ -99,7 +102,7 @@ package game.controls
 
             this.graphics.lineStyle(1, 0xFFFFFF, 0.08);
             this.graphics.beginFill(0xBFD8FF, 0.018);
-            this.graphics.drawRoundRect(-(_width / 2), -(_height / 2), _width, _height, 18, 18);
+            drawPerspectiveQuad(this.graphics, -(_width / 2), _width, -(_height / 2), _height);
             this.graphics.endFill();
 
             this.graphics.lineStyle(1, 0xFFFFFF, 0.2);
@@ -127,23 +130,23 @@ package game.controls
             var coreHeight:Number = _height;
 
             g.beginFill(color, 0.07);
-            g.drawRoundRect(-widthHalf, -heightHalf, _width, _height, 24, 24);
+            drawPerspectiveQuad(g, -widthHalf, _width, -heightHalf, _height);
             g.endFill();
 
             g.beginFill(color, 0.16);
-            g.drawRoundRect(xPos - 38, -heightHalf, 76, _height, 18, 18);
+            drawPerspectiveQuad(g, xPos - 38, 76, -heightHalf, _height);
             g.endFill();
 
             g.beginFill(0xFFFFFF, 0.12);
-            g.drawRoundRect(-widthHalf, -6, _width, 12, 12, 12);
+            drawPerspectiveQuad(g, -widthHalf, _width, -6, 12);
             g.endFill();
 
             g.beginFill(color, 0.68);
-            g.drawRect(xPos - 2, -heightHalf, 4, coreHeight);
+            drawPerspectiveQuad(g, xPos - 2, 4, -heightHalf, coreHeight);
             g.endFill();
 
             g.beginFill(0xFFFFFF, 0.76);
-            g.drawRect(xPos - 0.75, -heightHalf, 1.5, coreHeight);
+            drawPerspectiveQuad(g, xPos - 0.75, 1.5, -heightHalf, coreHeight);
             g.endFill();
 
             return flash;
@@ -189,9 +192,31 @@ package game.controls
             for (var jn:int = 1; jn < judge.length - 1; jn++)
             {
                 var dX:Number = _width * ((judge[jn]["t"] - bound_lower) / bound_range);
-                this.graphics.moveTo(-(_width / 2) + dX, -(_height / 2) + 1);
-                this.graphics.lineTo(-(_width / 2) + dX, (_height / 2) - 1);
+                var baseX:Number = -(_width / 2) + dX;
+                this.graphics.moveTo(perspectiveX(baseX, -(_height / 2) + 1), -(_height / 2) + 1);
+                this.graphics.lineTo(perspectiveX(baseX, (_height / 2) - 1), (_height / 2) - 1);
             }
+        }
+
+        private function drawPerspectiveQuad(g:Graphics, xPos:Number, widthValue:Number, yPos:Number, heightValue:Number):void
+        {
+            var yTop:Number = yPos;
+            var yBottom:Number = yPos + heightValue;
+            var left:Number = xPos;
+            var right:Number = xPos + widthValue;
+
+            g.moveTo(perspectiveX(left, yTop), yTop);
+            g.lineTo(perspectiveX(right, yTop), yTop);
+            g.lineTo(perspectiveX(right, yBottom), yBottom);
+            g.lineTo(perspectiveX(left, yBottom), yBottom);
+            g.lineTo(perspectiveX(left, yTop), yTop);
+        }
+
+        private function perspectiveX(xPos:Number, yPos:Number):Number
+        {
+            var depth:Number = (yPos + (_height / 2)) / Math.max(1, _height);
+            var scale:Number = PERSPECTIVE_TOP + ((PERSPECTIVE_BOTTOM - PERSPECTIVE_TOP) * depth);
+            return xPos * scale;
         }
 
         override public function set width(val:Number):void

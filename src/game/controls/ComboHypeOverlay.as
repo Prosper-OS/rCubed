@@ -15,6 +15,8 @@ package game.controls
         private static const FLOW_COUNT:int = 5;
         private static const MAX_PARTICLES:int = 120;
         private static const MAX_PARTICLES_REDUCED:int = 44;
+        private static const LANE_TOP_SCALE:Number = 0.90;
+        private static const LANE_BOTTOM_SCALE:Number = 1.10;
 
         private var _combo:int = 0;
         private var _score:int = 0;
@@ -367,63 +369,84 @@ package game.controls
                 return;
 
             var a:Number = (_mode == MODE_FULL ? 0.028 : 0.012) + level * (_mode == MODE_FULL ? 0.06 : 0.022);
+            var top:Number = _laneY;
+            var bottom:Number = _laneY + _laneHeight;
+
             g.beginFill(0xBDEBFF, a);
-            g.drawRoundRect(_laneX - 14, _laneY, _laneWidth + 28, _laneHeight, 24, 24);
+            g.moveTo(lanePerspectiveX(0, top, 14), top);
+            g.lineTo(lanePerspectiveX(1, top, 14), top);
+            g.lineTo(lanePerspectiveX(1, bottom, 14), bottom);
+            g.lineTo(lanePerspectiveX(0, bottom, 14), bottom);
+            g.lineTo(lanePerspectiveX(0, top, 14), top);
             g.endFill();
 
             g.lineStyle(1, 0xFFFFFF, 0.05 + level * 0.08, true);
-            g.drawRoundRect(_laneX - 14, _laneY + 1, _laneWidth + 28, _laneHeight - 2, 24, 24);
+            g.moveTo(lanePerspectiveX(0, top + 1, 14), top + 1);
+            g.lineTo(lanePerspectiveX(1, top + 1, 14), top + 1);
+            g.lineTo(lanePerspectiveX(1, bottom - 1, 14), bottom - 1);
+            g.lineTo(lanePerspectiveX(0, bottom - 1, 14), bottom - 1);
+            g.lineTo(lanePerspectiveX(0, top + 1, 14), top + 1);
         }
 
         private function drawLaneEdges(g:Graphics, thickness:Number, edgeAlpha:Number, pillAlpha:Number, level:Number, beat:Number):void
         {
-            var left:Number = _laneX;
-            var right:Number = _laneX + _laneWidth;
             var top:Number = _laneY;
             var heightValue:Number = _laneHeight;
+            var bottom:Number = top + heightValue;
             var segmentHeight:Number = 34 + level * 44;
             var segmentGap:Number = 24 - level * 11;
             var yOffset:Number = (_phase * 36) % (segmentHeight + segmentGap);
             var i:int;
             var y:Number;
             var color:uint;
+            var drawY:Number;
+            var drawHeight:Number;
 
             for (i = 0; i < 5; i++)
             {
                 color = rgbColor(_phase + i * 1.5);
                 g.lineStyle(Math.max(1, thickness - i * 1.15), color, edgeAlpha * (1 - i * 0.16), true);
-                g.moveTo(left - i * 3, top);
-                g.lineTo(left - i * 3, top + heightValue);
-                g.moveTo(right + i * 3, top);
-                g.lineTo(right + i * 3, top + heightValue);
+                g.moveTo(lanePerspectiveX(0, top, i * 3), top);
+                g.lineTo(lanePerspectiveX(0, bottom, i * 3), bottom);
+                g.moveTo(lanePerspectiveX(1, top, i * 3), top);
+                g.lineTo(lanePerspectiveX(1, bottom, i * 3), bottom);
             }
 
             for (y = top - yOffset; y < top + heightValue; y += segmentHeight + segmentGap)
             {
-                var drawY:Number = Math.max(top, y);
-                var drawHeight:Number = Math.min(segmentHeight + beat * 14, top + heightValue - drawY);
+                drawY = Math.max(top, y);
+                drawHeight = Math.min(segmentHeight + beat * 14, top + heightValue - drawY);
                 if (drawHeight <= 0)
                     continue;
 
                 color = rgbColor(_phase + y * 0.024);
-                g.lineStyle(1, 0xFFFFFF, pillAlpha * 0.65, true);
-                g.beginFill(color, pillAlpha);
-                g.drawRoundRect(left - thickness * 0.9, drawY, thickness * 1.8, drawHeight, thickness * 1.8, thickness * 1.8);
-                g.endFill();
+                g.lineStyle(Math.max(2, thickness * 1.5), color, pillAlpha, true);
+                g.moveTo(lanePerspectiveX(0, drawY, thickness * 0.85), drawY);
+                g.lineTo(lanePerspectiveX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
 
-                g.beginFill(rgbColor(_phase + y * 0.024 + 1.25), pillAlpha);
-                g.drawRoundRect(right - thickness * 0.9, drawY, thickness * 1.8, drawHeight, thickness * 1.8, thickness * 1.8);
-                g.endFill();
+                g.lineStyle(Math.max(1, thickness * 0.42), 0xFFFFFF, pillAlpha * 0.65, true);
+                g.moveTo(lanePerspectiveX(0, drawY, thickness * 0.85), drawY);
+                g.lineTo(lanePerspectiveX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
+
+                g.lineStyle(Math.max(2, thickness * 1.5), rgbColor(_phase + y * 0.024 + 1.25), pillAlpha, true);
+                g.moveTo(lanePerspectiveX(1, drawY, thickness * 0.85), drawY);
+                g.lineTo(lanePerspectiveX(1, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
+
+                g.lineStyle(Math.max(1, thickness * 0.42), 0xFFFFFF, pillAlpha * 0.65, true);
+                g.moveTo(lanePerspectiveX(1, drawY, thickness * 0.85), drawY);
+                g.lineTo(lanePerspectiveX(1, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
             }
 
             if (level > 0.55)
             {
                 var capAlpha:Number = (level - 0.55) * 0.32;
+                var capTop:Number = top + 16;
+                var capBottom:Number = top + heightValue - 16;
                 g.lineStyle(2 + level * 4, rgbColor(_phase + 3), capAlpha, true);
-                g.moveTo(left, top + 16);
-                g.lineTo(right, top + 16);
-                g.moveTo(left, top + heightValue - 16);
-                g.lineTo(right, top + heightValue - 16);
+                g.moveTo(lanePerspectiveX(0, capTop), capTop);
+                g.lineTo(lanePerspectiveX(1, capTop), capTop);
+                g.moveTo(lanePerspectiveX(0, capBottom), capBottom);
+                g.lineTo(lanePerspectiveX(1, capBottom), capBottom);
             }
         }
 
@@ -576,7 +599,26 @@ package game.controls
                     break;
             }
 
-            return _laneX + _laneWidth * ((idx + 0.5) / 4);
+            return lanePerspectiveX((idx + 0.5) / 4, _laneY + _laneHeight * 0.5);
+        }
+
+        private function lanePerspectiveX(ratio:Number, yPos:Number, gutter:Number = 0):Number
+        {
+            var center:Number = _laneX + _laneWidth * 0.5;
+            var t:Number = (yPos - _laneY) / Math.max(1, _laneHeight);
+            if (t < 0)
+                t = 0;
+            else if (t > 1)
+                t = 1;
+
+            var scale:Number = LANE_TOP_SCALE + (LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * t;
+            var gutterOffset:Number = 0;
+            if (ratio < 0.5)
+                gutterOffset = -gutter;
+            else if (ratio > 0.5)
+                gutterOffset = gutter;
+
+            return center + ((_laneWidth * (ratio - 0.5) + gutterOffset) * scale);
         }
 
         private function tintSprite(sprite:Sprite, color:uint):void

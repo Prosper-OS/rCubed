@@ -66,6 +66,7 @@ package game
     import game.controls.GameControl;
     import game.controls.GameControlEditor;
     import game.controls.GameLayoutManager;
+    import game.controls.GameplayDepthBackground;
     import game.controls.Judge;
     import game.controls.LifeBar;
     import game.controls.MPFFRScoreCompare;
@@ -131,6 +132,7 @@ package game
         public var uiNoteCount:ComboTotal;
         public var uiNoteCountStatic:TextStatic;
         public var uiScreenCut:ScreenCut;
+        public var uiDepthBackground:GameplayDepthBackground;
         public var uiSongBackground:MovieClip;
 
         public var accuracy:Average;
@@ -883,6 +885,9 @@ package game
 
                     if (uiProgressDisplay.visible)
                         uiProgressDisplay.update(GAME_FRAME / gameLastNoteFrame, false);
+
+                    if (uiDepthBackground)
+                        uiDepthBackground.tick(GAME_FRAME, hitCombo, options.visualHypeMode);
 
                     didUpdatePlay = true;
                     break;
@@ -1643,6 +1648,8 @@ package game
             GPU_PIXEL_BITMAP = new Bitmap(GPU_PIXEL_BMD);
             addChild(GPU_PIXEL_BITMAP);
 
+            uiDepthBackground = new GameplayDepthBackground(this);
+
             uiAccuracyBar = new AccuracyBar(options, this);
             uiAccuracyBar.visible = options.displayAccuracyBar;
 
@@ -1737,6 +1744,11 @@ package game
                 this.removeChild(uiComboHype);
                 uiComboHype = null;
             }
+            if (uiDepthBackground)
+            {
+                this.removeChild(uiDepthBackground);
+                uiDepthBackground = null;
+            }
             if (bgTopBar)
             {
                 this.removeChild(bgTopBar);
@@ -1821,6 +1833,9 @@ package game
 
             if (uiComboHype)
                 uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
+
+            if (uiDepthBackground)
+                uiDepthBackground.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
 
             _laneGuideInitialized = true;
         }

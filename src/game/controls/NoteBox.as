@@ -29,6 +29,8 @@ package game.controls
         public static const P_LEFT:int = 1 << 1;
         public static const P_RIGHT:int = 1 << 2;
         public static const P_BOTTOM:int = 1 << 3;
+        private static const DEPTH_POSITION_FACTOR:Number = 0.10;
+        private static const DEPTH_SCALE_FACTOR:Number = 0.10;
 
         private var _gvars:GlobalVariables = GlobalVariables.instance;
         private var _noteskins:Noteskins = Noteskins.instance;
@@ -367,23 +369,37 @@ package game.controls
         public var updateReceptorRef:MovieClip;
         public var updateOffsetRef:Number;
         public var updateBaseOffsetRef:Number;
+        public var updateDepthRef:Number;
 
         public function updateNotePosition(note:GameNote, position:int):void
         {
             updateReceptorRef = getReceptor(note.DIR);
             updateOffsetRef = (note.POSITION - position) / 1000 * 300 * scrollSpeed;
             updateBaseOffsetRef = (position - note.SPAWN_PROGRESS) / (note.POSITION - note.SPAWN_PROGRESS);
+            updateDepthRef = Math.max(0, Math.min(1, updateBaseOffsetRef));
+
+            var laneDepthScale:Number = (1 - DEPTH_POSITION_FACTOR) + (updateDepthRef * DEPTH_POSITION_FACTOR);
+            var noteDepthScale:Number = (1 - (DEPTH_SCALE_FACTOR * 0.5)) + (updateDepthRef * DEPTH_SCALE_FACTOR);
+            var baseNoteScale:Number = 1;
+
+            if (options.noteScale != 1.0)
+                baseNoteScale = options.noteScale;
+            else if (options.modEnabled("mini") && !options.modEnabled("mini_resize"))
+                baseNoteScale = 0.75;
 
             if (updateReceptorRef.VERTEX == VERTEX_X)
             {
                 note.x = updateReceptorRef.x - updateOffsetRef * updateReceptorRef.DIRECTION;
-                note.y = updateReceptorRef.y;
+                note.y = updateReceptorRef.y * laneDepthScale;
             }
             else if (updateReceptorRef.VERTEX == VERTEX_Y)
             {
                 note.y = updateReceptorRef.y - updateOffsetRef * updateReceptorRef.DIRECTION;
-                note.x = updateReceptorRef.x;
+                note.x = updateReceptorRef.x * laneDepthScale;
             }
+
+            note.scaleX = note.scaleY = baseNoteScale * noteDepthScale;
+            note.alpha = 1;
 
             // Position Mods
             if (options.modEnabled("tornado"))
@@ -432,7 +448,7 @@ package game.controls
             // Scale Mods
             if (options.noteScale == 1 && options.modEnabled("mini_resize") && !options.modEnabled("mini"))
             {
-                note.scaleX = note.scaleY = 1 - (updateBaseOffsetRef * 0.65);
+                note.scaleX = note.scaleY = noteDepthScale * (1 - (updateBaseOffsetRef * 0.65));
             }
         }
 
