@@ -2,8 +2,12 @@ package game.controls
 {
     import classes.RenderQuality;
     import com.greensock.TweenLite;
+    import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
     import flash.events.Event;
+    import flash.filters.GlowFilter;
+    import flash.geom.Point;
+    import flash.geom.Rectangle;
     import flash.text.AntiAliasType;
     import flash.text.TextField;
     import flash.text.TextFieldAutoSize;
@@ -58,6 +62,10 @@ package game.controls
             field.doubleClickEnabled = false;
             field.mouseWheelEnabled = false;
             field.tabEnabled = false;
+            field.filters = [
+                new GlowFilter(0x000000, 1, 5, 5, 10, 3),
+                new GlowFilter(0x000000, 0.65, 9, 9, 2.4, 2)
+            ];
             field.x = 0;
             field.y = -30;
             field.visible = true;
@@ -115,6 +123,39 @@ package game.controls
                 }
                 lastTime = curTime;
             }
+        }
+
+        public function getTextBounds(targetSpace:DisplayObject):Rectangle
+        {
+            if (!visible || alpha <= 0.02 || !field.visible || field.text == "")
+                return null;
+
+            var bounds:Rectangle;
+            for (var i:int = 0; i < field.length; i++)
+            {
+                var charBounds:Rectangle = field.getCharBoundaries(i);
+                if (!charBounds)
+                    continue;
+
+                if (bounds)
+                    bounds = bounds.union(charBounds);
+                else
+                    bounds = charBounds.clone();
+            }
+
+            if (!bounds)
+                return field.getBounds(targetSpace ? targetSpace : this);
+
+            var topLeft:Point = field.localToGlobal(new Point(bounds.left, bounds.top));
+            var bottomRight:Point = field.localToGlobal(new Point(bounds.right, bounds.bottom));
+            if (targetSpace)
+            {
+                topLeft = targetSpace.globalToLocal(topLeft);
+                bottomRight = targetSpace.globalToLocal(bottomRight);
+            }
+
+            return new Rectangle(Math.min(topLeft.x, bottomRight.x), Math.min(topLeft.y, bottomRight.y),
+                Math.abs(bottomRight.x - topLeft.x), Math.abs(bottomRight.y - topLeft.y));
         }
 
         private function updateDisplay():void

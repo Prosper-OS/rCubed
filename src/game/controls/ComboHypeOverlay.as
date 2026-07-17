@@ -5,6 +5,7 @@ package game.controls
     import flash.display.Graphics;
     import flash.display.Sprite;
     import flash.geom.ColorTransform;
+    import flash.geom.Rectangle;
 
     public class ComboHypeOverlay extends Sprite
     {
@@ -29,6 +30,7 @@ package game.controls
         private var _laneY:Number = 0;
         private var _laneWidth:Number = 0;
         private var _laneHeight:Number = 0;
+        private var _judgeBounds:Rectangle;
 
         private var _vectorLayer:Sprite;
         private var _particleLayer:Sprite;
@@ -88,6 +90,11 @@ package game.controls
             _laneY = yPos;
             _laneWidth = Math.max(64, laneWidth);
             _laneHeight = Math.max(64, laneHeight);
+        }
+
+        public function setJudgeBounds(bounds:Rectangle):void
+        {
+            _judgeBounds = bounds ? bounds.clone() : null;
         }
 
         public function onJudge(combo:int, score:int, dir:String = null):void
@@ -230,8 +237,8 @@ package game.controls
             var g:Graphics = _vectorLayer.graphics;
             g.clear();
             drawLaneGlass(g, pulseLevel);
-            drawLaneEdges(g, 3 + (pulseLevel * 11), 0.12 + (pulseLevel * 0.36), 0.1 + (pulseLevel * 0.3), pulseLevel, beat);
             drawHitFlash(g);
+            drawLaneEdges(g, 3 + (pulseLevel * 11), 0.12 + (pulseLevel * 0.36), 0.1 + (pulseLevel * 0.3), pulseLevel, beat);
         }
 
         private function drawLaneGlass(g:Graphics, level:Number):void
@@ -326,21 +333,40 @@ package game.controls
 
         private function drawHitFlash(g:Graphics):void
         {
-            if (_hitFlash < 0.02 || !hasLaneBounds())
+            if (_hitFlash < 0.02 || !hasLaneBounds() || !_judgeBounds)
                 return;
 
-            var band:Number = 10 + _hitFlash * 24;
-            var centerY:Number = _laneY + _laneHeight * 0.5 + Math.sin(_phase * 2.4) * Math.min(24, _laneHeight * 0.04);
+            var centerY:Number = _judgeBounds.y + _judgeBounds.height * 0.12;
+            var band:Number = Math.max(18, Math.min(44, _judgeBounds.height * 0.78 + _hitFlash * 10));
             var left:Number = lanePerspectiveX(0, centerY, 16);
             var right:Number = lanePerspectiveX(1, centerY, 16);
+            var textPad:Number = Math.min(_laneWidth * 0.14, 34);
+            var textLeft:Number = _judgeBounds.x - textPad;
+            var textRight:Number = _judgeBounds.x + _judgeBounds.width + textPad;
+            var minWidth:Number = Math.min(_laneWidth * 0.88, Math.max(_judgeBounds.width * 1.16, _laneWidth * 0.42));
+            var centerX:Number = _judgeBounds.x + _judgeBounds.width * 0.5;
+            var flashLeft:Number = Math.max(left, Math.min(textLeft, centerX - minWidth * 0.5));
+            var flashRight:Number = Math.min(right, Math.max(textRight, centerX + minWidth * 0.5));
+            var lineAlpha:Number = _hitFlash * (_mode == MODE_FULL ? 0.32 : 0.11);
+            var fillAlpha:Number = _hitFlash * (_mode == MODE_FULL ? 0.18 : 0.06);
 
-            g.beginFill(_hitColor, _hitFlash * (_mode == MODE_FULL ? 0.045 : 0.018));
-            g.drawRect(left, centerY - band * 0.5, right - left, band);
+            g.beginFill(_hitColor, fillAlpha * 0.45);
+            g.drawRect(flashLeft, centerY - band * 0.5, flashRight - flashLeft, band);
             g.endFill();
 
-            g.lineStyle(1 + _hitFlash * 2, 0xFFFFFF, _hitFlash * (_mode == MODE_FULL ? 0.055 : 0.02), true);
-            g.moveTo(left, centerY);
-            g.lineTo(right, centerY);
+            g.beginFill(_hitColor, fillAlpha);
+            g.drawRect(flashLeft + 8, centerY - band * 0.24, Math.max(0, flashRight - flashLeft - 16), band * 0.48);
+            g.endFill();
+
+            g.lineStyle(1 + _hitFlash * 3, 0xFFFFFF, lineAlpha, true);
+            g.moveTo(flashLeft, centerY);
+            g.lineTo(flashRight, centerY);
+
+            g.lineStyle(1, _hitColor, lineAlpha * 0.58, true);
+            g.moveTo(flashLeft + 4, centerY - band * 0.34);
+            g.lineTo(flashRight - 4, centerY - band * 0.34);
+            g.moveTo(flashLeft + 4, centerY + band * 0.34);
+            g.lineTo(flashRight - 4, centerY + band * 0.34);
         }
 
         private function spawnBurstParticles(score:int, dir:String):void

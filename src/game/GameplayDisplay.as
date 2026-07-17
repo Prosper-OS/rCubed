@@ -898,6 +898,7 @@ package game
 
             if (uiComboHype)
             {
+                uiComboHype.setJudgeBounds(uiJudge ? uiJudge.getTextBounds(this) : null);
                 uiComboHype.tick(GAME_FRAME);
                 if (didUpdatePlay)
                     applyFieldVisualOffset(uiComboHype.shakeX, uiComboHype.shakeY);
