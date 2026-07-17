@@ -212,6 +212,9 @@ package classes
                 if (_data[noteskin] == null)
                     noteskin = 1;
 
+                if (RenderQuality.useHiResDefaultNotes(noteskin))
+                    return new HiResGameReceptor(direction, _data[noteskin]["width"], _data[noteskin]["height"]);
+
                 if (_data[noteskin]["type"] == TYPE_BITMAP)
                     return new GameReceptor(direction, _data[noteskin]["receptor"][direction]);
 

@@ -2,6 +2,7 @@ package game.controls
 {
     import classes.GameNote;
     import classes.GameReceptor;
+    import classes.HiResGameReceptor;
     import classes.Noteskins;
     import classes.chart.Note;
     import classes.chart.Song;
@@ -226,6 +227,7 @@ package game.controls
 
             var receptor:MovieClip = getReceptor(dir);
             var isCustom:Boolean = receptor is GameReceptor;
+            var isHiRes:Boolean = receptor is HiResGameReceptor;
             var f:int = 2;
             var c:uint = 0;
             var e:Boolean = false;
@@ -271,10 +273,16 @@ package game.controls
                     return;
             }
 
+            if (isHiRes)
+                e = true;
+
             if (!e)
                 return;
 
-            if (isCustom)
+            if (isHiRes)
+                (receptor as HiResGameReceptor).playScoreAnimation(score, c);
+
+            else if (isCustom)
                 (receptor as GameReceptor).playAnimation(c);
 
             else

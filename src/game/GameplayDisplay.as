@@ -60,6 +60,7 @@ package game
     import game.controls.BarBottom;
     import game.controls.BarTop;
     import game.controls.Combo;
+    import game.controls.ComboHypeOverlay;
     import game.controls.ComboTotal;
     import game.controls.GameControl;
     import game.controls.GameControlEditor;
@@ -120,6 +121,7 @@ package game
         public var uiAccuracyBar:AccuracyBar;
         public var uiPAWindow:PAWindow;
         public var uiCombo:Combo;
+        public var uiComboHype:ComboHypeOverlay;
         public var uiComboStatic:TextStatic;
         public var uiLifebar:LifeBar;
         public var uiJudge:Judge;
@@ -825,6 +827,8 @@ package game
         {
             // UI Updates
             uiJudge.updateJudge(e);
+            if (uiComboHype)
+                uiComboHype.tick(GAME_FRAME);
 
             // Gameplay Logic
             switch (GAME_STATE)
@@ -1654,6 +1658,7 @@ package game
             uiCombo.visible = options.displayCombo;
             uiComboStatic = new TextStatic(_lang.string("game_combo"), this);
             uiComboStatic.visible = options.displayCombo;
+            uiComboHype = new ComboHypeOverlay(this);
 
             uiRawGoods = new RawGoods(options, this);
             uiRawGoods.visible = options.displayRawGoods;
@@ -1718,6 +1723,11 @@ package game
             {
                 this.removeChild(uiJudge);
                 uiJudge = null;
+            }
+            if (uiComboHype)
+            {
+                this.removeChild(uiComboHype);
+                uiComboHype = null;
             }
             if (bgTopBar)
             {
@@ -2172,6 +2182,9 @@ package game
 
             if (hitCombo > hitMaxCombo)
                 hitMaxCombo = hitCombo;
+
+            if (uiComboHype)
+                uiComboHype.onJudge(hitCombo, score);
 
             if (score == -10)
                 gameReplayHit.push(0);
