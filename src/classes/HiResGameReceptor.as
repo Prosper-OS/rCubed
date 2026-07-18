@@ -1,15 +1,18 @@
 package classes
 {
-    import com.greensock.TweenLite;
     import flash.display.BitmapData;
     import flash.display.BlendMode;
     import flash.display.Sprite;
+    import flash.events.Event;
     import flash.geom.ColorTransform;
 
     public dynamic class HiResGameReceptor extends GameReceptor
     {
         private var _hiResNote:Sprite;
         private var _hitNote:Sprite;
+        private var _hitColorTransform:ColorTransform = new ColorTransform();
+        private var _animationFrame:int = 0;
+        private var _animationActive:Boolean = false;
 
         public function HiResGameReceptor(dir:String, receptorWidth:Number = 64, receptorHeight:Number = 64)
         {
@@ -35,20 +38,41 @@ package classes
 
         override public function playAnimation(color:uint):void
         {
-            TweenLite.killTweensOf(_hiResNote);
-            TweenLite.killTweensOf(_hitNote);
-
             _hiResNote.scaleX = _hiResNote.scaleY = 1.18;
             _hitNote.scaleX = _hitNote.scaleY = 1.18;
             _hitNote.alpha = 0.96;
 
-            var colorTransform:ColorTransform = _hitNote.transform.colorTransform;
-            colorTransform.color = color;
-            _hitNote.transform.colorTransform = colorTransform;
+            _hitColorTransform.color = color;
+            _hitNote.transform.colorTransform = _hitColorTransform;
+            _animationFrame = 0;
 
-            TweenLite.to(_hiResNote, (0.045 / animationSpeed), {scaleX: 1, scaleY: 1, useFrames: false});
-            TweenLite.to(_hitNote, (0.045 / animationSpeed), {scaleX: 1, scaleY: 1, useFrames: false});
-            TweenLite.to(_hitNote, (0.22 / animationSpeed), {alpha: 0, useFrames: false});
+            if (!_animationActive)
+            {
+                _animationActive = true;
+                addEventListener(Event.ENTER_FRAME, updateAnimation, false, 0, true);
+            }
+        }
+
+        private function updateAnimation(e:Event):void
+        {
+            _animationFrame++;
+
+            var settle:Number = Math.min(1, _animationFrame / Math.max(1, Math.round(3 / animationSpeed)));
+            var scale:Number = 1.18 - (0.18 * settle);
+            _hiResNote.scaleX = _hiResNote.scaleY = scale;
+            _hitNote.scaleX = _hitNote.scaleY = scale;
+
+            var fade:Number = Math.min(1, _animationFrame / Math.max(1, Math.round(13 / animationSpeed)));
+            _hitNote.alpha = 0.96 * (1 - fade);
+
+            if (fade >= 1)
+            {
+                _animationActive = false;
+                removeEventListener(Event.ENTER_FRAME, updateAnimation);
+                _hiResNote.scaleX = _hiResNote.scaleY = 1;
+                _hitNote.scaleX = _hitNote.scaleY = 1;
+                _hitNote.alpha = 0;
+            }
         }
 
         public function playScoreAnimation(score:int, configuredColor:uint):void
@@ -80,6 +104,8 @@ package classes
 
         override public function dispose():void
         {
+            removeEventListener(Event.ENTER_FRAME, updateAnimation);
+
             if (_hiResNote != null && contains(_hiResNote))
                 removeChild(_hiResNote);
             if (_hitNote != null && contains(_hitNote))

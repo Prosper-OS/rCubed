@@ -17,6 +17,8 @@ package game.controls
         private static const MAX_PARTICLES_REDUCED:int = 44;
         private static const LANE_TOP_SCALE:Number = 0.70;
         private static const LANE_BOTTOM_SCALE:Number = 1.00;
+        private static const RGB_TABLE_SIZE:int = 256;
+        private static var RGB_TABLE:Vector.<uint> = buildRgbTable();
 
         private var _combo:int = 0;
         private var _score:int = 0;
@@ -30,13 +32,22 @@ package game.controls
         private var _laneY:Number = 0;
         private var _laneWidth:Number = 0;
         private var _laneHeight:Number = 0;
-        private var _judgeBounds:Rectangle;
+        private var _hasJudgeBounds:Boolean = false;
+        private var _judgeX:Number = 0;
+        private var _judgeY:Number = 0;
+        private var _judgeWidth:Number = 0;
+        private var _judgeHeight:Number = 0;
 
+        private var _glassLayer:Sprite;
         private var _vectorLayer:Sprite;
+        private var _flashLayer:Sprite;
         private var _particleLayer:Sprite;
+        private var _laneGeometryDirty:Boolean = true;
+        private var _lastGlassAlpha:Number = -1;
 
         private var _particleSprites:Vector.<Sprite> = new <Sprite>[];
         private var _particleActive:Vector.<Boolean> = new Vector.<Boolean>(MAX_PARTICLES, true);
+        private var _particleActiveIndices:Vector.<int> = new <int>[];
         private var _particleX:Vector.<Number> = new Vector.<Number>(MAX_PARTICLES, true);
         private var _particleY:Vector.<Number> = new Vector.<Number>(MAX_PARTICLES, true);
         private var _particleVX:Vector.<Number> = new Vector.<Number>(MAX_PARTICLES, true);
@@ -58,8 +69,8 @@ package game.controls
 
             mouseEnabled = false;
             mouseChildren = false;
-            blendMode = BlendMode.ADD;
-            alpha = 0;
+            blendMode = BlendMode.NORMAL;
+            alpha = 1;
 
             buildCachedLayers();
             setMode(mode);
@@ -79,22 +90,48 @@ package game.controls
                 _hitFlash = 0;
                 shakeX = 0;
                 shakeY = 0;
-                alpha = 0;
+                alpha = 1;
+                _laneGeometryDirty = true;
+                _lastGlassAlpha = -1;
+                _glassLayer.graphics.clear();
                 _vectorLayer.graphics.clear();
+                _flashLayer.graphics.clear();
             }
         }
 
         public function setLaneBounds(xPos:Number, yPos:Number, laneWidth:Number, laneHeight:Number):void
         {
-            _laneX = xPos;
-            _laneY = yPos;
-            _laneWidth = Math.max(64, laneWidth);
-            _laneHeight = Math.max(64, laneHeight);
+            var newX:Number = Math.round(xPos * 2) / 2;
+            var newY:Number = Math.round(yPos * 2) / 2;
+            var newWidth:Number = Math.max(64, Math.round(laneWidth * 2) / 2);
+            var newHeight:Number = Math.max(64, Math.round(laneHeight * 2) / 2);
+
+            if (Math.abs(_laneX - newX) <= 0.25 &&
+                Math.abs(_laneY - newY) <= 0.25 &&
+                Math.abs(_laneWidth - newWidth) <= 0.25 &&
+                Math.abs(_laneHeight - newHeight) <= 0.25)
+                return;
+
+            _laneX = newX;
+            _laneY = newY;
+            _laneWidth = newWidth;
+            _laneHeight = newHeight;
+            _laneGeometryDirty = true;
         }
 
         public function setJudgeBounds(bounds:Rectangle):void
         {
-            _judgeBounds = bounds ? bounds.clone() : null;
+            if (!bounds)
+            {
+                _hasJudgeBounds = false;
+                return;
+            }
+
+            _hasJudgeBounds = true;
+            _judgeX = bounds.x;
+            _judgeY = bounds.y;
+            _judgeWidth = bounds.width;
+            _judgeHeight = bounds.height;
         }
 
         public function onJudge(combo:int, score:int, dir:String = null):void
@@ -139,12 +176,15 @@ package game.controls
             updateParticles();
 
             var visibleLevel:Number = Math.max(_level, _pulse * 0.62, _hitFlash * 0.34);
-            alpha = Math.min(_mode == MODE_FULL ? 0.95 : 0.56, visibleLevel);
+            visible = visibleLevel >= 0.015 || _activeParticles > 0;
             updateShake(visibleLevel);
 
             if (visibleLevel < 0.015 && _activeParticles == 0)
             {
+                _glassLayer.graphics.clear();
                 _vectorLayer.graphics.clear();
+                _flashLayer.graphics.clear();
+                _lastGlassAlpha = -1;
                 return;
             }
 
@@ -153,10 +193,14 @@ package game.controls
 
         private function buildCachedLayers():void
         {
+            _glassLayer = createLayer();
             _vectorLayer = createLayer();
+            _flashLayer = createLayer();
             _particleLayer = createLayer();
 
+            addChild(_glassLayer);
             addChild(_vectorLayer);
+            addChild(_flashLayer);
             addChild(_particleLayer);
 
             for (var i:int = 0; i < MAX_PARTICLES; i++)
@@ -234,19 +278,33 @@ package game.controls
             var pulseLevel:Number = Math.min(1, level + _pulse + _hitFlash * 0.38);
             var beat:Number = (Math.sin(_phase * 3) + 1) * 0.5;
 
+            drawLaneGlass(_glassLayer.graphics, pulseLevel);
+
             var g:Graphics = _vectorLayer.graphics;
             g.clear();
-            drawLaneGlass(g, pulseLevel);
-            drawHitFlash(g);
             drawLaneEdges(g, 3 + (pulseLevel * 11), 0.12 + (pulseLevel * 0.36), 0.1 + (pulseLevel * 0.3), pulseLevel, beat);
+
+            g = _flashLayer.graphics;
+            g.clear();
+            drawHitFlash(g);
         }
 
         private function drawLaneGlass(g:Graphics, level:Number):void
         {
             if (!hasLaneBounds())
+            {
+                g.clear();
                 return;
+            }
 
             var a:Number = (_mode == MODE_FULL ? 0.028 : 0.012) + level * (_mode == MODE_FULL ? 0.06 : 0.022);
+            if (!_laneGeometryDirty && Math.abs(a - _lastGlassAlpha) < 0.006)
+                return;
+
+            g.clear();
+            _lastGlassAlpha = a;
+            _laneGeometryDirty = false;
+
             var top:Number = _laneY;
             var bottom:Number = _laneY + _laneHeight;
 
@@ -333,18 +391,18 @@ package game.controls
 
         private function drawHitFlash(g:Graphics):void
         {
-            if (_hitFlash < 0.02 || !hasLaneBounds() || !_judgeBounds)
+            if (_hitFlash < 0.02 || !hasLaneBounds() || !_hasJudgeBounds)
                 return;
 
-            var centerY:Number = _judgeBounds.y + _judgeBounds.height * 0.12;
-            var band:Number = Math.max(18, Math.min(44, _judgeBounds.height * 0.78 + _hitFlash * 10));
+            var centerY:Number = _judgeY + _judgeHeight * 0.12;
+            var band:Number = Math.max(18, Math.min(44, _judgeHeight * 0.78 + _hitFlash * 10));
             var left:Number = lanePerspectiveX(0, centerY, 16);
             var right:Number = lanePerspectiveX(1, centerY, 16);
             var textPad:Number = Math.min(_laneWidth * 0.14, 34);
-            var textLeft:Number = _judgeBounds.x - textPad;
-            var textRight:Number = _judgeBounds.x + _judgeBounds.width + textPad;
-            var minWidth:Number = Math.min(_laneWidth * 0.88, Math.max(_judgeBounds.width * 1.16, _laneWidth * 0.42));
-            var centerX:Number = _judgeBounds.x + _judgeBounds.width * 0.5;
+            var textLeft:Number = _judgeX - textPad;
+            var textRight:Number = _judgeX + _judgeWidth + textPad;
+            var minWidth:Number = Math.min(_laneWidth * 0.88, Math.max(_judgeWidth * 1.16, _laneWidth * 0.42));
+            var centerX:Number = _judgeX + _judgeWidth * 0.5;
             var flashLeft:Number = Math.max(left, Math.min(textLeft, centerX - minWidth * 0.5));
             var flashRight:Number = Math.min(right, Math.max(textRight, centerX + minWidth * 0.5));
             var lineAlpha:Number = _hitFlash * (_mode == MODE_FULL ? 0.32 : 0.11);
@@ -401,7 +459,10 @@ package game.controls
         {
             var idx:int = nextParticleIndex();
             if (!_particleActive[idx])
+            {
                 _activeParticles++;
+                _particleActiveIndices[_particleActiveIndices.length] = idx;
+            }
 
             _particleActive[idx] = true;
             _particleX[idx] = xPos;
@@ -445,9 +506,9 @@ package game.controls
             if (_activeParticles <= 0)
                 return;
 
-            var max:int = maxParticlesForMode();
-            for (var i:int = 0; i < max; i++)
+            for (var listIndex:int = _particleActiveIndices.length - 1; listIndex >= 0; listIndex--)
             {
+                var i:int = _particleActiveIndices[listIndex];
                 if (!_particleActive[i])
                     continue;
 
@@ -463,6 +524,7 @@ package game.controls
                     _particleActive[i] = false;
                     particle.visible = false;
                     _activeParticles--;
+                    removeActiveParticleIndex(listIndex);
                     continue;
                 }
 
@@ -481,6 +543,16 @@ package game.controls
                 _particleSprites[i].visible = false;
             }
             _activeParticles = 0;
+            _particleActiveIndices.length = 0;
+        }
+
+        private function removeActiveParticleIndex(index:int):void
+        {
+            var last:int = _particleActiveIndices.length - 1;
+            if (index != last)
+                _particleActiveIndices[index] = _particleActiveIndices[last];
+
+            _particleActiveIndices.length = last;
         }
 
         private function laneCenterForDir(dir:String):Number
@@ -557,10 +629,25 @@ package game.controls
 
         private function rgbColor(t:Number):uint
         {
-            var r:uint = Math.round((Math.sin(t) * 0.5 + 0.5) * 255);
-            var g:uint = Math.round((Math.sin(t + 2.094) * 0.5 + 0.5) * 255);
-            var b:uint = Math.round((Math.sin(t + 4.188) * 0.5 + 0.5) * 255);
-            return (r << 16) | (g << 8) | b;
+            var idx:int = int(t * 24) % RGB_TABLE_SIZE;
+            if (idx < 0)
+                idx += RGB_TABLE_SIZE;
+
+            return RGB_TABLE[idx];
+        }
+
+        private static function buildRgbTable():Vector.<uint>
+        {
+            var table:Vector.<uint> = new Vector.<uint>(RGB_TABLE_SIZE, true);
+            for (var i:int = 0; i < RGB_TABLE_SIZE; i++)
+            {
+                var t:Number = i / 24;
+                var r:uint = Math.round((Math.sin(t) * 0.5 + 0.5) * 255);
+                var g:uint = Math.round((Math.sin(t + 2.094) * 0.5 + 0.5) * 255);
+                var b:uint = Math.round((Math.sin(t + 4.188) * 0.5 + 0.5) * 255);
+                table[i] = (r << 16) | (g << 8) | b;
+            }
+            return table;
         }
     }
 }

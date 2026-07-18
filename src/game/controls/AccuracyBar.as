@@ -1,6 +1,5 @@
 package game.controls
 {
-    import com.greensock.TweenLite;
     import flash.display.BlendMode;
     import flash.display.DisplayObjectContainer;
     import flash.display.Graphics;
@@ -24,6 +23,8 @@ package game.controls
         private var _colors:Array;
         private var _flashLayer:Sprite;
         private var _flashPool:Array = [];
+        private var _activeFlashes:Vector.<Sprite> = new <Sprite>[];
+        private var _flashAge:Vector.<int> = new <int>[];
 
         public function AccuracyBar(options:GameOptions, parent:DisplayObjectContainer):void
         {
@@ -60,7 +61,37 @@ package game.controls
             flash.alpha = 0.95;
             _flashLayer.addChild(flash);
 
-            TweenLite.to(flash, 0.045, {scaleX: 1, alpha: 1, useFrames: false, onComplete: fadeAccuracyFlash, onCompleteParams: [flash]});
+            _activeFlashes[_activeFlashes.length] = flash;
+            _flashAge[_flashAge.length] = 0;
+        }
+
+        public function tick():void
+        {
+            for (var i:int = _activeFlashes.length - 1; i >= 0; i--)
+            {
+                var flash:Sprite = _activeFlashes[i];
+                var age:int = _flashAge[i] + 1;
+                _flashAge[i] = age;
+
+                if (age <= 3)
+                {
+                    var expand:Number = age / 3;
+                    flash.scaleX = 0.06 + (0.94 * expand);
+                    flash.alpha = 0.95 + (0.05 * expand);
+                }
+                else
+                {
+                    var fade:Number = (age - 3) / 10;
+                    if (fade >= 1)
+                    {
+                        releaseActiveFlash(i);
+                        continue;
+                    }
+
+                    flash.scaleX = 1 + (0.18 * fade);
+                    flash.alpha = 1 - fade;
+                }
+            }
         }
 
         public function onResetSignal():void
@@ -69,6 +100,8 @@ package game.controls
             {
                 releaseAccuracyFlash(_flashLayer.getChildAt(0) as Sprite);
             }
+            _activeFlashes.length = 0;
+            _flashAge.length = 0;
         }
 
         /**
@@ -152,22 +185,26 @@ package game.controls
             return flash;
         }
 
-        private function fadeAccuracyFlash(flash:Sprite):void
+        private function releaseActiveFlash(index:int):void
         {
-            TweenLite.to(flash, 0.16, {scaleX: 1.18, alpha: 0, useFrames: false, onComplete: removeAccuracyFlash, onCompleteParams: [flash]});
-        }
-
-        private function removeAccuracyFlash(flash:Sprite):void
-        {
+            var flash:Sprite = _activeFlashes[index];
             releaseAccuracyFlash(flash);
+
+            var last:int = _activeFlashes.length - 1;
+            if (index != last)
+            {
+                _activeFlashes[index] = _activeFlashes[last];
+                _flashAge[index] = _flashAge[last];
+            }
+
+            _activeFlashes.length = last;
+            _flashAge.length = last;
         }
 
         private function releaseAccuracyFlash(flash:Sprite):void
         {
             if (flash == null)
                 return;
-
-            TweenLite.killTweensOf(flash);
 
             if (flash.parent != null)
                 flash.parent.removeChild(flash);

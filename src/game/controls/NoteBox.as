@@ -489,24 +489,21 @@ package game.controls
             noteCount = value;
         }
 
-        public function getLaneGuideRect(targetSpace:DisplayObject):Rectangle
+        public function getLaneGuideRect(targetSpace:DisplayObject, output:Rectangle = null):Rectangle
         {
             var target:DisplayObject = targetSpace != null ? targetSpace : this;
-            var bounds:Rectangle = leftReceptor.getBounds(target);
-            bounds = bounds.union(downReceptor.getBounds(target));
-            bounds = bounds.union(upReceptor.getBounds(target));
-            bounds = bounds.union(rightReceptor.getBounds(target));
+            var leftBounds:Rectangle = leftReceptor.getBounds(target);
+            var downBounds:Rectangle = downReceptor.getBounds(target);
+            var upBounds:Rectangle = upReceptor.getBounds(target);
+            var rightBounds:Rectangle = rightReceptor.getBounds(target);
+            var bounds:Rectangle = leftBounds.union(downBounds).union(upBounds).union(rightBounds);
 
-            var centers:Array = [
-                leftReceptor.getBounds(target),
-                downReceptor.getBounds(target),
-                upReceptor.getBounds(target),
-                rightReceptor.getBounds(target)
-            ];
-            centers.sortOn("x", Array.NUMERIC);
-
-            var firstCenter:Number = centers[0].x + centers[0].width / 2;
-            var lastCenter:Number = centers[3].x + centers[3].width / 2;
+            var leftCenter:Number = leftBounds.x + leftBounds.width / 2;
+            var downCenter:Number = downBounds.x + downBounds.width / 2;
+            var upCenter:Number = upBounds.x + upBounds.width / 2;
+            var rightCenter:Number = rightBounds.x + rightBounds.width / 2;
+            var firstCenter:Number = Math.min(leftCenter, downCenter, upCenter, rightCenter);
+            var lastCenter:Number = Math.max(leftCenter, downCenter, upCenter, rightCenter);
             var laneSpacing:Number = Math.max(1, Math.abs(lastCenter - firstCenter) / 3);
             if (laneSpacing <= 1)
                 laneSpacing = Math.max(1, options.receptorSpacing * Math.abs(scaleX));
@@ -515,7 +512,15 @@ package game.controls
             var rectWidth:Number = Math.max(64, laneSpacing * 4);
             rectX = Math.min(rectX, bounds.x);
             rectWidth = Math.max(rectWidth, bounds.right - rectX);
-            return new Rectangle(rectX, 0, rectWidth, Main.GAME_HEIGHT);
+
+            if (output == null)
+                output = new Rectangle();
+
+            output.x = rectX;
+            output.y = 0;
+            output.width = rectWidth;
+            output.height = Main.GAME_HEIGHT;
+            return output;
         }
 
         public function position():void

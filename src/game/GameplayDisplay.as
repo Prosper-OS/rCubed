@@ -193,6 +193,20 @@ package game
 
         public var noteBoxOffset:Point = new Point();
         public var noteBoxPositionDefault:Object;
+        private var _laneGuideRect:Rectangle = new Rectangle();
+        private var _laneGuideValid:Boolean = false;
+        private var _laneGuideLastDisplayState:String = "";
+        private var _laneGuideLastStageWidth:int = -1;
+        private var _laneGuideLastStageHeight:int = -1;
+        private var _laneGuideLastFieldX:Number = 0;
+        private var _laneGuideLastFieldY:Number = 0;
+        private var _laneGuideLastFieldScaleX:Number = 0;
+        private var _laneGuideLastFieldScaleY:Number = 0;
+        private var _laneGuideLastFieldRotation:Number = 0;
+        private var _laneGuideLastReceptorMinX:Number = 0;
+        private var _laneGuideLastReceptorMaxX:Number = 0;
+        private var _laneGuideLastReceptorMinY:Number = 0;
+        private var _laneGuideLastReceptorMaxY:Number = 0;
         private var _accuracyGuideBaseX:Number = 0;
         private var _accuracyGuideBaseY:Number = 0;
 
@@ -878,6 +892,8 @@ package game
 
                     updateLaneGuideEffects();
                     uiNoteField.update(GAME_TIME);
+                    if (uiAccuracyBar)
+                        uiAccuracyBar.tick();
 
                     if (uiProgressDisplay.visible)
                         uiProgressDisplay.update(GAME_FRAME / gameLastNoteFrame, false);
@@ -1789,15 +1805,19 @@ package game
 
             layoutManager.interfacePosition(mpuiFFRScores, GameLayoutManager.LAYOUT_MP_FFR_SCORE);
 
-            updateLaneGuideEffects();
+            _laneGuideValid = false;
+            updateLaneGuideEffects(true);
         }
 
-        private function updateLaneGuideEffects():void
+        private function updateLaneGuideEffects(force:Boolean = false):void
         {
             if (!uiNoteField)
                 return;
 
-            var rect:Rectangle = uiNoteField.getLaneGuideRect(this);
+            if (!force && !needsLaneGuideUpdate())
+                return;
+
+            var rect:Rectangle = uiNoteField.getLaneGuideRect(this, _laneGuideRect);
             if (uiAccuracyBar)
             {
                 if (Math.abs(uiAccuracyBar.width - rect.width) > 0.5)
@@ -1816,6 +1836,55 @@ package game
             if (uiComboHype)
                 uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
 
+            rememberLaneGuideState();
+            _laneGuideValid = true;
+        }
+
+        private function needsLaneGuideUpdate():Boolean
+        {
+            if (!_laneGuideValid)
+                return true;
+
+            if (options && (options.modEnabled("wave") || options.modEnabled("tap_pulse") || options.modEnabled("drunk") || options.modEnabled("dizzy")))
+                return true;
+
+            if (stage)
+            {
+                if (stage.displayState != _laneGuideLastDisplayState || stage.stageWidth != _laneGuideLastStageWidth || stage.stageHeight != _laneGuideLastStageHeight)
+                    return true;
+            }
+
+            var receptorMinX:Number = Math.min(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x, uiNoteField.upReceptor.x, uiNoteField.rightReceptor.x);
+            var receptorMaxX:Number = Math.max(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x, uiNoteField.upReceptor.x, uiNoteField.rightReceptor.x);
+            var receptorMinY:Number = Math.min(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y, uiNoteField.upReceptor.y, uiNoteField.rightReceptor.y);
+            var receptorMaxY:Number = Math.max(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y, uiNoteField.upReceptor.y, uiNoteField.rightReceptor.y);
+            if (Math.abs(receptorMinX - _laneGuideLastReceptorMinX) > 0.25 ||
+                Math.abs(receptorMaxX - _laneGuideLastReceptorMaxX) > 0.25 ||
+                Math.abs(receptorMinY - _laneGuideLastReceptorMinY) > 0.25 ||
+                Math.abs(receptorMaxY - _laneGuideLastReceptorMaxY) > 0.25)
+                return true;
+
+            return Math.abs(uiNoteField.x - _laneGuideLastFieldX) > 0.25 ||
+                Math.abs(uiNoteField.y - _laneGuideLastFieldY) > 0.25 ||
+                Math.abs(uiNoteField.scaleX - _laneGuideLastFieldScaleX) > 0.001 ||
+                Math.abs(uiNoteField.scaleY - _laneGuideLastFieldScaleY) > 0.001 ||
+                Math.abs(uiNoteField.rotation - _laneGuideLastFieldRotation) > 0.001;
+        }
+
+        private function rememberLaneGuideState():void
+        {
+            _laneGuideLastDisplayState = stage ? stage.displayState : "";
+            _laneGuideLastStageWidth = stage ? stage.stageWidth : 0;
+            _laneGuideLastStageHeight = stage ? stage.stageHeight : 0;
+            _laneGuideLastFieldX = uiNoteField.x;
+            _laneGuideLastFieldY = uiNoteField.y;
+            _laneGuideLastFieldScaleX = uiNoteField.scaleX;
+            _laneGuideLastFieldScaleY = uiNoteField.scaleY;
+            _laneGuideLastFieldRotation = uiNoteField.rotation;
+            _laneGuideLastReceptorMinX = Math.min(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x, uiNoteField.upReceptor.x, uiNoteField.rightReceptor.x);
+            _laneGuideLastReceptorMaxX = Math.max(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x, uiNoteField.upReceptor.x, uiNoteField.rightReceptor.x);
+            _laneGuideLastReceptorMinY = Math.min(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y, uiNoteField.upReceptor.y, uiNoteField.rightReceptor.y);
+            _laneGuideLastReceptorMaxY = Math.max(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y, uiNoteField.upReceptor.y, uiNoteField.rightReceptor.y);
         }
 
         private function updateTapPulseOffset():void
