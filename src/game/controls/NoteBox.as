@@ -523,6 +523,41 @@ package game.controls
             return output;
         }
 
+        public function getLaneGuideEdges(targetSpace:DisplayObject, output:Vector.<Number> = null):Vector.<Number>
+        {
+            var target:DisplayObject = targetSpace != null ? targetSpace : this;
+            var leftBounds:Rectangle = leftReceptor.getBounds(target);
+            var downBounds:Rectangle = downReceptor.getBounds(target);
+            var upBounds:Rectangle = upReceptor.getBounds(target);
+            var rightBounds:Rectangle = rightReceptor.getBounds(target);
+
+            var c0:Number = leftBounds.x + leftBounds.width / 2;
+            var c1:Number = downBounds.x + downBounds.width / 2;
+            var c2:Number = upBounds.x + upBounds.width / 2;
+            var c3:Number = rightBounds.x + rightBounds.width / 2;
+            var tmp:Number;
+
+            if (c0 > c1) { tmp = c0; c0 = c1; c1 = tmp; }
+            if (c2 > c3) { tmp = c2; c2 = c3; c3 = tmp; }
+            if (c0 > c2) { tmp = c0; c0 = c2; c2 = tmp; }
+            if (c1 > c3) { tmp = c1; c1 = c3; c3 = tmp; }
+            if (c1 > c2) { tmp = c1; c1 = c2; c2 = tmp; }
+
+            var laneSpacing:Number = Math.max(1, (c3 - c0) / 3);
+            if (laneSpacing <= 1)
+                laneSpacing = Math.max(1, options.receptorSpacing * Math.abs(scaleX));
+
+            if (output == null || output.length != 5)
+                output = new Vector.<Number>(5, true);
+
+            output[0] = c0 - laneSpacing * 0.5;
+            output[1] = (c0 + c1) * 0.5;
+            output[2] = (c1 + c2) * 0.5;
+            output[3] = (c2 + c3) * 0.5;
+            output[4] = c3 + laneSpacing * 0.5;
+            return output;
+        }
+
         public function position():void
         {
             var anchor:Point;

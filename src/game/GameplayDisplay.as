@@ -194,6 +194,7 @@ package game
         public var noteBoxOffset:Point = new Point();
         public var noteBoxPositionDefault:Object;
         private var _laneGuideRect:Rectangle = new Rectangle();
+        private var _laneGuideEdges:Vector.<Number> = new Vector.<Number>(5, true);
         private var _laneGuideValid:Boolean = false;
         private var _laneGuideLastDisplayState:String = "";
         private var _laneGuideLastStageWidth:int = -1;
@@ -890,8 +891,8 @@ package game
                     updateTapPulseOffset();
                     applyFieldVisualOffset(0, 0);
 
-                    updateLaneGuideEffects();
                     uiNoteField.update(GAME_TIME);
+                    updateLaneGuideEffects();
                     if (uiAccuracyBar)
                         uiAccuracyBar.tick();
 
@@ -1695,6 +1696,7 @@ package game
             uiNoteCountStatic.visible = options.displayComboTotal;
 
             uiComboHype = new ComboHypeOverlay(this, options.visualHypeMode);
+            setChildIndex(uiComboHype, getChildIndex(uiNoteField));
 
             uiProgressDisplay = new ProgressBarGame(this, 161, 9, 458, 20, 4, 0x545454, 0.1);
             uiProgressDisplay.visible = options.displaySongProgress || options.replay;
@@ -1834,7 +1836,11 @@ package game
             }
 
             if (uiComboHype)
+            {
+                uiNoteField.getLaneGuideEdges(this, _laneGuideEdges);
                 uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
+                uiComboHype.setLaneEdges(_laneGuideEdges);
+            }
 
             rememberLaneGuideState();
             _laneGuideValid = true;

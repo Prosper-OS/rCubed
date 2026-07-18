@@ -32,6 +32,8 @@ package game.controls
         private var _laneY:Number = 0;
         private var _laneWidth:Number = 0;
         private var _laneHeight:Number = 0;
+        private var _laneEdges:Vector.<Number> = new Vector.<Number>(5, true);
+        private var _hasLaneEdges:Boolean = false;
         private var _hasJudgeBounds:Boolean = false;
         private var _judgeX:Number = 0;
         private var _judgeY:Number = 0;
@@ -117,6 +119,33 @@ package game.controls
             _laneWidth = newWidth;
             _laneHeight = newHeight;
             _laneGeometryDirty = true;
+        }
+
+        public function setLaneEdges(edges:Vector.<Number>):void
+        {
+            if (!edges || edges.length < 5)
+            {
+                if (_hasLaneEdges)
+                    _laneGeometryDirty = true;
+
+                _hasLaneEdges = false;
+                return;
+            }
+
+            var changed:Boolean = !_hasLaneEdges;
+            var value:Number;
+            for (var i:int = 0; i < 5; i++)
+            {
+                value = Math.round(edges[i] * 2) / 2;
+                if (Math.abs(_laneEdges[i] - value) > 0.25)
+                    changed = true;
+
+                _laneEdges[i] = value;
+            }
+
+            _hasLaneEdges = true;
+            if (changed)
+                _laneGeometryDirty = true;
         }
 
         public function setJudgeBounds(bounds:Rectangle):void
@@ -309,19 +338,19 @@ package game.controls
             var bottom:Number = _laneY + _laneHeight;
 
             g.beginFill(0xBDEBFF, a);
-            g.moveTo(lanePerspectiveX(0, top, 14), top);
-            g.lineTo(lanePerspectiveX(1, top, 14), top);
-            g.lineTo(lanePerspectiveX(1, bottom, 14), bottom);
-            g.lineTo(lanePerspectiveX(0, bottom, 14), bottom);
-            g.lineTo(lanePerspectiveX(0, top, 14), top);
+            g.moveTo(laneEdgeX(0, top, 14), top);
+            g.lineTo(laneEdgeX(4, top, 14), top);
+            g.lineTo(laneEdgeX(4, bottom, 14), bottom);
+            g.lineTo(laneEdgeX(0, bottom, 14), bottom);
+            g.lineTo(laneEdgeX(0, top, 14), top);
             g.endFill();
 
             g.lineStyle(1, 0xFFFFFF, 0.05 + level * 0.08, true);
-            g.moveTo(lanePerspectiveX(0, top + 1, 14), top + 1);
-            g.lineTo(lanePerspectiveX(1, top + 1, 14), top + 1);
-            g.lineTo(lanePerspectiveX(1, bottom - 1, 14), bottom - 1);
-            g.lineTo(lanePerspectiveX(0, bottom - 1, 14), bottom - 1);
-            g.lineTo(lanePerspectiveX(0, top + 1, 14), top + 1);
+            g.moveTo(laneEdgeX(0, top + 1, 14), top + 1);
+            g.lineTo(laneEdgeX(4, top + 1, 14), top + 1);
+            g.lineTo(laneEdgeX(4, bottom - 1, 14), bottom - 1);
+            g.lineTo(laneEdgeX(0, bottom - 1, 14), bottom - 1);
+            g.lineTo(laneEdgeX(0, top + 1, 14), top + 1);
         }
 
         private function drawLaneEdges(g:Graphics, thickness:Number, edgeAlpha:Number, pillAlpha:Number, level:Number, beat:Number):void
@@ -345,10 +374,17 @@ package game.controls
             {
                 color = rgbColor(_phase + i * 1.5);
                 g.lineStyle(Math.max(1, thickness - i * 1.15), color, edgeAlpha * (1 - i * 0.16), true);
-                g.moveTo(lanePerspectiveX(0, top, i * 3), top);
-                g.lineTo(lanePerspectiveX(0, bottom, i * 3), bottom);
-                g.moveTo(lanePerspectiveX(1, top, i * 3), top);
-                g.lineTo(lanePerspectiveX(1, bottom, i * 3), bottom);
+                g.moveTo(laneEdgeX(0, top, i * 3), top);
+                g.lineTo(laneEdgeX(0, bottom, i * 3), bottom);
+                g.moveTo(laneEdgeX(4, top, i * 3), top);
+                g.lineTo(laneEdgeX(4, bottom, i * 3), bottom);
+            }
+
+            g.lineStyle(1, 0xE7F7FF, Math.min(0.16, 0.035 + level * 0.07), true);
+            for (i = 1; i < 4; i++)
+            {
+                g.moveTo(laneEdgeX(i, top), top);
+                g.lineTo(laneEdgeX(i, bottom), bottom);
             }
 
             for (y = top - yOffset; y < top + heightValue; y += segmentHeight + segmentGap)
@@ -360,20 +396,20 @@ package game.controls
 
                 color = rgbColor(_phase + y * 0.024);
                 g.lineStyle(Math.max(2, thickness * 1.5), color, pillAlpha, true);
-                g.moveTo(lanePerspectiveX(0, drawY, thickness * 0.85), drawY);
-                g.lineTo(lanePerspectiveX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
+                g.moveTo(laneEdgeX(0, drawY, thickness * 0.85), drawY);
+                g.lineTo(laneEdgeX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
 
                 g.lineStyle(Math.max(1, thickness * 0.42), 0xFFFFFF, pillAlpha * 0.65, true);
-                g.moveTo(lanePerspectiveX(0, drawY, thickness * 0.85), drawY);
-                g.lineTo(lanePerspectiveX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
+                g.moveTo(laneEdgeX(0, drawY, thickness * 0.85), drawY);
+                g.lineTo(laneEdgeX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
 
                 g.lineStyle(Math.max(2, thickness * 1.5), rgbColor(_phase + y * 0.024 + 1.25), pillAlpha, true);
-                g.moveTo(lanePerspectiveX(1, drawY, thickness * 0.85), drawY);
-                g.lineTo(lanePerspectiveX(1, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
+                g.moveTo(laneEdgeX(4, drawY, thickness * 0.85), drawY);
+                g.lineTo(laneEdgeX(4, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
 
                 g.lineStyle(Math.max(1, thickness * 0.42), 0xFFFFFF, pillAlpha * 0.65, true);
-                g.moveTo(lanePerspectiveX(1, drawY, thickness * 0.85), drawY);
-                g.lineTo(lanePerspectiveX(1, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
+                g.moveTo(laneEdgeX(4, drawY, thickness * 0.85), drawY);
+                g.lineTo(laneEdgeX(4, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
             }
 
             if (level > 0.55)
@@ -382,10 +418,10 @@ package game.controls
                 var capTop:Number = top + 16;
                 var capBottom:Number = top + heightValue - 16;
                 g.lineStyle(2 + level * 4, rgbColor(_phase + 3), capAlpha, true);
-                g.moveTo(lanePerspectiveX(0, capTop), capTop);
-                g.lineTo(lanePerspectiveX(1, capTop), capTop);
-                g.moveTo(lanePerspectiveX(0, capBottom), capBottom);
-                g.lineTo(lanePerspectiveX(1, capBottom), capBottom);
+                g.moveTo(laneEdgeX(0, capTop), capTop);
+                g.lineTo(laneEdgeX(4, capTop), capTop);
+                g.moveTo(laneEdgeX(0, capBottom), capBottom);
+                g.lineTo(laneEdgeX(4, capBottom), capBottom);
             }
         }
 
@@ -396,8 +432,8 @@ package game.controls
 
             var centerY:Number = _judgeY + _judgeHeight * 0.12;
             var band:Number = Math.max(18, Math.min(44, _judgeHeight * 0.78 + _hitFlash * 10));
-            var left:Number = lanePerspectiveX(0, centerY, 16);
-            var right:Number = lanePerspectiveX(1, centerY, 16);
+            var left:Number = laneEdgeX(0, centerY, 16);
+            var right:Number = laneEdgeX(4, centerY, 16);
             var textPad:Number = Math.min(_laneWidth * 0.14, 34);
             var textLeft:Number = _judgeX - textPad;
             var textRight:Number = _judgeX + _judgeWidth + textPad;
@@ -574,12 +610,58 @@ package game.controls
                     break;
             }
 
-            return lanePerspectiveX((idx + 0.5) / 4, _laneY + _laneHeight * 0.5);
+            return laneRatioX((idx + 0.5) / 4, _laneY + _laneHeight * 0.5);
         }
 
         private function hasLaneBounds():Boolean
         {
             return _laneWidth > 0 && _laneHeight > 0;
+        }
+
+        private function laneEdgeX(index:int, yPos:Number, gutter:Number = 0):Number
+        {
+            if (!_hasLaneEdges)
+                return lanePerspectiveX(index / 4, yPos, gutter);
+
+            if (index < 0)
+                index = 0;
+            else if (index > 4)
+                index = 4;
+
+            var gutterOffset:Number = 0;
+            if (index == 0)
+                gutterOffset = -gutter;
+            else if (index == 4)
+                gutterOffset = gutter;
+
+            return laneDepthX(_laneEdges[index], yPos, gutterOffset);
+        }
+
+        private function laneRatioX(ratio:Number, yPos:Number, gutter:Number = 0):Number
+        {
+            if (!_hasLaneEdges)
+                return lanePerspectiveX(ratio, yPos, gutter);
+
+            var gutterOffset:Number = 0;
+            if (ratio < 0.5)
+                gutterOffset = -gutter;
+            else if (ratio > 0.5)
+                gutterOffset = gutter;
+
+            return laneDepthX(_laneEdges[0] + (_laneEdges[4] - _laneEdges[0]) * ratio, yPos, gutterOffset);
+        }
+
+        private function laneDepthX(rawX:Number, yPos:Number, gutterOffset:Number = 0):Number
+        {
+            var center:Number = (_laneEdges[0] + _laneEdges[4]) * 0.5;
+            var t:Number = (yPos - _laneY) / Math.max(1, _laneHeight);
+            if (t < 0)
+                t = 0;
+            else if (t > 1)
+                t = 1;
+
+            var scale:Number = LANE_TOP_SCALE + (LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * t;
+            return center + ((rawX - center + gutterOffset) * scale);
         }
 
         private function lanePerspectiveX(ratio:Number, yPos:Number, gutter:Number = 0):Number
