@@ -193,8 +193,6 @@ package game
 
         public var noteBoxOffset:Point = new Point();
         public var noteBoxPositionDefault:Object;
-        private var _laneGuideDynamic:Boolean = false;
-        private var _laneGuideInitialized:Boolean = false;
         private var _accuracyGuideBaseX:Number = 0;
         private var _accuracyGuideBaseY:Number = 0;
 
@@ -1791,17 +1789,12 @@ package game
 
             layoutManager.interfacePosition(mpuiFFRScores, GameLayoutManager.LAYOUT_MP_FFR_SCORE);
 
-            _laneGuideDynamic = options.modEnabled("wave") || options.modEnabled("tap_pulse");
-            _laneGuideInitialized = false;
             updateLaneGuideEffects();
         }
 
         private function updateLaneGuideEffects():void
         {
             if (!uiNoteField)
-                return;
-
-            if (_laneGuideInitialized && !_laneGuideDynamic)
                 return;
 
             var rect:Rectangle = uiNoteField.getLaneGuideRect(this);
@@ -1823,7 +1816,6 @@ package game
             if (uiComboHype)
                 uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
 
-            _laneGuideInitialized = true;
         }
 
         private function updateTapPulseOffset():void

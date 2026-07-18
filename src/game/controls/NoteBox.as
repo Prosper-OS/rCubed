@@ -491,26 +491,30 @@ package game.controls
 
         public function getLaneGuideRect(targetSpace:DisplayObject):Rectangle
         {
-            var minX:Number = Math.min(leftReceptor.x, downReceptor.x, upReceptor.x, rightReceptor.x);
-            var maxX:Number = Math.max(leftReceptor.x, downReceptor.x, upReceptor.x, rightReceptor.x);
-            var laneSpacing:Number = Math.max(1, (maxX - minX) / 3);
+            var target:DisplayObject = targetSpace != null ? targetSpace : this;
+            var bounds:Rectangle = leftReceptor.getBounds(target);
+            bounds = bounds.union(downReceptor.getBounds(target));
+            bounds = bounds.union(upReceptor.getBounds(target));
+            bounds = bounds.union(rightReceptor.getBounds(target));
 
+            var centers:Array = [
+                leftReceptor.getBounds(target),
+                downReceptor.getBounds(target),
+                upReceptor.getBounds(target),
+                rightReceptor.getBounds(target)
+            ];
+            centers.sortOn("x", Array.NUMERIC);
+
+            var firstCenter:Number = centers[0].x + centers[0].width / 2;
+            var lastCenter:Number = centers[3].x + centers[3].width / 2;
+            var laneSpacing:Number = Math.max(1, Math.abs(lastCenter - firstCenter) / 3);
             if (laneSpacing <= 1)
-                laneSpacing = Math.max(1, options.receptorSpacing);
+                laneSpacing = Math.max(1, options.receptorSpacing * Math.abs(scaleX));
 
-            var localLeft:Number = minX - (laneSpacing / 2);
-            var localRight:Number = maxX + (laneSpacing / 2);
-            var leftPoint:Point = localToGlobal(new Point(localLeft, 0));
-            var rightPoint:Point = localToGlobal(new Point(localRight, 0));
-
-            if (targetSpace != null)
-            {
-                leftPoint = targetSpace.globalToLocal(leftPoint);
-                rightPoint = targetSpace.globalToLocal(rightPoint);
-            }
-
-            var rectX:Number = Math.min(leftPoint.x, rightPoint.x);
-            var rectWidth:Number = Math.max(64, Math.abs(rightPoint.x - leftPoint.x));
+            var rectX:Number = (firstCenter + lastCenter) / 2 - (laneSpacing * 2);
+            var rectWidth:Number = Math.max(64, laneSpacing * 4);
+            rectX = Math.min(rectX, bounds.x);
+            rectWidth = Math.max(rectWidth, bounds.right - rectX);
             return new Rectangle(rectX, 0, rectWidth, Main.GAME_HEIGHT);
         }
 
