@@ -2,9 +2,12 @@ package game.controls
 {
     import classes.RenderQuality;
     import flash.display.BlendMode;
+    import flash.display.CapsStyle;
+    import flash.display.GradientType;
     import flash.display.Graphics;
     import flash.display.Sprite;
     import flash.geom.ColorTransform;
+    import flash.geom.Matrix;
     import flash.geom.Rectangle;
 
     public class ComboHypeOverlay extends Sprite
@@ -26,6 +29,8 @@ package game.controls
         private var _pulse:Number = 0;
         private var _phase:Number = 0;
         private var _hitFlash:Number = 0;
+        private var _impactBurst:Number = 0;
+        private var _impactFlash:Number = 0;
         private var _hitColor:uint = 0xFFFFFF;
         private var _mode:String = MODE_FULL;
         private var _laneX:Number = 0;
@@ -60,6 +65,10 @@ package game.controls
         private var _activeParticles:int = 0;
         private var _particleCursor:int = 0;
         private var _colorTransform:ColorTransform = new ColorTransform();
+        private var _rgbGradientColors:Array = [0, 0, 0, 0, 0];
+        private var _rgbGradientAlphas:Array = [1, 1, 1, 1, 1];
+        private var _rgbGradientRatios:Array = [0, 64, 128, 192, 255];
+        private var _rgbGradientMatrix:Matrix = new Matrix();
 
         public var shakeX:Number = 0;
         public var shakeY:Number = 0;
@@ -90,6 +99,8 @@ package game.controls
                 clearParticles();
                 _pulse = 0;
                 _hitFlash = 0;
+                _impactBurst = 0;
+                _impactFlash = 0;
                 shakeX = 0;
                 shakeY = 0;
                 alpha = 1;
@@ -163,10 +174,14 @@ package game.controls
             _judgeHeight = bounds.height;
         }
 
-        public function onJudge(combo:int, score:int, dir:String = null):void
+        public function onJudge(combo:int, score:int, dir:String = null, impactArrows:int = 1):void
         {
             _combo = Math.max(0, combo);
             _score = score;
+            if (impactArrows < 1)
+                impactArrows = 1;
+            else if (impactArrows > 4)
+                impactArrows = 4;
 
             if (_mode == MODE_OFF)
                 return;
@@ -174,15 +189,24 @@ package game.controls
             if (score > 0)
             {
                 var scale:Number = modeScale();
-                _pulse = Math.min(1, _pulse + (0.16 + Math.min(0.36, _combo / 820)) * scale);
-                _hitFlash = Math.min(1, _hitFlash + 0.72 * scale);
+                var impact:Number = impactLevel(impactArrows);
+                var comboBoost:Number = 1 + Math.min(0.7, _combo / 520);
+                _pulse = Math.min(1, _pulse + (0.13 + Math.min(0.32, _combo / 900) + impact * 0.14) * scale);
+                _hitFlash = Math.min(1, _hitFlash + (0.44 + impact * 0.34) * scale);
+                _impactBurst = Math.min(1.2, Math.max(_impactBurst, impact * comboBoost * scale));
+                if (impactArrows >= 3)
+                    _impactFlash = Math.min(1, Math.max(_impactFlash, (impactArrows == 4 ? 0.92 : 0.54) * comboBoost * scale));
+                else
+                    _impactFlash = Math.min(0.5, Math.max(_impactFlash, impact * 0.18 * comboBoost * scale));
                 _hitColor = scoreColor(score);
-                spawnBurstParticles(score, dir);
+                spawnBurstParticles(score, dir, impactArrows);
             }
             else if (score == -10)
             {
                 _pulse = 0;
                 _hitFlash = Math.min(1, _hitFlash + 0.35 * modeScale());
+                _impactBurst = 0;
+                _impactFlash = 0;
                 _hitColor = 0xFF255D;
             }
         }
@@ -202,9 +226,11 @@ package game.controls
             _level += (target - _level) * 0.085;
             _pulse *= (_mode == MODE_FULL ? 0.9 : 0.84);
             _hitFlash *= (_mode == MODE_FULL ? 0.78 : 0.66);
+            _impactBurst *= (_mode == MODE_FULL ? 0.68 : 0.55);
+            _impactFlash *= (_mode == MODE_FULL ? 0.6 : 0.48);
             updateParticles();
 
-            var visibleLevel:Number = Math.max(_level, _pulse * 0.62, _hitFlash * 0.34);
+            var visibleLevel:Number = Math.max(_level, _pulse * 0.62, _hitFlash * 0.34, _impactBurst * 0.46, _impactFlash * 0.42);
             visible = visibleLevel >= 0.015 || _activeParticles > 0;
             updateShake(visibleLevel);
 
@@ -287,10 +313,26 @@ package game.controls
             return Math.min(1, 0.78 + ((combo - 320) / 560 * 0.22));
         }
 
+        private function impactLevel(impactArrows:int):Number
+        {
+            switch (impactArrows)
+            {
+                case 2:
+                    return 0.36;
+                case 3:
+                    return 0.66;
+                case 4:
+                    return 1;
+                default:
+                    return 0.18;
+            }
+        }
+
         private function updateShake(level:Number):void
         {
             var maxShake:Number = _mode == MODE_FULL ? 7.5 : 2.25;
-            var amount:Number = (Math.max(0, level - 0.18) * maxShake) + (_hitFlash * (_mode == MODE_FULL ? 4.2 : 1.4));
+            var impactShake:Number = _impactBurst * (_mode == MODE_FULL ? 10.5 : 3.1);
+            var amount:Number = (Math.max(0, level - 0.18) * maxShake) + (_hitFlash * (_mode == MODE_FULL ? 3.2 : 1.15)) + impactShake;
             if (amount < 0.08)
             {
                 shakeX = 0;
@@ -298,8 +340,9 @@ package game.controls
                 return;
             }
 
-            shakeX = Math.sin(_phase * 15.7) * amount + Math.sin(_phase * 37.1) * amount * 0.22;
-            shakeY = Math.cos(_phase * 13.3) * amount * 0.62 + Math.sin(_phase * 29.8) * amount * 0.18;
+            var bang:Number = _impactBurst * _impactBurst;
+            shakeX = Math.sin(_phase * 15.7) * amount + Math.sin(_phase * 37.1) * amount * (0.2 + bang * 0.18);
+            shakeY = Math.cos(_phase * 13.3) * amount * (0.56 + bang * 0.2) + Math.sin(_phase * 29.8) * amount * 0.18;
         }
 
         private function drawOverlay(level:Number):void
@@ -361,24 +404,12 @@ package game.controls
             var top:Number = _laneY;
             var heightValue:Number = _laneHeight;
             var bottom:Number = top + heightValue;
-            var segmentHeight:Number = 34 + level * 44;
-            var segmentGap:Number = 24 - level * 11;
-            var yOffset:Number = (_phase * 36) % (segmentHeight + segmentGap);
             var i:int;
-            var y:Number;
-            var color:uint;
-            var drawY:Number;
-            var drawHeight:Number;
 
-            for (i = 0; i < 5; i++)
-            {
-                color = rgbColor(_phase + i * 1.5);
-                g.lineStyle(Math.max(1, thickness - i * 1.15), color, edgeAlpha * (1 - i * 0.16), true);
-                g.moveTo(laneEdgeX(0, top, i * 3), top);
-                g.lineTo(laneEdgeX(0, bottom, i * 3), bottom);
-                g.moveTo(laneEdgeX(4, top, i * 3), top);
-                g.lineTo(laneEdgeX(4, bottom, i * 3), bottom);
-            }
+            drawRgbEdgeLine(g, 0, top, bottom, Math.max(2, thickness * 1.85), edgeAlpha * 0.72, _phase, thickness * 1.3);
+            drawRgbEdgeLine(g, 4, top, bottom, Math.max(1, thickness * 0.62), edgeAlpha * 1.08, _phase + 0.85, thickness * 0.28);
+            drawRgbEdgeLine(g, 4, top, bottom, Math.max(2, thickness * 1.85), edgeAlpha * 0.72, _phase + 2.1, thickness * 1.3);
+            drawRgbEdgeLine(g, 0, top, bottom, Math.max(1, thickness * 0.62), edgeAlpha * 1.08, _phase + 2.95, thickness * 0.28);
 
             g.lineStyle(1, 0xE7F7FF, Math.min(0.16, 0.035 + level * 0.07), true);
             for (i = 1; i < 4; i++)
@@ -387,51 +418,74 @@ package game.controls
                 g.lineTo(laneEdgeX(i, bottom), bottom);
             }
 
-            for (y = top - yOffset; y < top + heightValue; y += segmentHeight + segmentGap)
-            {
-                drawY = Math.max(top, y);
-                drawHeight = Math.min(segmentHeight + beat * 14, top + heightValue - drawY);
-                if (drawHeight <= 0)
-                    continue;
-
-                color = rgbColor(_phase + y * 0.024);
-                g.lineStyle(Math.max(2, thickness * 1.5), color, pillAlpha, true);
-                g.moveTo(laneEdgeX(0, drawY, thickness * 0.85), drawY);
-                g.lineTo(laneEdgeX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
-
-                g.lineStyle(Math.max(1, thickness * 0.42), 0xFFFFFF, pillAlpha * 0.65, true);
-                g.moveTo(laneEdgeX(0, drawY, thickness * 0.85), drawY);
-                g.lineTo(laneEdgeX(0, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
-
-                g.lineStyle(Math.max(2, thickness * 1.5), rgbColor(_phase + y * 0.024 + 1.25), pillAlpha, true);
-                g.moveTo(laneEdgeX(4, drawY, thickness * 0.85), drawY);
-                g.lineTo(laneEdgeX(4, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
-
-                g.lineStyle(Math.max(1, thickness * 0.42), 0xFFFFFF, pillAlpha * 0.65, true);
-                g.moveTo(laneEdgeX(4, drawY, thickness * 0.85), drawY);
-                g.lineTo(laneEdgeX(4, drawY + drawHeight, thickness * 0.85), drawY + drawHeight);
-            }
+            drawEdgeSheen(g, 0, top, bottom, Math.max(1, thickness * 0.32), pillAlpha * 0.45, thickness * 0.18);
+            drawEdgeSheen(g, 4, top, bottom, Math.max(1, thickness * 0.32), pillAlpha * 0.45, thickness * 0.18);
 
             if (level > 0.55)
             {
                 var capAlpha:Number = (level - 0.55) * 0.32;
                 var capTop:Number = top + 16;
                 var capBottom:Number = top + heightValue - 16;
-                g.lineStyle(2 + level * 4, rgbColor(_phase + 3), capAlpha, true);
-                g.moveTo(laneEdgeX(0, capTop), capTop);
-                g.lineTo(laneEdgeX(4, capTop), capTop);
-                g.moveTo(laneEdgeX(0, capBottom), capBottom);
-                g.lineTo(laneEdgeX(4, capBottom), capBottom);
+                drawRgbHorizontalLine(g, capTop, 2 + level * 4, capAlpha, _phase + 3);
+                drawRgbHorizontalLine(g, capBottom, 2 + level * 4, capAlpha, _phase + 4.4);
             }
+        }
+
+        private function drawRgbEdgeLine(g:Graphics, edgeIndex:int, top:Number, bottom:Number, thickness:Number, alphaValue:Number, phaseOffset:Number, gutter:Number):void
+        {
+            var xTop:Number = laneEdgeX(edgeIndex, top, gutter);
+            var xBottom:Number = laneEdgeX(edgeIndex, bottom, gutter);
+            var midX:Number = (xTop + xBottom) * 0.5;
+            setupRgbGradient(phaseOffset, alphaValue, midX - 48, top, 96, Math.max(1, bottom - top), Math.PI / 2);
+            g.lineStyle(thickness, 0xFFFFFF, alphaValue, true, "normal", CapsStyle.NONE);
+            g.lineGradientStyle(GradientType.LINEAR, _rgbGradientColors, _rgbGradientAlphas, _rgbGradientRatios, _rgbGradientMatrix);
+            g.moveTo(xTop, top);
+            g.lineTo(xBottom, bottom);
+        }
+
+        private function drawEdgeSheen(g:Graphics, edgeIndex:int, top:Number, bottom:Number, thickness:Number, alphaValue:Number, gutter:Number):void
+        {
+            g.lineStyle(thickness, 0xFFFFFF, alphaValue, true, "normal", CapsStyle.NONE);
+            g.moveTo(laneEdgeX(edgeIndex, top, gutter), top);
+            g.lineTo(laneEdgeX(edgeIndex, bottom, gutter), bottom);
+        }
+
+        private function drawRgbHorizontalLine(g:Graphics, yPos:Number, thickness:Number, alphaValue:Number, phaseOffset:Number):void
+        {
+            var left:Number = laneEdgeX(0, yPos);
+            var right:Number = laneEdgeX(4, yPos);
+            setupRgbGradient(phaseOffset, alphaValue, left, yPos - 24, Math.max(1, right - left), 48, 0);
+            g.lineStyle(thickness, 0xFFFFFF, alphaValue, true, "normal", CapsStyle.NONE);
+            g.lineGradientStyle(GradientType.LINEAR, _rgbGradientColors, _rgbGradientAlphas, _rgbGradientRatios, _rgbGradientMatrix);
+            g.moveTo(left, yPos);
+            g.lineTo(right, yPos);
+        }
+
+        private function setupRgbGradient(phaseOffset:Number, alphaValue:Number, xPos:Number, yPos:Number, widthValue:Number, heightValue:Number, rotation:Number):void
+        {
+            _rgbGradientColors[0] = rgbColor(phaseOffset);
+            _rgbGradientColors[1] = rgbColor(phaseOffset + 1.15);
+            _rgbGradientColors[2] = rgbColor(phaseOffset + 2.3);
+            _rgbGradientColors[3] = rgbColor(phaseOffset + 3.45);
+            _rgbGradientColors[4] = rgbColor(phaseOffset + 4.6);
+
+            _rgbGradientAlphas[0] = alphaValue * 0.82;
+            _rgbGradientAlphas[1] = alphaValue;
+            _rgbGradientAlphas[2] = alphaValue * 0.92;
+            _rgbGradientAlphas[3] = alphaValue;
+            _rgbGradientAlphas[4] = alphaValue * 0.82;
+
+            _rgbGradientMatrix.createGradientBox(widthValue, heightValue, rotation, xPos, yPos);
         }
 
         private function drawHitFlash(g:Graphics):void
         {
-            if (_hitFlash < 0.02 || !hasLaneBounds() || !_hasJudgeBounds)
+            var flashPower:Number = Math.max(_hitFlash, _impactFlash);
+            if (flashPower < 0.02 || !hasLaneBounds() || !_hasJudgeBounds)
                 return;
 
             var centerY:Number = _judgeY + _judgeHeight * 0.12;
-            var band:Number = Math.max(18, Math.min(44, _judgeHeight * 0.78 + _hitFlash * 10));
+            var band:Number = Math.max(18, Math.min(58, _judgeHeight * 0.78 + _hitFlash * 10 + _impactFlash * 18));
             var left:Number = laneEdgeX(0, centerY, 16);
             var right:Number = laneEdgeX(4, centerY, 16);
             var textPad:Number = Math.min(_laneWidth * 0.14, 34);
@@ -441,8 +495,16 @@ package game.controls
             var centerX:Number = _judgeX + _judgeWidth * 0.5;
             var flashLeft:Number = Math.max(left, Math.min(textLeft, centerX - minWidth * 0.5));
             var flashRight:Number = Math.min(right, Math.max(textRight, centerX + minWidth * 0.5));
-            var lineAlpha:Number = _hitFlash * (_mode == MODE_FULL ? 0.32 : 0.11);
-            var fillAlpha:Number = _hitFlash * (_mode == MODE_FULL ? 0.18 : 0.06);
+            var lineAlpha:Number = flashPower * (_mode == MODE_FULL ? 0.32 : 0.11);
+            var fillAlpha:Number = flashPower * (_mode == MODE_FULL ? 0.18 : 0.06);
+
+            if (_impactFlash > 0.03)
+            {
+                var bangAlpha:Number = _impactFlash * (_mode == MODE_FULL ? 0.2 : 0.07);
+                var bangLeft:Number = laneEdgeX(0, centerY, 22);
+                var bangRight:Number = laneEdgeX(4, centerY, 22);
+                drawLensBang(g, centerX, centerY, bangLeft, bangRight, band, bangAlpha);
+            }
 
             g.beginFill(_hitColor, fillAlpha * 0.45);
             g.drawRect(flashLeft, centerY - band * 0.5, flashRight - flashLeft, band);
@@ -463,12 +525,77 @@ package game.controls
             g.lineTo(flashRight - 4, centerY + band * 0.34);
         }
 
-        private function spawnBurstParticles(score:int, dir:String):void
+        private function drawLensBang(g:Graphics, centerX:Number, centerY:Number, left:Number, right:Number, band:Number, alphaValue:Number):void
+        {
+            var widthValue:Number = Math.max(1, right - left);
+            var flare:Number = _impactFlash;
+            var coreWidth:Number = widthValue * (0.18 + flare * 0.1);
+            var coreHeight:Number = band * (0.2 + flare * 0.12);
+            var streakAlpha:Number = alphaValue * (1 + flare * 0.35);
+
+            g.beginFill(0xFFFFFF, alphaValue * 0.62);
+            g.drawEllipse(centerX - coreWidth * 0.5, centerY - coreHeight * 0.5, coreWidth, coreHeight);
+            g.endFill();
+
+            g.beginFill(_hitColor, alphaValue * 0.42);
+            g.drawEllipse(centerX - coreWidth * 0.34, centerY - coreHeight * 0.34, coreWidth * 0.68, coreHeight * 0.68);
+            g.endFill();
+
+            g.lineStyle(1 + flare * 6, 0xFFFFFF, streakAlpha, true);
+            g.moveTo(left, centerY);
+            g.lineTo(right, centerY);
+
+            g.lineStyle(1 + flare * 3, 0x75F6FF, alphaValue * 0.86, true);
+            g.moveTo(left + widthValue * 0.08, centerY - band * 0.16);
+            g.lineTo(right - widthValue * 0.08, centerY + band * 0.16);
+            g.moveTo(left + widthValue * 0.08, centerY + band * 0.16);
+            g.lineTo(right - widthValue * 0.08, centerY - band * 0.16);
+
+            g.lineStyle(1, 0xFF77E8, alphaValue * 0.48, true);
+            g.moveTo(left + widthValue * 0.18, centerY - band * 0.28);
+            g.lineTo(right - widthValue * 0.18, centerY - band * 0.28);
+            g.moveTo(left + widthValue * 0.18, centerY + band * 0.28);
+            g.lineTo(right - widthValue * 0.18, centerY + band * 0.28);
+
+            drawGlint(g, centerX, centerY, band * (0.72 + flare * 0.42), alphaValue * 1.1, 0xFFFFFF);
+            drawGlint(g, left + widthValue * 0.29, centerY - band * 0.1, band * 0.36, alphaValue * 0.72, 0x75F6FF);
+            drawGlint(g, right - widthValue * 0.23, centerY + band * 0.12, band * 0.3, alphaValue * 0.6, 0xFF77E8);
+
+            g.beginFill(0xFFFFFF, alphaValue * 0.22);
+            g.drawCircle(left + widthValue * 0.16, centerY, band * 0.11);
+            g.drawCircle(right - widthValue * 0.14, centerY, band * 0.08);
+            g.endFill();
+        }
+
+        private function drawGlint(g:Graphics, xPos:Number, yPos:Number, size:Number, alphaValue:Number, color:uint):void
+        {
+            var half:Number = size * 0.5;
+            var small:Number = size * 0.22;
+
+            g.lineStyle(Math.max(1, size * 0.04), color, alphaValue, true);
+            g.moveTo(xPos - half, yPos);
+            g.lineTo(xPos + half, yPos);
+            g.moveTo(xPos, yPos - half);
+            g.lineTo(xPos, yPos + half);
+
+            g.lineStyle(1, 0xFFFFFF, alphaValue * 0.55, true);
+            g.moveTo(xPos - small, yPos - small);
+            g.lineTo(xPos + small, yPos + small);
+            g.moveTo(xPos - small, yPos + small);
+            g.lineTo(xPos + small, yPos - small);
+
+            g.beginFill(0xFFFFFF, alphaValue * 0.58);
+            g.drawCircle(xPos, yPos, Math.max(1, size * 0.055));
+            g.endFill();
+        }
+
+        private function spawnBurstParticles(score:int, dir:String, impactArrows:int = 1):void
         {
             if (!hasLaneBounds())
                 return;
 
-            var count:int = _mode == MODE_FULL ? 10 : 4;
+            var impact:Number = impactLevel(impactArrows);
+            var count:int = (_mode == MODE_FULL ? 8 : 3) + impactArrows * (_mode == MODE_FULL ? 4 : 1);
             if (_combo > 96)
                 count += _mode == MODE_FULL ? 7 : 2;
             if (_combo > 260)
@@ -476,17 +603,20 @@ package game.controls
 
             var laneCenter:Number = laneCenterForDir(dir);
             var y:Number = _laneY + _laneHeight * 0.5;
+            var left:Number = laneEdgeX(0, y);
+            var right:Number = laneEdgeX(4, y);
             var color:uint = scoreColor(score);
             for (var i:int = 0; i < count; i++)
             {
                 var side:Number = (i % 2 == 0) ? -1 : 1;
-                spawnParticle(laneCenter + (Math.random() - 0.5) * (_laneWidth * 0.16),
-                    y + (Math.random() - 0.5) * (_laneHeight * 0.2),
-                    side * (2.1 + Math.random() * 4.8),
-                    -3.5 + Math.random() * 7,
+                var originX:Number = impactArrows >= 3 ? left + Math.random() * (right - left) : laneCenter + (Math.random() - 0.5) * (_laneWidth * (0.12 + impact * 0.08));
+                spawnParticle(originX,
+                    y + (Math.random() - 0.5) * (_laneHeight * (0.14 + impact * 0.12)),
+                    side * (2.1 + Math.random() * (4.2 + impact * 3.8)),
+                    -3.5 + Math.random() * (7 + impact * 4.5),
                     1,
-                    0.055 + Math.random() * 0.035,
-                    2.5 + Math.random() * 5.5,
+                    0.05 + Math.random() * 0.036,
+                    2.5 + Math.random() * (5.5 + impact * 4.5),
                     color);
             }
         }

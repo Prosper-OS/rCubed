@@ -208,6 +208,9 @@ package game
         private var _laneGuideLastReceptorMaxX:Number = 0;
         private var _laneGuideLastReceptorMinY:Number = 0;
         private var _laneGuideLastReceptorMaxY:Number = 0;
+        private var _chordImpactFrame:int = -2147483648;
+        private var _chordImpactCount:int = 1;
+        private var _lastVisualImpactFrame:int = -2147483648;
         private var _accuracyGuideBaseX:Number = 0;
         private var _accuracyGuideBaseY:Number = 0;
 
@@ -731,6 +734,9 @@ package game
             hitBoo = 0;
             hitCombo = 0;
             hitMaxCombo = 0;
+            _chordImpactFrame = -2147483648;
+            _chordImpactCount = 1;
+            _lastVisualImpactFrame = -2147483648;
 
             // Replay
             replayPressCount = 0;
@@ -1257,7 +1263,7 @@ package game
 
                 if (GAME_FRAME - curNote.FRAME + JUDGE_OFFSET_FRAMES >= 6)
                 {
-                    commitJudge(curNote.DIR, GAME_FRAME, -10, curNote.POSITION + 200);
+                    commitJudge(curNote.DIR, GAME_FRAME, -10, curNote.POSITION + 200, curNote.FRAME);
                     uiNoteField.removeNote(curNote.ID);
                     n--;
                 }
@@ -1292,7 +1298,7 @@ package game
 
                     if (options.isEditor)
                     {
-                        commitJudge(curNote.DIR, (curNote.FRAME + JUDGE_OFFSET_FRAMES), 50, curNote.POSITION);
+                        commitJudge(curNote.DIR, (curNote.FRAME + JUDGE_OFFSET_FRAMES), 50, curNote.POSITION, curNote.FRAME);
                         uiNoteField.removeNote(curNote.ID);
                     }
                     else
@@ -2134,7 +2140,7 @@ package game
 
             if (score)
             {
-                commitJudge(dir, frame + note.FRAME - JUDGE_OFFSET_FRAMES, score, position);
+                commitJudge(dir, frame + note.FRAME - JUDGE_OFFSET_FRAMES, score, position, note.FRAME);
                 uiNoteField.removeNote(note.ID);
                 accuracy.addValue(rawAccuracy);
                 binReplayNotes[note.ID].time = judgeAccuracy;
@@ -2236,7 +2242,7 @@ package game
 
             if (score)
             {
-                commitJudge(dir, frame, score, note.POSITION);
+                commitJudge(dir, frame, score, note.POSITION, note.FRAME);
                 uiNoteField.removeNote(note.ID);
                 accuracy.addValue((note.FRAME - frame) * 1000 / 30);
 
@@ -2249,10 +2255,60 @@ package game
             return Boolean(score);
         }
 
-        public function commitJudge(dir:String, frame:int, score:int, position:int):void
+        private function getChordImpactCount(noteFrame:int):int
+        {
+            if (noteFrame < 0 || !uiNoteField || !uiNoteField.notes)
+                return 1;
+
+            if (_chordImpactFrame == noteFrame)
+                return _chordImpactCount;
+
+            var count:int = 0;
+            var notes:Vector.<GameNote> = uiNoteField.notes;
+            for each (var note:GameNote in notes)
+            {
+                if (note.FRAME == noteFrame)
+                {
+                    count++;
+                    if (count >= 4)
+                        break;
+                }
+                else if (count > 0 && note.FRAME > noteFrame)
+                    break;
+            }
+
+            _chordImpactFrame = noteFrame;
+            if (count <= 1)
+                _chordImpactCount = 1;
+            else if (count >= 4)
+                _chordImpactCount = 4;
+            else
+                _chordImpactCount = count;
+
+            return _chordImpactCount;
+        }
+
+        private function getVisualImpactCount(noteFrame:int, score:int):int
+        {
+            if (score <= 0)
+                return 1;
+
+            var impactCount:int = getChordImpactCount(noteFrame);
+            if (impactCount <= 1)
+                return 1;
+
+            if (_lastVisualImpactFrame == noteFrame)
+                return 1;
+
+            _lastVisualImpactFrame = noteFrame;
+            return impactCount;
+        }
+
+        public function commitJudge(dir:String, frame:int, score:int, position:int, noteFrame:int = -1):void
         {
             var health:int = 0;
             var jscore:int = score;
+            var visualImpactCount:int = getVisualImpactCount(noteFrame, score);
             uiNoteField.receptorFeedback(dir, score);
             switch (score)
             {
@@ -2337,7 +2393,7 @@ package game
                 hitMaxCombo = hitCombo;
 
             if (uiComboHype)
-                uiComboHype.onJudge(hitCombo, score, dir);
+                uiComboHype.onJudge(hitCombo, score, dir, visualImpactCount);
 
             if (score == -10)
                 gameReplayHit.push(0);
