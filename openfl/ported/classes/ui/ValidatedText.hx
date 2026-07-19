@@ -6,21 +6,21 @@ import openfl.text.TextFormat;
 
 class ValidatedText extends BoxText
 {
-    private static inline var PARSE_COLOR : Int = 2;
-    private static inline var PARSE_FLOAT : Int = 1;
-    private static inline var PARSE_INT : Int = 0;
+    private static inline var PARSE_COLOR                            : Dynamic= 2;
+    private static inline var PARSE_FLOAT                            : Dynamic= 1;
+    private static inline var PARSE_INT                            : Dynamic= 0;
     
-    public static inline var R_FLOAT_P : Int = 0;
-    public static inline var R_FLOAT : Int = 1;
-    public static inline var R_INT_P : Int = 2;
-    public static inline var R_INT : Int = 3;
-    public static inline var R_COLOR : Int = 4;
-    public static inline var R_ALL : Int = 5;
+    public static inline var R_FLOAT_P                            : Dynamic= 0;
+    public static inline var R_FLOAT                            : Dynamic= 1;
+    public static inline var R_INT_P                            : Dynamic= 2;
+    public static inline var R_INT                            : Dynamic= 3;
+    public static inline var R_COLOR                            : Dynamic= 4;
+    public static inline var R_ALL                            : Dynamic= 5;
     
-    private var m_parseMode : Int = PARSE_INT;
-    private var m_validator : as3hx.Compat.Regex;
+    private var m_parseMode                            : Dynamic= PARSE_INT;
+    private var m_validator                            : Dynamic;
     
-    private var _listener : Dynamic = null;
+    private var _listener                            : Dynamic= null;
     
     /**
      * The ValidatedText constructor.
@@ -36,7 +36,7 @@ class ValidatedText extends BoxText
      * @param restrict_mode Which restricted character set to be used
      * @param textformat TextFormat of the textfield
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, width : Int = 0, height : Int = 0, restrict_mode : Int = 0, listener : Dynamic = null, textformat : TextFormat = null)
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, width                            : Dynamic= 0, height                            : Dynamic= 0, restrict_mode                            : Dynamic= 0, listener                            : Dynamic= null, textformat                            : Dynamic= null)
     {
         super(parent, xpos, ypos, width, height, textformat);
         switch (restrict_mode)
@@ -62,7 +62,7 @@ class ValidatedText extends BoxText
                 m_validator = new as3hx.Compat.Regex('^#[0-9a-f]{6}$', "");
         }
         
-        if (listener != null)
+        if (as3hx.Compat.truthy(listener != null))
         {
             this._listener = listener;
             this.addEventListener(Event.CHANGE, listener);
@@ -71,7 +71,7 @@ class ValidatedText extends BoxText
     
     override public function dispose() : Void
     {
-        if (this._listener != null)
+        if (as3hx.Compat.truthy(this._listener != null))
         {
             this.removeEventListener(Event.CHANGE, this._listener);
         }
@@ -102,22 +102,22 @@ class ValidatedText extends BoxText
      * @param upper_bound Upper bound of valid region
      * @return Number The parsed number if validation succeeds; the default value if validation fails
      */
-    public function validate(default_value : Float, lower_bound : Float = Math.NaN, upper_bound : Float = Math.NaN) : Float
+    public function validate(default_value                            : Dynamic, lower_bound                            : Dynamic= null, upper_bound                            : Dynamic= null) : Float
     {
-        var parse_color : Bool = (m_parseMode == PARSE_COLOR);
-        var parse_float : Bool = (m_parseMode == PARSE_FLOAT);
-        var radix : Int = (parse_color) ? 16 : 0;
+        var parse_color                            : Dynamic= (m_parseMode == PARSE_COLOR);
+        var parse_float                            : Dynamic= (m_parseMode == PARSE_FLOAT);
+        var radix                            : Dynamic= (parse_color) ? 16 : 0;
         
-        var testString : String = this.text;
-        var regex_passed : Bool = ((m_validator != null)) ? m_validator.test(testString) : true;
-        if (parse_color)
+        var testString                            : Dynamic= this.text;
+        var regex_passed                            : Dynamic= ((m_validator != null)) ? m_validator.test(testString) : true;
+        if (as3hx.Compat.truthy(parse_color))
         {
             testString = "0x" + StringTools.replace(testString, "#", "");
         }
         
-        var to_test : Float = ((parse_float)) ? as3hx.Compat.parseFloat(testString) : as3hx.Compat.parseInt(testString);
-        var valid : Bool = !(!regex_passed || Math.isNaN(to_test) || (!Math.isNaN(lower_bound) && to_test < lower_bound) || (!Math.isNaN(upper_bound) && to_test > upper_bound));
-        if (valid)
+        var to_test                            : Dynamic= ((parse_float)) ? as3hx.Compat.parseFloat(testString) : as3hx.Compat.parseInt(testString);
+        var valid                            : Dynamic= !(!regex_passed || Math.isNaN(to_test) || (!Math.isNaN(lower_bound) && to_test < lower_bound) || (!Math.isNaN(upper_bound) && to_test > upper_bound));
+        if (as3hx.Compat.truthy(valid))
         {
             renderValid();
             return to_test;

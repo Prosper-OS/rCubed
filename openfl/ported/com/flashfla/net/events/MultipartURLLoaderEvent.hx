@@ -8,13 +8,13 @@ import openfl.events.Event;
  */
 class MultipartURLLoaderEvent extends Event
 {
-    public static inline var DATA_PREPARE_PROGRESS : String = "dataPrepareProgress";
-    public static inline var DATA_PREPARE_COMPLETE : String = "dataPrepareComplete";
+    public static inline var DATA_PREPARE_PROGRESS                            : Dynamic= "dataPrepareProgress";
+    public static inline var DATA_PREPARE_COMPLETE                            : Dynamic= "dataPrepareComplete";
     
-    public var bytesWritten : Int = 0;
-    public var bytesTotal : Int = 0;
+    public var bytesWritten                            : Dynamic= 0;
+    public var bytesTotal                            : Dynamic= 0;
     
-    public function new(type : String, w : Int = 0, t : Int = 0)
+    public function new(type                            : Dynamic, w                            : Dynamic= 0, t                            : Dynamic= 0)
     {
         super(type);
         

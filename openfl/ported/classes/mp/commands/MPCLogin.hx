@@ -4,12 +4,12 @@ import classes.User;
 
 class MPCLogin implements IMPCommand
 {
-    public var user : User;
-    public var version : Int;
-    public var game_hash : String;
-    public var game_version : String;
+    public var user                             : Dynamic;
+    public var version                             : Dynamic;
+    public var game_hash                             : Dynamic;
+    public var game_version                             : Dynamic;
     
-    public function new(version : Int, user : User, game_hash : String, game_version : String)
+    public function new(version                             : Dynamic, user                             : Dynamic, game_hash                             : Dynamic, game_version                             : Dynamic)
     {
         this.version = version;
         this.user = user;
@@ -19,7 +19,7 @@ class MPCLogin implements IMPCommand
     
     public function toJSON() : String
     {
-        var data : Dynamic = {
+        var data                             : Dynamic= {
             sid : user.siteId,
             token : user.hash,
             version : version,

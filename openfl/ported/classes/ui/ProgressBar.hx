@@ -7,20 +7,20 @@ import openfl.events.Event;
 
 class ProgressBar extends Sprite
 {
-    public static inline var LOADER_COMPLETE : String = "LoaderComplete";
+    public static inline var LOADER_COMPLETE                             : Dynamic= "LoaderComplete";
     
-    private var top_mc : Sprite = new Sprite();
-    private var progress_mc : Sprite = new Sprite();
+    private var top_mc                             : Dynamic= new Sprite();
+    private var progress_mc                             : Dynamic= new Sprite();
     
-    private var curPercent : Float = 0;
-    public var isComplete : Bool = false;
-    public var barWidth : Int;
-    public var barHeight : Int;
+    private var curPercent                             : Dynamic= 0;
+    public var isComplete                             : Dynamic= false;
+    public var barWidth                             : Dynamic;
+    public var barHeight                             : Dynamic;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, bWidth : Int = 450, bHeight : Int = 20, bSplits : Int = 0, borColor : Int = 0x000000, borSize : Float = 2, bColor : Int = 0x00BFFF)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, bWidth                             : Dynamic= 450, bHeight                             : Dynamic= 20, bSplits                             : Dynamic= 0, borColor                             : Dynamic= 0x000000, borSize                             : Dynamic= 2, bColor                             : Dynamic= 0x00BFFF)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -43,10 +43,10 @@ class ProgressBar extends Sprite
         // Draw Border
         top_mc.graphics.lineStyle(borSize, borColor, 1);
         top_mc.graphics.drawRect(0, 0, bWidth, bHeight);
-        if (bSplits > 0)
+        if (as3hx.Compat.truthy(bSplits > 0))
         {
             top_mc.graphics.lineStyle(borSize, borColor, 0.75);
-            var spacing : Float = bWidth / bSplits;
+            var spacing                             : Dynamic= bWidth / bSplits;
             for (sX in 0...bSplits)
             {
                 top_mc.graphics.moveTo(spacing * sX, 0);
@@ -70,20 +70,20 @@ class ProgressBar extends Sprite
         this.barHeight = height;
     }
     
-    public function update(percent : Float = 0, useTween : Bool = true) : Void
+    public function update(percent                             : Dynamic= 0, useTween                             : Dynamic= true) : Void
     {
-        if (percent < 0)
+        if (as3hx.Compat.truthy(percent < 0))
         {
             percent = 0;
         }
-        if (percent > 1)
+        if (as3hx.Compat.truthy(percent > 1))
         {
             percent = 1;
         }
         
-        if (curPercent != percent)
+        if (as3hx.Compat.truthy(curPercent != percent))
         {
-            if (useTween)
+            if (as3hx.Compat.truthy(useTween))
             {
                 TweenLite.to(progress_mc, 0.25, {
                             width : percent * barWidth
@@ -94,7 +94,7 @@ class ProgressBar extends Sprite
                 progress_mc.width = percent * barWidth;
             }
             
-            if (percent >= 1)
+            if (as3hx.Compat.truthy(percent >= 1))
             {
                 dispatchEvent(new Event(LOADER_COMPLETE));
                 this.isComplete = true;
@@ -102,7 +102,7 @@ class ProgressBar extends Sprite
         }
     }
     
-    public function remove(time : Float = 0.5) : Void
+    public function remove(time                             : Dynamic= 0.5) : Void
     {
         TweenLite.to(this, time, {
                     alpha : 0,

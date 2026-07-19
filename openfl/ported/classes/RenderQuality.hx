@@ -8,19 +8,19 @@ import openfl.geom.Matrix;
 
 class RenderQuality
 {
-    public static inline var SUPERSAMPLE_SCALE : Int = 4;
+    public static inline var SUPERSAMPLE_SCALE                              : Dynamic= 4;
     
-    public static function configureStage(stage : Stage) : Void
+    public static function configureStage(stage                              : Dynamic) : Void
     {
-        if (stage != null)
+        if (as3hx.Compat.truthy(stage != null))
         {
             stage.quality = StageQuality.BEST;
         }
     }
     
-    public static function cacheDisplayObject(target : DisplayObject) : Void
+    public static function cacheDisplayObject(target                              : Dynamic) : Void
     {
-        if (target == null)
+        if (as3hx.Compat.truthy(target == null))
         {
             return;
         }
@@ -29,7 +29,7 @@ class RenderQuality
         target.cacheAsBitmapMatrix = cacheMatrix();
     }
     
-    public static function useHiResDefaultNotes(noteskin : Int) : Bool
+    public static function useHiResDefaultNotes(noteskin                              : Dynamic) : Bool
     {
         return noteskin == 1;
     }
@@ -39,20 +39,20 @@ class RenderQuality
         return new Matrix(SUPERSAMPLE_SCALE, 0, 0, SUPERSAMPLE_SCALE);
     }
     
-    public static function bitmapFillMatrix(x : Float = 0, y : Float = 0) : Matrix
+    public static function bitmapFillMatrix(x                              : Dynamic= 0, y                              : Dynamic= 0) : Matrix
     {
         return new Matrix(1 / SUPERSAMPLE_SCALE, 0, 0, 1 / SUPERSAMPLE_SCALE, x, y);
     }
     
-    public static function supersampleBitmap(source : BitmapData) : BitmapData
+    public static function supersampleBitmap(source                              : Dynamic) : BitmapData
     {
-        if (source == null)
+        if (as3hx.Compat.truthy(source == null))
         {
             return null;
         }
         
-        var matrix : Matrix = new Matrix(SUPERSAMPLE_SCALE, 0, 0, SUPERSAMPLE_SCALE);
-        var output : BitmapData = new BitmapData(source.width * SUPERSAMPLE_SCALE, source.height * SUPERSAMPLE_SCALE, true, 0);
+        var matrix                              : Dynamic= new Matrix(SUPERSAMPLE_SCALE, 0, 0, SUPERSAMPLE_SCALE);
+        var output                              : Dynamic= new BitmapData(Std.int(source.width * SUPERSAMPLE_SCALE), Std.int(source.height * SUPERSAMPLE_SCALE), true, 0);
         output.draw(source, matrix, null, null, null, true);
         return output;
     }

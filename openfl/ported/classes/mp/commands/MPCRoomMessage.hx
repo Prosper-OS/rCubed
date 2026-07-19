@@ -4,11 +4,11 @@ import classes.mp.room.MPRoom;
 
 class MPCRoomMessage implements IMPCommand
 {
-    public var room : MPRoom;
-    public var message : String;
-    public var type : Float;
+    public var room                             : Dynamic;
+    public var message                             : Dynamic;
+    public var type                             : Dynamic;
     
-    public function new(room : MPRoom, message : String, type : Float = 0)
+    public function new(room                             : Dynamic, message                             : Dynamic, type                             : Dynamic= 0)
     {
         this.room = room;
         this.message = message;

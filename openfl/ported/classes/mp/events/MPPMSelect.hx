@@ -5,11 +5,11 @@ import openfl.events.Event;
 
 class MPPMSelect extends Event
 {
-    public static inline var CHAT_SELECT : String = "chat_select";
+    public static inline var CHAT_SELECT                             : Dynamic= "chat_select";
     
-    public var chat : MPUserChatHistory;
+    public var chat                             : Dynamic;
     
-    public function new(chat : MPUserChatHistory)
+    public function new(chat                             : Dynamic)
     {
         this.chat = chat;
         super(CHAT_SELECT);

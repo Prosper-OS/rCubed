@@ -9,9 +9,9 @@ import openfl.net.Socket;
 class WebSocketClientHandlerFactory extends SocketClientHandlerFactory
 {
     
-    public function new(messageSerializer : IMessageSerializer = null, crossDomainPolicyXML : FastXML = null)
+    public function new(messageSerializer                              : Dynamic= null, crossDomainPolicyXML                              : Dynamic= null)
     {
-        if (messageSerializer == null)
+        if (as3hx.Compat.truthy(messageSerializer == null))
         {
             messageSerializer = new JSONSerializer();
         }
@@ -20,7 +20,7 @@ class WebSocketClientHandlerFactory extends SocketClientHandlerFactory
         type = "websocket";
     }
     
-    override public function createHandler(socket : Socket) : SocketClientHandler
+    override public function createHandler(socket                              : Dynamic) : SocketClientHandler
     {
         return new WebSocketClientHandler(socket, messageSerializer, crossDomainPolicyXML);
     }

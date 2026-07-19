@@ -10,22 +10,22 @@ import openfl.geom.Rectangle;
 
 class ReplayHistoryScrollpane extends Sprite implements IScrollPane
 {
-    public var doScroll(get, never) : Bool;
-    public var scrollFactorVertical(get, never) : Float;
+    public var doScroll(get, never)                       : Dynamic;
+    public var scrollFactorVertical(get, never)                       : Dynamic;
 
-    private var _width : Float = 100;
-    private var _height : Float = 100;
+    private var _width                       : Dynamic= 100;
+    private var _height                       : Dynamic= 100;
     
-    private var entryButtons : Array<ReplayHistoryEntry> = new Array<ReplayHistoryEntry>();
-    private var renderElements : Array<Replay>;
-    private var renderCount : Int = 0;
+    private var entryButtons                       : Dynamic= new Array<ReplayHistoryEntry>();
+    private var renderElements                       : Dynamic;
+    private var renderCount                       : Dynamic= 0;
     
-    private var _scrollY : Float = 0;
-    private var _calcHeight : Int = 0;
+    private var _scrollY                       : Dynamic= 0;
+    private var _calcHeight                       : Dynamic= 0;
     
-    private var _helper_text : Text;
+    private var _helper_text                       : Dynamic;
     
-    public function new(parent : Sprite, xpos : Float, ypos : Float, wid : Float, hei : Float)
+    public function new(parent                       : Dynamic, xpos                       : Dynamic, ypos                       : Dynamic, wid                       : Dynamic, hei                       : Dynamic)
     {
         super();
         _width = wid;
@@ -48,19 +48,19 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      * Sets the data for the Song Selector to use as a reference for drawing.
      * @param list Array on EngineLevel Items to use.
      */
-    public function setRenderList(list : Array<Dynamic>, sortList : Bool = true) : Void
+    public function setRenderList(list                       : Dynamic, sortList                       : Dynamic= true) : Void
     {
         clearButtons(true);
         
-        var i : Int;
+        var i                       : Dynamic= null;
         
         _helper_text.visible = (list.length <= 0);
         
         renderCount = list.length;
         
-        if (sortList)
+        if (as3hx.Compat.truthy(sortList))
         {
-            list.sortOn(["songname", "score"], [Array.CASEINSENSITIVE, Array.NUMERIC | Array.DESCENDING]);
+            as3hx.Compat.sortOn(list, ["songname", "score"], [as3hx.Compat.ARRAY_CASEINSENSITIVE, as3hx.Compat.ARRAY_NUMERIC | as3hx.Compat.ARRAY_DESCENDING]);
         }
         
         _scrollY = 0;
@@ -82,27 +82,27 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      */
     public function updateChildrenVisibility() : Void
     {
-        if (renderElements == null || renderElements.length == 0)
+        if (as3hx.Compat.truthy(renderElements == null || renderElements.length == 0))
         {
             return;
         }
         
-        var i : Int;
+        var i                       : Dynamic= null;
         
-        var entryButton : ReplayHistoryEntry;
-        var _y : Float;
-        var _inBounds : Bool;
-        var entryObject : Replay;
+        var entryButton                       : Dynamic= null;
+        var _y                       : Dynamic= null;
+        var _inBounds                       : Dynamic= null;
+        var entryObject                       : Dynamic= null;
         
-        var GAP : Int = as3hx.Compat.parseInt(ReplayHistoryEntry.ENTRY_HEIGHT + 5);
-        var startingIndex : Int = Math.max(0, Math.floor((_scrollY * -1) / GAP) - 1);
-        var lastIndex : Int = Math.min(renderCount, startingIndex + (height / GAP) + 3);
-        var START_POINT : Int = as3hx.Compat.parseInt(_scrollY + 5);
+        var GAP                       : Dynamic= as3hx.Compat.parseInt(ReplayHistoryEntry.ENTRY_HEIGHT + 5);
+        var startingIndex                       : Dynamic= Math.max(0, Math.floor((_scrollY * -1) / GAP) - 1);
+        var lastIndex                       : Dynamic= Math.min(renderCount, startingIndex + (height / GAP) + 3);
+        var START_POINT                       : Dynamic= as3hx.Compat.parseInt(_scrollY + 5);
         
         // Update Existing
-        var len : Int = as3hx.Compat.parseInt(entryButtons.length - 1);
+        var len                       : Dynamic= as3hx.Compat.parseInt(entryButtons.length - 1);
         i = len;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             entryButton = entryButtons[i];
             entryButton.isStale = true;
@@ -111,7 +111,7 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
             _inBounds = (_y > -GAP && _y < height);
             
             // Unlink SongButton no longer on stage.
-            if (!_inBounds)
+            if (as3hx.Compat.truthy(!_inBounds))
             {
                 removeEntryButton(entryButton);
             }
@@ -130,7 +130,7 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
             entryObject = renderElements[i];
             
             // Check for Existing Button
-            if (findEntryButton(entryObject) != null)
+            if (as3hx.Compat.truthy(findEntryButton(entryObject) != null))
             {
                 continue;
             }
@@ -139,7 +139,7 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
             _y = START_POINT + i * GAP;
             _inBounds = (_y > -GAP && _y < height);
             
-            if (_inBounds)
+            if (as3hx.Compat.truthy(_inBounds))
             {
                 entryButton = getEntryButton();
                 entryButton.index = i;
@@ -154,10 +154,10 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
         // Remove Old Song Buttons
         len = as3hx.Compat.parseInt(entryButtons.length - 1);
         i = len;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             entryButton = entryButtons[i];
-            if (entryButton.isStale)
+            if (as3hx.Compat.truthy(entryButton.isStale))
             {
                 removeEntryButton(entryButton);
             }
@@ -171,7 +171,7 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      * @param _y
      * @param btn
      */
-    public function moveEntryButton(_y : Int, btn : ReplayHistoryEntry) : Void
+    public function moveEntryButton(_y                       : Dynamic, btn                       : Dynamic) : Void
     {
         btn.y = _y;
         btn.isStale = false;
@@ -182,17 +182,17 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      * @param replay Replay to look for.
      * @return If a ReplayHistoryEntry exist already for this replay.
      */
-    public function findEntryButton(replay : Replay) : ReplayHistoryEntry
+    public function findEntryButton(replay                       : Dynamic) : ReplayHistoryEntry
     {
-        if (entryButtons.length == 0)
+        if (as3hx.Compat.truthy(entryButtons.length == 0))
         {
             return null;
         }
         
-        var len : Int = as3hx.Compat.parseInt(entryButtons.length - 1);
-        while (len >= 0)
+        var len                       : Dynamic= as3hx.Compat.parseInt(entryButtons.length - 1);
+        while (as3hx.Compat.truthy(len >= 0))
         {
-            if (entryButtons[len].replay == replay)
+            if (as3hx.Compat.truthy(entryButtons[len].replay == replay))
             {
                 return entryButtons[len];
             }
@@ -206,10 +206,10 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      * back into the object pool.
      * @param btn ReplayHistoryEntry to remove.
      */
-    public function removeEntryButton(btn : ReplayHistoryEntry) : Void
+    public function removeEntryButton(btn                       : Dynamic) : Void
     {
-        var idx : Int = Lambda.indexOf(entryButtons, btn);
-        if (idx >= 0)
+        var idx                       : Dynamic= Lambda.indexOf(entryButtons, btn);
+        if (as3hx.Compat.truthy(idx >= 0))
         {
             entryButtons.splice(idx, 1);
         }
@@ -234,16 +234,16 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      * Removes all ReplayHistoryEntrys from the stage.
      * @param force Force Remove, regardless of sweep value.
      */
-    public function clearButtons(force : Bool = false) : Void
+    public function clearButtons(force                       : Dynamic= false) : Void
     {
-        var entryButton : ReplayHistoryEntry;
+        var entryButton                       : Dynamic= null;
         
         // Remove Old Entry Buttons
-        var len : Int = as3hx.Compat.parseInt(entryButtons.length - 1);
-        while (len >= 0)
+        var len                       : Dynamic= as3hx.Compat.parseInt(entryButtons.length - 1);
+        while (as3hx.Compat.truthy(len >= 0))
         {
             entryButton = entryButtons[len];
-            if (entryButton.isStale || force)
+            if (as3hx.Compat.truthy(entryButton.isStale || force))
             {
                 removeEntryButton(entryButton);
             }
@@ -266,10 +266,10 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      */
     private function get_scrollFactorVertical() : Float
     {
-        return Math.max(Math.min(height / _calcHeight, 1), 0) || 0;
+        return as3hx.Compat.parseFloat(as3hx.Compat.orValue(Math.max(Math.min(height / _calcHeight, 1), 0), 0));
     }
     
-    public function scrollTo(val : Float) : Void
+    public function scrollTo(val                       : Dynamic) : Void
     {
         _scrollY = -((_calcHeight - _height) * Math.max(Math.min(val, 1), 0));
         updateChildrenVisibility();
@@ -281,19 +281,19 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
      * @param	child Child to show.
      * @return	Scroll Value required to show child in center of scroll pane.
      */
-    public function scrollChildVertical(child : DisplayObject) : Float
+    public function scrollChildVertical(child                       : Dynamic) : Float
     // Checks
     {
         
-        if (child == null || !this.contains(child) || !doScroll)
+        if (as3hx.Compat.truthy(child == null || !this.contains(child) || !doScroll))
         {
             return 0;
         }
         
-        var _y : Int = as3hx.Compat.parseInt((try cast(child, ReplayHistoryEntry) catch(e:Dynamic) null).index * (ReplayHistoryEntry.ENTRY_HEIGHT + 5));  // Calculate Real Y.  
+        var _y                       : Dynamic= as3hx.Compat.parseInt((try cast(child, ReplayHistoryEntry) catch(e:Dynamic) null).index * (ReplayHistoryEntry.ENTRY_HEIGHT + 5));  // Calculate Real Y.  
         
         // Child is to tall, Scroll to top.
-        if (child.height > height)
+        if (as3hx.Compat.truthy(child.height > height))
         {
             return Math.max(Math.min(_y / (_calcHeight - _height), 1), 0);
         }
@@ -303,12 +303,12 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /** ReplayHistoryEntry Pool Vector */
-    private static var __vectorReplayHistoryEntry : Array<ReplayHistoryEntry> = new Array<ReplayHistoryEntry>();
+    private static var __vectorReplayHistoryEntry                       : Dynamic= new Array<ReplayHistoryEntry>();
     
     /** Retrieves a SongButton instance from the pool. */
     public static function getEntryButton() : ReplayHistoryEntry
     {
-        if (__vectorReplayHistoryEntry.length == 0)
+        if (as3hx.Compat.truthy(__vectorReplayHistoryEntry.length == 0))
         {
             return new ReplayHistoryEntry();
         }
@@ -320,9 +320,9 @@ class ReplayHistoryScrollpane extends Sprite implements IScrollPane
     
     /** Stores a ReplayHistoryEntry instance in the pool.
      *  Don't keep any references to the object after moving it to the pool! */
-    public static function putEntryButton(songbutton : ReplayHistoryEntry) : Void
+    public static function putEntryButton(songbutton                       : Dynamic) : Void
     {
-        if (songbutton != null)
+        if (as3hx.Compat.truthy(songbutton != null))
         {
             songbutton.clear();
             __vectorReplayHistoryEntry[__vectorReplayHistoryEntry.length] = songbutton;

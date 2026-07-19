@@ -5,12 +5,12 @@ import classes.ui.ScrollPaneContent;
 
 class ReplayHistoryTabBase
 {
-    public var name(get, never) : String;
+    public var name(get, never)                       : Dynamic;
 
-    private var parent : ReplayHistoryWindow;
-    public var container : ScrollPaneContent;
+    public var parent                       : Dynamic;
+    public var container                       : Dynamic;
     
-    public function new(replayWindow : ReplayHistoryWindow)
+    public function new(replayWindow                       : Dynamic)
     {
         this.parent = replayWindow;
     }
@@ -32,7 +32,7 @@ class ReplayHistoryTabBase
     {
     }
     
-    public function prepareReplay(r : Replay) : Replay
+    public function prepareReplay(r                       : Dynamic) : Replay
     {
         return r;
     }

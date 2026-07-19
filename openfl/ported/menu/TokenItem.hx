@@ -17,14 +17,14 @@ import openfl.text.TextFieldAutoSize;
 
 class TokenItem extends Sprite
 {
-    public var index : Float;
-    public var token_info : Dynamic;
-    public var token_image : Sprite;
-    public var token_levels : Array<Dynamic>;
+    public var index                       : Dynamic;
+    public var token_info                       : Dynamic;
+    public var token_image                       : Dynamic;
+    public var token_levels                       : Dynamic;
     
-    private var _lang : Language = Language.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    public function new(token_data : Dynamic)
+    public function new(token_data                       : Dynamic)
     {
         super();
         this.token_info = token_data;
@@ -33,35 +33,35 @@ class TokenItem extends Sprite
         this.useHandCursor = true;
         
         //- Message
-        var messageString : String = Reflect.field(token_info, "info").replace(new as3hx.Compat.Regex('\\r\\n', "gi"), "\n");
+        var messageString                       : Dynamic= new as3hx.Compat.Regex('\\r\\n', "gi").replace(Reflect.field(token_info, "info"), "\n");
         
         // Token Levels
         token_levels = (Std.string(Reflect.field(token_info, "sources"))).split(",");
         
-        if (!(Std.is(token_levels, Array)) || token_levels.length == 0)
+        if (as3hx.Compat.truthy(!(Std.is(token_levels, Array)) || token_levels.length == 0))
         {
             token_levels = [0];
         }
         
         // Token unlock conditions
-        if (token_levels.length > 1)
+        if (as3hx.Compat.truthy(token_levels.length > 1))
         {
-            if (token_levels[0] == 0)
+            if (as3hx.Compat.truthy(token_levels[0] == 0))
             {
                 messageString += "\r" + _lang.string("menu_tokens_unknown_unlock_condition");
             }
             else
             {
                 messageString += "\r\r" + _lang.string("menu_tokens_unlock_by_playing");
-                for (item in token_levels)
+                for (item in as3hx.Compat.iter(token_levels))
                 {
-                    var tempLevel : SongInfo = Playlist.instanceCanon.playList[item];
+                    var tempLevel                       : Dynamic= Playlist.instanceCanon.playList[item];
                     messageString += "\r&gt; " + ((tempLevel != null) ? tempLevel.name : "??");
                 }
             }
         }
         
-        var messageText : TextField = new TextField();
+        var messageText                       : Dynamic= new TextField();
         messageText.styleSheet = Constant.STYLESHEET;
         messageText.x = 5;
         messageText.y = 20;
@@ -77,25 +77,25 @@ class TokenItem extends Sprite
         messageText.htmlText = "<font face=\"" + Fonts.BASE_FONT_CJK + "\" color=\"#FFFFFF\" size=\"12\"><b>" + messageString + "</b></font>";
         
         //- Make Display
-        var box : Box = new Box(this, 5, 0, false);
+        var box                       : Dynamic= new Box(this, 5, 0, false);
         box.setSize(577, Math.max(54, 32 + (messageText.numLines * 17)));
         
         //- Name
-        var nameText : Text = new Text(box, 5, 0, Reflect.field(token_info, "name"), 14);
+        var nameText                       : Dynamic= new Text(box, 5, 0, Reflect.field(token_info, "name"), 14);
         nameText.setAreaParams(350, 27);
         box.addChild(messageText);
     }
     
-    public function addTokenImage(image : Bitmap, doFade : Bool = true) : Void
+    public function addTokenImage(image                       : Dynamic, doFade                       : Dynamic= true) : Void
     {
-        var bmd : BitmapData = (Reflect.field(token_info, "unlock") != null) ? image.bitmapData : image.bitmapData.clone();
+        var bmd                       : Dynamic= (Reflect.field(token_info, "unlock") != null) ? image.bitmapData : image.bitmapData.clone();
         
         token_image = new Sprite();
-        if (Reflect.field(token_info, "unlock") == 0)
+        if (as3hx.Compat.truthy(Reflect.field(token_info, "unlock") == 0))
         {
-            var rc : Float = 0.1;
-            var gc : Float = 0.1;
-            var bc : Float = 0.1;
+            var rc                       : Dynamic= 0.1;
+            var gc                       : Dynamic= 0.1;
+            var bc                       : Dynamic= 0.1;
             bmd.applyFilter(bmd, bmd.rect, new Point(), new ColorMatrixFilter([rc, gc, bc, 0, 0, rc, gc, bc, 0, 0, rc, gc, bc, 0, 0, 0, 0, 0, 1, 0]));
         }
         
@@ -106,7 +106,7 @@ class TokenItem extends Sprite
         token_image.y = 5;
         addChild(token_image);
         
-        if (doFade)
+        if (as3hx.Compat.truthy(doFade))
         {
             token_image.alpha = 0;
             TweenLite.to(token_image, 1.25, {

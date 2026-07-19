@@ -7,12 +7,12 @@ import openfl.events.MouseEvent;
 
 class MPMenuRoomButton extends Box
 {
-    private var _name : Text;
-    private var _state : Text;
+    private var _name                             : Dynamic;
+    private var _state                             : Dynamic;
     
-    private var _listener : Dynamic = null;
+    private var _listener                             : Dynamic= null;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, width : Float = 0, height : Float = 0, listener : Dynamic = null)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, width                             : Dynamic= 0, height                             : Dynamic= 0, listener                             : Dynamic= null)
     {
         super(parent, xpos, ypos, true, false);
         super.setSize(width, height);
@@ -31,7 +31,7 @@ class MPMenuRoomButton extends Box
         this.buttonMode = true;
         
         //- Set click event listener
-        if (listener != null)
+        if (as3hx.Compat.truthy(listener != null))
         {
             this._listener = listener;
             this.addEventListener(MouseEvent.CLICK, listener);
@@ -40,14 +40,14 @@ class MPMenuRoomButton extends Box
     
     override public function dispose() : Void
     {
-        if (_listener != null)
+        if (as3hx.Compat.truthy(_listener != null))
         {
             this.removeEventListener(MouseEvent.CLICK, _listener);
         }
         
         super.dispose();
         
-        if (_name != null)
+        if (as3hx.Compat.truthy(_name != null))
         {
             _name.dispose();
         }
@@ -62,7 +62,7 @@ class MPMenuRoomButton extends Box
         this.graphics.lineTo(_width - 5, height / 2);
     }
     
-    public function updateText(name : String, state : String) : Void
+    public function updateText(name                             : Dynamic, state                             : Dynamic) : Void
     {
         _name.text = name;
         _state.text = state;

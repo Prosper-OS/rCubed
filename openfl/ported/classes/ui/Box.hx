@@ -7,40 +7,40 @@ import openfl.events.MouseEvent;
 
 class Box extends Sprite
 {
-    public var highlight(get, never) : Bool;
-    public var active(get, set) : Bool;
-    public var color(get, set) : Int;
-    public var borderColor(get, set) : Int;
-    public var normalAlpha(get, set) : Float;
-    public var activeAlpha(get, set) : Float;
-    public var borderAlpha(get, set) : Float;
-    public var borderActiveAlpha(get, set) : Float;
+    public var highlight(get, never)                             : Dynamic;
+    public var active(get, set)                             : Dynamic;
+    public var color(get, set)                             : Dynamic;
+    public var borderColor(get, set)                             : Dynamic;
+    public var normalAlpha(get, set)                             : Dynamic;
+    public var activeAlpha(get, set)                             : Dynamic;
+    public var borderAlpha(get, set)                             : Dynamic;
+    public var borderActiveAlpha(get, set)                             : Dynamic;
 
     // Display
-    private var _width : Float = -1;
-    private var _height : Float = -1;
-    private var _highlight : Bool = false;
-    private var _active : Bool = false;
+    public var _width                             : Dynamic= -1;
+    public var _height                             : Dynamic= -1;
+    private var _highlight                             : Dynamic= false;
+    private var _active                             : Dynamic= false;
     
     // Variables
-    private var _useHover : Bool = true;
-    private var _useGradient : Bool = true;
+    public var _useHover                             : Dynamic= true;
+    private var _useGradient                             : Dynamic= true;
     
     // Colors & Gradient
-    private var GRADIENT_COLOR : Array<Dynamic> = [0xFFFFFF, 0xFFFFFF];
-    private var GRADIENT_ALPHA_HIGHLIGHT : Array<Dynamic> = [0.35, 0.1225];
-    private var GRADIENT_ALPHA : Array<Dynamic> = [0.2, 0.04];
-    private var GRADIENT_RATIO : Array<Dynamic> = [0, 255];
+    private var GRADIENT_COLOR                             : Dynamic= [0xFFFFFF, 0xFFFFFF];
+    private var GRADIENT_ALPHA_HIGHLIGHT                             : Dynamic= [0.35, 0.1225];
+    private var GRADIENT_ALPHA                             : Dynamic= [0.2, 0.04];
+    private var GRADIENT_RATIO                             : Dynamic= [0, 255];
     
-    private var BOX_COLOR : Int = 0xFFFFFF;
-    private var BOX_ALPHA : Float = 0.07;
-    private var BOX_ALPHA_ACTIVE : Float = 0.1225;
+    private var BOX_COLOR                             : Dynamic= 0xFFFFFF;
+    private var BOX_ALPHA                             : Dynamic= 0.07;
+    private var BOX_ALPHA_ACTIVE                             : Dynamic= 0.1225;
     
-    private var BORDER_COLOR : Int = 0xFFFFFF;
-    private var BORDER_ALPHA : Float = 0.35;
-    private var BORDER_ALPHA_ACTIVE : Float = 0.55;
+    private var BORDER_COLOR                             : Dynamic= 0xFFFFFF;
+    private var BORDER_ALPHA                             : Dynamic= 0.35;
+    private var BORDER_ALPHA_ACTIVE                             : Dynamic= 0.55;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, useHover : Bool = true, useGradient : Bool = true)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, useHover                             : Dynamic= true, useGradient                             : Dynamic= true)
     {
         super();
         this._useHover = useHover;
@@ -49,7 +49,7 @@ class Box extends Sprite
         this.x = xpos;
         this.y = ypos;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -58,9 +58,9 @@ class Box extends Sprite
         setHoverStatus(_useHover);
     }
     
-    public function setSize(w : Float, h : Float) : Void
+    public function setSize(w                             : Dynamic, h                             : Dynamic) : Void
     {
-        if ((w == _width && h == _height) || (w < 0) || (h < 0) || Math.isNaN(w) || Math.isNaN(h))
+        if (as3hx.Compat.truthy((w == _width && h == _height) || (w < 0) || (h < 0) || Math.isNaN(w) || Math.isNaN(h)))
         {
             return;
         }
@@ -73,14 +73,14 @@ class Box extends Sprite
     
     public function draw() : Void
     {
-        var gradient_alphas : Array<Dynamic> = ((highlight) ? GRADIENT_ALPHA_HIGHLIGHT : GRADIENT_ALPHA);
-        var draw_fill_alpha : Float = ((highlight) ? BOX_ALPHA_ACTIVE : BOX_ALPHA);
-        var draw_border_alpha : Float = ((highlight) ? BORDER_ALPHA_ACTIVE : BORDER_ALPHA);
+        var gradient_alphas                             : Dynamic= ((highlight) ? GRADIENT_ALPHA_HIGHLIGHT : GRADIENT_ALPHA);
+        var draw_fill_alpha                             : Dynamic= ((highlight) ? BOX_ALPHA_ACTIVE : BOX_ALPHA);
+        var draw_border_alpha                             : Dynamic= ((highlight) ? BORDER_ALPHA_ACTIVE : BORDER_ALPHA);
         
         this.graphics.clear();
         
         this.graphics.lineStyle(1, BORDER_COLOR, draw_border_alpha, true);
-        if (_useGradient)
+        if (as3hx.Compat.truthy(_useGradient))
         {
             this.graphics.beginGradientFill(GradientType.LINEAR, GRADIENT_COLOR, gradient_alphas, GRADIENT_RATIO, Constant.GRADIENT_MATRIX);
         }
@@ -98,9 +98,9 @@ class Box extends Sprite
         this.removeEventListener(MouseEvent.ROLL_OUT, e_onHoverOut);
     }
     
-    public function setHoverStatus(enabled : Bool) : Void
+    public function setHoverStatus(enabled                             : Dynamic) : Void
     {
-        if (enabled)
+        if (as3hx.Compat.truthy(enabled))
         {
             this.addEventListener(MouseEvent.ROLL_OVER, e_onHover, false, 0, true);
         }
@@ -113,14 +113,14 @@ class Box extends Sprite
     
     ////////////////////////////////////////////////////////////////////////
     //- Events
-    private function e_onHover(e : MouseEvent) : Void
+    private function e_onHover(e                             : Dynamic) : Void
     {
         _highlight = true;
         draw();
         this.addEventListener(MouseEvent.ROLL_OUT, e_onHoverOut, false, 0, true);
     }
     
-    private function e_onHoverOut(e : MouseEvent) : Void
+    private function e_onHoverOut(e                             : Dynamic) : Void
     {
         _highlight = false;
         draw();
@@ -134,7 +134,7 @@ class Box extends Sprite
         return _width;
     }
     
-    override private function set_width(val : Float) : Float
+    override private function set_width(val                             : Dynamic) : Float
     {
         this.setSize(val, _height);
         return val;
@@ -145,7 +145,7 @@ class Box extends Sprite
         return _height;
     }
     
-    override private function set_height(val : Float) : Float
+    override private function set_height(val                             : Dynamic) : Float
     {
         this.setSize(_width, val);
         return val;
@@ -156,7 +156,7 @@ class Box extends Sprite
         return _highlight || _active;
     }
     
-    private function set_active(val : Bool) : Bool
+    private function set_active(val                             : Dynamic) : Bool
     {
         _active = val;
         draw();
@@ -168,7 +168,7 @@ class Box extends Sprite
         return _active;
     }
     
-    private function set_color(val : Int) : Int
+    private function set_color(val                             : Dynamic) : Int
     {
         GRADIENT_COLOR = [val, val];
         BOX_COLOR = val;
@@ -181,7 +181,7 @@ class Box extends Sprite
         return BOX_COLOR;
     }
     
-    private function set_borderColor(val : Int) : Int
+    private function set_borderColor(val                             : Dynamic) : Int
     {
         BORDER_COLOR = val;
         draw();
@@ -193,7 +193,7 @@ class Box extends Sprite
         return BORDER_COLOR;
     }
     
-    private function set_normalAlpha(val : Float) : Float
+    private function set_normalAlpha(val                             : Dynamic) : Float
     {
         BOX_ALPHA = val;
         draw();
@@ -205,7 +205,7 @@ class Box extends Sprite
         return BOX_ALPHA;
     }
     
-    private function set_activeAlpha(val : Float) : Float
+    private function set_activeAlpha(val                             : Dynamic) : Float
     {
         BOX_ALPHA_ACTIVE = val;
         draw();
@@ -217,7 +217,7 @@ class Box extends Sprite
         return BOX_ALPHA_ACTIVE;
     }
     
-    private function set_borderAlpha(val : Float) : Float
+    private function set_borderAlpha(val                             : Dynamic) : Float
     {
         BORDER_ALPHA = val;
         BORDER_ALPHA_ACTIVE = Math.min(1, BORDER_ALPHA + 0.25);
@@ -230,7 +230,7 @@ class Box extends Sprite
         return BORDER_ALPHA;
     }
     
-    private function set_borderActiveAlpha(val : Float) : Float
+    private function set_borderActiveAlpha(val                             : Dynamic) : Float
     {
         BORDER_ALPHA_ACTIVE = val;
         draw();

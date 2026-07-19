@@ -25,33 +25,33 @@ import openfl.ui.Keyboard;
 
 class MPViewChatLogRoom extends Sprite
 {
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
     
-    private static inline var HISTORY_LIMIT : Int = 200;
-    private var DATE(default, never) : Date = Date.now();
+    private static inline var HISTORY_LIMIT                             : Dynamic= 200;
+    private var DATE(default, never)                             : Dynamic= Date.now();
     
-    private var _width : Float = 0;
-    private var _height : Float = 0;
+    private var _width                             : Dynamic= 0;
+    private var _height                             : Dynamic= 0;
     
-    private var room : MPRoom;
-    private var user : MPUser;
+    private var room                             : Dynamic;
+    private var user                             : Dynamic;
     
-    private var displayName : String;
+    private var displayName                             : Dynamic;
     
-    private var messagePlaceholderLeft : Text;
-    private var messagePlaceholderRight : Text;
-    private var messageText : BoxText;
-    private var _last_message_text : String = "";
+    private var messagePlaceholderLeft                             : Dynamic;
+    private var messagePlaceholderRight                             : Dynamic;
+    private var messageText                             : Dynamic;
+    private var _last_message_text                             : Dynamic= "";
     
-    private var pane : ScrollPane;
+    private var pane                             : Dynamic;
     
-    private var scrollbarWidth(default, never) : Float = 15;
-    private var scrollbar : ScrollBar;
+    private var scrollbarWidth(default, never)                             : Dynamic= 15;
+    private var scrollbar                             : Dynamic;
     
-    private var _cachePositions : Array<MPViewChatLogRoomCLItemCache> = [];
+    private var _cachePositions                             : Dynamic= [];
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, wid : Float = 0, hei : Float = 0)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, wid                             : Dynamic= 0, hei                             : Dynamic= 0)
     {
         super();
         this.x = xpos;
@@ -60,7 +60,7 @@ class MPViewChatLogRoom extends Sprite
         this._width = wid;
         this._height = hei;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -72,7 +72,7 @@ class MPViewChatLogRoom extends Sprite
      * Init Chat Log for Room based views.
      * @param room
      */
-    public function setRoom(room : MPRoom) : Void
+    public function setRoom(room                             : Dynamic) : Void
     {
         this.room = room;
         this.displayName = room.name;
@@ -82,7 +82,7 @@ class MPViewChatLogRoom extends Sprite
                         });
         
         // Add Initial Joining Message
-        var joinLogItem : MPChatLogEntry = new MPChatLogEntryText("<font color=\"" + MPColors.SYSTEM_MESSAGE_COLOR + "\">" + sprintf(_lang.string("mp_room_chat_room_join"), {
+        var joinLogItem                             : Dynamic= new MPChatLogEntryText("<font color=\"" + MPColors.SYSTEM_MESSAGE_COLOR + "\">" + sprintf(_lang.string("mp_room_chat_room_join"), {
                     name : room.name
                 }) + "</font>");
         joinLogItem.build(pane.width - 1);
@@ -138,9 +138,9 @@ class MPViewChatLogRoom extends Sprite
         this.graphics.lineTo(_width - scrollbarWidth - 1, _height - 30);
     }
     
-    public function onKeyInput(e : KeyboardEvent) : Void
+    public function onKeyInput(e                             : Dynamic) : Void
     {
-        if (e.keyCode == Keyboard.ENTER && e.target == messageText.field)
+        if (as3hx.Compat.truthy(e.keyCode == Keyboard.ENTER && e.target == messageText.field))
         {
             _mp.sendCommand(new MPCRoomMessage(room, _last_message_text));
             _last_message_text = "";
@@ -149,26 +149,26 @@ class MPViewChatLogRoom extends Sprite
         }
     }
     
-    private function e_onMessageType(e : Event) : Void
+    private function e_onMessageType(e                             : Dynamic) : Void
     {
         _last_message_text = messageText.text;
         messagePlaceholderRight.visible = messagePlaceholderLeft.visible = (_last_message_text.length <= 0);
     }
     
-    public function onChatMessage(e : MPRoomEvent) : Void
+    public function onChatMessage(e                             : Dynamic) : Void
     {
-        var data : Dynamic = e.command.data;
+        var data                             : Dynamic= e.command.data;
         
         DATE.setTime(data.timestamp);
         
-        var type : Float = data.type;
-        var color : String = ((type == MPChatTypes.ADMIN) ? MPColors.MESSAGE_ADMIN_COLOR : ((type == MPChatTypes.MOD) ? MPColors.MESSAGE_MOD_COLOR : MPColors.MESSAGE_COLOR));
+        var type                             : Dynamic= data.type;
+        var color                             : Dynamic= ((type == MPChatTypes.ADMIN) ? MPColors.MESSAGE_ADMIN_COLOR : ((type == MPChatTypes.MOD) ? MPColors.MESSAGE_MOD_COLOR : MPColors.MESSAGE_COLOR));
         
-        var message : String = "";
+        var message                             : Dynamic= "";
         
         message += "<font color=\"" + MPColors.TIMESTAMP_COLOR + "\">" + StringUtil.pad(Std.string(DATE.getHours()), 2, "0") + ":" + StringUtil.pad(Std.string(DATE.getMinutes()), 2, "0") + "</font> ";
         
-        if (type == MPChatTypes.SYSTEM)
+        if (as3hx.Compat.truthy(type == MPChatTypes.SYSTEM))
         {
             message += "<font face=\"" + Fonts.BASE_FONT + "\" color=\"" + MPColors.SYSTEM_MESSAGE_COLOR + "\"><i>" + data.message + "</i></font>";
         }
@@ -181,15 +181,15 @@ class MPViewChatLogRoom extends Sprite
         addItem(new MPChatLogEntryText(message));
     }
     
-    public function addItem(entry : MPChatLogEntry) : Void
+    public function addItem(entry                             : Dynamic) : Void
     // Build Item Elements
     {
         
         entry.build(pane.width - 1);
         
         // Get Start and End Y Positions
-        var startY : Int = _cachePositions[_cachePositions.length - 1].endY;
-        var endY : Int = as3hx.Compat.parseInt(startY + entry.height);
+        var startY                             : Dynamic= _cachePositions[as3hx.Compat.parseInt(_cachePositions.length - 1)].endY;
+        var endY                             : Dynamic= as3hx.Compat.parseInt(startY + entry.height);
         _cachePositions.push(new MPViewChatLogRoomCLItemCache(entry, startY, endY));
         
         // Add to Pane
@@ -199,16 +199,16 @@ class MPViewChatLogRoom extends Sprite
         scrollbar.draggerVisibility = endY > pane.height;
     }
     
-    private function addPaneChild(entry : MPChatLogEntry) : Void
+    private function addPaneChild(entry                             : Dynamic) : Void
     {
-        var lastScrollPosition : Float = scrollbar.scroll;
-        var lastCacheItem : MPViewChatLogRoomCLItemCache = _cachePositions[_cachePositions.length - 1];
-        var shouldScrollStart : Bool = lastCacheItem.startY < pane.height && lastCacheItem.endY > pane.height;  // Item crosses height bounds.  
-        var yShiftValue : Int = 0;
+        var lastScrollPosition                             : Dynamic= scrollbar.scroll;
+        var lastCacheItem                             : Dynamic= _cachePositions[as3hx.Compat.parseInt(_cachePositions.length - 1)];
+        var shouldScrollStart                             : Dynamic= lastCacheItem.startY < pane.height && lastCacheItem.endY > pane.height;  // Item crosses height bounds.  
+        var yShiftValue                             : Dynamic= 0;
         
-        if (_cachePositions.length > HISTORY_LIMIT)
+        if (as3hx.Compat.truthy(_cachePositions.length > HISTORY_LIMIT))
         {
-            while (_cachePositions.length > HISTORY_LIMIT)
+            while (as3hx.Compat.truthy(_cachePositions.length > HISTORY_LIMIT))
             {
                 pane.content.removeChild(_cachePositions[0].entry);
                 _cachePositions.shift();
@@ -217,8 +217,8 @@ class MPViewChatLogRoom extends Sprite
             yShiftValue = _cachePositions[0].startY;
             
             // Reposition All Items
-            var historyItem : MPViewChatLogRoomCLItemCache;
-            var lastY : Int = 0;
+            var historyItem                             : Dynamic= null;
+            var lastY                             : Dynamic= 0;
             for (i in 0...HISTORY_LIMIT)
             {
                 historyItem = _cachePositions[i];
@@ -233,7 +233,7 @@ class MPViewChatLogRoom extends Sprite
         pane.content.addChild(entry);
         
         // Scroll Newest if near bottom, or scroll has started.
-        if (lastScrollPosition > 0.99 || shouldScrollStart)
+        if (as3hx.Compat.truthy(lastScrollPosition > 0.99 || shouldScrollStart))
         {
             pane.update();
             
@@ -247,7 +247,7 @@ class MPViewChatLogRoom extends Sprite
             {
                 pane.content.y += yShiftValue;
                 
-                if (pane.content.y > 0)
+                if (as3hx.Compat.truthy(pane.content.y > 0))
                 {
                     pane.content.y = 0;
                 }
@@ -264,22 +264,22 @@ class MPViewChatLogRoom extends Sprite
      * Moves the scroll pane based on the scroll delta direction.
      * @param e
      */
-    private function e_mouseWheelHandler(e : MouseEvent) : Void
+    private function e_mouseWheelHandler(e                             : Dynamic) : Void
     // Sanity
     {
         
-        if (!scrollbar.draggerVisibility)
+        if (as3hx.Compat.truthy(!scrollbar.draggerVisibility))
         {
             return;
         }
         
         // Scroll
-        var newScrollPosition : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var newScrollPosition                             : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(newScrollPosition);
         scrollbar.scrollTo(newScrollPosition);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                             : Dynamic) : Void
     {
         pane.scrollTo(e.target.scroll);
     }
@@ -289,12 +289,12 @@ class MPViewChatLogRoom extends Sprite
 
 class MPViewChatLogRoomCLItemCache
 {
-    public var startY : Float;
-    public var endY : Float;
-    public var entry : MPChatLogEntry;
+    public var startY                             : Dynamic;
+    public var endY                             : Dynamic;
+    public var entry                             : Dynamic;
     
     @:allow(classes.mp.components)
-    private function new(entry : MPChatLogEntry, startY : Float, endY : Float)
+    private function new(entry                             : Dynamic, startY                             : Dynamic, endY                             : Dynamic)
     {
         this.startY = startY;
         this.endY = endY;

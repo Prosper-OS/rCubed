@@ -6,7 +6,7 @@ class ClassForGetDefinitionNames
     {
     }
 
-    public function getDefinitionNames(data : Dynamic, extended : Bool = false, linkedOnly : Bool = false) : Array<Dynamic>
+    public function getDefinitionNames(data  : Dynamic, extended  : Dynamic= false, linkedOnly  : Dynamic= false) : Array<Dynamic>
     {
         return [];
     }

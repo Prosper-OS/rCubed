@@ -36,96 +36,96 @@ import game.GameScoreResult;
 
 class GlobalVariables extends EventDispatcher
 {
-    public static var instance(get, never) : GlobalVariables;
+    public static var instance(get, never)                              : Dynamic;
 
     ///- Singleton Instance
-    private static var _instance : GlobalVariables = null;
-    private var _loader : DynamicURLLoader;
+    private static var _instance                              : Dynamic= null;
+    private var _loader                              : Dynamic;
     
     ///- Constants
-    public static inline var LOAD_COMPLETE : String = "LoadComplete";
-    public static inline var LOAD_ERROR : String = "LoadError";
-    public static inline var HIGHSCORES_LOAD_COMPLETE : String = "HighscoresLoadComplete";
-    public static inline var HIGHSCORES_LOAD_ERROR : String = "HighscoresLoadError";
+    public static inline var LOAD_COMPLETE                              : Dynamic= "LoadComplete";
+    public static inline var LOAD_ERROR                              : Dynamic= "LoadError";
+    public static inline var HIGHSCORES_LOAD_COMPLETE                              : Dynamic= "HighscoresLoadComplete";
+    public static inline var HIGHSCORES_LOAD_ERROR                              : Dynamic= "HighscoresLoadError";
     
-    public var gameMain : Main;
+    public var gameMain                              : Dynamic;
     
-    public var options : GameOptions;
+    public var options                              : Dynamic;
     
     ///- Game Data
-    public var TOTAL_GENRES : Int = 13;
-    public var TOTAL_SONGS : Int = 0;
-    public var TOTAL_PUBLIC_SONGS : Int = 0;
-    public var HEALTH_JUDGE_ADD : Int = 5;
-    public var HEALTH_JUDGE_REMOVE : Int = -5;
-    public var TOTAL_STEPS : Int = 31;
-    public var BEAT_DELAY : Int = -31;
-    public var MAX_CREDITS : Int = 120;
-    public var SCORE_PER_CREDIT : Int = 50000;
-    public var MAX_DIFFICULTY : Int = 120;
-    public var DIFFICULTY_RANGES : Array<Dynamic> = [[1, 120]];
-    public var NONPUBLIC_GENRES : Array<Dynamic> = [];
-    public var TOKENS : Dynamic = { };
-    public var TOKENS_TYPE : Dynamic = { };
-    public var SCROLL_DIRECTIONS : Array<Dynamic> = ["up", "down", "left", "right", "split", "split_down", "plus"];
-    public var GAME_MODS : Array<Dynamic> = ["hidden", "sudden", "blink", "----", "rotating", "rotate_cw", "rotate_ccw", "wave", "drunk", "tornado", "mini_resize", "tap_pulse", "----", "random", "scramble", "shuffle", "reverse"];
-    public var VISUAL_MODS : Array<Dynamic> = ["mirror", "dark", "hide", "mini", "columncolour", "halftime", "----", "nobackground"];
-    public var songStartTime : String = "0";
-    public var songStartHash : String = "0";
-    public var songCache : Array<Song> = [];
-    public var songHighscores : Dynamic = { };
+    public var TOTAL_GENRES                              : Dynamic= 13;
+    public var TOTAL_SONGS                              : Dynamic= 0;
+    public var TOTAL_PUBLIC_SONGS                              : Dynamic= 0;
+    public var HEALTH_JUDGE_ADD                              : Dynamic= 5;
+    public var HEALTH_JUDGE_REMOVE                              : Dynamic= -5;
+    public var TOTAL_STEPS                              : Dynamic= 31;
+    public var BEAT_DELAY                              : Dynamic= -31;
+    public var MAX_CREDITS                              : Dynamic= 120;
+    public var SCORE_PER_CREDIT                              : Dynamic= 50000;
+    public var MAX_DIFFICULTY                              : Dynamic= 120;
+    public var DIFFICULTY_RANGES                              : Dynamic= [[1, 120]];
+    public var NONPUBLIC_GENRES                              : Dynamic= [];
+    public var TOKENS                              : Dynamic= { };
+    public var TOKENS_TYPE                              : Dynamic= { };
+    public var SCROLL_DIRECTIONS                              : Dynamic= ["up", "down", "left", "right", "split", "split_down", "plus"];
+    public var GAME_MODS                              : Dynamic= ["hidden", "sudden", "blink", "----", "rotating", "rotate_cw", "rotate_ccw", "wave", "drunk", "tornado", "mini_resize", "tap_pulse", "----", "random", "scramble", "shuffle", "reverse"];
+    public var VISUAL_MODS                              : Dynamic= ["mirror", "dark", "hide", "mini", "columncolour", "halftime", "----", "nobackground"];
+    public var songStartTime                              : Dynamic= "0";
+    public var songStartHash                              : Dynamic= "0";
+    public var songCache                              : Dynamic= [];
+    public var songHighscores                              : Dynamic= { };
     
-    public var divisionColors : Array<Dynamic> = ["#C27BA0", "#8E7CC3", "#6D9EEB", "#93C47D", "#CEA023", "#E06666", "#919C86", "#D2C7AC", "#7B738A", "#BF0000"];
-    public var divisionTitles : Array<Dynamic> = ["Novice", "Intermediate", "Advanced", "Expert", "Master", "Guru", "Legendary", "Godly", "Mythical", "Developer"];
-    public var divisionLevels : Array<Dynamic> = [0, 24, 42, 58, 72, 84, 94, 102, 108, 120];
+    public var divisionColors                              : Dynamic= ["#C27BA0", "#8E7CC3", "#6D9EEB", "#93C47D", "#CEA023", "#E06666", "#919C86", "#D2C7AC", "#7B738A", "#BF0000"];
+    public var divisionTitles                              : Dynamic= ["Novice", "Intermediate", "Advanced", "Expert", "Master", "Guru", "Legendary", "Godly", "Mythical", "Developer"];
+    public var divisionLevels                              : Dynamic= [0, 24, 42, 58, 72, 84, 94, 102, 108, 120];
     
     ///- User Vars
-    public var userSession : String = "0";
-    public var activeUser : User;
-    public var playerUser : User;
+    public var userSession                              : Dynamic= "0";
+    public var activeUser                              : Dynamic;
+    public var playerUser                              : Dynamic;
     
     ///- GamePlay
-    public var songQueue : Array<Dynamic> = [];
-    public var totalSongQueue : Array<Dynamic> = [];
-    public var gameIndex : Int = 0;
-    public var replayHistory : Array<Dynamic> = [];
-    public var songResults : Array<GameScoreResult> = [];
-    public var songResultRanks : Array<Dynamic> = [];
-    public var songRestarts : Int;
-    public var activeFilter : EngineLevelFilter;
+    public var songQueue                              : Dynamic= [];
+    public var totalSongQueue                              : Dynamic= [];
+    public var gameIndex                              : Dynamic= 0;
+    public var replayHistory                              : Dynamic= [];
+    public var songResults                              : Dynamic= [];
+    public var songResultRanks                              : Dynamic= [];
+    public var songRestarts                              : Dynamic;
+    public var activeFilter                              : Dynamic;
     
     ///- Session Stats
-    public var sessionStats : StatTracker = new StatTracker();
-    public var songStats : StatTracker = new StatTracker();
+    public var sessionStats                              : Dynamic= new StatTracker();
+    public var songStats                              : Dynamic= new StatTracker();
     
-    public var menuMusic : SongPlayerBytes;
-    public var menuMusicSoundVolume : Float = 1;
-    public var menuMusicSoundTransform : SoundTransform = new SoundTransform();
+    public var menuMusic                              : Dynamic;
+    public var menuMusicSoundVolume                              : Dynamic= 1;
+    public var menuMusicSoundTransform                              : Dynamic= new SoundTransform();
     
     ///- Air Options
-    public var air_useLocalFileCache : Bool = false;
-    public var air_autoSaveLocalReplays : Bool = false;
-    public var air_useVSync : Bool = true;
-    public var air_useWebsockets : Bool = false;
-    public var air_saveWindowPosition : Bool = false;
-    public var air_saveWindowSize : Bool = false;
-    public var air_useFullScreen : Bool = false;
+    public var air_useLocalFileCache                              : Dynamic= false;
+    public var air_autoSaveLocalReplays                              : Dynamic= false;
+    public var air_useVSync                              : Dynamic= true;
+    public var air_useWebsockets                              : Dynamic= false;
+    public var air_saveWindowPosition                              : Dynamic= false;
+    public var air_saveWindowSize                              : Dynamic= false;
+    public var air_useFullScreen                              : Dynamic= false;
     
-    public var air_windowProperties : Dynamic;
-    public var file_replay_cache : FileCache = new FileCache("replays/cache.json", 1);
+    public var air_windowProperties                              : Dynamic;
+    public var file_replay_cache                              : Dynamic= new FileCache("replays/cache.json", 1);
     
     ///- Song Loader
-    public var externalSongInfo : SongInfo;
-    public var externalSong : Song;
+    public var externalSongInfo                              : Dynamic;
+    public var externalSong                              : Dynamic;
     
-    private var websocket_server : AIRServer;
-    private static var websocket_message : Message = new Message();
+    private var websocket_server                              : Dynamic;
+    private static var websocket_message                              : Dynamic= new Message();
     
     ///- Constructor
-    public function new(en : GlobalVariablesSingletonEnforcer)
+    public function new(en                              : Dynamic)
     {
         super();
-        if (en == null)
+        if (as3hx.Compat.truthy(en == null))
         {
             throw cast(("Multi-Instance Blocked"), Error);
         }
@@ -133,8 +133,8 @@ class GlobalVariables extends EventDispatcher
     
     public function loadAirOptions() : Void
     {
-        var sessionToken : String = LocalStore.getVariable("uSessionToken", "");
-        if (sessionToken != "")
+        var sessionToken                              : Dynamic= LocalStore.getVariable("uSessionToken", "");
+        if (as3hx.Compat.truthy(sessionToken != ""))
         {
             userSession = Crypt.Decode(sessionToken);
         }
@@ -154,7 +154,7 @@ class GlobalVariables extends EventDispatcher
                             height : 0
                         });
         
-        if (air_useWebsockets)
+        if (as3hx.Compat.truthy(air_useWebsockets))
         {
             initWebsocketServer();
         }
@@ -164,13 +164,13 @@ class GlobalVariables extends EventDispatcher
     // Export SQL to JSON
     {
         
-        var db_name : String = "dbinfo/" + ((activeUser != null && activeUser.siteId > 0) ? activeUser.siteId : "0") + "_info.";
-        var json_file : File = AirContext.getAppFile(db_name + "json");
+        var db_name                              : Dynamic= "dbinfo/" + ((activeUser != null && activeUser.siteId > 0) ? activeUser.siteId : "0") + "_info.";
+        var json_file                              : Dynamic= AirContext.getAppFile(db_name + "json");
         
-        if (json_file.exists)
+        if (as3hx.Compat.truthy(json_file.exists))
         {
-            var json_str : String = AirContext.readTextFile(json_file);
-            if (json_str != null)
+            var json_str                              : Dynamic= AirContext.readTextFile(json_file);
+            if (as3hx.Compat.truthy(json_str != null))
             {
                 try
                 {
@@ -185,14 +185,14 @@ class GlobalVariables extends EventDispatcher
     
     public function writeUserSongData() : Void
     {
-        var db_name : String = "dbinfo/" + ((activeUser != null && activeUser.siteId > 0) ? activeUser.siteId : "0") + "_info.";
-        var json_file : File = AirContext.getAppFile(db_name + "json");
+        var db_name                              : Dynamic= "dbinfo/" + ((activeUser != null && activeUser.siteId > 0) ? activeUser.siteId : "0") + "_info.";
+        var json_file                              : Dynamic= AirContext.getAppFile(db_name + "json");
         UserSongNotes.writeFile(json_file);
     }
     
-    public function websocketPortNumber(type : String) : Int
+    public function websocketPortNumber(type                              : Dynamic) : Int
     {
-        if (websocket_server != null)
+        if (as3hx.Compat.truthy(websocket_server != null))
         {
             return websocket_server.getPortNumber(type);
         }
@@ -201,13 +201,13 @@ class GlobalVariables extends EventDispatcher
     
     public function initWebsocketServer() : Bool
     {
-        if (websocket_server == null)
+        if (as3hx.Compat.truthy(websocket_server == null))
         {
             websocket_server = new AIRServer();
             websocket_server.addEndPoint(new SocketEndPoint(21235, new WebSocketClientHandlerFactory()));
             
             // didn't start, remove reference
-            if (!websocket_server.start())
+            if (as3hx.Compat.truthy(!websocket_server.start()))
             {
                 websocket_server.stop();
                 websocket_server = null;
@@ -220,16 +220,16 @@ class GlobalVariables extends EventDispatcher
     
     public function destroyWebsocketServer() : Void
     {
-        if (websocket_server != null)
+        if (as3hx.Compat.truthy(websocket_server != null))
         {
             websocket_server.stop();
             websocket_server = null;
         }
     }
     
-    public function websocketSend(cmd : String, data : Dynamic) : Void
+    public function websocketSend(cmd                              : Dynamic, data                              : Dynamic) : Void
     {
-        if (websocket_server != null)
+        if (as3hx.Compat.truthy(websocket_server != null))
         {
             websocket_message.command = cmd;
             websocket_message.data = data;
@@ -237,9 +237,9 @@ class GlobalVariables extends EventDispatcher
         }
     }
     
-    public function onNativeProcessClose(e : Event) : Void
+    public function onNativeProcessClose(e                              : Dynamic) : Void
     {
-        if (websocket_server != null)
+        if (as3hx.Compat.truthy(websocket_server != null))
         {
             websocket_server.stop();
         }
@@ -250,19 +250,19 @@ class GlobalVariables extends EventDispatcher
         menuMusicSoundVolume = menuMusicSoundTransform.volume = LocalOptions.getVariable("menu_music_volume", 1);
         
         // Load Existing Menu Music SWF
-        if (AirContext.doesFileExist(Constant.MENU_MUSIC_PATH))
+        if (as3hx.Compat.truthy(AirContext.doesFileExist(Constant.MENU_MUSIC_PATH)))
         {
-            var file_bytes : ByteArray = AirContext.readFile(AirContext.getAppFile(Constant.MENU_MUSIC_PATH));
-            if (file_bytes != null && file_bytes.length > 0)
+            var file_bytes                              : Dynamic= AirContext.readFile(AirContext.getAppFile(Constant.MENU_MUSIC_PATH));
+            if (as3hx.Compat.truthy(file_bytes != null && file_bytes.length > 0))
             {
                 menuMusic = new SongPlayerBytes(file_bytes);
             }
         }
         // Convert MP3 if exist.
-        else if (AirContext.doesFileExist(Constant.MENU_MUSIC_MP3_PATH))
+        else if (as3hx.Compat.truthy(AirContext.doesFileExist(Constant.MENU_MUSIC_MP3_PATH)))
         {
-            var mp3Bytes : ByteArray = AirContext.readFile(AirContext.getAppFile(Constant.MENU_MUSIC_MP3_PATH));
-            if (mp3Bytes != null && mp3Bytes.length > 0)
+            var mp3Bytes                              : Dynamic= AirContext.readFile(AirContext.getAppFile(Constant.MENU_MUSIC_MP3_PATH));
+            if (as3hx.Compat.truthy(mp3Bytes != null && mp3Bytes.length > 0))
             {
                 menuMusic = new SongPlayerBytes(mp3Bytes, true);
                 LocalStore.setVariable("menu_music", "External MP3");
@@ -272,23 +272,23 @@ class GlobalVariables extends EventDispatcher
     
     ///- Public
     //- Player Divisions
-    public function getDivisionColor(level : Int) : String
+    public function getDivisionColor(level                              : Dynamic) : String
     {
         return divisionColors[getDivisionNumber(level)];
     }
     
-    public function getDivisionTitle(level : Int) : String
+    public function getDivisionTitle(level                              : Dynamic) : String
     {
         return divisionTitles[getDivisionNumber(level)];
     }
     
-    public function getDivisionNumber(level : Int) : Int
+    public function getDivisionNumber(level                              : Dynamic) : Int
     {
-        var div : Int;
+        var div                              : Dynamic= null;
         div = as3hx.Compat.parseInt(divisionLevels.length - 1);
-        while (div >= 0)
+        while (as3hx.Compat.truthy(div >= 0))
         {
-            if (level >= divisionLevels[div])
+            if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(level) >= as3hx.Compat.parseFloat(divisionLevels[as3hx.Compat.parseInt(div)])))
             {
                 break;
             }
@@ -298,19 +298,19 @@ class GlobalVariables extends EventDispatcher
     }
     
     //- Song Data
-    public function getSongFile(songInfo : SongInfo) : Song
+    public function getSongFile(songInfo                              : Dynamic) : Song
     {
-        if (songInfo == externalSongInfo)
+        if (as3hx.Compat.truthy(songInfo == externalSongInfo))
         {
             return externalSong;
         }
         
-        if (songInfo.engine == Playlist.instance.engine && (!songInfo.engine || !songInfo.engine.ignoreCache))
+        if (as3hx.Compat.truthy(songInfo.engine == Playlist.instance.engine && (!songInfo.engine || !songInfo.engine.ignoreCache)))
         {
             for (s in 0...songCache.length)
             {
-                var song : Song = songCache[s];
-                if (song != null && song.songInfo.level == songInfo.level)
+                var song                              : Dynamic= songCache[s];
+                if (as3hx.Compat.truthy(song != null && song.songInfo.level == songInfo.level))
                 {
                     return song;
                 }
@@ -320,21 +320,21 @@ class GlobalVariables extends EventDispatcher
         return loadSongFile(songInfo);
     }
     
-    private function loadSongFile(songInfo : SongInfo) : Song
+    private function loadSongFile(songInfo                              : Dynamic) : Song
     //- Only Cache 10 Songs
     {
         
-        var engineCache : Bool = (songInfo.engine == Playlist.instance.engine) && (!songInfo.engine || !songInfo.engine.ignoreCache);
-        if (songCache.length > 10 && engineCache)
+        var engineCache                              : Dynamic= (songInfo.engine == Playlist.instance.engine) && (!songInfo.engine || !songInfo.engine.ignoreCache);
+        if (as3hx.Compat.truthy(songCache.length > 10 && engineCache))
         {
             songCache.pop();
         }
         
         //- Make new Song
-        var song : Song = new Song(songInfo);
+        var song                              : Dynamic= new Song(songInfo);
         
         //- Push to cache
-        if (engineCache)
+        if (as3hx.Compat.truthy(engineCache))
         {
             songCache.push(song);
         }
@@ -342,11 +342,11 @@ class GlobalVariables extends EventDispatcher
         return song;
     }
     
-    public function removeSongFile(song : Song) : Void
+    public function removeSongFile(song                              : Dynamic) : Void
     {
         for (s in 0...songCache.length)
         {
-            if (songCache[s] == song)
+            if (as3hx.Compat.truthy(songCache[s] == song))
             {
                 song.unload();
                 songCache.splice(s, 1)[0];
@@ -366,7 +366,7 @@ class GlobalVariables extends EventDispatcher
     
     public function dirtySongFiles() : Void
     {
-        if (externalSong != null)
+        if (as3hx.Compat.truthy(externalSong != null))
         {
             externalSong.isDirty = true;
         }
@@ -377,76 +377,76 @@ class GlobalVariables extends EventDispatcher
         }
     }
     
-    public static inline var SONG_ACCESS_PLAYABLE : Int = 0;
-    public static inline var SONG_ACCESS_CREDITS : Int = 1;
-    public static inline var SONG_ACCESS_PURCHASED : Int = 2;
-    public static inline var SONG_ACCESS_TOKEN : Int = 3;
-    public static inline var SONG_ACCESS_VETERAN : Int = 4;
-    public static inline var SONG_ACCESS_BANNED : Int = 5;
+    public static inline var SONG_ACCESS_PLAYABLE                              : Dynamic= 0;
+    public static inline var SONG_ACCESS_CREDITS                              : Dynamic= 1;
+    public static inline var SONG_ACCESS_PURCHASED                              : Dynamic= 2;
+    public static inline var SONG_ACCESS_TOKEN                              : Dynamic= 3;
+    public static inline var SONG_ACCESS_VETERAN                              : Dynamic= 4;
+    public static inline var SONG_ACCESS_BANNED                              : Dynamic= 5;
     
-    public function checkSongAccess(songInfo : SongInfo) : Int
+    public function checkSongAccess(songInfo                              : Dynamic) : Int
     {
-        if (songInfo == null || Math.isNaN(songInfo.level))
+        if (as3hx.Compat.truthy(songInfo == null || Math.isNaN(songInfo.level)))
         {
             return SONG_ACCESS_BANNED;
         }
-        if (songInfo.credits > 0 && playerUser.credits < songInfo.credits)
+        if (as3hx.Compat.truthy(songInfo.credits > 0 && playerUser.credits < songInfo.credits))
         {
             return SONG_ACCESS_CREDITS;
         }
-        if (songInfo.price > 0 && (songInfo.index >= playerUser.purchased.length || playerUser.purchased[songInfo.index] == null))
+        if (as3hx.Compat.truthy(songInfo.price > 0 && (songInfo.index >= playerUser.purchased.length || playerUser.purchased[songInfo.index] == null)))
         {
             return SONG_ACCESS_PURCHASED;
         }
-        if (songInfo.engine == null && Reflect.field(TOKENS, Std.string(songInfo.level)) != null && Reflect.field(TOKENS, Std.string(songInfo.level)).unlock == 0)
+        if (as3hx.Compat.truthy(songInfo.engine == null && as3hx.Compat.field(TOKENS, songInfo.level) != null && as3hx.Compat.field(TOKENS, songInfo.level).unlock == 0))
         {
             return SONG_ACCESS_TOKEN;
         }
-        if (songInfo.prerelease && !playerUser.isVeteran)
+        if (as3hx.Compat.truthy(songInfo.prerelease && !playerUser.isVeteran))
         {
             return SONG_ACCESS_VETERAN;
         }
         return SONG_ACCESS_PLAYABLE;
     }
     
-    public static inline var SONG_ICON_NO_SCORE : Int = 0;
-    public static inline var SONG_ICON_UNFINISHED : Int = 1;
-    public static inline var SONG_ICON_PASSED : Int = 2;
-    public static inline var SONG_ICON_FC_STAR : Int = 3;
-    public static inline var SONG_ICON_FC : Int = 4;
-    public static inline var SONG_ICON_SDG : Int = 5;
-    public static inline var SONG_ICON_OMNIFLAG : Int = 6;
-    public static inline var SONG_ICON_MISSFLAG : Int = 7;
-    public static inline var SONG_ICON_AVFLAG : Int = 8;
-    public static inline var SONG_ICON_BLACKFLAG : Int = 9;
-    public static inline var SONG_ICON_BOOFLAG : Int = 10;
-    public static inline var SONG_ICON_AAA : Int = 11;
+    public static inline var SONG_ICON_NO_SCORE                              : Dynamic= 0;
+    public static inline var SONG_ICON_UNFINISHED                              : Dynamic= 1;
+    public static inline var SONG_ICON_PASSED                              : Dynamic= 2;
+    public static inline var SONG_ICON_FC_STAR                              : Dynamic= 3;
+    public static inline var SONG_ICON_FC                              : Dynamic= 4;
+    public static inline var SONG_ICON_SDG                              : Dynamic= 5;
+    public static inline var SONG_ICON_OMNIFLAG                              : Dynamic= 6;
+    public static inline var SONG_ICON_MISSFLAG                              : Dynamic= 7;
+    public static inline var SONG_ICON_AVFLAG                              : Dynamic= 8;
+    public static inline var SONG_ICON_BLACKFLAG                              : Dynamic= 9;
+    public static inline var SONG_ICON_BOOFLAG                              : Dynamic= 10;
+    public static inline var SONG_ICON_AAA                              : Dynamic= 11;
     
-    public static function getSongIconIndex(_songInfo : SongInfo, _rank : Dynamic) : Int
+    public static function getSongIconIndex(_songInfo                              : Dynamic, _rank                              : Dynamic) : Int
     {
-        var songIcon : Int = 0;
-        if (_rank != null)
+        var songIcon                              : Dynamic= 0;
+        if (as3hx.Compat.truthy(_rank != null))
         {
-            var noteCount : Int = _songInfo.note_count;
-            var maxRawScore : Int = _songInfo.score_raw;
+            var noteCount                              : Dynamic= _songInfo.note_count;
+            var maxRawScore                              : Dynamic= _songInfo.score_raw;
             
             // Alt engine hack
-            if (_rank.arrows > 0)
+            if (as3hx.Compat.truthy(_rank.arrows > 0))
             {
                 noteCount = _rank.arrows;
                 maxRawScore = as3hx.Compat.parseInt(noteCount * 50);
             }
             
             // No Score
-            if (_rank.score == 0)
+            if (as3hx.Compat.truthy(_rank.score == 0))
             {
                 songIcon = SONG_ICON_NO_SCORE;
             }
             
             // Unfinished or Passed
-            if (_rank.score > 0)
+            if (as3hx.Compat.truthy(_rank.score > 0))
             {
-                if (_rank.perfect + _rank.good + _rank.average + _rank.miss < noteCount)
+                if (as3hx.Compat.truthy(_rank.perfect + _rank.good + _rank.average + _rank.miss < noteCount))
                 {
                     songIcon = SONG_ICON_UNFINISHED;
                 }
@@ -457,55 +457,55 @@ class GlobalVariables extends EventDispatcher
             }
             
             // FC* - When current score isn't FC but a FC has been achieved before.
-            if (_rank.fcs > 0)
+            if (as3hx.Compat.truthy(_rank.fcs > 0))
             {
                 songIcon = SONG_ICON_FC_STAR;
             }
             
             // FC
-            if (_rank.perfect + _rank.good + _rank.average == noteCount && _rank.miss == 0 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect + _rank.good + _rank.average == noteCount && _rank.miss == 0 && _rank.maxcombo == noteCount))
             {
                 songIcon = SONG_ICON_FC;
             }
             
             // SDG
-            if (maxRawScore - _rank.rawscore < 250)
+            if (as3hx.Compat.truthy(maxRawScore - _rank.rawscore < 250))
             {
                 songIcon = SONG_ICON_SDG;
             }
             
             // Omni Flag
-            if (_rank.perfect == noteCount - 3 && _rank.good == 1 && _rank.average == 1 && _rank.miss == 1 && _rank.boo == 1)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 3 && _rank.good == 1 && _rank.average == 1 && _rank.miss == 1 && _rank.boo == 1))
             {
                 songIcon = SONG_ICON_OMNIFLAG;
             }
             
             // Miss Flag
-            if (_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 0 && _rank.miss == 1 && _rank.boo == 0)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 0 && _rank.miss == 1 && _rank.boo == 0))
             {
                 songIcon = SONG_ICON_MISSFLAG;
             }
             
             // Average Flag
-            if (_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 1 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 1 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount))
             {
                 songIcon = SONG_ICON_AVFLAG;
             }
             
             // BlackFlag
-            if (_rank.perfect == noteCount - 1 && _rank.good == 1 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 1 && _rank.good == 1 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount))
             {
                 songIcon = SONG_ICON_BLACKFLAG;
             }
             
             // BooFlag
-            if (_rank.perfect == noteCount && _rank.good == 0 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 1 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount && _rank.good == 0 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 1 && _rank.maxcombo == noteCount))
             {
                 songIcon = SONG_ICON_BOOFLAG;
             }
             
             // AAA
-            if (_rank.rawscore == maxRawScore)
+            if (as3hx.Compat.truthy(_rank.rawscore == maxRawScore))
             {
                 songIcon = SONG_ICON_AAA;
             }
@@ -513,25 +513,25 @@ class GlobalVariables extends EventDispatcher
         return songIcon;
     }
     
-    public static function getSongIconIndexBitmask(_songInfo : SongInfo, _rank : Dynamic) : Int
+    public static function getSongIconIndexBitmask(_songInfo                              : Dynamic, _rank                              : Dynamic) : Int
     {
-        var songIcon : Int = SONG_ICON_NO_SCORE;
-        if (_rank != null)
+        var songIcon                              : Dynamic= SONG_ICON_NO_SCORE;
+        if (as3hx.Compat.truthy(_rank != null))
         {
-            var noteCount : Int = _songInfo.note_count;
-            var maxRawScore : Int = _songInfo.score_raw;
+            var noteCount                              : Dynamic= _songInfo.note_count;
+            var maxRawScore                              : Dynamic= _songInfo.score_raw;
             
             // Alt engine hack
-            if (_rank.arrows > 0)
+            if (as3hx.Compat.truthy(_rank.arrows > 0))
             {
                 noteCount = _rank.arrows;
                 maxRawScore = as3hx.Compat.parseInt(noteCount * 50);
             }
             
             // Unfinished or Passed
-            if (_rank.score > 0)
+            if (as3hx.Compat.truthy(_rank.score > 0))
             {
-                if (_rank.perfect + _rank.good + _rank.average + _rank.miss < noteCount)
+                if (as3hx.Compat.truthy(_rank.perfect + _rank.good + _rank.average + _rank.miss < noteCount))
                 {
                     songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_UNFINISHED);
                 }
@@ -542,55 +542,55 @@ class GlobalVariables extends EventDispatcher
             }
             
             // FC* - When current score isn't FC but a FC has been achieved before.
-            if (_rank.fcs > 0)
+            if (as3hx.Compat.truthy(_rank.fcs > 0))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_FC_STAR);
             }
             
             // FC
-            if (_rank.perfect + _rank.good + _rank.average == noteCount && _rank.miss == 0 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect + _rank.good + _rank.average == noteCount && _rank.miss == 0 && _rank.maxcombo == noteCount))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_FC);
             }
             
             // SDG
-            if (maxRawScore - _rank.rawscore < 250)
+            if (as3hx.Compat.truthy(maxRawScore - _rank.rawscore < 250))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_SDG);
             }
             
             // Omni Flag
-            if (_rank.perfect == noteCount - 3 && _rank.good == 1 && _rank.average == 1 && _rank.miss == 1 && _rank.boo == 1)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 3 && _rank.good == 1 && _rank.average == 1 && _rank.miss == 1 && _rank.boo == 1))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_OMNIFLAG);
             }
             
             // Miss Flag
-            if (_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 0 && _rank.miss == 1 && _rank.boo == 0)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 0 && _rank.miss == 1 && _rank.boo == 0))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_MISSFLAG);
             }
             
             // Average Flag
-            if (_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 1 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 1 && _rank.good == 0 && _rank.average == 1 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_AVFLAG);
             }
             
             // BlackFlag
-            if (_rank.perfect == noteCount - 1 && _rank.good == 1 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount - 1 && _rank.good == 1 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 0 && _rank.maxcombo == noteCount))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_BLACKFLAG);
             }
             
             // BooFlag
-            if (_rank.perfect == noteCount && _rank.good == 0 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 1 && _rank.maxcombo == noteCount)
+            if (as3hx.Compat.truthy(_rank.perfect == noteCount && _rank.good == 0 && _rank.average == 0 && _rank.miss == 0 && _rank.boo == 1 && _rank.maxcombo == noteCount))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_BOOFLAG);
             }
             
             // AAA
-            if (_rank.rawscore == maxRawScore)
+            if (as3hx.Compat.truthy(_rank.rawscore == maxRawScore))
             {
                 songIcon = songIcon | as3hx.Compat.parseInt(1 << SONG_ICON_AAA);
             }
@@ -598,7 +598,7 @@ class GlobalVariables extends EventDispatcher
         return songIcon;
     }
     
-    public static var SONG_ICON_TEXT : Array<Dynamic> = ["<font color=\"#9C9C9C\">UNPLAYED</font>", 
+    public static var SONG_ICON_TEXT                              : Dynamic= ["<font color=\"#9C9C9C\">UNPLAYED</font>", 
         "", 
         "<font color=\"#9FC4B4\">PASS</font>", 
         "<font color=\"#00FF00\">FC*</font>", 
@@ -612,7 +612,7 @@ class GlobalVariables extends EventDispatcher
         "<font color=\"#FFFF38\">AAA</font>"
     ];  // :)  
     
-    public static var SONG_ICON_COLOR : Array<Dynamic> = ["#9C9C9C", 
+    public static var SONG_ICON_COLOR                              : Dynamic= ["#9C9C9C", 
         "#FFFFFF", 
         "#9FC4B4", 
         "#00FF00", 
@@ -626,7 +626,7 @@ class GlobalVariables extends EventDispatcher
         "#FFFF38"
     ];
     
-    public static var SONG_ICON_TEXT_FLAG : Array<Dynamic> = ["Unplayed", 
+    public static var SONG_ICON_TEXT_FLAG                              : Dynamic= ["Unplayed", 
         "Unfinished", 
         "Passed", 
         "Full Combo*", 
@@ -640,7 +640,7 @@ class GlobalVariables extends EventDispatcher
         "AAA"
     ];
     
-    public static function getSongIcon(_songInfo : SongInfo, _rank : Dynamic) : String
+    public static function getSongIcon(_songInfo                              : Dynamic, _rank                              : Dynamic) : String
     {
         return SONG_ICON_TEXT[getSongIconIndex(_songInfo, _rank)];
     }
@@ -651,11 +651,11 @@ class GlobalVariables extends EventDispatcher
      * @param	lvlID
      * @return	Object containing the highscores list, or null if no highscore were loaded.
      */
-    public function getHighscores(lvlID : Int) : Dynamic
+    public function getHighscores(lvlID                              : Dynamic) : Dynamic
     {
-        if (Reflect.field(songHighscores, Std.string(lvlID)) != null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(songHighscores, lvlID) != null))
         {
-            return Reflect.field(songHighscores, Std.string(lvlID));
+            return as3hx.Compat.field(songHighscores, lvlID);
         }
         
         return null;
@@ -666,13 +666,13 @@ class GlobalVariables extends EventDispatcher
         songHighscores = { };
     }
     
-    public function loadHighscores(lvlID : Int, startIndex : Int = 0) : Void
+    public function loadHighscores(lvlID                              : Dynamic, startIndex                              : Dynamic= 0) : Void
     {
         _loader = new DynamicURLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.SITE_HISCORES_URL) + "?d=" + Date.now().getTime());
-        var requestVars : URLVariables = new URLVariables();
+        var req                              : Dynamic= new URLRequest(URLs.resolve(URLs.SITE_HISCORES_URL) + "?d=" + Date.now().getTime());
+        var requestVars                              : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.session = this.userSession;
         requestVars.level = lvlID;
@@ -683,29 +683,29 @@ class GlobalVariables extends EventDispatcher
         _loader.load(req);
     }
     
-    private function highscoreLoadComplete(e : Event) : Void
+    private function highscoreLoadComplete(e                              : Dynamic) : Void
     {
         removeLoaderListeners();
-        var lvlID : Int = e.target.level;
-        var data : Dynamic = haxe.Json.parse(e.target.data);
-        var hiscores : Dynamic = Reflect.field(songHighscores, Std.string(lvlID));
+        var lvlID                              : Dynamic= e.target.level;
+        var data                              : Dynamic= haxe.Json.parse(e.target.data);
+        var hiscores                              : Dynamic= as3hx.Compat.field(songHighscores, lvlID);
         
-        if (hiscores == null)
+        if (as3hx.Compat.truthy(hiscores == null))
         {
             Reflect.setField(songHighscores, Std.string(lvlID), { });
         }
         
-        if (data.error == null)
+        if (as3hx.Compat.truthy(data.error == null))
         {
-            for (item/* AS3HX WARNING could not determine type for var: item exp: EIdent(data) type: Dynamic */ in data)
+            for (item/* AS3HX WARNING could not determine type for var: item exp: EIdent(data) type: Dynamic */ in as3hx.Compat.iter(data))
             {
-                Reflect.setField(Reflect.field(songHighscores, Std.string(lvlID)), Std.string(item.id), item);
+                Reflect.setField(as3hx.Compat.field(songHighscores, lvlID), Std.string(item.id), item);
             }
         }
         this.dispatchEvent(new DataEvent(GlobalVariables.HIGHSCORES_LOAD_COMPLETE, data));
     }
     
-    private function highscoreLoadError(e : Event = null) : Void
+    private function highscoreLoadError(e                              : Dynamic= null) : Void
     {
         removeLoaderListeners();
         this.dispatchEvent(new Event(GlobalVariables.HIGHSCORES_LOAD_ERROR));
@@ -729,7 +729,7 @@ class GlobalVariables extends EventDispatcher
     /**
      * Takes a screenshot of the stage and saves it to disk.
      */
-    public function takeScreenShot(filename : String = null) : Void
+    public function takeScreenShot(filename                              : Dynamic= null) : Void
     {
         Screenshots.takeScreenshot(gameMain, filename);
     }
@@ -742,12 +742,12 @@ class GlobalVariables extends EventDispatcher
         Screenshots.saveToClipboard(gameMain);
     }
     
-    public function logDebugError(error_message : String) : Void
+    public function logDebugError(error_message                              : Dynamic) : Void
     {
         false;{
-            var _debugLoader : URLLoader = new URLLoader();
-            var req : URLRequest = new URLRequest(URLs.resolve(URLs.CRASH_LOG_URL));
-            var requestVars : URLVariables = new URLVariables();
+            var _debugLoader                              : Dynamic= new URLLoader();
+            var req                              : Dynamic= new URLRequest(URLs.resolve(URLs.CRASH_LOG_URL));
+            var requestVars                              : Dynamic= new URLVariables();
             Constant.addDefaultRequestVariables(requestVars);
             requestVars.session = userSession;
             requestVars.error = error_message;
@@ -760,11 +760,11 @@ class GlobalVariables extends EventDispatcher
     }
     
     //- Full Screen
-    public function toggleFullScreen(e : Event = null) : Void
+    public function toggleFullScreen(e                              : Dynamic= null) : Void
     {
-        if (gameMain.stage)
+        if (as3hx.Compat.truthy(gameMain.stage))
         {
-            if (gameMain.stage.displayState == StageDisplayState.NORMAL)
+            if (as3hx.Compat.truthy(gameMain.stage.displayState == StageDisplayState.NORMAL))
             {
                 gameMain.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
             }
@@ -777,7 +777,7 @@ class GlobalVariables extends EventDispatcher
     
     public function isFullScreen() : Bool
     {
-        if (gameMain.stage)
+        if (as3hx.Compat.truthy(gameMain.stage))
         {
             return gameMain.stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE;
         }
@@ -785,11 +785,11 @@ class GlobalVariables extends EventDispatcher
         return false;
     }
     
-    public function unlockTokenById(type : String, id : String) : Void
+    public function unlockTokenById(type                              : Dynamic, id                              : Dynamic) : Void
     {
         try
         {
-            Reflect.setField(TOKENS, Std.string(Reflect.field(Reflect.field(TOKENS_TYPE, type), id).level), 1).unlock;
+            Reflect.setField(as3hx.Compat.field(TOKENS, Reflect.field(Reflect.field(TOKENS_TYPE, type), id).level), "unlock", 1);
         }
         catch (err : Error)
         {
@@ -799,7 +799,7 @@ class GlobalVariables extends EventDispatcher
     
     public function reloadEngineData() : Void
     {
-        if (gameMain.loadComplete && !(Std.is(gameMain.activePanel, GameMenu)))
+        if (as3hx.Compat.truthy(gameMain.loadComplete && !(Std.is(gameMain.activePanel, GameMenu))))
         {
             gameMain.removePopup();
             Flags.VALUES = { };
@@ -811,7 +811,7 @@ class GlobalVariables extends EventDispatcher
     
     public function switchUserAccount() : Void
     {
-        if (gameMain.loadComplete && !(Std.is(gameMain.activePanel, GameMenu)))
+        if (as3hx.Compat.truthy(gameMain.loadComplete && !(Std.is(gameMain.activePanel, GameMenu))))
         {
             gameMain.removePopup();
             Flags.VALUES = { };
@@ -823,7 +823,7 @@ class GlobalVariables extends EventDispatcher
     
     private static function get_instance() : GlobalVariables
     {
-        if (_instance == null)
+        if (as3hx.Compat.truthy(_instance == null))
         {
             _instance = new GlobalVariables(new GlobalVariablesSingletonEnforcer());
         }

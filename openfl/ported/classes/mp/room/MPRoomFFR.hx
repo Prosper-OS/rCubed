@@ -24,47 +24,47 @@ import menu.FileLoader;
 
 class MPRoomFFR extends MPRoom
 {
-    public var isCurrentPlayer(get, never) : Bool;
+    public var isCurrentPlayer(get, never)                             : Dynamic;
 
-    public var songData : MPSong = new MPSong();
-    public var songInfo : SongInfo;
-    public var song : Song;
+    public var songData                             : Dynamic= new MPSong();
+    public var songInfo                             : Dynamic;
+    public var song                             : Dynamic;
     
-    public var mods : MPGameplayMods = new MPGameplayMods();
+    public var mods                             : Dynamic= new MPGameplayMods();
     
-    public var activeMatch : MPMatchFFR;
+    public var activeMatch                             : Dynamic;
     
-    public var lastMatch : MPMatchResultsFFR;
-    public var lastMatchHistory : Array<MPMatchResultsFFR>;
-    public var lastMatchIndex : Int = -1;
-    public var lastMatchScorePersonal : GameScoreResult;
+    public var lastMatch                             : Dynamic;
+    public var lastMatchHistory                             : Dynamic;
+    public var lastMatchIndex                             : Dynamic= -1;
+    public var lastMatchScorePersonal                             : Dynamic;
     
-    public var player_states : Array<MPFFRState> = [];
-    public var player_state_map : Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>(true);
+    public var player_states                             : Dynamic= [];
+    public var player_state_map                             : Dynamic= new Dictionary<Dynamic, Dynamic>(true);
     
     public function new()
     {
         super();
     }
     
-    override public function update(data : Dynamic) : Void
+    override public function update(data                             : Dynamic) : Void
     {
         super.update(data);
         
-        if (data.vars != null)
+        if (as3hx.Compat.truthy(data.vars != null))
         {
-            if (data.vars.mode != null)
+            if (as3hx.Compat.truthy(data.vars.mode != null))
             {
                 updateVarsMode(data.vars.mode);
             }
             
-            if (data.vars.user != null)
+            if (as3hx.Compat.truthy(data.vars.user != null))
             {
                 updateVarsUser(data.vars.user);
             }
         }
         
-        if (data.match != null)
+        if (as3hx.Compat.truthy(data.match != null))
         {
             updateLastMatch(data.match);
         }
@@ -78,43 +78,43 @@ class MPRoomFFR extends MPRoom
         lastMatchHistory = null;
     }
     
-    public function updateVarsMode(modeData : Dynamic) : Void
+    public function updateVarsMode(modeData                             : Dynamic) : Void
     {
-        if (modeData.song_details != null)
+        if (as3hx.Compat.truthy(modeData.song_details != null))
         {
             songData.update(modeData.song_details);
             updateSongInfo();
             updateAccessCheck();
         }
         
-        if (modeData.mod_details != null)
+        if (as3hx.Compat.truthy(modeData.mod_details != null))
         {
             mods.update(modeData.mod_details);
         }
     }
     
-    public function updateVarsUser(userData : Array<Dynamic>) : Void
+    public function updateVarsUser(userData                             : Dynamic) : Void
     {
-        var i : Float = userData.length - 1;
-        while (i >= 0)
+        var i                             : Dynamic= userData.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var user : MPUser = getUser(Reflect.field(userData, Std.string(i)).uid);
-            var userVars : MPFFRState = player_state_map[user.uid];
+            var user                             : Dynamic= getUser(as3hx.Compat.field(userData, i).uid);
+            var userVars                             : Dynamic= player_state_map[user.uid];
             
-            if (userVars == null)
+            if (as3hx.Compat.truthy(userVars == null))
             {
                 userVars = new MPFFRState(this, user);
                 player_states.push(userVars);
                 player_state_map[user.uid] = userVars;
             }
-            userVars.update(Reflect.field(userData, Std.string(i)));
+            userVars.update(as3hx.Compat.field(userData, i));
             i--;
         }
         
         _clearMissingPlayerData();
     }
     
-    public function updateLastMatch(matchInfo : Dynamic) : Void
+    public function updateLastMatch(matchInfo                             : Dynamic) : Void
     {
         lastMatch = new MPMatchResultsFFR(this, lastMatchHistory.length);
         lastMatch.update(matchInfo);
@@ -129,50 +129,50 @@ class MPRoomFFR extends MPRoom
         lastMatchHistory = [];
     }
     
-    override public function userJoinTeam(user : MPUser, teamUID : Int, vars : Dynamic = null) : Void
+    override public function userJoinTeam(user                             : Dynamic, teamUID                             : Dynamic, vars                             : Dynamic= null) : Void
     {
         super.userJoinTeam(user, teamUID);
         
-        var team : MPTeam = teams_map[teamUID];
-        if (team != null && !team.spectator)
+        var team                             : Dynamic= teams_map[teamUID];
+        if (as3hx.Compat.truthy(team != null && !team.spectator))
         {
-            var needPlayerData : Bool = true;
-            var i : Float = player_states.length - 1;
-            while (i >= 0)
+            var needPlayerData                             : Dynamic= true;
+            var i                             : Dynamic= player_states.length - 1;
+            while (as3hx.Compat.truthy(i >= 0))
             {
-                if (Reflect.field(player_states, Std.string(i)).user == user)
+                if (as3hx.Compat.truthy(as3hx.Compat.field(player_states, i).user == user))
                 {
                     needPlayerData = false;
                 }
                 i--;
             }
             
-            if (needPlayerData)
+            if (as3hx.Compat.truthy(needPlayerData))
             {
-                var playerData : MPFFRState = new MPFFRState(this, user);
+                var playerData                             : Dynamic= new MPFFRState(this, user);
                 playerData.update(vars);
                 player_states.push(playerData);
                 player_state_map[user.uid] = playerData;
             }
             
-            if (_mp.currentUser == user)
+            if (as3hx.Compat.truthy(_mp.currentUser == user))
             {
                 updateAccessCheck();
             }
         }
     }
     
-    override public function userLeaveTeam(user : MPUser, teamUID : Int) : Void
+    override public function userLeaveTeam(user                             : Dynamic, teamUID                             : Dynamic) : Void
     {
         super.userLeaveTeam(user, teamUID);
         
-        var team : MPTeam = teams_map[teamUID];
-        if (team != null && !team.spectator)
+        var team                             : Dynamic= teams_map[teamUID];
+        if (as3hx.Compat.truthy(team != null && !team.spectator))
         {
-            var i : Float = player_states.length - 1;
-            while (i >= 0)
+            var i                             : Dynamic= player_states.length - 1;
+            while (as3hx.Compat.truthy(i >= 0))
             {
-                if (Reflect.field(player_states, Std.string(i)).user == user)
+                if (as3hx.Compat.truthy(as3hx.Compat.field(player_states, i).user == user))
                 {
                     player_states.splice(i, 1);
                 }
@@ -182,7 +182,7 @@ class MPRoomFFR extends MPRoom
         }
     }
     
-    override public function modeCommand(cmd : MPSocketDataText, user : MPUser) : Void
+    override public function modeCommand(cmd                             : Dynamic, user                             : Dynamic) : Void
     {
         var _sw0_ = (cmd.action);        
 
@@ -251,7 +251,7 @@ class MPRoomFFR extends MPRoom
         }
     }
     
-    override public function modeRawCommand(cmd : MPSocketDataRaw, user : MPUser) : Void
+    override public function modeRawCommand(cmd                             : Dynamic, user                             : Dynamic) : Void
     {
         var _sw1_ = (cmd.action);        
 
@@ -265,23 +265,23 @@ class MPRoomFFR extends MPRoom
         }
     }
     
-    private function modeSongChange(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeSongChange(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
         songData.update(cmd.data);
         updateSongInfo(user, cmd);
         updateAccessCheck();
     }
     
-    private function modeGameMods(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeGameMods(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
         mods.update(cmd.data.value);
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_GAME_MODS, cmd, this, user));
     }
     
-    private function modeGameState(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeGameState(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return;
         }
@@ -290,10 +290,10 @@ class MPRoomFFR extends MPRoom
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_GAME_STATE, cmd, this, user));
     }
     
-    private function modePlayableState(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modePlayableState(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return;
         }
@@ -302,10 +302,10 @@ class MPRoomFFR extends MPRoom
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_PLAYABLE_STATE, cmd, this, user));
     }
     
-    private function modeSongRate(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeSongRate(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return;
         }
@@ -314,10 +314,10 @@ class MPRoomFFR extends MPRoom
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_SONG_RATE, cmd, this, user));
     }
     
-    private function modeLoadingProgress(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeLoadingProgress(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return;
         }
@@ -328,10 +328,10 @@ class MPRoomFFR extends MPRoom
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_LOADING, cmd, this, user));
     }
     
-    private function modeReadyState(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeReadyState(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return;
         }
@@ -340,7 +340,7 @@ class MPRoomFFR extends MPRoom
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_READY_STATE, cmd, this, user));
     }
     
-    private function modeMatchStart(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeMatchStart(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
         activeMatch = new MPMatchFFR(this);
         activeMatch.build(cmd.data);
@@ -348,10 +348,10 @@ class MPRoomFFR extends MPRoom
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_MATCH_START, cmd, this, user));
     }
     
-    private function modeSongStart(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeSongStart(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return;
         }
@@ -362,13 +362,13 @@ class MPRoomFFR extends MPRoom
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_SONG_START, cmd, this, user));
     }
     
-    private function modeScoreUpdate(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeScoreUpdate(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
         activeMatch.update(cmd.data);
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_SCORE_UPDATE, cmd, this, user));
     }
     
-    private function modeScoreUpdateInProgress(user : MPUser, cmd : MPSocketDataText) : Void
+    private function modeScoreUpdateInProgress(user                             : Dynamic, cmd                             : Dynamic) : Void
     {
         activeMatch.build(cmd.data);
         _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_SCORE_UPDATE, cmd, this, user));
@@ -376,27 +376,27 @@ class MPRoomFFR extends MPRoom
     
     ///////////////////////////////////////////////////////////////////////
     
-    private function updateSongInfo(user : MPUser = null, cmd : MPSocketDataText = null) : Void
+    private function updateSongInfo(user                             : Dynamic= null, cmd                             : Dynamic= null) : Void
     {
         songInfo = null;
         
-        if (songData == null || !songData.selected)
+        if (as3hx.Compat.truthy(songData == null || !songData.selected))
         {
             _mp.dispatchEvent(new MPRoomEvent(MPEvent.FFR_SONG_CHANGE, cmd, this, user));
             return;
         }
         
-        var loadedPlaylist : Playlist = Playlist.instance;
-        var isAltLoaded : Bool = loadedPlaylist.engine != null;
+        var loadedPlaylist                             : Dynamic= Playlist.instance;
+        var isAltLoaded                             : Dynamic= loadedPlaylist.engine != null;
         
         // Alt Engine
-        if (songData.engine)
+        if (as3hx.Compat.truthy(songData.engine))
         {
-            if (songData.engine.id == "fileloader")
+            if (as3hx.Compat.truthy(songData.engine.id == "fileloader"))
             {
-                if (songData.engine.cacheID != null)
+                if (as3hx.Compat.truthy(songData.engine.cacheID != null))
                 {
-                    var chartPath : String = FileLoader.cache.findKey(function(entry : Dynamic) : Dynamic
+                    var chartPath                             : Dynamic= FileLoader.cache.findKey(function(entry                             : Dynamic) : Dynamic
                             {
                                 return Reflect.field(entry, "id") == songData.engine.cacheID;
                             });
@@ -427,12 +427,12 @@ class MPRoomFFR extends MPRoom
         {
             
             {
-                var ffrSongsMatch : Array<SongInfo> = Playlist.instanceCanon.indexList.filter(function(item : SongInfo, index : Int, vec : Array<SongInfo>) : Bool
+                var ffrSongsMatch                             : Dynamic= Playlist.instanceCanon.indexList.filter(function(item                             : Dynamic, index                             : Dynamic, vec                             : Dynamic) : Bool
                         {
                             return item.level == songData.id;
                         });
                 
-                if (ffrSongsMatch.length == 1)
+                if (as3hx.Compat.truthy(ffrSongsMatch.length == 1))
                 {
                     songInfo = ffrSongsMatch[0];
                 }
@@ -444,8 +444,8 @@ class MPRoomFFR extends MPRoom
     
     public function updateAccessCheck() : Void
     {
-        var cmd_play : MPCFFRSongPlayable = new MPCFFRSongPlayable(this);
-        if (songInfo != null)
+        var cmd_play                             : Dynamic= new MPCFFRSongPlayable(this);
+        if (as3hx.Compat.truthy(songInfo != null))
         {
             cmd_play.canPlay = songInfo.access == 0;
             cmd_play.id = songInfo.level;
@@ -461,20 +461,20 @@ class MPRoomFFR extends MPRoom
         _mp.sendCommand(new MPCFFRSongRate(this, GlobalVariables.instance.playerUser.songRate));
     }
     
-    public function getPlayerVariables(user : MPUser) : MPFFRState
+    public function getPlayerVariables(user                             : Dynamic) : MPFFRState
     {
         return player_state_map[user.uid];
     }
     
-    public function getPlayerScore(user : MPUser) : MPMatchFFRUser
+    public function getPlayerScore(user                             : Dynamic) : MPMatchFFRUser
     {
         return activeMatch.users_map[user.uid];
     }
     
-    public function getPlayerState(user : MPUser) : String
+    public function getPlayerState(user                             : Dynamic) : String
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return null;
         }
@@ -482,15 +482,15 @@ class MPRoomFFR extends MPRoom
         return playerVars.game_state;
     }
     
-    public function getPlayerSongRate(user : MPUser) : Float
+    public function getPlayerSongRate(user                             : Dynamic) : Float
     {
-        if (mods.rate.enabled)
+        if (as3hx.Compat.truthy(mods.rate.enabled))
         {
             return mods.rate.value;
         }
         
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return 1;
         }
@@ -498,10 +498,10 @@ class MPRoomFFR extends MPRoom
         return playerVars.song_rate;
     }
     
-    override public function isPlayerReady(user : MPUser) : Bool
+    override public function isPlayerReady(user                             : Dynamic) : Bool
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return false;
         }
@@ -511,14 +511,14 @@ class MPRoomFFR extends MPRoom
     
     public function canAllUsersPlay() : Bool
     {
-        var canPlay : Bool = true;
+        var canPlay                             : Dynamic= true;
         
-        var i : Float = player_states.length - 1;
-        while (i >= 0)
+        var i                             : Dynamic= player_states.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var vars : MPFFRState = Reflect.field(player_states, Std.string(i));
+            var vars                             : Dynamic= as3hx.Compat.field(player_states, i);
             
-            if (vars.playable_state != 1)
+            if (as3hx.Compat.truthy(vars.playable_state != 1))
             {
                 canPlay = false;
                 break;
@@ -531,14 +531,14 @@ class MPRoomFFR extends MPRoom
     
     public function isAllPlayersReady() : Bool
     {
-        var isReady : Bool = true;
+        var isReady                             : Dynamic= true;
         
-        var i : Float = player_states.length - 1;
-        while (i >= 0)
+        var i                             : Dynamic= player_states.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var vars : MPFFRState = Reflect.field(player_states, Std.string(i));
+            var vars                             : Dynamic= as3hx.Compat.field(player_states, i);
             
-            if (vars.user != owner && !vars.ready_state)
+            if (as3hx.Compat.truthy(vars.user != owner && !vars.ready_state))
             {
                 isReady = false;
                 break;
@@ -549,10 +549,10 @@ class MPRoomFFR extends MPRoom
         return isReady;
     }
     
-    override public function canUserPlaySong(user : MPUser) : Bool
+    override public function canUserPlaySong(user                             : Dynamic) : Bool
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return false;
         }
@@ -565,10 +565,10 @@ class MPRoomFFR extends MPRoom
         return song != null && song.isLoaded;
     }
     
-    public function isPlayerLoaded(user : MPUser) : Bool
+    public function isPlayerLoaded(user                             : Dynamic) : Bool
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return false;
         }
@@ -576,10 +576,10 @@ class MPRoomFFR extends MPRoom
         return playerVars.loading_state;
     }
     
-    public function getPlayerLoadingProgress(user : MPUser) : Float
+    public function getPlayerLoadingProgress(user                             : Dynamic) : Float
     {
-        var playerVars : MPFFRState = player_state_map[user.uid];
-        if (playerVars == null)
+        var playerVars                             : Dynamic= player_state_map[user.uid];
+        if (as3hx.Compat.truthy(playerVars == null))
         {
             return 0;
         }
@@ -589,12 +589,12 @@ class MPRoomFFR extends MPRoom
     
     private function _clearMissingPlayerData() : Void
     {
-        var i : Float = player_states.length - 1;
-        while (i >= 0)
+        var i                             : Dynamic= player_states.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var playerData : MPFFRState = Reflect.field(player_states, Std.string(i));
+            var playerData                             : Dynamic= as3hx.Compat.field(player_states, i);
             
-            if (!isPlayer(playerData.user))
+            if (as3hx.Compat.truthy(!isPlayer(playerData.user)))
             {
                 player_states.splice(i, 1);
                 Reflect.deleteField(player_state_map, Std.string(null));

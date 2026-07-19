@@ -21,42 +21,42 @@ import game.noteskins.ExternalNoteskin;
 
 class SettingsTabNoteskin extends SettingsTabBase
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _noteskins : Noteskins = Noteskins.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _noteskins                       : Dynamic= Noteskins.instance;
     
-    private var noteskin_struct : Dynamic = NoteskinsStruct.getDefaultStruct();
+    private var noteskin_struct                       : Dynamic= NoteskinsStruct.getDefaultStruct();
     
-    private var noteColorComboArray : Array<Dynamic> = [];
-    private var optionNoteskins : Array<Dynamic>;
-    private var optionNoteskinPreview : Sprite;
-    private var optionNoteSkinCombo : ComboBox;
-    private var optionNoteSkinComboIgnore : Bool = false;
-    private var optionNoteskinComboRefresh : BoxIcon;
+    private var noteColorComboArray                       : Dynamic= [];
+    private var optionNoteskins                       : Dynamic;
+    private var optionNoteskinPreview                       : Dynamic;
+    private var optionNoteSkinCombo                       : Dynamic;
+    private var optionNoteSkinComboIgnore                       : Dynamic= false;
+    private var optionNoteskinComboRefresh                       : Dynamic;
     
-    private var optionOpenCustomNoteskinEditor : BoxButton;
-    private var optionOpenNoteskinFolder : BoxButton;
-    private var optionImportCustomNoteskin : BoxButton;
-    private var optionExportCustomNoteskin : BoxButton;
+    private var optionOpenCustomNoteskinEditor                       : Dynamic;
+    private var optionOpenNoteskinFolder                       : Dynamic;
+    private var optionImportCustomNoteskin                       : Dynamic;
+    private var optionExportCustomNoteskin                       : Dynamic;
     
-    private var optionNoteColors : Array<Dynamic>;
-    private var arrayColorSprites : Array<Dynamic>;
-    private var arrayColorSpritesReplace : Array<Dynamic>;
+    private var optionNoteColors                       : Dynamic;
+    private var arrayColorSprites                       : Dynamic;
+    private var arrayColorSpritesReplace                       : Dynamic;
     
-    private var lastNoteskin : Int;
+    private var lastNoteskin                       : Dynamic;
     
-    public function new(settingsWindow : SettingsWindow)
+    public function new(settingsWindow                       : Dynamic)
     {
         super(settingsWindow);
         
         lastNoteskin = _gvars.activeUser.activeNoteskin;
         
         noteColorComboArray = [];
-        for (i in 0...DEFAULT_OPTIONS.noteColors.length)
+        for (i in 0...SettingsTabBase.DEFAULT_OPTIONS.noteColors.length)
         {
             noteColorComboArray.push({
-                        label : _lang.stringSimple("note_colors_" + DEFAULT_OPTIONS.noteColors[i]),
-                        data : DEFAULT_OPTIONS.noteColors[i]
+                        label : _lang.stringSimple("note_colors_" + SettingsTabBase.DEFAULT_OPTIONS.noteColors[i]),
+                        data : SettingsTabBase.DEFAULT_OPTIONS.noteColors[i]
                     });
         }
     }
@@ -72,37 +72,37 @@ class SettingsTabNoteskin extends SettingsTabBase
         container.graphics.moveTo(295, 15);
         container.graphics.lineTo(295, 405);
         
-        var item : Dynamic;
-        var i : Int;
-        var xOff : Int = 15;
-        var yOff : Int = 15;
+        var item                       : Dynamic= null;
+        var i                       : Dynamic= null;
+        var xOff                       : Dynamic= 15;
+        var yOff                       : Dynamic= 15;
         
         optionNoteskinPreview = addNoteImage(xOff + 233, yOff + 32, 64, "blue");
         
         //- Noteskins
         optionNoteskins = [];
-        var textNoteskinGroup : Text = new Text(container, xOff, yOff, _lang.string("options_noteskin"), 14);
+        var textNoteskinGroup                       : Dynamic= new Text(container, xOff, yOff, _lang.string("options_noteskin"), 14);
         textNoteskinGroup.width = 265;
         yOff += 25;
         
-        var gameNoteskinCheck : BoxCheck;
+        var gameNoteskinCheck                       : Dynamic= null;
         
-        var noteskinData : Dynamic = _noteskins.data;
-        var noteskin_ids : Array<Dynamic> = [];
+        var noteskinData                       : Dynamic= _noteskins.data;
+        var noteskin_ids                       : Dynamic= [];
         
-        for (item/* AS3HX WARNING could not determine type for var: item exp: EIdent(noteskinData) type: Dynamic */ in noteskinData)
+        for (item/* AS3HX WARNING could not determine type for var: item exp: EIdent(noteskinData) type: Dynamic */ in as3hx.Compat.iter(noteskinData))
         {
-            if (Reflect.field(item, "_hidden") == null)
+            if (as3hx.Compat.truthy(Reflect.field(item, "_hidden") == null))
             {
                 noteskin_ids.push(item.id);
             }
         }
         
-        noteskin_ids.sort(Array.NUMERIC);
+        noteskin_ids.sort(as3hx.Compat.ARRAY_NUMERIC);
         
-        for (noteskin_id in noteskin_ids)
+        for (noteskin_id in as3hx.Compat.iter(noteskin_ids))
         {
-            item = Reflect.field(noteskinData, Std.string(noteskin_id));
+            item = as3hx.Compat.field(noteskinData, noteskin_id);
             new Text(container, xOff + 23, yOff, item.name);
             
             gameNoteskinCheck = new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
@@ -147,11 +147,11 @@ class SettingsTabNoteskin extends SettingsTabBase
         xOff = 310;
         yOff = 15;
         
-        var gameNoteColorTitle : Text = new Text(container, xOff + 5, yOff, _lang.string("options_note_colors_title"), 14);
+        var gameNoteColorTitle                       : Dynamic= new Text(container, xOff + 5, yOff, _lang.string("options_note_colors_title"), 14);
         gameNoteColorTitle.width = 265;
         gameNoteColorTitle.align = Text.CENTER;
         
-        var optionNoteColorReset : BoxButton = new BoxButton(container, xOff + 245, yOff, 20, 21, "R", 12, clickHandler);
+        var optionNoteColorReset                       : Dynamic= new BoxButton(container, xOff + 245, yOff, 20, 21, "R", 12, clickHandler);
         optionNoteColorReset.color_reset_id = true;
         optionNoteColorReset.color = 0xff0000;
         
@@ -161,18 +161,18 @@ class SettingsTabNoteskin extends SettingsTabBase
         optionNoteColors = [];
         arrayColorSprites = [];
         arrayColorSpritesReplace = [];
-        for (i in 0...DEFAULT_OPTIONS.noteColors.length)
+        for (i in 0...SettingsTabBase.DEFAULT_OPTIONS.noteColors.length)
         {
-            arrayColorSprites.push(addNoteImage(xOff + 11, yOff + 11, 22, DEFAULT_OPTIONS.noteColors[i]));
+            arrayColorSprites.push(addNoteImage(xOff + 11, yOff + 11, 22, SettingsTabBase.DEFAULT_OPTIONS.noteColors[i]));
             
-            var gameNoteColor : Text = new Text(container, xOff + 25, yOff, _lang.string("note_colors_" + DEFAULT_OPTIONS.noteColors[i]));
+            var gameNoteColor                       : Dynamic= new Text(container, xOff + 25, yOff, _lang.string("note_colors_" + SettingsTabBase.DEFAULT_OPTIONS.noteColors[i]));
             gameNoteColor.width = 95;
             
-            var gameNoteColorCombo : ComboBox = new ComboBox(container, xOff + 125, yOff, _lang.stringSimple("note_colors_" + DEFAULT_OPTIONS.noteColors[i]), noteColorComboArray);
+            var gameNoteColorCombo                       : Dynamic= new ComboBox(container, xOff + 125, yOff, _lang.stringSimple("note_colors_" + SettingsTabBase.DEFAULT_OPTIONS.noteColors[i]), noteColorComboArray);
             gameNoteColorCombo.setSize(114, 22);
             gameNoteColorCombo.openPosition = ComboBox.BOTTOM;
             gameNoteColorCombo.fontSize = 11;
-            gameNoteColorCombo.numVisibleItems = DEFAULT_OPTIONS.noteColors.length;
+            gameNoteColorCombo.numVisibleItems = SettingsTabBase.DEFAULT_OPTIONS.noteColors.length;
             gameNoteColorCombo.addEventListener(Event.SELECT, gameNoteColorSelect);
             optionNoteColors.push(gameNoteColorCombo);
             
@@ -183,49 +183,49 @@ class SettingsTabNoteskin extends SettingsTabBase
         }
         
         yOff += 20;
-        var gameSwapAllNoteColor : Text = new Text(container, xOff, yOff, _lang.string("note_colors_swap_all"));
+        var gameSwapAllNoteColor                       : Dynamic= new Text(container, xOff, yOff, _lang.string("note_colors_swap_all"));
         gameSwapAllNoteColor.width = 120;
         
-        var gameSwapAllNoteColorCombo : ComboBox = new ComboBox(container, xOff + 125, yOff, "---", noteColorComboArray);
+        var gameSwapAllNoteColorCombo                       : Dynamic= new ComboBox(container, xOff + 125, yOff, "---", noteColorComboArray);
         gameSwapAllNoteColorCombo.setSize(139, 22);
         gameSwapAllNoteColorCombo.openPosition = ComboBox.BOTTOM;
         gameSwapAllNoteColorCombo.fontSize = 11;
-        gameSwapAllNoteColorCombo.numVisibleItems = DEFAULT_OPTIONS.noteColors.length;
+        gameSwapAllNoteColorCombo.numVisibleItems = SettingsTabBase.DEFAULT_OPTIONS.noteColors.length;
         gameSwapAllNoteColorCombo.addEventListener(Event.SELECT, gameSwapAllNoteColorSelect);
     }
     
-    private function addNoteImage(xOff : Float, yOff : Float, receptorSize : Float, color : String) : Sprite
+    private function addNoteImage(xOff                       : Dynamic, yOff                       : Dynamic, receptorSize                       : Dynamic, color                       : Dynamic) : Sprite
     {
-        var data : Dynamic = _noteskins.getInfo(_gvars.activeUser.activeNoteskin);
-        var hasRotation : Bool = (data.rotation != 0);
+        var data                       : Dynamic= _noteskins.getInfo(_gvars.activeUser.activeNoteskin);
+        var hasRotation                       : Dynamic= (data.rotation != 0);
         
-        var noteHolder : Sprite = new Sprite();
+        var noteHolder                       : Dynamic= new Sprite();
         noteHolder.x = xOff;
         noteHolder.y = yOff;
         container.addChild(noteHolder);
         
-        var noteSprite : Sprite = _noteskins.getNote(data.id, color, "U");
+        var noteSprite                       : Dynamic= _noteskins.getNote(data.id, color, "U");
         noteSprite.x = -(data.width >> 1);
         noteSprite.y = -(data.height >> 1);
         noteHolder.addChild(noteSprite);
         
         // scale
-        if (hasRotation)
+        if (as3hx.Compat.truthy(hasRotation))
         {
             noteHolder.rotation = data.rotation * 2;
         }
         
-        var noteScale : Float = Math.min(1, receptorSize / Math.max(noteHolder.width, noteHolder.height));
+        var noteScale                       : Dynamic= Math.min(1, receptorSize / Math.max(noteHolder.width, noteHolder.height));
         noteHolder.scaleX = noteHolder.scaleY = noteScale;
         noteHolder.visible = true;
         
         return noteHolder;
     }
     
-    private function replaceNoteImage(oldSprite : Sprite, receptorSize : Float, color : String) : Sprite
+    private function replaceNoteImage(oldSprite                       : Dynamic, receptorSize                       : Dynamic, color                       : Dynamic) : Sprite
     {
-        var xOff : Float = oldSprite.x;
-        var yOff : Float = oldSprite.y;
+        var xOff                       : Dynamic= oldSprite.x;
+        var yOff                       : Dynamic= oldSprite.y;
         
         oldSprite.parent.removeChild(oldSprite);
         
@@ -234,9 +234,9 @@ class SettingsTabNoteskin extends SettingsTabBase
     
     private function updateNoteImages() : Void
     {
-        for (i in 0...DEFAULT_OPTIONS.noteColors.length)
+        for (i in 0...SettingsTabBase.DEFAULT_OPTIONS.noteColors.length)
         {
-            arrayColorSprites[i] = replaceNoteImage(arrayColorSprites[i], 22, DEFAULT_OPTIONS.noteColors[i]);
+            arrayColorSprites[i] = replaceNoteImage(arrayColorSprites[i], 22, SettingsTabBase.DEFAULT_OPTIONS.noteColors[i]);
             arrayColorSpritesReplace[i] = replaceNoteImage(arrayColorSpritesReplace[i], 22, _gvars.activeUser.noteColors[i]);
         }
         
@@ -247,64 +247,64 @@ class SettingsTabNoteskin extends SettingsTabBase
     // Set Noteskin
     {
         
-        for (item in optionNoteskins)
+        for (item in as3hx.Compat.iter(optionNoteskins))
         {
             item.checked = (item.skin == _gvars.activeUser.activeNoteskin);
         }
         
-        for (i in 0...DEFAULT_OPTIONS.noteColors.length)
+        for (i in 0...SettingsTabBase.DEFAULT_OPTIONS.noteColors.length)
         {
             (try cast(optionNoteColors[i], ComboBox) catch(e:Dynamic) null).selectedItemByData = _gvars.activeUser.noteColors[i];
         }
         
-        if (lastNoteskin != _gvars.activeUser.activeNoteskin)
+        if (as3hx.Compat.truthy(lastNoteskin != _gvars.activeUser.activeNoteskin))
         {
             lastNoteskin = _gvars.activeUser.activeNoteskin;
             updateNoteImages();
         }
     }
     
-    override public function clickHandler(e : MouseEvent) : Void
+    override public function clickHandler(e                       : Dynamic) : Void
     //- Noteskin
     {
         
-        if (e.target.exists("skin"))
+        if (as3hx.Compat.truthy(e.target.exists("skin")))
         {
             _gvars.activeUser.activeNoteskin = e.target.skin;
         }
         
         //- Custom Refresh
-        if (e.target == optionNoteskinComboRefresh)
+        if (as3hx.Compat.truthy(e.target == optionNoteskinComboRefresh))
         {
             _noteskins.loadExternalNoteskins();
             setCustomNoteskinCombo();
         }
         //- Custom Noteskin Editor
-        else if (e.target == optionOpenCustomNoteskinEditor)
+        else if (as3hx.Compat.truthy(e.target == optionOpenCustomNoteskinEditor))
         {
             flash.Lib.getURL(new URLRequest(Constant.NOTESKIN_EDITOR_URL), "_blank");
             return;
         }
         //- Custom Noteskin Folder
-        else if (e.target == optionOpenNoteskinFolder)
+        else if (as3hx.Compat.truthy(e.target == optionOpenNoteskinFolder))
         {
             AirContext.STORAGE_PATH.resolvePath(Constant.NOTESKIN_PATH).openWithDefaultApplication();
             return;
         }
         //- Import Custom Noteskin
-        else if (e.target == optionImportCustomNoteskin)
+        else if (as3hx.Compat.truthy(e.target == optionImportCustomNoteskin))
         {
             new PromptInput(parent, _lang.string("popup_noteskin_import_json"), _lang.string("popup_noteskin_import"), e_importNoteskin);
             return;
         }
         //- Export Custom Noteskin
-        else if (e.target == optionExportCustomNoteskin)
+        else if (as3hx.Compat.truthy(e.target == optionExportCustomNoteskin))
         {
-            var nsString : String = noteskinsString();
-            if (nsString != null)
+            var nsString                       : Dynamic= noteskinsString();
+            if (as3hx.Compat.truthy(nsString != null))
             {
-                var success : Bool = SystemUtil.setClipboard(nsString);
-                if (success)
+                var success                       : Dynamic= SystemUtil.setClipboard(nsString);
+                if (as3hx.Compat.truthy(success))
                 {
                     Alert.add(_lang.string("clipboard_success"), 120, Alert.GREEN);
                 }
@@ -316,23 +316,23 @@ class SettingsTabNoteskin extends SettingsTabBase
             return;
         }
         
-        if (e.target.exists("color_reset_id"))
+        if (as3hx.Compat.truthy(e.target.exists("color_reset_id")))
         {
-            for (i in 0...DEFAULT_OPTIONS.noteColors.length)
+            for (i in 0...SettingsTabBase.DEFAULT_OPTIONS.noteColors.length)
             {
-                _gvars.activeUser.noteColors[i] = DEFAULT_OPTIONS.noteColors[i];
+                _gvars.activeUser.noteColors[i] = SettingsTabBase.DEFAULT_OPTIONS.noteColors[i];
             }
         }
         
         setValues();
     }
     
-    private function gameNoteColorSelect(e : Event) : Void
+    private function gameNoteColorSelect(e                       : Dynamic) : Void
     {
-        var data : Dynamic = e.target.selectedItem.data;
+        var data                       : Dynamic= e.target.selectedItem.data;
         for (i in 0...optionNoteColors.length)
         {
-            if (optionNoteColors[i] == e.target)
+            if (as3hx.Compat.truthy(optionNoteColors[i] == e.target))
             {
                 _gvars.activeUser.noteColors[i] = data;
                 arrayColorSpritesReplace[i] = replaceNoteImage(arrayColorSpritesReplace[i], 22, _gvars.activeUser.noteColors[i]);
@@ -340,14 +340,14 @@ class SettingsTabNoteskin extends SettingsTabBase
         }
     }
     
-    private function gameSwapAllNoteColorSelect(e : Event) : Void
+    private function gameSwapAllNoteColorSelect(e                       : Dynamic) : Void
     {
-        if (e.target.selectedItem == null)
+        if (as3hx.Compat.truthy(e.target.selectedItem == null))
         {
             return;
         }
         
-        var data : Dynamic = e.target.selectedItem.data;
+        var data                       : Dynamic= e.target.selectedItem.data;
         for (i in 0...optionNoteColors.length)
         {
             _gvars.activeUser.noteColors[i] = data;
@@ -359,22 +359,22 @@ class SettingsTabNoteskin extends SettingsTabBase
     
     private function setCustomNoteskinCombo() : Void
     {
-        var extList : Array<ExternalNoteskin> = _noteskins.externalNoteskins;
-        var noteskinList : Array<Dynamic> = [];
-        var ns : ExternalNoteskin;
+        var extList                       : Dynamic= _noteskins.externalNoteskins;
+        var noteskinList                       : Dynamic= [];
+        var ns                       : Dynamic= null;
         
-        var noteskinData : String = LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_DATA, null);
-        var noteskinImport : String = LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_IMPORT, null);
-        var noteskinFilename : String = LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_FILE, null);
+        var noteskinData                       : Dynamic= LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_DATA, null);
+        var noteskinImport                       : Dynamic= LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_IMPORT, null);
+        var noteskinFilename                       : Dynamic= LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_FILE, null);
         
-        if (extList.length > 0)
+        if (as3hx.Compat.truthy(extList.length > 0))
         {
             for (i in 0...extList.length)
             {
                 ns = extList[i];
                 
-                var nsName : String = (ns.data.name.indexOf("Custom Export") != -(1) ? ns.file.substr(0, ns.file.length - 4) : ns.data.name).replace(new as3hx.Compat.Regex('^\\s+|\\s+$', "gs"), "");
-                if (nsName.length <= 0)
+                var nsName                       : Dynamic= new as3hx.Compat.Regex('^\\s+|\\s+$', "gs").replace((ns.data.name.indexOf("Custom Export") != -(1) ? ns.file.substr(0, ns.file.length - 4) : ns.data.name), "");
+                if (as3hx.Compat.truthy(nsName.length <= 0))
                 {
                     nsName = "<" + ns.file + ">";
                 }
@@ -384,12 +384,12 @@ class SettingsTabNoteskin extends SettingsTabBase
                             data : extList[i]
                         });
             }
-            noteskinList.sortOn("label", Array.CASEINSENSITIVE);
+            as3hx.Compat.sortOn(noteskinList, "label", as3hx.Compat.ARRAY_CASEINSENSITIVE);
         }
         
-        if (noteskinImport != null)
+        if (as3hx.Compat.truthy(noteskinImport != null))
         {
-            if (extList.length > 0)
+            if (as3hx.Compat.truthy(extList.length > 0))
             {
                 noteskinList.unshift({
                             label : "------------------------------------",
@@ -407,11 +407,11 @@ class SettingsTabNoteskin extends SettingsTabBase
         optionNoteSkinCombo.items = noteskinList;
         
         // select combo box index
-        if (noteskinFilename != null)
+        if (as3hx.Compat.truthy(noteskinFilename != null))
         {
             for (i in 0...noteskinList.length)
             {
-                if (noteskinList[i].data != null && (Std.is(noteskinList[i].data, ExternalNoteskin)) && noteskinList[i].data.file == noteskinFilename)
+                if (as3hx.Compat.truthy(noteskinList[i].data != null && (Std.is(noteskinList[i].data, ExternalNoteskin)) && noteskinList[i].data.file == noteskinFilename))
                 {
                     optionNoteSkinCombo.selectedIndex = i;
                     break;
@@ -425,32 +425,32 @@ class SettingsTabNoteskin extends SettingsTabBase
         optionNoteSkinComboIgnore = false;
     }
     
-    private function gameNoteSkinSelect(e : Event) : Void
+    private function gameNoteSkinSelect(e                       : Dynamic) : Void
     {
-        if (optionNoteSkinComboIgnore)
+        if (as3hx.Compat.truthy(optionNoteSkinComboIgnore))
         {
             return;
         }
         
-        var data : Dynamic = e.target.selectedItem.data;
-        if (data == null)
+        var data                       : Dynamic= e.target.selectedItem.data;
+        if (as3hx.Compat.truthy(data == null))
         {
             return;
         }
-        else if (data == optionNoteSkinCombo)
+        else if (as3hx.Compat.truthy(data == optionNoteSkinCombo))
         {
-            var json : String = LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_IMPORT, null);
+            var json                       : Dynamic= LocalStore.getVariable(Noteskins.CUSTOM_NOTESKIN_IMPORT, null);
             LocalStore.setVariable(Noteskins.CUSTOM_NOTESKIN_DATA, json);
             LocalStore.setVariable(Noteskins.CUSTOM_NOTESKIN_FILE, null);
         }
         else
         {
-            var extNS : ExternalNoteskin = try cast(data, ExternalNoteskin) catch(e:Dynamic) null;
+            var extNS                       : Dynamic= try cast(data, ExternalNoteskin) catch(e:Dynamic) null;
             LocalStore.setVariable(Noteskins.CUSTOM_NOTESKIN_DATA, extNS.json);
             LocalStore.setVariable(Noteskins.CUSTOM_NOTESKIN_FILE, extNS.file);
         }
         
-        if (_gvars.activeUser.activeNoteskin != 0)
+        if (as3hx.Compat.truthy(_gvars.activeUser.activeNoteskin != 0))
         {
             _gvars.activeUser.activeNoteskin = 0;
             setValues();
@@ -461,11 +461,11 @@ class SettingsTabNoteskin extends SettingsTabBase
     }
     
     
-    private function e_importNoteskin(noteskinJSON : String) : Void
+    private function e_importNoteskin(noteskinJSON                       : Dynamic) : Void
     {
         try
         {
-            var json : Dynamic = haxe.Json.parse(noteskinJSON);
+            var json                       : Dynamic= haxe.Json.parse(noteskinJSON);
             
             LocalStore.setVariable(Noteskins.CUSTOM_NOTESKIN_DATA, noteskinJSON);
             LocalStore.setVariable(Noteskins.CUSTOM_NOTESKIN_IMPORT, noteskinJSON);
@@ -483,22 +483,22 @@ class SettingsTabNoteskin extends SettingsTabBase
         }
     }
     
-    private function e_delayCustomUpdate(e : Event) : Void
+    private function e_delayCustomUpdate(e                       : Dynamic) : Void
     // reload images, custom noteskins are async loaded so we just check for them to load
     {
         
-        if (_gvars.activeUser.activeNoteskin == 0)
+        if (as3hx.Compat.truthy(_gvars.activeUser.activeNoteskin == 0))
         {
-            if (_noteskins.data[0] != null && _noteskins.data[0]["notes"] != null && _noteskins.data[0]["notes"]["blue"] != null)
+            if (as3hx.Compat.truthy(_noteskins.data[0] != null && as3hx.Compat.field(as3hx.Compat.field(_noteskins.data, 0), "notes") != null && as3hx.Compat.field(as3hx.Compat.field(as3hx.Compat.field(_noteskins.data, 0), "notes"), "blue") != null))
             {
                 parent.removeEventListener(Event.ENTER_FRAME, e_delayCustomUpdate);
-                if (parent != null && parent.stage != null)
+                if (as3hx.Compat.truthy(parent != null && parent.stage != null))
                 {
                     updateNoteImages();
                 }
             }
             
-            if (_noteskins.data[0] == null)
+            if (as3hx.Compat.truthy(_noteskins.data[0] == null))
             {
                 parent.removeEventListener(Event.ENTER_FRAME, e_delayCustomUpdate);
             }

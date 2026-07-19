@@ -49,40 +49,40 @@ import popups.settings.SettingsWindow;
 
 class SettingsWindow extends MenuPanel
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var box : Sprite;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    public var scrollbar : ScrollBar;
-    public var pane : ScrollPane;
+    public var scrollbar                       : Dynamic;
+    public var pane                       : Dynamic;
     
-    private var TABS : Array<SettingsTabBase>;
+    private var TABS                       : Dynamic;
     
-    private var CURRENT_TAB : SettingsTabBase;
-    private var CURRENT_INDEX : Int = -1;
-    private static var LAST_INDEX : Int = 0;
+    private var CURRENT_TAB                       : Dynamic;
+    private var CURRENT_INDEX                       : Dynamic= -1;
+    private static var LAST_INDEX                       : Dynamic= 0;
     
-    private var TAB_BUTTONS : Array<TabButton>;
+    private var TAB_BUTTONS                       : Dynamic;
     
-    private var txt_settings : Text;
-    private var txt_mod_warning : Text;
+    private var txt_settings                       : Dynamic;
+    private var txt_mod_warning                       : Dynamic;
     
     // buttons
-    private var btn_close : BoxButton;
-    private var btn_manage : BoxButton;
-    private var btn_reset : BoxButton;
+    private var btn_close                       : Dynamic;
+    private var btn_manage                       : Dynamic;
+    private var btn_reset                       : Dynamic;
     
-    private var btn_editor_gameplay : TabButton;
-    private var btn_editor_multiplayer : TabButton;
+    private var btn_editor_gameplay                       : Dynamic;
+    private var btn_editor_multiplayer                       : Dynamic;
     
-    private var game_options_test : GameOptions = new GameOptions();
+    private var game_options_test                       : Dynamic= new GameOptions();
     
-    private var win_manage : ManageWindow;
-    private var win_reset : ConfirmResetWindow;
+    private var win_manage                       : Dynamic;
+    private var win_reset                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     
     {
 TABS = [new SettingsTabGeneral(this), 
@@ -170,7 +170,7 @@ TABS = [new SettingsTabGeneral(this),
     
     public function buildTabs() : Void
     {
-        var tabBox : TabButton;
+        var tabBox                       : Dynamic= null;
         
         for (idx in 0...TABS.length)
         {
@@ -190,14 +190,14 @@ TABS = [new SettingsTabGeneral(this),
         btn_editor_multiplayer.addEventListener(MouseEvent.CLICK, clickHandler);
     }
     
-    public function changeTab(idx : Int, force : Bool = false) : Void
+    public function changeTab(idx                       : Dynamic, force                       : Dynamic= false) : Void
     {
-        if (CURRENT_INDEX == idx && !force)
+        if (as3hx.Compat.truthy(CURRENT_INDEX == idx && !force))
         {
             return;
         }
         
-        if (CURRENT_TAB != null)
+        if (as3hx.Compat.truthy(CURRENT_TAB != null))
         {
             CURRENT_TAB.closeTab();
             pane.clear();
@@ -218,7 +218,7 @@ TABS = [new SettingsTabGeneral(this),
         scrollbar.visible = (pane.content.height > 425);
         
         // update buttons
-        for (tabButton in TAB_BUTTONS)
+        for (tabButton in as3hx.Compat.iter(TAB_BUTTONS))
         {
             tabButton.setActive(tabButton.index == idx);
         }
@@ -231,7 +231,7 @@ TABS = [new SettingsTabGeneral(this),
         changeTab(CURRENT_INDEX, true);
     }
     
-    private function tabHandler(e : MouseEvent) : Void
+    private function tabHandler(e                       : Dynamic) : Void
     {
         changeTab((try cast(e.currentTarget, TabButton) catch(e:Dynamic) null).index);
     }
@@ -242,9 +242,9 @@ TABS = [new SettingsTabGeneral(this),
         txt_mod_warning.visible = !game_options_test.isScoreValid();
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.currentTarget == btn_editor_gameplay || e.currentTarget == btn_editor_multiplayer)
+        if (as3hx.Compat.truthy(e.currentTarget == btn_editor_gameplay || e.currentTarget == btn_editor_multiplayer))
         {
             setGameColors();
             
@@ -252,7 +252,7 @@ TABS = [new SettingsTabGeneral(this),
             _gvars.options.isEditor = true;
             _gvars.options.isMultiplayer = (e.currentTarget == btn_editor_multiplayer);
             
-            var tempSongInfo : SongInfo = new SongInfo();
+            var tempSongInfo                       : Dynamic= new SongInfo();
             tempSongInfo.level = 1337;
             tempSongInfo.chart_type = "EDITOR";
             _gvars.options.song = new Song(tempSongInfo);
@@ -262,17 +262,17 @@ TABS = [new SettingsTabGeneral(this),
             _gvars.gameMain.switchTo(Main.GAME_PLAY_PANEL);
             return;
         }
-        else if (e.target == btn_manage)
+        else if (as3hx.Compat.truthy(e.target == btn_manage))
         {
             win_manage = new ManageWindow(this);
         }
-        else if (e.target == btn_reset)
+        else if (as3hx.Compat.truthy(e.target == btn_reset))
         {
             win_reset = new ConfirmResetWindow(this);
         }
-        else if (e.target == btn_close)
+        else if (as3hx.Compat.truthy(e.target == btn_close))
         {
-            if (_gvars.activeUser == _gvars.playerUser)
+            if (as3hx.Compat.truthy(_gvars.activeUser == _gvars.playerUser))
             {
                 _gvars.activeUser.saveLocal();
                 _gvars.activeUser.save();
@@ -280,9 +280,9 @@ TABS = [new SettingsTabGeneral(this),
                 
                 setGameColors();
                 
-                if (Std.is(_gvars.gameMain.activePanel, MainMenu) && (Std.is((try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null).panel, MenuSongSelection)))
+                if (as3hx.Compat.truthy(Std.is(_gvars.gameMain.activePanel, MainMenu) && (Std.is((try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null).panel, MenuSongSelection))))
                 {
-                    var panel : MenuSongSelection = (try cast((try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null).panel, MenuSongSelection) catch(e:Dynamic) null);
+                    var panel                       : Dynamic= (try cast((try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null).panel, MenuSongSelection) catch(e:Dynamic) null);
                     panel.buildGenreList();
                     panel.drawPages();
                 }
@@ -294,19 +294,19 @@ TABS = [new SettingsTabGeneral(this),
         }
     }
     
-    private function mouseWheelMoved(e : MouseEvent) : Void
+    private function mouseWheelMoved(e                       : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
         
-        var dist : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var dist                       : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(dist);
         scrollbar.scrollTo(dist);
     }
     
-    private function scrollBarMoved(e : Event) : Void
+    private function scrollBarMoved(e                       : Dynamic) : Void
     {
         pane.scrollTo(e.target.scroll);
     }
@@ -326,18 +326,18 @@ TABS = [new SettingsTabGeneral(this),
 
 class TabButton extends Sprite
 {
-    public var index : Int;
+    public var index                       : Dynamic;
     
-    private var text : Text;
-    private var button : SimpleBoxButton;
-    private var chevron : IconRight;
+    private var text                       : Dynamic;
+    private var button                       : Dynamic;
+    private var chevron                       : Dynamic;
     
-    private var active : Bool = false;
+    private var active                       : Dynamic= false;
     
-    private var hasTopBorder : Bool = false;
+    private var hasTopBorder                       : Dynamic= false;
     
     @:allow(popups.settings)
-    private function new(parent : Sprite, xpos : Float, ypos : Float, index : Int, btnText : String, hasTopBorder : Bool = false)
+    private function new(parent                       : Dynamic, xpos                       : Dynamic, ypos                       : Dynamic, index                       : Dynamic, btnText                       : Dynamic, hasTopBorder                       : Dynamic= false)
     {
         super();
         this.index = index;
@@ -375,16 +375,16 @@ class TabButton extends Sprite
         this.graphics.moveTo(0, 32);
         this.graphics.lineTo(175, 32);
         
-        if (hasTopBorder)
+        if (as3hx.Compat.truthy(hasTopBorder))
         {
             this.graphics.moveTo(0, 0);
             this.graphics.lineTo(175, 0);
         }
     }
     
-    public function setActive(newState : Bool) : Void
+    public function setActive(newState                       : Dynamic) : Void
     {
-        if (this.active != newState)
+        if (as3hx.Compat.truthy(this.active != newState))
         {
             TweenLite.to(this.text, 0.25, {
                         x : ((newState) ? 25 : 15)
@@ -399,33 +399,33 @@ class TabButton extends Sprite
 
 class ManageWindow extends Prompt
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var win : SettingsWindow;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var win                       : Dynamic;
     
-    private var boxMid : Float = 290;
+    private var boxMid                       : Dynamic= 290;
     
-    private var saveJSON : String;
+    private var saveJSON                       : Dynamic;
     
-    private var btn_close : BoxButton;
-    private var txt_export : TextField;
-    private var btn_export : BoxButton;
-    private var txt_import : TextField;
-    private var btn_import : BoxButton;
+    private var btn_close                       : Dynamic;
+    private var txt_export                       : Dynamic;
+    private var btn_export                       : Dynamic;
+    private var txt_import                       : Dynamic;
+    private var btn_import                       : Dynamic;
     
-    private var check_settings : BoxCheck;
-    private var check_layout : BoxCheck;
-    private var check_filters : BoxCheck;
-    private var check_songQueues : BoxCheck;
+    private var check_settings                       : Dynamic;
+    private var check_layout                       : Dynamic;
+    private var check_filters                       : Dynamic;
+    private var check_songQueues                       : Dynamic;
     
     @:allow(popups.settings)
-    private function new(win : SettingsWindow)
+    private function new(win                       : Dynamic)
     {
         this.win = win;
         super(win, 580, 320);
         
-        var xOff : Float = 10;
-        var yOff : Float = 0;
+        var xOff                       : Dynamic= 10;
+        var yOff                       : Dynamic= 0;
         
         // Close
         btn_close = new BoxButton(this, width - 110, height - 39, 100, 29, _lang.string("menu_close"), 12, clickHandler);
@@ -483,9 +483,9 @@ class ManageWindow extends Prompt
         updateJSON();
     }
     
-    private function makeTextfield(_h : Float) : TextField
+    private function makeTextfield(_h                       : Dynamic) : TextField
     {
-        var _tf : TextField = new TextField();
+        var _tf                       : Dynamic= new TextField();
         _tf.width = boxMid - 30;
         _tf.height = _h;
         _tf.multiline = true;
@@ -503,10 +503,10 @@ class ManageWindow extends Prompt
     // Filter Settings
     {
         
-        var saveObject : Dynamic = _gvars.activeUser.save(true);
+        var saveObject                       : Dynamic= _gvars.activeUser.save(true);
         Reflect.deleteField(saveObject, "language");
         
-        if (!check_settings.checked)
+        if (as3hx.Compat.truthy(!check_settings.checked))
         {
             saveObject = {
                         layout : saveObject.layout,
@@ -515,17 +515,17 @@ class ManageWindow extends Prompt
                     };
         }
         
-        if (!check_layout.checked)
+        if (as3hx.Compat.truthy(!check_layout.checked))
         {
             Reflect.deleteField(saveObject, "layout");
         }
         
-        if (!check_filters.checked)
+        if (as3hx.Compat.truthy(!check_filters.checked))
         {
             Reflect.deleteField(saveObject, "filters");
         }
         
-        if (!check_songQueues.checked)
+        if (as3hx.Compat.truthy(!check_songQueues.checked))
         {
             Reflect.deleteField(saveObject, "songQueues");
         }
@@ -534,13 +534,13 @@ class ManageWindow extends Prompt
         txt_export.text = saveJSON;
     }
     
-    private function clickHandler(e : Event) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == btn_export)
+        if (as3hx.Compat.truthy(e.target == btn_export))
         {
-            var success : Bool = SystemUtil.setClipboard(saveJSON);
+            var success                       : Dynamic= SystemUtil.setClipboard(saveJSON);
             
-            if (success)
+            if (as3hx.Compat.truthy(success))
             {
                 Alert.add(_lang.string("clipboard_success"), 120, Alert.GREEN);
             }
@@ -549,14 +549,14 @@ class ManageWindow extends Prompt
                 Alert.add(_lang.string("clipboard_failure"), 120, Alert.RED);
             }
         }
-        else if (e.target == btn_import)
+        else if (as3hx.Compat.truthy(e.target == btn_import))
         {
             try
             {
-                var optionsJSON : String = txt_import.text;
-                if (optionsJSON.length >= 2 && optionsJSON.charAt(0) == "{")
+                var optionsJSON                       : Dynamic= txt_import.text;
+                if (as3hx.Compat.truthy(optionsJSON.length >= 2 && optionsJSON.charAt(0) == "{"))
                 {
-                    var item : Dynamic = haxe.Json.parse(optionsJSON);
+                    var item                       : Dynamic= haxe.Json.parse(optionsJSON);
                     _gvars.activeUser.settings = item;
                     Alert.add(_lang.string("settings_manage_import_success"), 120, Alert.GREEN);
                 }
@@ -570,12 +570,12 @@ class ManageWindow extends Prompt
                 Alert.add(_lang.string("settings_manage_import_fail"), 120, Alert.RED);
             }
         }
-        else if (e.target == check_settings || e.target == check_layout || e.target == check_filters || e.target == check_songQueues)
+        else if (as3hx.Compat.truthy(e.target == check_settings || e.target == check_layout || e.target == check_filters || e.target == check_songQueues))
         {
             e.target.checked = !e.target.checked;
             updateJSON();
         }
-        else if (e.target == btn_close)
+        else if (as3hx.Compat.truthy(e.target == btn_close))
         {
             win.removeChild(this);
         }
@@ -584,22 +584,21 @@ class ManageWindow extends Prompt
 
 class ConfirmResetWindow extends Prompt
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _avars : ArcGlobals = ArcGlobals.instance;
-    private var win : SettingsWindow;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _avars                       : Dynamic= ArcGlobals.instance;
+    private var win                       : Dynamic;
     
-    private var boxMid : Float = Main.GAME_WIDTH / 2;
+    private var boxMid                       : Dynamic= Main.GAME_WIDTH / 2;
     
-    private var btn_close : BoxButton;
-    private var btn_confirm : BoxButton;
+    private var btn_close                       : Dynamic;
+    private var btn_confirm                       : Dynamic;
     
     @:allow(popups.settings)
-    private function new(win : SettingsWindow)
+    private function new(win                       : Dynamic)
     {
-        super();
-        this.win = win;
-        super(win, 450, 200); // Title  ;
+        super(win, 450, 200);
+        this.win = win; // Title  ;
         new Text(this, 0, 22, _lang.string("option_reset_settings_confirm_text"), 26).setAreaParams(width, 35, "center");
         
         // Confirm
@@ -611,19 +610,19 @@ class ConfirmResetWindow extends Prompt
         btn_close = new BoxButton(this, width - 135, height - 50, 120, 35, _lang.string("menu_close"), 12, clickHandler);
     }
     
-    private function clickHandler(e : Event) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == btn_confirm)
+        if (as3hx.Compat.truthy(e.target == btn_confirm))
         {
             win.removeChild(this);
-            if (_gvars.activeUser == _gvars.playerUser)
+            if (as3hx.Compat.truthy(_gvars.activeUser == _gvars.playerUser))
             {
                 _gvars.activeUser.settings = new User().settings;
                 _avars.resetSettings();
             }
             win.refreshTab();
         }
-        else if (e.target == btn_close)
+        else if (as3hx.Compat.truthy(e.target == btn_close))
         {
             win.removeChild(this);
         }

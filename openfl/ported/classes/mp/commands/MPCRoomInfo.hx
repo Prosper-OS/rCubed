@@ -4,9 +4,9 @@ import classes.mp.room.MPRoom;
 
 class MPCRoomInfo implements IMPCommand
 {
-    public var room : MPRoom;
+    public var room                             : Dynamic;
     
-    public function new(room : MPRoom)
+    public function new(room                             : Dynamic)
     {
         this.room = room;
     }

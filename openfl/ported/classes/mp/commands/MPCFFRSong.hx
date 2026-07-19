@@ -4,29 +4,29 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRSong implements IMPCommand
 {
-    public var room : MPRoomFFR;
+    public var room                             : Dynamic;
     
-    public var type : String;
-    public var id : Int;
-    public var level_id : String;
+    public var type                             : Dynamic;
+    public var id                             : Dynamic;
+    public var level_id                             : Dynamic;
     
-    public var name : String;
-    public var author : String;
-    public var time : String;
-    public var note_count : Float;
-    public var difficulty : Float;
+    public var name                             : Dynamic;
+    public var author                             : Dynamic;
+    public var time                             : Dynamic;
+    public var note_count                             : Dynamic;
+    public var difficulty                             : Dynamic;
     
-    public var engine : Dynamic;
+    public var engine                             : Dynamic;
     
     
-    public function new(room : MPRoomFFR)
+    public function new(room                             : Dynamic)
     {
         this.room = room;
     }
     
     public function toJSON() : String
     {
-        var data : Dynamic = {
+        var data                             : Dynamic= {
             uid : room.uid,
             type : type,
             id : id,

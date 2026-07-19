@@ -4,10 +4,10 @@ import openfl.display.DisplayObjectContainer;
 
 class LifeBar extends GameControl
 {
-    public var health(never, set) : Int;
+    public var health(never, set)                       : Dynamic;
 
     // 3 Color Gradient, 100 Steps: [#FF0700 -> #F77600 -> #00E900]
-    private static var HP_BAR_COLOR : Array<Int> = [0xFF0700, 0xFF0700, 0xFE0900, 0xFE0B00, 0xFE0D00, 0xFE1000, 0xFE1200, 0xFE1400, 0xFD1600, 0xFD1900, 0xFD1B00, 
+    private static var HP_BAR_COLOR                       : Dynamic= [0xFF0700, 0xFF0700, 0xFE0900, 0xFE0B00, 0xFE0D00, 0xFE1000, 0xFE1200, 0xFE1400, 0xFD1600, 0xFD1900, 0xFD1B00, 
                 0xFD1D00, 0xFD1F00, 0xFD2200, 0xFC2400, 0xFC2600, 0xFC2800, 0xFC2B00, 0xFC2D00, 0xFC2F00, 0xFB3200, 
                 0xFB3400, 0xFB3600, 0xFB3800, 0xFB3B00, 0xFB3D00, 0xFA3F00, 0xFA4100, 0xFA4400, 0xFA4600, 0xFA4800, 
                 0xFA4A00, 0xF94D00, 0xF94F00, 0xF95100, 0xF95400, 0xF95600, 0xF95800, 0xF85A00, 0xF85D00, 0xF85F00, 
@@ -20,16 +20,16 @@ class LifeBar extends GameControl
         ];
     
     // Display
-    private var _width : Float = 22;
-    private var _height : Float = 337;
+    private var _width                       : Dynamic= 22;
+    private var _height                       : Dynamic= 337;
     
     // Variables
-    private var _health : Int = 50;
+    private var _health                       : Dynamic= 50;
     
-    public function new(parent : DisplayObjectContainer)
+    public function new(parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -41,7 +41,7 @@ class LifeBar extends GameControl
     {
         this.graphics.clear();
         
-        var percent : Float = _health / 100;
+        var percent                       : Dynamic= _health / 100;
         
         // Draw Health
         this.graphics.lineStyle(0, 0, 0);
@@ -63,14 +63,14 @@ class LifeBar extends GameControl
     
     ////////////////////////////////////////////////////////////////////////
     //- Getters / Setters
-    private function set_health(val : Int) : Int
+    private function set_health(val                       : Dynamic) : Int
     {
         _health = val;
-        if (_health < 0)
+        if (as3hx.Compat.truthy(_health < 0))
         {
             _health = 0;
         }
-        if (_health > 100)
+        if (as3hx.Compat.truthy(_health > 100))
         {
             _health = 100;
         }

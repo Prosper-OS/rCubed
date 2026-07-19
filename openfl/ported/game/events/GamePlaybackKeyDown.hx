@@ -5,17 +5,17 @@ import openfl.utils.IDataOutput;
 
 class GamePlaybackKeyDown extends GamePlaybackEvent
 {
-    public static inline var ID : Int = 3;
+    public static inline var ID                       : Dynamic= 3;
     
-    public var key : Int;
+    public var key                       : Dynamic;
     
-    public function new(index : Int, timestamp : Float, key : Int)
+    public function new(index                       : Dynamic, timestamp                       : Dynamic, key                       : Dynamic)
     {
         super(ID, index, timestamp);
         this.key = key;
     }
     
-    override public function writeData(output : IDataOutput) : Void
+    override public function writeData(output                       : Dynamic) : Void
     {
         output.writeByte(ID);
         output.writeByte(4 + 4 + 1);  // Length of everything below this.  
@@ -24,11 +24,11 @@ class GamePlaybackKeyDown extends GamePlaybackEvent
         output.writeByte(key);
     }
     
-    public static function readData(input : IDataInput) : GamePlaybackKeyDown
+    public static function readData(input                       : Dynamic) : GamePlaybackKeyDown
     {
-        var index : Int = input.readUnsignedInt();
-        var timestamp : Int = input.readUnsignedInt();
-        var key : Int = input.readUnsignedByte();
+        var index                       : Dynamic= input.readUnsignedInt();
+        var timestamp                       : Dynamic= input.readUnsignedInt();
+        var key                       : Dynamic= input.readUnsignedByte();
         
         return new GamePlaybackKeyDown(index, timestamp, key);
     }

@@ -18,27 +18,27 @@ import menu.MenuSongSelection;
 
 class Playlist extends EventDispatcher
 {
-    public static var instanceCanon(get, never) : Playlist;
-    public static var instance(get, never) : Playlist;
+    public static var instanceCanon(get, never)                              : Dynamic;
+    public static var instance(get, never)                              : Dynamic;
 
     ///- Singleton Instance
-    private static var _instance : Playlist = null;
-    private static var _instanceCanon : Playlist = null;
+    private static var _instance                              : Dynamic= null;
+    private static var _instanceCanon                              : Dynamic= null;
     
     ///- Private Locals
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _loader : URLLoader;
-    private var _isLoaded : Bool = false;
-    private var _isLoading : Bool = false;
-    private var _loadError : Bool = false;
+    private var _gvars                              : Dynamic= GlobalVariables.instance;
+    private var _lang                              : Dynamic= Language.instance;
+    private var _loader                              : Dynamic;
+    private var _isLoaded                              : Dynamic= false;
+    private var _isLoading                              : Dynamic= false;
+    private var _loadError                              : Dynamic= false;
     
     ///- Public Locals
-    public var generatedQueues : Array<Dynamic>;
-    public var genreList : Array<Dynamic>;
-    public var playList : Array<Dynamic>;
-    public var indexList : Array<SongInfo>;
-    public var engine : Dynamic;
+    public var generatedQueues                              : Dynamic;
+    public var genreList                              : Dynamic;
+    public var playList                              : Dynamic;
+    public var indexList                              : Dynamic;
+    public var engine                              : Dynamic;
     
     ///- Constructor
     public function new()
@@ -58,7 +58,7 @@ class Playlist extends EventDispatcher
     
     private static function get_instance() : Playlist
     {
-        if (_instance == null)
+        if (as3hx.Compat.truthy(_instance == null))
         {
             _instance = new Playlist();
         }
@@ -80,27 +80,27 @@ class Playlist extends EventDispatcher
     // Kill old Loading Stream
     {
         
-        if (_loader != null && _isLoading)
+        if (as3hx.Compat.truthy(_loader != null && _isLoading))
         {
             removeLoaderListeners();
             _loader.close();
         }
         
         // Load New
-        var time : Float = Date.now().getTime();
+        var time                              : Dynamic= Date.now().getTime();
         _isLoaded = false;
         _loadError = false;
         _loader = new URLLoader();
         addLoaderListeners();
         
-        if (ArcGlobals.instance.configLegacy)
+        if (as3hx.Compat.truthy(ArcGlobals.instance.configLegacy))
         {
-            var url : String = ArcGlobals.instance.configLegacy.playlistURL;
+            var url                              : Dynamic= ArcGlobals.instance.configLegacy.playlistURL;
             engine = ArcGlobals.instance.configLegacy;
             _loader.load(new URLRequest(url + (url.indexOf("?") == -(1) ? "?d=" + time : "&d=" + time)));
             _isLoading = true;
         }
-        else if (_instanceCanon != null)
+        else if (as3hx.Compat.truthy(_instanceCanon != null))
         {
             engine = null;
             this._isLoaded = _instanceCanon._isLoaded;
@@ -114,8 +114,8 @@ class Playlist extends EventDispatcher
         else
         {
             engine = null;
-            var req : URLRequest = new URLRequest(URLs.resolve(URLs.SITE_PLAYLIST_URL) + "?d=" + time);
-            var requestVars : URLVariables = new URLVariables();
+            var req                              : Dynamic= new URLRequest(URLs.resolve(URLs.SITE_PLAYLIST_URL) + "?d=" + time);
+            var requestVars                              : Dynamic= new URLVariables();
             Constant.addDefaultRequestVariables(requestVars);
             requestVars.session = _gvars.userSession;
             req.data = requestVars;
@@ -125,14 +125,14 @@ class Playlist extends EventDispatcher
         }
     }
     
-    private function playlistLoadComplete(e : Event) : Void
+    private function playlistLoadComplete(e                              : Dynamic) : Void
     {
         removeLoaderListeners();
-        var data : Dynamic;
-        var legacy : Bool = ArcGlobals.instance.configLegacy;
+        var data                              : Dynamic= null;
+        var legacy                              : Dynamic= ArcGlobals.instance.configLegacy;
         try
         {
-            if (legacy)
+            if (as3hx.Compat.truthy(legacy))
             {
                 data = ChartFFRLegacy.parsePlaylist(e.target.data);
             }
@@ -153,7 +153,7 @@ class Playlist extends EventDispatcher
         playList = [];
         indexList = [];
         
-        if (_instanceCanon == null && !legacy)
+        if (as3hx.Compat.truthy(_instanceCanon == null && !legacy))
         {
             _instanceCanon = new Playlist();
             _instanceCanon._isLoaded = true;
@@ -163,15 +163,15 @@ class Playlist extends EventDispatcher
             _instanceCanon.generatedQueues = generatedQueues;
         }
         
-        for (dynamicSongInfo/* AS3HX WARNING could not determine type for var: dynamicSongInfo exp: EIdent(data) type: Dynamic */ in data)
+        for (dynamicSongInfo/* AS3HX WARNING could not determine type for var: dynamicSongInfo exp: EIdent(data) type: Dynamic */ in as3hx.Compat.iter(data))
         {
-            var songInfo : SongInfo;
+            var songInfo                              : Dynamic= null;
             
-            if (Std.is(dynamicSongInfo, SongInfo))
+            if (as3hx.Compat.truthy(Std.is(dynamicSongInfo, SongInfo)))
             {
                 songInfo = try cast(dynamicSongInfo, SongInfo) catch(e:Dynamic) null;
                 
-                if (genreList[songInfo.genre] == null)
+                if (as3hx.Compat.truthy(genreList[songInfo.genre] == null))
                 {
                     genreList[songInfo.genre] = [];
                     generatedQueues[songInfo.genre] = [];
@@ -179,15 +179,15 @@ class Playlist extends EventDispatcher
             }
             else
             {
-                var genre : Int = dynamicSongInfo.genre;
-                if (genreList[genre] == null)
+                var genre                              : Dynamic= dynamicSongInfo.genre;
+                if (as3hx.Compat.truthy(genreList[genre] == null))
                 {
                     genreList[genre] = [];
                     generatedQueues[genre] = [];
                 }
                 
                 // Important to note that the dynamic fields aren't all exactly the same name
-                var newSongInfo : SongInfo = new SongInfo();
+                var newSongInfo                              : Dynamic= new SongInfo();
                 newSongInfo.level = dynamicSongInfo.level;
                 newSongInfo.level_id = dynamicSongInfo.level;
                 
@@ -233,19 +233,19 @@ class Playlist extends EventDispatcher
             }
             
             // Song Time
-            if (songInfo.time == null)
+            if (as3hx.Compat.truthy(songInfo.time == null))
             {
                 songInfo.time = "0:00";
             }
             
             // Note Count
-            if (Math.isNaN(as3hx.Compat.parseFloat(songInfo.note_count)))
+            if (as3hx.Compat.truthy(Math.isNaN(as3hx.Compat.parseFloat(songInfo.note_count))))
             {
                 songInfo.note_count = 0;
             }
             
             // Time End
-            if (Math.isNaN(as3hx.Compat.parseFloat(songInfo.time_end)))
+            if (as3hx.Compat.truthy(Math.isNaN(as3hx.Compat.parseFloat(songInfo.time_end))))
             {
                 songInfo.time_end = 0;
             }
@@ -255,7 +255,7 @@ class Playlist extends EventDispatcher
             songInfo.time_secs = (as3hx.Compat.parseFloat(songInfo.time.split(":")[0]) * 60) + as3hx.Compat.parseFloat(songInfo.time.split(":")[1]);
             
             // Author with URL
-            if (songInfo.author_url != null && songInfo.author_url.length > 7)
+            if (as3hx.Compat.truthy(songInfo.author_url != null && songInfo.author_url.length > 7))
             {
                 songInfo.author_html = "<a href=\"" + songInfo.author_url + "\">" + songInfo.author + "</a>";
             }
@@ -265,29 +265,29 @@ class Playlist extends EventDispatcher
             }
             
             // Multiple Step Authors
-            if (songInfo.stepauthor != null && songInfo.stepauthor.indexOf(" & ") != false)
+            if (as3hx.Compat.truthy(songInfo.stepauthor != null && songInfo.stepauthor.indexOf(" & ") != false))
             {
-                var stepAuthors : Array<Dynamic> = songInfo.stepauthor.split(" & ");
-                songInfo.stepauthor_html = "<a href=\"" + URLs.BASE_PATH + "profile/" + escape(stepAuthors[0]) + "\">" + stepAuthors[0] + "</a>";
+                var stepAuthors                              : Dynamic= songInfo.stepauthor.split(" & ");
+                songInfo.stepauthor_html = "<a href=\"" + URLs.BASE_PATH + "profile/" + StringTools.urlEncode(Std.string(stepAuthors[0])) + "\">" + stepAuthors[0] + "</a>";
                 
                 for (i in 1...stepAuthors.length)
                 {
-                    songInfo.stepauthor_html += " & <a href=\"" + URLs.BASE_PATH + "profile/" + escape(stepAuthors[i]) + "\">" + stepAuthors[i] + "</a>";
+                    songInfo.stepauthor_html += " & <a href=\"" + URLs.BASE_PATH + "profile/" + StringTools.urlEncode(Std.string(stepAuthors[i])) + "\">" + stepAuthors[i] + "</a>";
                 }
             }
             else
             {
-                songInfo.stepauthor_html = "<a href=\"" + URLs.BASE_PATH + "profile/" + escape(songInfo.stepauthor) + "\">" + songInfo.stepauthor + "</a>";
+                songInfo.stepauthor_html = "<a href=\"" + URLs.BASE_PATH + "profile/" + StringTools.urlEncode(Std.string(songInfo.stepauthor)) + "\">" + songInfo.stepauthor + "</a>";
             }
             
             // Song Price
-            if (Math.isNaN(as3hx.Compat.parseFloat(songInfo.price)))
+            if (as3hx.Compat.truthy(Math.isNaN(as3hx.Compat.parseFloat(songInfo.price))))
             {
                 songInfo.price = -1;
             }
             
             // Secret Credits
-            if (Math.isNaN(as3hx.Compat.parseFloat(songInfo.credits)))
+            if (as3hx.Compat.truthy(Math.isNaN(as3hx.Compat.parseFloat(songInfo.credits))))
             {
                 songInfo.credits = -1;
             }
@@ -297,7 +297,7 @@ class Playlist extends EventDispatcher
             songInfo.score_raw = songInfo.note_count * 50;
             
             // Legacy Sync
-            if (!legacy && Math.isNaN(songInfo.sync))
+            if (as3hx.Compat.truthy(!legacy && Math.isNaN(songInfo.sync)))
             {
                 songInfo.sync = oldOffsets(songInfo.level);
             }
@@ -314,13 +314,13 @@ class Playlist extends EventDispatcher
         this.dispatchEvent(new Event(GlobalVariables.LOAD_COMPLETE));
     }
     
-    private function compareSongLevel(songInfo1 : SongInfo, songInfo2 : SongInfo) : Float
+    private function compareSongLevel(songInfo1                              : Dynamic, songInfo2                              : Dynamic) : Float
     {
-        if (songInfo1.level < songInfo2.level)
+        if (as3hx.Compat.truthy(songInfo1.level < songInfo2.level))
         {
             return -1;
         }
-        else if (songInfo1.level > songInfo2.level)
+        else if (as3hx.Compat.truthy(songInfo1.level > songInfo2.level))
         {
             return 1;
         }
@@ -330,7 +330,7 @@ class Playlist extends EventDispatcher
         }
     }
     
-    private function playlistLoadError(e : ErrorEvent = null) : Void
+    private function playlistLoadError(e                              : Dynamic= null) : Void
     {
         Logger.error(this, "Load Failure: " + Logger.event_error(e));
         removeLoaderListeners();
@@ -353,21 +353,21 @@ class Playlist extends EventDispatcher
         _loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, playlistLoadError);
     }
     
-    public function getSongInfo(genre : Int, index : Int = -1) : SongInfo
+    public function getSongInfo(genre                              : Dynamic, index                              : Dynamic= -1) : SongInfo
     // Returns the indexed song for the All genre
     {
         
-        if (genre <= -1 && index >= 0 && index < indexList.length && indexList[index] != null)
+        if (as3hx.Compat.truthy(genre <= -1 && index >= 0 && index < indexList.length && indexList[index] != null))
         {
             return indexList[index];
         }
         // If a index is set, use the genre list to get the correct song.
-        else if (index >= 0 && genreList[genre] != null && genreList[genre][index] != null)
+        else if (as3hx.Compat.truthy(index >= 0 && genreList[genre] != null && genreList[genre][index] != null))
         {
             return genreList[genre][index];
         }
         // Return the song from the playlist, using the levelid as the default.
-        else if (playList[genre] != null)
+        else if (as3hx.Compat.truthy(playList[genre] != null))
         {
             return playList[genre];
         }
@@ -377,20 +377,20 @@ class Playlist extends EventDispatcher
     
     public function updateSongAccess() : Void
     {
-        var songType : Int = 0;
+        var songType                              : Dynamic= 0;
         for (i in 0...indexList.length)
         {
             songType = 0;
             
-            if (indexList[i].engine == null && _gvars.TOKENS[indexList[i].level] != null)
+            if (as3hx.Compat.truthy(indexList[i].engine == null && _gvars.TOKENS[indexList[i].level] != null))
             {
                 songType = 1;
             }
-            if (indexList[i].price > 0)
+            if (as3hx.Compat.truthy(indexList[i].price > 0))
             {
                 songType = 2;
             }
-            if (indexList[i].credits > 0)
+            if (as3hx.Compat.truthy(indexList[i].credits > 0))
             {
                 songType = 3;
             }
@@ -402,15 +402,15 @@ class Playlist extends EventDispatcher
     
     public function updatePublicSongsCount() : Void
     {
-        var s : Site = Site.instance;
+        var s                              : Dynamic= Site.instance;
         _gvars.TOTAL_SONGS = indexList.length;
-        _gvars.TOTAL_PUBLIC_SONGS = indexList.filter(function(item : SongInfo, index : Int, vec : Array<SongInfo>) : Bool
+        _gvars.TOTAL_PUBLIC_SONGS = indexList.filter(function(item                              : Dynamic, index                              : Dynamic, vec                              : Dynamic) : Bool
                         {
                             return !ArrayUtil.in_array([item.genre], _gvars.NONPUBLIC_GENRES);
                         }).length;
     }
     
-    public function engineChangeHandler(e : Event) : Void
+    public function engineChangeHandler(e                              : Dynamic) : Void
     {
         removeEventListener(GlobalVariables.LOAD_COMPLETE, engineChangeHandler);
         removeEventListener(GlobalVariables.LOAD_ERROR, engineChangeHandler);
@@ -423,18 +423,18 @@ class Playlist extends EventDispatcher
                 load();
                 Alert.add(_lang.string("error_loading_playlist"));
             case GlobalVariables.LOAD_COMPLETE:
-                if (Std.is(_gvars.gameMain.activePanel, MainMenu))
+                if (as3hx.Compat.truthy(Std.is(_gvars.gameMain.activePanel, MainMenu)))
                 {
-                    var mainmenu : MainMenu = try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null;
-                    if (mainmenu != null && mainmenu._MenuSingleplayer != null)
+                    var mainmenu                              : Dynamic= try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null;
+                    if (as3hx.Compat.truthy(mainmenu != null && mainmenu._MenuSingleplayer != null))
                     {
-                        var reload : Bool = false;
-                        if (mainmenu.panel == mainmenu._MenuSingleplayer)
+                        var reload                              : Dynamic= false;
+                        if (as3hx.Compat.truthy(mainmenu.panel == mainmenu._MenuSingleplayer))
                         {
                             reload = true;
                         }
                         mainmenu._MenuSingleplayer = null;
-                        if (reload)
+                        if (as3hx.Compat.truthy(reload))
                         {
                             MenuSongSelection.options.pageNumber = 0;
                             MenuSongSelection.options.scroll_position = 0;
@@ -446,7 +446,7 @@ class Playlist extends EventDispatcher
         }
     }
     
-    private function oldOffsets(lvlid : Int) : Int
+    private function oldOffsets(lvlid                              : Dynamic) : Int
     {
         switch (lvlid)
         {

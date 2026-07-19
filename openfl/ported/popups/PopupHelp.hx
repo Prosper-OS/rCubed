@@ -16,18 +16,18 @@ import menu.MenuPanel;
 
 class PopupHelp extends MenuPanel
 {
-    private var _lang : Language = Language.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
     //- Background
-    private var box : Box;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    private var titleDisplay : Text;
-    private var messageDisplay : TextField;
+    private var titleDisplay                       : Dynamic;
+    private var messageDisplay                       : Dynamic;
     
-    private var closeOptions : BoxButton;
+    private var closeOptions                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
     }
@@ -37,7 +37,7 @@ class PopupHelp extends MenuPanel
         bmp = SpriteUtil.getBitmapSprite(stage);
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, 20, 20, false, false);
+        var bgbox                       : Dynamic= new Box(this, 20, 20, false, false);
         bgbox.setSize(Main.GAME_WIDTH - 40, Main.GAME_HEIGHT - 40);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -54,7 +54,7 @@ class PopupHelp extends MenuPanel
         titleDisplay.align = Text.CENTER;
         
         //- Message
-        var style : StyleSheet = new StyleSheet();
+        var style                       : Dynamic= new StyleSheet();
         style.setStyle("BODY", {
                     color : "#FFFFFF",
                     fontSize : 14
@@ -94,11 +94,11 @@ class PopupHelp extends MenuPanel
         box = null;
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     //- Close
     {
         
-        if (e.target == closeOptions)
+        if (as3hx.Compat.truthy(e.target == closeOptions))
         {
             removePopup();
             return;

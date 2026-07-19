@@ -47,8 +47,8 @@ import openfl.filters.DropShadowFilter;
 
 class Component extends Sprite
 {
-    public var tag(get, set) : Int;
-    public var enabled(get, set) : Bool;
+    public var tag(get, set)                            : Dynamic;
+    public var enabled(get, set)                            : Dynamic;
 
     // NOTE: Flex 4 introduces DefineFont4, which is used by default and does not work in native text fields.
     // Use the embedAsCFF="false" param to switch back to DefineFont4. In earlier Flex 4 SDKs this was cff="false".
@@ -62,14 +62,14 @@ class Component extends Sprite
     //		[Embed(source="/assets/pf_ronda_seven.ttf", embedAsCFF="false", fontName="PF Ronda Seven", mimeType="application/x-font")]
     // Flex 3.x sdk:
     //		[Embed(source="/assets/pf_ronda_seven.ttf", fontName="PF Ronda Seven", mimeType="application/x-font")]
-    private var Ronda : Class<Dynamic>;
+    public var Ronda                            : Dynamic;
     
-    private var _width : Float = 0;
-    private var _height : Float = 0;
-    private var _tag : Int = -1;
-    private var _enabled : Bool = true;
+    public var _width                            : Dynamic= 0;
+    public var _height                            : Dynamic= 0;
+    public var _tag                            : Dynamic= -1;
+    public var _enabled                            : Dynamic= true;
     
-    public static inline var DRAW : String = "draw";
+    public static inline var DRAW                            : Dynamic= "draw";
     
     /**
      * Constructor
@@ -77,12 +77,12 @@ class Component extends Sprite
      * @param xpos The x position to place this component.
      * @param ypos The y position to place this component.
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0)
     {
         super();
         move(xpos, ypos);
         init();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -91,7 +91,7 @@ class Component extends Sprite
     /**
      * Initilizes the component.
      */
-    private function init() : Void
+    public function init() : Void
     {
         addChildren();
         invalidate();
@@ -100,14 +100,14 @@ class Component extends Sprite
     /**
      * Overriden in subclasses to create child display objects.
      */
-    private function addChildren() : Void
+    public function addChildren() : Void
     {
     }
     
     /**
      * Marks the component to be redrawn on the next frame.
      */
-    private function invalidate() : Void
+    override public function invalidate() : Void
     //			draw();
     {
         
@@ -124,7 +124,7 @@ class Component extends Sprite
     /**
      * Utility method to set up usual stage align and scaling.
      */
-    public static function initStage(stage : Stage) : Void
+    public static function initStage(stage                            : Dynamic) : Void
     {
         stage.align = StageAlign.TOP_LEFT;
         stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -135,7 +135,7 @@ class Component extends Sprite
      * @param xpos the x position to move the component
      * @param ypos the y position to move the component
      */
-    public function move(xpos : Float, ypos : Float) : Void
+    public function move(xpos                            : Dynamic, ypos                            : Dynamic) : Void
     {
         x = Math.round(xpos);
         y = Math.round(ypos);
@@ -146,7 +146,7 @@ class Component extends Sprite
      * @param w The width of the component.
      * @param h The height of the component.
      */
-    public function setSize(w : Float, h : Float) : Void
+    public function setSize(w                            : Dynamic, h                            : Dynamic) : Void
     {
         _width = w;
         _height = h;
@@ -172,7 +172,7 @@ class Component extends Sprite
     /**
      * Called one frame after invalidate is called.
      */
-    private function onInvalidate(event : Event) : Void
+    public function onInvalidate(event                            : Dynamic) : Void
     {
         removeEventListener(Event.ENTER_FRAME, onInvalidate);
         draw();
@@ -188,7 +188,7 @@ class Component extends Sprite
     /**
      * Sets/gets the width of the component.
      */
-    override private function set_width(w : Float) : Float
+    override private function set_width(w                            : Dynamic) : Float
     {
         _width = w;
         invalidate();
@@ -204,7 +204,7 @@ class Component extends Sprite
     /**
      * Sets/gets the height of the component.
      */
-    override private function set_height(h : Float) : Float
+    override private function set_height(h                            : Dynamic) : Float
     {
         _height = h;
         invalidate();
@@ -220,7 +220,7 @@ class Component extends Sprite
     /**
      * Sets/gets in integer that can identify the component.
      */
-    private function set_tag(value : Int) : Int
+    private function set_tag(value                            : Dynamic) : Int
     {
         _tag = value;
         return value;
@@ -234,7 +234,7 @@ class Component extends Sprite
     /**
      * Overrides the setter for x to always place the component on a whole pixel.
      */
-    override private function set_x(value : Float) : Float
+    override private function set_x(value                            : Dynamic) : Float
     {
         super.x = Math.round(value);
         return value;
@@ -243,7 +243,7 @@ class Component extends Sprite
     /**
      * Overrides the setter for y to always place the component on a whole pixel.
      */
-    override private function set_y(value : Float) : Float
+    override private function set_y(value                            : Dynamic) : Float
     {
         super.y = Math.round(value);
         return value;
@@ -252,7 +252,7 @@ class Component extends Sprite
     /**
      * Sets/gets whether this component is enabled or not.
      */
-    private function set_enabled(value : Bool) : Bool
+    private function set_enabled(value                            : Dynamic) : Bool
     {
         _enabled = value;
         mouseEnabled = mouseChildren = _enabled;

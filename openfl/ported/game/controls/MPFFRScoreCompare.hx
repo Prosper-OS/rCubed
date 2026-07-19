@@ -18,25 +18,25 @@ import classes.ui.Text;
 
 class MPFFRScoreCompare extends GameControl
 {
-    public var type(never, set) : Float;
+    public var type(never, set)                       : Dynamic;
 
-    private var options : GameOptions;
-    private var lastType : Int = 0;
+    private var options                       : Dynamic;
+    private var lastType                       : Dynamic= 0;
     
-    private var room : MPRoomFFR;
-    private var labels : Array<Dynamic> = [];
-    private var labelCount : Int = 0;
-    private var labelHeight : Int = 40;
-    private var startY : Float = 0;
+    private var room                       : Dynamic;
+    private var labels                       : Dynamic= [];
+    private var labelCount                       : Dynamic= 0;
+    private var labelHeight                       : Dynamic= 40;
+    private var startY                       : Dynamic= 0;
     
-    private var match : MPMatchFFR;
-    private var useTeamView : Bool;
-    private var isSpectator : Bool;
+    private var match                       : Dynamic;
+    private var useTeamView                       : Dynamic;
+    private var isSpectator                       : Dynamic;
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer, room : MPRoomFFR)
+    public function new(options                       : Dynamic, parent                       : Dynamic, room                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -59,11 +59,11 @@ class MPFFRScoreCompare extends GameControl
     
     public function addLabels() : Void
     {
-        for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(match),teams) type: null */ in match.teams)
+        for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(match),teams) type: null */ in as3hx.Compat.iter(match.teams))
         {
-            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(team),users) type: null */ in team.users)
+            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(team),users) type: null */ in as3hx.Compat.iter(team.users))
             {
-                var text : PlayerLabel = new PlayerLabel(room, user);
+                var text                       : Dynamic= new PlayerLabel(room, user);
                 addChild(text);
                 labels.push(text);
             }
@@ -79,8 +79,7 @@ class MPFFRScoreCompare extends GameControl
     
     public function update() : Void
     {
-        labels.sortOn(["position", "score", "username"], [Array.NUMERIC, Array.NUMERIC | Array.DESCENDING, Array.CASEINSENSITIVE]);
-        
+        as3hx.Compat.sortOn(labels, ["position", "score", "username"], [as3hx.Compat.ARRAY_NUMERIC, as3hx.Compat.ARRAY_NUMERIC | as3hx.Compat.ARRAY_DESCENDING, as3hx.Compat.ARRAY_CASEINSENSITIVE]);
         for (i in 0...labelCount)
         {
             labels[i].update();
@@ -88,9 +87,9 @@ class MPFFRScoreCompare extends GameControl
         }
     }
     
-    private function set_type(val : Float) : Float
+    private function set_type(val                       : Dynamic) : Float
     {
-        if (lastType != val)
+        if (as3hx.Compat.truthy(lastType != val))
         {
             lastType = as3hx.Compat.parseInt(val);
             clearLabels();
@@ -109,32 +108,32 @@ class MPFFRScoreCompare extends GameControl
 
 class PlayerLabel extends Sprite
 {
-    public var position(get, never) : Float;
-    public var score(get, never) : Float;
-    public var username(get, never) : String;
+    public var position(get, never)                       : Dynamic;
+    public var score(get, never)                       : Dynamic;
+    public var username(get, never)                       : Dynamic;
 
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _mp                       : Dynamic= Multiplayer.instance;
     
-    private static inline var USER_PLAYING : String = "#FFFFFF";
-    private static inline var USER_FINISHED : String = "#F25C5C";
+    private static inline var USER_PLAYING                       : Dynamic= "#FFFFFF";
+    private static inline var USER_FINISHED                       : Dynamic= "#F25C5C";
     
-    public var room : MPRoom;
-    public var user : MPUser;
-    public var data : MPMatchFFRUser;
+    public var room                       : Dynamic;
+    public var user                       : Dynamic;
+    public var data                       : Dynamic;
     
-    public var isSelf : Bool = false;
-    public var isAlive : Bool = true;
-    public var isPlaying : Bool = true;
+    public var isSelf                       : Dynamic= false;
+    public var isAlive                       : Dynamic= true;
+    public var isPlaying                       : Dynamic= true;
     
-    public var txtPosition : Text;
-    public var txtUsername : Text;
-    public var txtScore : Text;
+    public var txtPosition                       : Dynamic;
+    public var txtUsername                       : Dynamic;
+    public var txtScore                       : Dynamic;
     
-    private var _lastPosition : Int = -1;
-    private var _lastScore : Int = -1;
+    private var _lastPosition                       : Dynamic= -1;
+    private var _lastScore                       : Dynamic= -1;
     
     @:allow(game.controls)
-    private function new(room : MPRoomFFR, data : MPMatchFFRUser)
+    private function new(room                       : Dynamic, data                       : Dynamic)
     {
         super();
         this.room = room;
@@ -164,24 +163,24 @@ class PlayerLabel extends Sprite
     
     public function update() : Void
     {
-        if (_lastPosition != data.position)
+        if (as3hx.Compat.truthy(_lastPosition != data.position))
         {
             txtPosition.text = Std.string(data.position);
             _lastPosition = data.position;
         }
         
-        if (_lastScore != data.raw_score)
+        if (as3hx.Compat.truthy(_lastScore != data.raw_score))
         {
             txtScore.text = data.raw_score + " / " + data.good + "-" + data.average + "-" + data.miss + "-" + data.boo;
             _lastScore = data.raw_score;
         }
         
-        if (data.alive != isAlive)
+        if (as3hx.Compat.truthy(data.alive != isAlive))
         {
             this.alpha = (data.alive) ? 1 : 0.5;
             isAlive = data.alive;
         }
-        else if (data.playing != isPlaying)
+        else if (as3hx.Compat.truthy(data.playing != isPlaying))
         {
             txtUsername.fontColor = (data.playing) ? USER_PLAYING : USER_FINISHED;
             isPlaying = data.playing;

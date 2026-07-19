@@ -14,16 +14,16 @@ import openfl.events.Event;
 
 class MPChatLogEntrySong extends MPChatLogEntry
 {
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
     
-    private var room : MPRoom;
-    private var user : MPUser;
-    private var song : MPSong;
+    private var room                             : Dynamic;
+    private var user                             : Dynamic;
+    private var song                             : Dynamic;
     
-    private var btn : BoxButton;
+    private var btn                             : Dynamic;
     
-    public function new(room : MPRoom, user : MPUser, song : MPSong)
+    public function new(room                             : Dynamic, user                             : Dynamic, song                             : Dynamic)
     {
         super();
         this.room = room;
@@ -31,9 +31,9 @@ class MPChatLogEntrySong extends MPChatLogEntry
         this.song = song;
     }
     
-    override public function build(width : Float) : Void
+    override public function build(width                             : Dynamic) : Void
     {
-        if (built)
+        if (as3hx.Compat.truthy(built))
         {
             return;
         }
@@ -54,11 +54,11 @@ class MPChatLogEntrySong extends MPChatLogEntry
         built = true;
     }
     
-    private function e_songSelect(e : Event) : Void
+    private function e_songSelect(e                             : Dynamic) : Void
     {
-        if (room.owner == _mp.currentUser)
+        if (as3hx.Compat.truthy(room.owner == _mp.currentUser))
         {
-            var cmd : MPCFFRSong = new MPCFFRSong(try cast(room, MPRoomFFR) catch(e:Dynamic) null);
+            var cmd                             : Dynamic= new MPCFFRSong(try cast(room, MPRoomFFR) catch(e:Dynamic) null);
             cmd.name = song.name;
             cmd.author = song.author;
             cmd.time = song.time;

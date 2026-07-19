@@ -18,35 +18,35 @@ import openfl.utils.ByteArray;
 class AirContext
 {
     // Windows will store files in the current folder, other OS will use the application storage folder.
-    public static var STORAGE_PATH : File;
+    public static var STORAGE_PATH                              : Dynamic;
     
     
     public static function initFolders() : Void
     // song cache
     {
         
-        var folder : File = STORAGE_PATH.resolvePath(Constant.SONG_CACHE_PATH);
-        if (!folder.exists)
+        var folder                              : Dynamic= STORAGE_PATH.resolvePath(Constant.SONG_CACHE_PATH);
+        if (as3hx.Compat.truthy(!folder.exists))
         {
             folder.createDirectory();
         }
         
         // replays
         folder = STORAGE_PATH.resolvePath(Constant.REPLAY_PATH);
-        if (!folder.exists)
+        if (as3hx.Compat.truthy(!folder.exists))
         {
             folder.createDirectory();
         }
         
         // noteskins
         folder = STORAGE_PATH.resolvePath(Constant.NOTESKIN_PATH);
-        if (!folder.exists)
+        if (as3hx.Compat.truthy(!folder.exists))
         {
             folder.createDirectory();
         }
     }
     
-    public static function createFileName(file_name : String, replace : String = "") : String
+    public static function createFileName(file_name                              : Dynamic, replace                              : Dynamic= "") : String
     // Remove chars not allowed in Windows filename \ / : * ? " < > |
     {
         
@@ -60,38 +60,41 @@ class AirContext
     
     public static function getLoaderContext() : LoaderContext
     {
-        var lc : LoaderContext = new LoaderContext();
+        var lc                              : Dynamic= new LoaderContext();
         lc.applicationDomain = new ApplicationDomain(null);
         lc.allowCodeImport = true;
         return lc;
     }
     
-    public static function getSongCachePath(song : Song) : String
+    public static function getSongCachePath(song                              : Dynamic) : String
     {
         return Constant.SONG_CACHE_PATH + ((song.songInfo.engine) ? MD5.hash(song.songInfo.engine.id) + "/" + MD5.hash(Std.string(song.songInfo.level_id)) : "57fea2a7e69445179686b7579d5118ef/" + MD5.hash(Std.string(song.id))) + "/";
     }
     
-    public static function getReplayPath(song : Song) : String
+    public static function getReplayPath(song                              : Dynamic) : String
     {
         return Constant.REPLAY_PATH + ((song.songInfo.engine) ? createFileName(song.songInfo.engine.id) : Constant.BRAND_NAME_SHORT_LOWER) + "/";
     }
     
-    public static function encodeData(rawData : ByteArray, key : Int = 0) : ByteArray
+    public static function encodeData(rawData                              : Dynamic, key                              : Dynamic= 0) : ByteArray
     {
-        if (key == 0)
+        if (as3hx.Compat.truthy(key == 0))
         {
             return rawData;
         }
         
         // Do some XOR stuff on the ByteArray.
-        var sp : Int = rawData.position;
+        var sp                              : Dynamic= rawData.position;
         rawData.position = 0;
-        var storeData : ByteArray = new ByteArray();
+        var storeData                              : Dynamic= new ByteArray();
         storeData.writeBytes(rawData);
-        var bi : Int = 4;
-        while (bi < rawData.length)
+        var bi                              : Dynamic= 4;
+        while (as3hx.Compat.truthy(bi < rawData.length))
         {
-            storeData[bi] = storeData[bi] ^ (key + bi) % 0xFF;
+            storeData.position = as3hx.Compat.parseInt(bi);
+            var encodedByte                             : Dynamic= storeData.readUnsignedByte() ^ as3hx.Compat.parseInt((key + bi) % 0xFF);
+            storeData.position = as3hx.Compat.parseInt(bi);
+            storeData.writeByte(encodedByte);
             bi += 4;
         }
         rawData.position = sp;
@@ -99,24 +102,24 @@ class AirContext
         return storeData;
     }
     
-    private static function e_fileError(e : Event) : Void
+    private static function e_fileError(e                              : Dynamic) : Void
     {
         trace(e);
     }
     
-    public static function getAppFile(path : String) : File
+    public static function getAppFile(path                              : Dynamic) : File
     {
         return STORAGE_PATH.resolvePath(path);
     }
     
-    public static function doesFileExist(path : String) : Bool
+    public static function doesFileExist(path                              : Dynamic) : Bool
     {
         return STORAGE_PATH.resolvePath(path).exists;
     }
     
-    public static function writeFile(file : File, bytes : ByteArray, key : Int = 0, errorCallback : Dynamic = null) : File
+    public static function writeFile(file                              : Dynamic, bytes                              : Dynamic, key                              : Dynamic= 0, errorCallback                              : Dynamic= null) : File
     {
-        var fileStream : FileStream = new FileStream();
+        var fileStream                              : Dynamic= new FileStream();
         fileStream.addEventListener(SecurityErrorEvent.SECURITY_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
         fileStream.addEventListener(IOErrorEvent.IO_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
         fileStream.open(file, FileMode.WRITE);
@@ -126,14 +129,14 @@ class AirContext
         return file;
     }
     
-    public static function readFile(file : File, key : Int = 0, errorCallback : Dynamic = null) : ByteArray
+    public static function readFile(file                              : Dynamic, key                              : Dynamic= 0, errorCallback                              : Dynamic= null) : ByteArray
     {
-        if (file.exists)
+        if (as3hx.Compat.truthy(file.exists))
         {
-            var fileStream : FileStream = new FileStream();
+            var fileStream                              : Dynamic= new FileStream();
             fileStream.addEventListener(SecurityErrorEvent.SECURITY_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
             fileStream.addEventListener(IOErrorEvent.IO_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
-            var readData : ByteArray = new ByteArray();
+            var readData                              : Dynamic= new ByteArray();
             fileStream.open(file, FileMode.READ);
             fileStream.readBytes(readData);
             fileStream.close();
@@ -143,15 +146,15 @@ class AirContext
         return null;
     }
     
-    public static function readTextFile(file : File, errorCallback : Dynamic = null) : String
+    public static function readTextFile(file                              : Dynamic, errorCallback                              : Dynamic= null) : String
     {
-        if (file.exists)
+        if (as3hx.Compat.truthy(file.exists))
         {
-            var fileStream : FileStream = new FileStream();
+            var fileStream                              : Dynamic= new FileStream();
             fileStream.addEventListener(SecurityErrorEvent.SECURITY_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
             fileStream.addEventListener(IOErrorEvent.IO_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
             fileStream.open(file, FileMode.READ);
-            var data : String = fileStream.readUTFBytes(fileStream.bytesAvailable);
+            var data                              : Dynamic= fileStream.readUTFBytes(fileStream.bytesAvailable);
             fileStream.close();
             
             return data;
@@ -159,14 +162,14 @@ class AirContext
         return null;
     }
     
-    public static function writeTextFile(file : File, data : String, errorCallback : Dynamic = null) : File
+    public static function writeTextFile(file                              : Dynamic, data                              : Dynamic, errorCallback                              : Dynamic= null) : File
     {
-        if (data == null || data.length == 0)
+        if (as3hx.Compat.truthy(data == null || data.length == 0))
         {
             return file;
         }
         
-        var fileStream : FileStream = new FileStream();
+        var fileStream                              : Dynamic= new FileStream();
         fileStream.addEventListener(SecurityErrorEvent.SECURITY_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
         fileStream.addEventListener(IOErrorEvent.IO_ERROR, (errorCallback != null) ? errorCallback : e_fileError);
         fileStream.open(file, FileMode.WRITE);
@@ -176,9 +179,9 @@ class AirContext
         return file;
     }
     
-    public static function deleteFile(file : File) : Bool
+    public static function deleteFile(file                              : Dynamic) : Bool
     {
-        if (file.exists)
+        if (as3hx.Compat.truthy(file.exists))
         {
             file.moveToTrash();
             return true;
@@ -186,30 +189,30 @@ class AirContext
         return false;
     }
     
-    public static function getFileSize(file : File, track : FileTracker = null, track_file_paths : Bool = false) : FileTracker
+    public static function getFileSize(file                              : Dynamic, track                              : Dynamic= null, track_file_paths                              : Dynamic= false) : FileTracker
     {
-        if (track == null)
+        if (as3hx.Compat.truthy(track == null))
         {
             track = new FileTracker();
         }
         
-        if (file == null || file.exists == false)
+        if (as3hx.Compat.truthy(file == null || file.exists == false))
         {
             return track;
         }
-        if (file.isDirectory)
+        if (as3hx.Compat.truthy(file.isDirectory))
         {
             track.dirs++;
-            var files : Array<Dynamic> = file.getDirectoryListing();
-            for (f in files)
+            var files                              : Dynamic= file.getDirectoryListing();
+            for (f in as3hx.Compat.iter(files))
             {
-                if (f.isDirectory)
+                if (as3hx.Compat.truthy(f.isDirectory))
                 {
                     getFileSize(f, track, track_file_paths);
                 }
                 else
                 {
-                    if (track_file_paths)
+                    if (as3hx.Compat.truthy(track_file_paths))
                     {
                         track.file_paths.push(f.nativePath);
                     }
@@ -220,7 +223,7 @@ class AirContext
         }
         else
         {
-            if (track_file_paths)
+            if (as3hx.Compat.truthy(track_file_paths))
             {
                 track.file_paths.push(file.nativePath);
             }
@@ -235,7 +238,7 @@ class AirContext
     }
     private static var AirContext_static_initializer = {
         {
-            if (SystemUtil.OS.toLowerCase().indexOf("win") == -1)
+            if (as3hx.Compat.truthy(SystemUtil.OS.toLowerCase().indexOf("win") == -1))
             {
                 STORAGE_PATH = File.applicationStorageDirectory;
             }

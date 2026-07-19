@@ -80,32 +80,32 @@ import menu.MenuMultiplayer;
 
 class MPRoomViewFFR extends MPRoomView
 {
-    private static var _noteskins : Noteskins = Noteskins.instance;
+    private static var _noteskins                             : Dynamic= Noteskins.instance;
     
-    public var room : MPRoomFFR;
+    public var room                             : Dynamic;
     
-    private var _width : Float = 409;
-    private var _height : Float = 388;
+    private var _width                             : Dynamic= 409;
+    private var _height                             : Dynamic= 388;
     
-    private var chat : MPViewChatLogRoom;
-    private var userlist : MPViewUserListRoom;
+    private var chat                             : Dynamic;
+    private var userlist                             : Dynamic;
     
-    private var autoSpectateButton : UIIconHover;
-    private var inviteButton : UIIconHover;
+    private var autoSpectateButton                             : Dynamic;
+    private var inviteButton                             : Dynamic;
     
-    private var ownerPanel : OwnerPanel;
-    private var ownerEditPanel : OwnerEditPanel;
-    private var ownerModsPanel : OwnerModsPanel;
-    private var userPanel : UserPanel;
+    private var ownerPanel                             : Dynamic;
+    private var ownerEditPanel                             : Dynamic;
+    private var ownerModsPanel                             : Dynamic;
+    private var userPanel                             : Dynamic;
     
-    private var _userProfilePrompt : MPUserProfilePrompt;
-    private var _userInvitePrompt : MPRoomUserInvitePrompt;
+    private var _userProfilePrompt                             : Dynamic;
+    private var _userInvitePrompt                             : Dynamic;
     
-    private var loadProgressTimer : Timer = new Timer(500);
-    private var autoSpectate : Bool = false;
-    private var autoSpectatePlayer : MPUser;
+    private var loadProgressTimer                             : Dynamic= new Timer(500);
+    private var autoSpectate                             : Dynamic= false;
+    private var autoSpectatePlayer                             : Dynamic;
     
-    public function new(room : MPRoomFFR, parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(room                             : Dynamic, parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         this.room = room;
         
@@ -213,7 +213,7 @@ class MPRoomViewFFR extends MPRoomView
         userPanel = new UserPanel(this, room);
         addChild(userPanel);
         
-        if (_mp.currentUser == room.owner)
+        if (as3hx.Compat.truthy(_mp.currentUser == room.owner))
         {
             setPanelOwner();
         }
@@ -247,15 +247,15 @@ class MPRoomViewFFR extends MPRoomView
         this.graphics.lineTo(_width, 30);
     }
     
-    override public function onKeyInput(e : KeyboardEvent) : Void
+    override public function onKeyInput(e                             : Dynamic) : Void
     {
-        if (_userInvitePrompt != null)
+        if (as3hx.Compat.truthy(_userInvitePrompt != null))
         {
             _userInvitePrompt.onKeyInput(e);
             return;
         }
         
-        if (_userProfilePrompt != null)
+        if (as3hx.Compat.truthy(_userProfilePrompt != null))
         {
             _userProfilePrompt.onKeyInput(e);
             return;
@@ -264,17 +264,17 @@ class MPRoomViewFFR extends MPRoomView
         chat.onKeyInput(e);
     }
     
-    public function onChatMessage(e : MPRoomEvent) : Void
+    public function onChatMessage(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             chat.onChatMessage(e);
         }
     }
     
-    override private function updateRoomButton() : Void
+    override public function updateRoomButton() : Void
     {
-        if (room.spectatorCount > 0)
+        if (as3hx.Compat.truthy(room.spectatorCount > 0))
         {
             this.roomButton.updateText(room.name, sprintf(_lang.string("mp_btn_player_count_spectator"), {
                                 current : room.playerCount,
@@ -291,7 +291,7 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    override private function set_width(value : Float) : Float
+    override private function set_width(value                             : Dynamic) : Float
     {
         _width = value;
         redraw();
@@ -303,7 +303,7 @@ class MPRoomViewFFR extends MPRoomView
         return _width;
     }
     
-    override private function set_height(value : Float) : Float
+    override private function set_height(value                             : Dynamic) : Float
     {
         _height = height;
         redraw();
@@ -315,9 +315,9 @@ class MPRoomViewFFR extends MPRoomView
         return _height;
     }
     
-    override private function e_roomUpdate(e : MPRoomEvent) : Void
+    override public function e_roomUpdate(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             updateRoomButton();
@@ -325,9 +325,9 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    override private function e_roomEdit(e : MPRoomEvent) : Void
+    override public function e_roomEdit(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             updateRoomButton();
@@ -335,17 +335,17 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    override private function e_roomMessage(e : MPRoomEvent) : Void
+    override public function e_roomMessage(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             onChatMessage(e);
         }
     }
     
-    override private function e_teamUpdate(e : MPRoomEvent) : Void
+    override public function e_teamUpdate(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             updateRoomButton();
@@ -353,26 +353,26 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_gameState(e : MPRoomEvent) : Void
+    public function e_gameState(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.updateGameStates();
         }
     }
     
-    private function e_gameMods(e : MPRoomEvent) : Void
+    public function e_gameMods(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.updateGameStates();
             updatePanelDisplay();
         }
     }
     
-    private function e_playableState(e : MPRoomEvent) : Void
+    public function e_playableState(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             ownerPanel.update();
@@ -380,17 +380,17 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_songRate(e : MPRoomEvent) : Void
+    public function e_songRate(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.updateGameStates();
         }
     }
     
-    override private function e_userJoin(e : MPRoomEvent) : Void
+    override public function e_userJoin(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             chat.addItem(new MPChatLogEntryText("<font color=\"" + MPColors.USER_JOIN + "\">" + sprintf(_lang.string("mp_room_chat_user_join"), {
                                 user : e.user.name
@@ -401,9 +401,9 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    override private function e_userLeave(e : MPRoomEvent) : Void
+    override public function e_userLeave(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             chat.addItem(new MPChatLogEntryText("<font color=\"" + MPColors.USER_LEAVE + "\">" + sprintf(_lang.string("mp_room_chat_user_left"), {
                                 user : e.user.name
@@ -412,26 +412,26 @@ class MPRoomViewFFR extends MPRoomView
             updateRoomButton();
             updatePanelDisplay();
             
-            if (autoSpectatePlayer == e.user && autoSpectate)
+            if (as3hx.Compat.truthy(autoSpectatePlayer == e.user && autoSpectate))
             {
                 e_autoSpectateClick(null);
             }
         }
     }
     
-    private function e_songUpdate(e : MPRoomEvent) : Void
+    public function e_songUpdate(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             updatePanelDisplay();
         }
     }
     
-    private function e_songRequest(e : MPRoomEvent) : Void
+    public function e_songRequest(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
-            var info : MPSong = new MPSong();
+            var info                             : Dynamic= new MPSong();
             info.update(e.command.data);
             info.selected = false;
             
@@ -441,81 +441,81 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_readyState(e : MPRoomEvent) : Void
+    public function e_readyState(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             ownerPanel.update();
         }
     }
     
-    private function e_loadingStart(e : MPRoomEvent) : Void
+    public function e_loadingStart(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             _startSongLoading();
         }
     }
     
-    private function e_loadingProgress(e : MPRoomEvent) : Void
+    public function e_loadingProgress(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.updateGameStates();
         }
     }
     
-    private function e_loadingAbort(e : MPRoomEvent) : Void
+    public function e_loadingAbort(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             _abortSongLoading();
         }
     }
     
-    private function e_matchStart(e : MPRoomEvent) : Void
+    public function e_matchStart(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             chat.addItem(new MPChatLogEntryText("<font color=\"" + MPColors.SYSTEM_MESSAGE_COLOR + "\">" + _lang.string("mp_room_ffr_match_start") + "</font>"));
             _gameMatchStart();
         }
     }
     
-    private function e_songStart(e : MPRoomEvent) : Void
+    public function e_songStart(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.updateGameStates();
         }
     }
     
-    private function e_autoSpectate(e : MPRoomEvent) : Void
+    public function e_autoSpectate(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
-            if (autoSpectate)
+            if (as3hx.Compat.truthy(autoSpectate))
             {
-                if (room.isPlayer(_mp.currentUser))
+                if (as3hx.Compat.truthy(room.isPlayer(_mp.currentUser)))
                 {
                     return;
                 }
                 
                 // Set Player
-                if (autoSpectatePlayer != null)
+                if (as3hx.Compat.truthy(autoSpectatePlayer != null))
                 {
                     _spectatePlayer(autoSpectatePlayer);
                     return;
                 }
                 
                 // Random Player
-                var gameUsers : Array<MPUser> = room.users.filter(function(user : MPUser, index : Int, array : Array<MPUser>) : Bool
+                var gameUsers                             : Dynamic= room.users.filter(function(user                             : Dynamic, index                             : Dynamic, array                             : Dynamic) : Bool
                         {
                             return room.isPlayer(user) && room.getPlayerState(user) == "game";
                         });
                 
-                if (gameUsers.length > 0)
+                if (as3hx.Compat.truthy(gameUsers.length > 0))
                 {
                     _spectatePlayer(gameUsers[Math.floor(Math.random() * gameUsers.length)]);
                 }
@@ -523,9 +523,9 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_matchEnd(e : MPRoomEvent) : Void
+    public function e_matchEnd(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             userlist.updateGameStates();
@@ -536,11 +536,11 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_countdown(e : MPRoomEvent) : Void
+    public function e_countdown(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
-            if (e.command.data.value > 5)
+            if (as3hx.Compat.truthy(e.command.data.value > 5))
             {
                 chat.addItem(new MPChatLogEntryText("<font color=\"" + MPColors.SYSTEM_MESSAGE_COLOR + "\">" + sprintf(_lang.string("mp_room_countdown_general"), {
                                     seconds : e.command.data.value
@@ -553,40 +553,40 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_autoSpectateClick(e : MouseEvent) : Void
+    private function e_autoSpectateClick(e                             : Dynamic) : Void
     {
         autoSpectate = !autoSpectate;
         autoSpectateButton.setColor((autoSpectate) ? "#bdeda8" : "#eda8a8");
         
-        if (autoSpectatePlayer != null)
+        if (as3hx.Compat.truthy(autoSpectatePlayer != null))
         {
             Alert.add(_lang.string("mp_room_spectate_user_clear"), 120, 0x005e5e);
             autoSpectatePlayer = null;
         }
     }
     
-    private function e_inviteClick(e : MouseEvent) : Void
+    private function e_inviteClick(e                             : Dynamic) : Void
     {
         _userInvitePrompt = new MPRoomUserInvitePrompt(this.room, this);
         _userInvitePrompt.addEventListener(Event.CLOSE, e_onInviteClose);
     }
     
-    private function e_onInviteClose(e : Event) : Void
+    private function e_onInviteClose(e                             : Dynamic) : Void
     {
         _userInvitePrompt.removeEventListener(Event.CLOSE, e_onInviteClose);
         _userInvitePrompt = null;
     }
     
-    private function e_onUserSelect(e : MPUserEvent) : Void
+    private function e_onUserSelect(e                             : Dynamic) : Void
     {
         _userProfilePrompt = new MPUserProfilePrompt(e.user, this.room, this);
         _userProfilePrompt.addEventListener(Event.CLOSE, e_onProfileClose);
         _userProfilePrompt.addEventListener(MPEvent.ROOM_USERLIST_SPECTATE, e_onUserSpectate);
     }
     
-    private function e_onUserSpectateUserlist(e : MPUserEvent) : Void
+    private function e_onUserSpectateUserlist(e                             : Dynamic) : Void
     {
-        if (autoSpectate)
+        if (as3hx.Compat.truthy(autoSpectate))
         {
             autoSpectatePlayer = e.user;
             Alert.add(sprintf(_lang.string("mp_room_spectate_user_select"), {
@@ -597,12 +597,12 @@ class MPRoomViewFFR extends MPRoomView
         _spectatePlayer(e.user);
     }
     
-    private function e_onUserSpectate(e : MPUserEvent) : Void
+    private function e_onUserSpectate(e                             : Dynamic) : Void
     {
         _spectatePlayer(e.user);
     }
     
-    private function e_onProfileClose(e : Event) : Void
+    private function e_onProfileClose(e                             : Dynamic) : Void
     {
         _userProfilePrompt.removeEventListener(MPEvent.ROOM_USERLIST_SPECTATE, e_onUserSpectate);
         _userProfilePrompt.removeEventListener(Event.CLOSE, e_onProfileClose);
@@ -611,13 +611,13 @@ class MPRoomViewFFR extends MPRoomView
     
     public function closePrompts() : Void
     {
-        if (_userProfilePrompt != null)
+        if (as3hx.Compat.truthy(_userProfilePrompt != null))
         {
             _userProfilePrompt.close();
             e_onProfileClose(null);
         }
         
-        if (_userInvitePrompt != null)
+        if (as3hx.Compat.truthy(_userInvitePrompt != null))
         {
             _userInvitePrompt.close();
             e_onInviteClose(null);
@@ -632,13 +632,13 @@ class MPRoomViewFFR extends MPRoomView
         userPanel.update();
         
         // Update User -> Owner Switch
-        if (this.room.owner == _mp.currentUser && userPanel.visible)
+        if (as3hx.Compat.truthy(this.room.owner == _mp.currentUser && userPanel.visible))
         {
             setPanelOwner();
         }
         
         // Update Owner -> User Switch
-        if (this.room.owner != _mp.currentUser && (ownerPanel.visible || ownerEditPanel.visible || ownerModsPanel.visible))
+        if (as3hx.Compat.truthy(this.room.owner != _mp.currentUser && (ownerPanel.visible || ownerEditPanel.visible || ownerModsPanel.visible)))
         {
             setPanelUser();
         }
@@ -682,9 +682,9 @@ class MPRoomViewFFR extends MPRoomView
     
     private function _startSongLoading() : Void
     {
-        if (room.songInfo == null)
+        if (as3hx.Compat.truthy(room.songInfo == null))
         {
-            if (room.isPlayer(_mp.currentUser))
+            if (as3hx.Compat.truthy(room.isPlayer(_mp.currentUser)))
             {
                 _mp.sendCommand(new MPCFFRSongLoadError(room));
             }
@@ -692,14 +692,14 @@ class MPRoomViewFFR extends MPRoomView
         }
         
         // Setup Local File
-        if (room.songInfo.is_local)
+        if (as3hx.Compat.truthy(room.songInfo.is_local))
         {
             FileLoader.buildSong(room.songInfo);
         }
         
         room.song = _gvars.getSongFile(room.songInfo);
         
-        if (room.isSongLoaded())
+        if (as3hx.Compat.truthy(room.isSongLoaded()))
         {
             _endSongLoading();
         }
@@ -711,31 +711,31 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_songFileComplete(e : Event) : Void
+    private function e_songFileComplete(e                             : Dynamic) : Void
     {
         room.song.removeEventListener(Event.COMPLETE, e_songFileComplete);
         
-        if (room.isSongLoaded())
+        if (as3hx.Compat.truthy(room.isSongLoaded()))
         {
             _endSongLoading();
         }
     }
     
-    private function e_loadProgressUpdaterTimer(e : TimerEvent) : Void
+    private function e_loadProgressUpdaterTimer(e                             : Dynamic) : Void
     {
-        if (!room.song || room.isSongLoaded())
+        if (as3hx.Compat.truthy(!room.song || room.isSongLoaded()))
         {
             loadProgressTimer.stop();
         }
         else
         {
-            if (room.song.loadFail)
+            if (as3hx.Compat.truthy(room.song.loadFail))
             {
                 _gvars.removeSongFile(room.song);
                 room.song.removeEventListener(Event.COMPLETE, e_songFileComplete);
                 room.song = null;
                 
-                if (room.isPlayer(_mp.currentUser))
+                if (as3hx.Compat.truthy(room.isPlayer(_mp.currentUser)))
                 {
                     _mp.sendCommand(new MPCFFRSongLoadError(room));
                 }
@@ -747,7 +747,7 @@ class MPRoomViewFFR extends MPRoomView
                 return;
             }
             
-            if (room.isPlayer(_mp.currentUser))
+            if (as3hx.Compat.truthy(room.isPlayer(_mp.currentUser)))
             {
                 _mp.sendCommand(new MPCFFRSongLoadProgress(room, room.song.progress, false));
             }
@@ -756,7 +756,7 @@ class MPRoomViewFFR extends MPRoomView
     
     private function _abortSongLoading() : Void
     {
-        if (loadProgressTimer.running)
+        if (as3hx.Compat.truthy(loadProgressTimer.running))
         {
             loadProgressTimer.removeEventListener(TimerEvent.TIMER, e_loadProgressUpdaterTimer);
             loadProgressTimer.stop();
@@ -767,26 +767,26 @@ class MPRoomViewFFR extends MPRoomView
     
     private function _endSongLoading() : Void
     {
-        if (loadProgressTimer.running)
+        if (as3hx.Compat.truthy(loadProgressTimer.running))
         {
             loadProgressTimer.removeEventListener(TimerEvent.TIMER, e_loadProgressUpdaterTimer);
             loadProgressTimer.stop();
         }
         
-        if (room.isPlayer(_mp.currentUser))
+        if (as3hx.Compat.truthy(room.isPlayer(_mp.currentUser)))
         {
-            var state : MPCFFRSongLoadProgress = new MPCFFRSongLoadProgress(room, 100, true);
+            var state                             : Dynamic= new MPCFFRSongLoadProgress(room, 100, true);
             _mp.sendCommand(state);
         }
     }
     
     private function _gameMatchStart() : Void
     {
-        if (room.isPlayer(_mp.currentUser))
+        if (as3hx.Compat.truthy(room.isPlayer(_mp.currentUser)))
         {
             closePrompts();
             
-            if (!room.song)
+            if (as3hx.Compat.truthy(!room.song))
             {
                 room.song = _gvars.getSongFile(room.songInfo);
             }
@@ -799,9 +799,9 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function _spectatePlayer(user : MPUser) : Void
+    private function _spectatePlayer(user                             : Dynamic) : Void
     {
-        if (room.isPlayer(user) && room.getPlayerState(user) == "game")
+        if (as3hx.Compat.truthy(room.isPlayer(user) && room.getPlayerState(user) == "game"))
         {
             closePrompts();
             
@@ -809,18 +809,18 @@ class MPRoomViewFFR extends MPRoomView
                                 name : user.name
                             }), 120, 0x005e5e);
             
-            if (!room.song)
+            if (as3hx.Compat.truthy(!room.song))
             {
                 room.song = _gvars.getSongFile(room.songInfo);
             }
             
-            if (!room.song)
+            if (as3hx.Compat.truthy(!room.song))
             {
                 chat.addItem(new MPChatLogEntryText(_lang.string("mp_room_chat_spectate_error")));
                 return;
             }
             
-            var vars : MPFFRState = room.getPlayerVariables(user);
+            var vars                             : Dynamic= room.getPlayerVariables(user);
             
             room.song.isDirty = true;
             _gvars.options = new GameOptions();
@@ -831,12 +831,12 @@ class MPRoomViewFFR extends MPRoomView
             _gvars.options.spectatorUser = user;
             
             // User Custom Noteskin.
-            if (vars.noteskin == null && _gvars.options.noteskin == 0)
+            if (as3hx.Compat.truthy(vars.noteskin == null && _gvars.options.noteskin == 0))
             {
                 _gvars.options.noteskin = 1;
             }
             
-            if (_gvars.options.noteskin == 0 && vars.noteskin != null)
+            if (as3hx.Compat.truthy(_gvars.options.noteskin == 0 && vars.noteskin != null))
             {
                 _gvars.options.noteskin = 9999999;
                 _noteskins.addEventListener(Noteskins.JSON_LOAD, e_onNoteskinComplete);
@@ -850,14 +850,14 @@ class MPRoomViewFFR extends MPRoomView
         }
     }
     
-    private function e_onNoteskinComplete(e : Event) : Void
+    private function e_onNoteskinComplete(e                             : Dynamic) : Void
     {
         _noteskins.removeEventListener(Noteskins.JSON_LOAD, e_onNoteskinComplete);
         _noteskins.removeEventListener(Noteskins.JSON_ERROR, e_onNoteskinCancel);
         _gvars.gameMain.switchTo(Main.GAME_PLAY_PANEL);
     }
     
-    private function e_onNoteskinCancel(e : Event) : Void
+    private function e_onNoteskinCancel(e                             : Dynamic) : Void
     {
         _noteskins.removeEventListener(Noteskins.JSON_LOAD, e_onNoteskinComplete);
         _noteskins.removeEventListener(Noteskins.JSON_ERROR, e_onNoteskinCancel);
@@ -870,25 +870,25 @@ class MPRoomViewFFR extends MPRoomView
 
 class UserPanel extends Sprite
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var view : MPRoomViewFFR;
-    private var room : MPRoomFFR;
+    private var view                             : Dynamic;
+    private var room                             : Dynamic;
     
-    private var panelName : Text;
-    private var iconLeaveBtn : UIIconHover;
+    private var panelName                             : Dynamic;
+    private var iconLeaveBtn                             : Dynamic;
     
-    private var songName : Text;
-    private var songAuthor : Text;
-    private var songLength : Text;
-    private var songDifficulty : Text;
+    private var songName                             : Dynamic;
+    private var songAuthor                             : Dynamic;
+    private var songLength                             : Dynamic;
+    private var songDifficulty                             : Dynamic;
     
-    private var ready : BoxButton;
-    private var selectSong : BoxButton;
+    private var ready                             : Dynamic;
+    private var selectSong                             : Dynamic;
     
     @:allow(classes.mp.views)
-    private function new(view : MPRoomViewFFR, room : MPRoomFFR)
+    private function new(view                             : Dynamic, room                             : Dynamic)
     {
         super();
         this.view = view;
@@ -929,7 +929,7 @@ class UserPanel extends Sprite
     {
         panelName.text = (room.name) ? room.name : "";
         
-        if (room.songData.selected)
+        if (as3hx.Compat.truthy(room.songData.selected))
         {
             ready.enabled = true;
             songName.text = room.songData.name;
@@ -949,7 +949,7 @@ class UserPanel extends Sprite
             songDifficulty.text = "---";
         }
         
-        if (ready.enabled && !room.canUserPlaySong(_mp.currentUser))
+        if (as3hx.Compat.truthy(ready.enabled && !room.canUserPlaySong(_mp.currentUser)))
         {
             ready.enabled = false;
         }
@@ -957,17 +957,17 @@ class UserPanel extends Sprite
         ready.text = _lang.string((room.isPlayerReady(_mp.currentUser)) ? "mp_room_ffr_owner_unready" : "mp_room_ffr_owner_ready");
     }
     
-    private function e_leaveClick(e : MouseEvent) : Void
+    private function e_leaveClick(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomLeave(room));
     }
     
-    private function e_readyClick(e : MouseEvent) : Void
+    private function e_readyClick(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCFFRReady(room));
     }
     
-    private function e_songsClick(e : MouseEvent) : Void
+    private function e_songsClick(e                             : Dynamic) : Void
     {
         (try cast(this.view.parent, MenuMultiplayer) catch(e:Dynamic) null).switchTo(MainMenu.MENU_SONGSELECTION);
     }
@@ -975,30 +975,30 @@ class UserPanel extends Sprite
 
 class OwnerPanel extends Sprite
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _gvars                             : Dynamic= GlobalVariables.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var view : MPRoomViewFFR;
-    private var room : MPRoomFFR;
+    private var view                             : Dynamic;
+    private var room                             : Dynamic;
     
-    private var panelName : Text;
-    private var iconModsBtn : UIIconHover;
-    private var iconEditBtn : UIIconHover;
-    private var iconLeaveBtn : UIIconHover;
+    private var panelName                             : Dynamic;
+    private var iconModsBtn                             : Dynamic;
+    private var iconEditBtn                             : Dynamic;
+    private var iconLeaveBtn                             : Dynamic;
     
-    private var songName : Text;
-    private var songAuthor : Text;
-    private var songLength : Text;
-    private var songDifficulty : Text;
+    private var songName                             : Dynamic;
+    private var songAuthor                             : Dynamic;
+    private var songLength                             : Dynamic;
+    private var songDifficulty                             : Dynamic;
     
-    private var ready : BoxButton;
-    private var forceStart : BoxIcon;
-    private var selectSong : BoxButton;
-    private var selectMods : BoxButton;
+    private var ready                             : Dynamic;
+    private var forceStart                             : Dynamic;
+    private var selectSong                             : Dynamic;
+    private var selectMods                             : Dynamic;
     
     @:allow(classes.mp.views)
-    private function new(view : MPRoomViewFFR, room : MPRoomFFR)
+    private function new(view                             : Dynamic, room                             : Dynamic)
     {
         super();
         this.view = view;
@@ -1059,7 +1059,7 @@ class OwnerPanel extends Sprite
     {
         panelName.text = (room.name) ? room.name : "";
         
-        if (room.songData.selected)
+        if (as3hx.Compat.truthy(room.songData.selected))
         {
             ready.enabled = forceStart.enabled = true;
             songName.text = room.songData.name;
@@ -1079,7 +1079,7 @@ class OwnerPanel extends Sprite
             songDifficulty.text = "---";
         }
         
-        if (ready.enabled && !room.canUserPlaySong(_mp.currentUser))
+        if (as3hx.Compat.truthy(ready.enabled && !room.canUserPlaySong(_mp.currentUser)))
         {
             ready.enabled = false;
         }
@@ -1087,32 +1087,32 @@ class OwnerPanel extends Sprite
         ready.text = _lang.string((room.isPlayerReady(_mp.currentUser)) ? "mp_room_ffr_owner_unready" : "mp_room_ffr_owner_ready");
     }
     
-    private function e_modsClick(e : MouseEvent) : Void
+    private function e_modsClick(e                             : Dynamic) : Void
     {
         view.setPanelMods();
     }
     
-    private function e_editClick(e : MouseEvent) : Void
+    private function e_editClick(e                             : Dynamic) : Void
     {
         view.setPanelEdit();
     }
     
-    private function e_leaveClick(e : MouseEvent) : Void
+    private function e_leaveClick(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomLeave(room));
     }
     
-    private function e_readyClick(e : MouseEvent) : Void
+    private function e_readyClick(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCFFRReady(room));
     }
     
-    private function e_forceStartClick(e : MouseEvent) : Void
+    private function e_forceStartClick(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCFFRReadyForce(room));
     }
     
-    private function e_songsClick(e : MouseEvent) : Void
+    private function e_songsClick(e                             : Dynamic) : Void
     {
         (try cast(this.view.parent, MenuMultiplayer) catch(e:Dynamic) null).switchTo(MainMenu.MENU_SONGSELECTION);
     }
@@ -1120,32 +1120,32 @@ class OwnerPanel extends Sprite
 
 class OwnerEditPanel extends Sprite
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var view : MPRoomViewFFR;
-    private var room : MPRoomFFR;
+    private var view                             : Dynamic;
+    private var room                             : Dynamic;
     
-    private var panelName : BoxText;
-    private var iconCancelBtn : UIIcon;
-    private var iconSaveBtn : UIIcon;
+    private var panelName                             : Dynamic;
+    private var iconCancelBtn                             : Dynamic;
+    private var iconSaveBtn                             : Dynamic;
     
-    private var roomPassword : BoxText;
-    private var showPassword : BoxIcon;
-    private var joinCode : Text;
+    private var roomPassword                             : Dynamic;
+    private var showPassword                             : Dynamic;
+    private var joinCode                             : Dynamic;
     
-    private var teamModes : ComboBox;
+    private var teamModes                             : Dynamic;
     
-    private var maxPlayersText : Text;
-    private var maxPlayers : ComboBox;
+    private var maxPlayersText                             : Dynamic;
+    private var maxPlayers                             : Dynamic;
     
-    private var maxTeamsText : Text;
-    private var maxTeams : ComboBox;
-    private var maxPlayersPerTeamText : Text;
-    private var maxPlayersPerTeam : ComboBox;
+    private var maxTeamsText                             : Dynamic;
+    private var maxTeams                             : Dynamic;
+    private var maxPlayersPerTeamText                             : Dynamic;
+    private var maxPlayersPerTeam                             : Dynamic;
     
     @:allow(classes.mp.views)
-    private function new(view : MPRoomViewFFR, room : MPRoomFFR)
+    private function new(view                             : Dynamic, room                             : Dynamic)
     {
         super();
         this.view = view;
@@ -1243,7 +1243,7 @@ class OwnerEditPanel extends Sprite
         roomPassword.text = (room.password) ? room.password : "";
         joinCode.text = (room.joinCode) ? room.joinCode : "";
         
-        if ((room.teamCount - 1) > 1)
+        if (as3hx.Compat.truthy((room.teamCount - 1) > 1))
         {
             teamModes.selectedItemByData = "team";
             maxTeams.selectedItemByData = (room.teamCount - 1);
@@ -1258,16 +1258,16 @@ class OwnerEditPanel extends Sprite
         updateTeamMode();
     }
     
-    private function e_cancelClick(e : MouseEvent) : Void
+    private function e_cancelClick(e                             : Dynamic) : Void
     {
         view.setPanelOwner();
     }
     
-    private function e_onJoinClick(e : MouseEvent) : Void
+    private function e_onJoinClick(e                             : Dynamic) : Void
     {
-        var success : Bool = SystemUtil.setClipboard(room.joinCode);
+        var success                             : Dynamic= SystemUtil.setClipboard(room.joinCode);
         
-        if (success)
+        if (as3hx.Compat.truthy(success))
         {
             Alert.add(_lang.string("clipboard_success"), 120, Alert.GREEN);
         }
@@ -1277,22 +1277,22 @@ class OwnerEditPanel extends Sprite
         }
     }
     
-    private function e_saveClick(e : MouseEvent) : Void
+    private function e_saveClick(e                             : Dynamic) : Void
     {
         _mp.addEventListener(MPEvent.ROOM_EDIT_OK, e_onEditOK);
         _mp.addEventListener(MPEvent.ROOM_EDIT_FAIL, e_onEditFail);
         
-        var cmd : MPCRoomEdit = new MPCRoomEdit(room);
+        var cmd                             : Dynamic= new MPCRoomEdit(room);
         cmd.name = panelName.text;
         cmd.password = roomPassword.text;
         
         // FFA
-        if (teamModes.selectedItem.data == "ffa")
+        if (as3hx.Compat.truthy(teamModes.selectedItem.data == "ffa"))
         {
             cmd.team_count = 1;
             cmd.max_players = as3hx.Compat.parseFloat(maxPlayers.selectedItem);
         }
-        else if (teamModes.selectedItem.data == "team")
+        else if (as3hx.Compat.truthy(teamModes.selectedItem.data == "team"))
         {
             cmd.team_count = as3hx.Compat.parseFloat(maxTeams.selectedItem);
             cmd.max_players = as3hx.Compat.parseFloat(maxPlayersPerTeam.selectedItem);
@@ -1301,7 +1301,7 @@ class OwnerEditPanel extends Sprite
         _mp.sendCommand(cmd);
     }
     
-    private function e_onEditOK(e : MPRoomEvent) : Void
+    private function e_onEditOK(e                             : Dynamic) : Void
     {
         _mp.removeEventListener(MPEvent.ROOM_EDIT_OK, e_onEditOK);
         _mp.removeEventListener(MPEvent.ROOM_EDIT_FAIL, e_onEditFail);
@@ -1309,18 +1309,18 @@ class OwnerEditPanel extends Sprite
         view.setPanelOwner();
     }
     
-    private function e_onEditFail(e : MPEvent) : Void
+    private function e_onEditFail(e                             : Dynamic) : Void
     {
         _mp.removeEventListener(MPEvent.ROOM_EDIT_OK, e_onEditOK);
         _mp.removeEventListener(MPEvent.ROOM_EDIT_FAIL, e_onEditFail);
     }
     
-    private function e_onTeamModeChange(e : Event) : Void
+    private function e_onTeamModeChange(e                             : Dynamic) : Void
     {
         updateTeamMode();
     }
     
-    private function e_togglePassword(e : Event) : Void
+    private function e_togglePassword(e                             : Dynamic) : Void
     {
         roomPassword.displayAsPassword = !roomPassword.displayAsPassword;
     }
@@ -1346,53 +1346,53 @@ class OwnerEditPanel extends Sprite
 
 class OwnerModsPanel extends Sprite
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _gvars                             : Dynamic= GlobalVariables.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var view : MPRoomViewFFR;
-    private var room : MPRoomFFR;
+    private var view                             : Dynamic;
+    private var room                             : Dynamic;
     
-    private var panelName : Text;
-    private var iconCancelBtn : UIIcon;
-    private var iconSaveBtn : UIIcon;
+    private var panelName                             : Dynamic;
+    private var iconCancelBtn                             : Dynamic;
+    private var iconSaveBtn                             : Dynamic;
     
-    private var pane : ScrollPane;
-    private var scrollbarWidth(default, never) : Float = 15;
-    private var scrollbar : ScrollBar;
+    private var pane                             : Dynamic;
+    private var scrollbarWidth(default, never)                             : Dynamic= 15;
+    private var scrollbar                             : Dynamic;
     
-    private var enabledRate : BoxCheck;
-    private var optionRate : ValidatedText;
+    private var enabledRate                             : Dynamic;
+    private var optionRate                             : Dynamic;
     
-    private var enabledHidden : BoxCheck;
-    private var optionHidden : BoxCheck;
-    private var enabledSudden : BoxCheck;
-    private var optionSudden : BoxCheck;
-    private var enabledBlink : BoxCheck;
-    private var optionBlink : BoxCheck;
+    private var enabledHidden                             : Dynamic;
+    private var optionHidden                             : Dynamic;
+    private var enabledSudden                             : Dynamic;
+    private var optionSudden                             : Dynamic;
+    private var enabledBlink                             : Dynamic;
+    private var optionBlink                             : Dynamic;
     
-    private var enabledRotating : BoxCheck;
-    private var optionRotating : BoxCheck;
-    private var enabledRotateCW : BoxCheck;
-    private var optionRotateCW : BoxCheck;
-    private var enabledRotateCCW : BoxCheck;
-    private var optionRotateCCW : BoxCheck;
-    private var enabledWave : BoxCheck;
-    private var optionWave : BoxCheck;
-    private var enabledDrunk : BoxCheck;
-    private var optionDrunk : BoxCheck;
-    private var enabledTornado : BoxCheck;
-    private var optionTornado : BoxCheck;
-    private var enabledMiniResize : BoxCheck;
-    private var optionMiniResize : BoxCheck;
-    private var enabledTapPulse : BoxCheck;
-    private var optionTapPulse : BoxCheck;
+    private var enabledRotating                             : Dynamic;
+    private var optionRotating                             : Dynamic;
+    private var enabledRotateCW                             : Dynamic;
+    private var optionRotateCW                             : Dynamic;
+    private var enabledRotateCCW                             : Dynamic;
+    private var optionRotateCCW                             : Dynamic;
+    private var enabledWave                             : Dynamic;
+    private var optionWave                             : Dynamic;
+    private var enabledDrunk                             : Dynamic;
+    private var optionDrunk                             : Dynamic;
+    private var enabledTornado                             : Dynamic;
+    private var optionTornado                             : Dynamic;
+    private var enabledMiniResize                             : Dynamic;
+    private var optionMiniResize                             : Dynamic;
+    private var enabledTapPulse                             : Dynamic;
+    private var optionTapPulse                             : Dynamic;
     
-    private var enabledNoBackground : BoxCheck;
-    private var optionNoBackground : BoxCheck;
+    private var enabledNoBackground                             : Dynamic;
+    private var optionNoBackground                             : Dynamic;
     
     @:allow(classes.mp.views)
-    private function new(view : MPRoomViewFFR, room : MPRoomFFR)
+    private function new(view                             : Dynamic, room                             : Dynamic)
     {
         super();
         this.view = view;
@@ -1429,10 +1429,10 @@ class OwnerModsPanel extends Sprite
         this.graphics.lineTo(view.width - scrollbarWidth - 1, view.height);
         
         // Mods
-        var xOff : Float = 12;
-        var yOff : Float = 39;
+        var xOff                             : Dynamic= 12;
+        var yOff                             : Dynamic= 39;
         
-        var enabledHelp : UIIconHover = new UIIconHover(pane.content, new IconLock(), 20, 16);
+        var enabledHelp                             : Dynamic= new UIIconHover(pane.content, new IconLock(), 20, 16);
         enabledHelp.setSize(16, 16);
         enabledHelp.setHoverText("Force Modifiers");
         enabledHelp.setColor("#c7c7c7");
@@ -1562,18 +1562,18 @@ class OwnerModsPanel extends Sprite
         optionNoBackground.checked = room.mods.nobackground.value;
     }
     
-    private function e_saveClick(e : MouseEvent) : Void
+    private function e_saveClick(e                             : Dynamic) : Void
     {
         view.setPanelOwner();
         
         // Build command
-        var mods : Dynamic = { };
+        var mods                             : Dynamic= { };
         
-        if (enabledRate.checked)
+        if (as3hx.Compat.truthy(enabledRate.checked))
         {
-            var newSongRate : Float = optionRate.validate(1, 0.1);
+            var newSongRate                             : Dynamic= optionRate.validate(1, 0.1);
             newSongRate = Math.max(0.1, Math.min(200, Math.round(newSongRate * 1000) / 1000));
-            if (Math.isNaN(newSongRate) || !Math.isFinite(newSongRate))
+            if (as3hx.Compat.truthy(Math.isNaN(newSongRate) || !Math.isFinite(newSongRate)))
             {
                 newSongRate = 1;
             }
@@ -1581,51 +1581,51 @@ class OwnerModsPanel extends Sprite
             mods.rate = newSongRate;
         }
         
-        if (enabledHidden.checked)
+        if (as3hx.Compat.truthy(enabledHidden.checked))
         {
             mods.hidden = optionHidden.checked;
         }
-        if (enabledSudden.checked)
+        if (as3hx.Compat.truthy(enabledSudden.checked))
         {
             mods.sudden = optionSudden.checked;
         }
-        if (enabledBlink.checked)
+        if (as3hx.Compat.truthy(enabledBlink.checked))
         {
             mods.blink = optionBlink.checked;
         }
-        if (enabledRotating.checked)
+        if (as3hx.Compat.truthy(enabledRotating.checked))
         {
             mods.rotating = optionRotating.checked;
         }
-        if (enabledRotateCW.checked)
+        if (as3hx.Compat.truthy(enabledRotateCW.checked))
         {
             mods.rotate_cw = optionRotateCW.checked;
         }
-        if (enabledRotateCCW.checked)
+        if (as3hx.Compat.truthy(enabledRotateCCW.checked))
         {
             mods.rotate_ccw = optionRotateCCW.checked;
         }
-        if (enabledWave.checked)
+        if (as3hx.Compat.truthy(enabledWave.checked))
         {
             mods.wave = optionWave.checked;
         }
-        if (enabledDrunk.checked)
+        if (as3hx.Compat.truthy(enabledDrunk.checked))
         {
             mods.drunk = optionDrunk.checked;
         }
-        if (enabledTornado.checked)
+        if (as3hx.Compat.truthy(enabledTornado.checked))
         {
             mods.tornado = optionTornado.checked;
         }
-        if (enabledMiniResize.checked)
+        if (as3hx.Compat.truthy(enabledMiniResize.checked))
         {
             mods.mini_resize = optionMiniResize.checked;
         }
-        if (enabledTapPulse.checked)
+        if (as3hx.Compat.truthy(enabledTapPulse.checked))
         {
             mods.tap_pulse = optionTapPulse.checked;
         }
-        if (enabledNoBackground.checked)
+        if (as3hx.Compat.truthy(enabledNoBackground.checked))
         {
             mods.nobackground = optionNoBackground.checked;
         }
@@ -1633,18 +1633,18 @@ class OwnerModsPanel extends Sprite
         _mp.sendCommand(new MPCFFRGameModifiers(room, mods));
     }
     
-    private function e_cancelClick(e : MouseEvent) : Void
+    private function e_cancelClick(e                             : Dynamic) : Void
     {
         view.setPanelOwner();
     }
     
-    private function e_changeListener(e : Event) : Void
+    private function e_changeListener(e                             : Dynamic) : Void
     {
-        if (Std.is(e.target, BoxCheck))
+        if (as3hx.Compat.truthy(Std.is(e.target, BoxCheck)))
         {
             (try cast(e.target, BoxCheck) catch(e:Dynamic) null).checked = !((try cast(e.target, BoxCheck) catch(e:Dynamic) null).checked);
         }
-        else if (e.target == optionRate)
+        else if (as3hx.Compat.truthy(e.target == optionRate))
         {
             optionRate.validate(1, 0.1);
         }
@@ -1655,22 +1655,22 @@ class OwnerModsPanel extends Sprite
      * Moves the scroll pane based on the scroll delta direction.
      * @param e
      */
-    private function e_mouseWheelHandler(e : MouseEvent) : Void
+    private function e_mouseWheelHandler(e                             : Dynamic) : Void
     // Sanity
     {
         
-        if (!scrollbar.draggerVisibility)
+        if (as3hx.Compat.truthy(!scrollbar.draggerVisibility))
         {
             return;
         }
         
         // Scroll
-        var newScrollPosition : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var newScrollPosition                             : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(newScrollPosition);
         scrollbar.scrollTo(newScrollPosition);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                             : Dynamic) : Void
     {
         pane.scrollTo(e.target.scroll);
     }

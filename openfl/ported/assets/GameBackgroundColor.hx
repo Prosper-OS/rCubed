@@ -16,19 +16,19 @@ import openfl.net.URLRequest;
 
 class GameBackgroundColor extends Sprite
 {
-    public static var BG_LIGHT : Int = 0x1495BD;
-    public static var BG_DARK : Int = 0x033242;
-    public static var BG_STATIC : Int = 0x0C6A88;
-    public static var BG_POPUP : Int = 0x074B62;
-    public static var BG_STAGE : Int = 0x000000;
+    public static var BG_LIGHT                              : Dynamic= 0x1495BD;
+    public static var BG_DARK                              : Dynamic= 0x033242;
+    public static var BG_STATIC                              : Dynamic= 0x0C6A88;
+    public static var BG_POPUP                              : Dynamic= 0x074B62;
+    public static var BG_STAGE                              : Dynamic= 0x000000;
     
-    public static var BG_IMAGE_EXT : Array<Dynamic> = [".png", ".jpg", ".jpeg", ".gif"];
-    public static var BG_IMG_MENU : Bitmap;
-    public static var BG_IMG_GAME : Bitmap;
+    public static var BG_IMAGE_EXT                              : Dynamic= [".png", ".jpg", ".jpeg", ".gif"];
+    public static var BG_IMG_MENU                              : Dynamic;
+    public static var BG_IMG_GAME                              : Dynamic;
     
-    private var lastLight : Int = BG_LIGHT;
-    private var lastDark : Int = BG_DARK;
-    private var lastFade : Sprite;
+    private var lastLight                              : Dynamic= BG_LIGHT;
+    private var lastDark                              : Dynamic= BG_DARK;
+    private var lastFade                              : Dynamic;
     
     public function new()
     {
@@ -42,14 +42,14 @@ class GameBackgroundColor extends Sprite
     
     public function redraw() : Void
     {
-        if (BG_IMG_MENU != null)
+        if (as3hx.Compat.truthy(BG_IMG_MENU != null))
         {
             this.graphics.clear();
             return;
         }
         
         // Create Background
-        var _matrix : Matrix = new Matrix();
+        var _matrix                              : Dynamic= new Matrix();
         _matrix.createGradientBox(Main.GAME_WIDTH, Main.GAME_HEIGHT, 5.75);
         this.graphics.clear();
         this.graphics.beginGradientFill(GradientType.LINEAR, [BG_LIGHT, BG_DARK], [1, 1], [0x00, 0xFF], _matrix);
@@ -58,12 +58,12 @@ class GameBackgroundColor extends Sprite
         this.cacheAsBitmap = true;
         this.cacheAsBitmapMatrix = _matrix;
         
-        var bt : BitmapData = new GameBackgroundStripes();
+        var bt                              : Dynamic= new GameBackgroundStripes();
         this.graphics.beginBitmapFill(bt, null, false);
         this.graphics.drawRect(0, 0, Main.GAME_WIDTH, Main.GAME_HEIGHT);
         this.graphics.endFill();
         
-        if (lastFade == null && (lastLight != BG_LIGHT || lastDark != BG_DARK))
+        if (as3hx.Compat.truthy(lastFade == null && (lastLight != BG_LIGHT || lastDark != BG_DARK)))
         {
             lastFade = new Sprite();
             lastFade.graphics.beginGradientFill(GradientType.LINEAR, [lastLight, lastDark], [1, 1], [0x00, 0xFF], _matrix);
@@ -91,16 +91,16 @@ class GameBackgroundColor extends Sprite
         lastFade = null;
     }
     
-    public function updateDisplay(gameMode : Bool = false) : Void
+    public function updateDisplay(gameMode                              : Dynamic= false) : Void
     {
-        if (gameMode)
+        if (as3hx.Compat.truthy(gameMode))
         {
-            if (BG_IMG_MENU != null)
+            if (as3hx.Compat.truthy(BG_IMG_MENU != null))
             {
                 BG_IMG_MENU.visible = false;
             }
             
-            if (BG_IMG_GAME != null)
+            if (as3hx.Compat.truthy(BG_IMG_GAME != null))
             {
                 this.visible = true;
                 BG_IMG_GAME.visible = true;
@@ -114,12 +114,12 @@ class GameBackgroundColor extends Sprite
         {
             this.visible = true;
             
-            if (BG_IMG_MENU != null)
+            if (as3hx.Compat.truthy(BG_IMG_MENU != null))
             {
                 BG_IMG_MENU.visible = true;
             }
             
-            if (BG_IMG_GAME != null)
+            if (as3hx.Compat.truthy(BG_IMG_GAME != null))
             {
                 BG_IMG_GAME.visible = false;
             }
@@ -128,15 +128,15 @@ class GameBackgroundColor extends Sprite
     
     public function reloadImages() : Void
     {
-        var path : String;
-        var imageLoader : Loader;
-        var file : File;
+        var path                              : Dynamic= null;
+        var imageLoader                              : Dynamic= null;
+        var file                              : Dynamic= null;
         
         // Menu Background
         for (i in 0...BG_IMAGE_EXT.length)
         {
             file = AirContext.getAppFile("bg_menu" + BG_IMAGE_EXT[i]);
-            if (file.exists)
+            if (as3hx.Compat.truthy(file.exists))
             {
                 Logger.debug(this, "Found " + file.name);
                 path = "file:///" + file.nativePath;
@@ -154,7 +154,7 @@ class GameBackgroundColor extends Sprite
         {
             file = AirContext.getAppFile("bg_game" + BG_IMAGE_EXT[i]);
             
-            if (file.exists)
+            if (as3hx.Compat.truthy(file.exists))
             {
                 Logger.debug(this, "Found " + file.name);
                 path = "file:///" + file.nativePath;
@@ -168,11 +168,11 @@ class GameBackgroundColor extends Sprite
         }
     }
     
-    private function e_bgMenuLoaded(e : Event) : Void
+    private function e_bgMenuLoaded(e                              : Dynamic) : Void
     // Position Loaded Banner Image
     {
         
-        if (e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null)
+        if (as3hx.Compat.truthy(e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null))
         {
             BG_IMG_MENU = try cast(((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content), Bitmap) catch(e:Dynamic) null;
             positionImage(BG_IMG_MENU);
@@ -180,11 +180,11 @@ class GameBackgroundColor extends Sprite
         }
     }
     
-    private function e_bgGameLoaded(e : Event) : Void
+    private function e_bgGameLoaded(e                              : Dynamic) : Void
     // Position Loaded Banner Image
     {
         
-        if (e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null)
+        if (as3hx.Compat.truthy(e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null))
         {
             BG_IMG_GAME = try cast(((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content), Bitmap) catch(e:Dynamic) null;
             BG_IMG_GAME.visible = false;
@@ -193,16 +193,16 @@ class GameBackgroundColor extends Sprite
         }
     }
     
-    private function positionImage(img : Bitmap) : Void
+    private function positionImage(img                              : Dynamic) : Void
     {
         img.smoothing = true;
         img.pixelSnapping = "always";
         
-        var imageScale : Float = Main.GAME_WIDTH / img.width;
+        var imageScale                              : Dynamic= Main.GAME_WIDTH / img.width;
         
         img.scaleX = img.scaleY = imageScale;
         
-        if (img.height < Main.GAME_HEIGHT)
+        if (as3hx.Compat.truthy(img.height < Main.GAME_HEIGHT))
         {
             img.scaleX = img.scaleY = 1;
             imageScale = Main.GAME_HEIGHT / img.height;

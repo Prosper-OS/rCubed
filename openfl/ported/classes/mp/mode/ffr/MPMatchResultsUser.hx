@@ -8,16 +8,16 @@ import game.GameScoreResult;
 
 class MPMatchResultsUser extends MPUser
 {
-    public var index : Float;
+    public var index                             : Dynamic;
     
-    public var team : MPMatchResultsTeam;
-    public var user : User;
+    public var team                             : Dynamic;
+    public var user                             : Dynamic;
     
-    public var alive : Bool;
-    public var position : Int;
-    public var score : GameScoreResult;
+    public var alive                             : Dynamic;
+    public var position                             : Dynamic;
+    public var score                             : Dynamic;
     
-    override public function update(data : Dynamic) : Void
+    override public function update(data                             : Dynamic) : Void
     {
         super.update(data.user);
         

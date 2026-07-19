@@ -56,39 +56,39 @@ import com.flashfla.utils.NumberUtil;
 
 class MPUserProfilePrompt extends Prompt
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _gvars                             : Dynamic= GlobalVariables.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    public var user : MPUser;
-    public var room : MPRoom;
+    public var user                             : Dynamic;
+    public var room                             : Dynamic;
     
-    private var roomName : BoxText;
+    private var roomName                             : Dynamic;
     
-    private var btnBlock : BoxIcon;
-    private var btnUnBlock : BoxIcon;
-    private var btnRoomInvite : BoxIcon;
-    private var btnRoomSpectate : BoxIcon;
+    private var btnBlock                             : Dynamic;
+    private var btnUnBlock                             : Dynamic;
+    private var btnRoomInvite                             : Dynamic;
+    private var btnRoomSpectate                             : Dynamic;
     
-    private var btnTabProfile : BoxButton;
-    private var btnTabRoom : BoxButton;
-    private var btnTabModerator : BoxButton;
+    private var btnTabProfile                             : Dynamic;
+    private var btnTabRoom                             : Dynamic;
+    private var btnTabModerator                             : Dynamic;
     
-    private var selectedTab : Sprite;
-    private var tabProfile : TabProfile;
-    private var tabRoom : TabRoom;
-    private var tabModerator : TabModerator;
+    private var selectedTab                             : Dynamic;
+    private var tabProfile                             : Dynamic;
+    private var tabRoom                             : Dynamic;
+    private var tabModerator                             : Dynamic;
     
-    private var closeButton : BoxIcon;
+    private var closeButton                             : Dynamic;
     
-    private var messagePlaceholderLeft : Text;
-    private var messagePlaceholderRight : Text;
-    private var messageText : BoxText;
-    private var _last_message_text : String = "";
+    private var messagePlaceholderLeft                             : Dynamic;
+    private var messagePlaceholderRight                             : Dynamic;
+    private var messageText                             : Dynamic;
+    private var _last_message_text                             : Dynamic= "";
     
-    private var throbber : Throbber;
+    private var throbber                             : Dynamic;
     
-    public function new(user : MPUser, room : MPRoom, parent : DisplayObject)
+    public function new(user                             : Dynamic, room                             : Dynamic, parent                             : Dynamic)
     {
         this.user = user;
         this.room = room;
@@ -110,7 +110,7 @@ class MPUserProfilePrompt extends Prompt
         new Text(this, 136, 18, user.nameHTML, 24).setAreaParams(width - 145, 22);
         
         // Skill Rating
-        if (user.skillRating >= 255)
+        if (as3hx.Compat.truthy(user.skillRating >= 255))
         {
             new Text(this, 136, 46, _gvars.getDivisionTitle(user.skillRating), 16, _gvars.getDivisionColor(user.skillRating)).setAreaParams(width - 145, 22);
         }
@@ -124,7 +124,7 @@ class MPUserProfilePrompt extends Prompt
         }
         
         // Avatar
-        var avatar : Sprite = ImageCache.getImage(user.avatarURL, 0, 100, 100);
+        var avatar                             : Dynamic= ImageCache.getImage(user.avatarURL, 0, 100, 100);
         avatar.x = 26;
         avatar.y = 25;
         addChild(avatar);
@@ -178,7 +178,7 @@ class MPUserProfilePrompt extends Prompt
         updateNavigation();
         
         // Get Profile Data
-        if (user.sid > 1)
+        if (as3hx.Compat.truthy(user.sid > 1))
         {
             UserStats.load(user.sid, e_onProfileLoad);
         }
@@ -200,9 +200,9 @@ class MPUserProfilePrompt extends Prompt
         messageText.addEventListener(Event.CHANGE, e_onMessageType, false, 0, true);
         
         // System User
-        if (user.sid == 1)
+        if (as3hx.Compat.truthy(user.sid == 1))
         {
-            var devText : Text = new Text(this, 20, 150, "\"beep boop, i'm a computer\"");
+            var devText                             : Dynamic= new Text(this, 20, 150, "\"beep boop, i'm a computer\"");
             devText.alpha = 0.1;
             devText.setAreaParams(610, 225, "center");
             
@@ -218,70 +218,70 @@ class MPUserProfilePrompt extends Prompt
     
     private function updateNavigation() : Void
     {
-        if (!_mp.currentUser.permissions.mod)
+        if (as3hx.Compat.truthy(!_mp.currentUser.permissions.mod))
         {
             btnTabModerator.visible = false;
         }
         
-        if (room == null || room.type == "lobby")
+        if (as3hx.Compat.truthy(room == null || room.type == "lobby"))
         {
             btnTabRoom.visible = false;
         }
-        else if (room.owner != _mp.currentUser)
+        else if (as3hx.Compat.truthy(room.owner != _mp.currentUser))
         {
             btnTabRoom.enabled = false;
             
-            if (selectedTab == tabRoom)
+            if (as3hx.Compat.truthy(selectedTab == tabRoom))
             {
                 selectTab(tabProfile);
             }
         }
         
-        if (btnTabRoom.visible == false && btnTabModerator.visible == false)
+        if (as3hx.Compat.truthy(btnTabRoom.visible == false && btnTabModerator.visible == false))
         {
             btnTabProfile.visible = false;
         }
     }
     
-    private function selectTab(tab : Sprite) : Void
+    private function selectTab(tab                             : Dynamic) : Void
     {
         selectedTab.visible = false;
         selectedTab = tab;
         selectedTab.visible = true;
     }
     
-    private function e_onProfileLoad(data : UserStats) : Void
+    private function e_onProfileLoad(data                             : Dynamic) : Void
     {
         throbber.stop();
         removeChild(throbber);
         throbber = null;
         
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
             tabProfile.update(data);
             
-            if (selectedTab == tabProfile)
+            if (as3hx.Compat.truthy(selectedTab == tabProfile))
             {
                 tabProfile.visible = true;
             }
         }
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                             : Dynamic) : Void
     {
-        if (e.target == btnTabProfile)
+        if (as3hx.Compat.truthy(e.target == btnTabProfile))
         {
             selectTab(tabProfile);
         }
-        else if (e.target == btnTabRoom)
+        else if (as3hx.Compat.truthy(e.target == btnTabRoom))
         {
             selectTab(tabRoom);
         }
-        else if (e.target == btnTabModerator)
+        else if (as3hx.Compat.truthy(e.target == btnTabModerator))
         {
             selectTab(tabModerator);
         }
-        if (e.target == closeButton)
+        if (as3hx.Compat.truthy(e.target == closeButton))
         {
             close();
             dispatchEvent(new Event(Event.CLOSE));
@@ -290,7 +290,7 @@ class MPUserProfilePrompt extends Prompt
     
     override public function close() : Void
     {
-        if (throbber != null)
+        if (as3hx.Compat.truthy(throbber != null))
         {
             throbber.stop();
             removeChild(throbber);
@@ -303,35 +303,35 @@ class MPUserProfilePrompt extends Prompt
         super.close();
     }
     
-    public function onKeyInput(e : KeyboardEvent) : Void
+    public function onKeyInput(e                             : Dynamic) : Void
     {
-        if (e.keyCode == Keyboard.ENTER && e.target == messageText.field)
+        if (as3hx.Compat.truthy(e.keyCode == Keyboard.ENTER && e.target == messageText.field))
         {
             sendChatMessage(0);
         }
     }
     
-    private function e_inviteUser(e : Event) : Void
+    private function e_inviteUser(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomInvite(user, _mp.GAME_ROOM));
     }
     
-    private function e_spectateUser(e : Event) : Void
+    private function e_spectateUser(e                             : Dynamic) : Void
     {
         dispatchEvent(new MPUserEvent(MPEvent.ROOM_USERLIST_SPECTATE, null, user));
     }
     
-    private function e_blockUser(e : Event) : Void
+    private function e_blockUser(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCUserBlock(user));
     }
     
-    private function e_onBlockUpdate(e : MPEvent) : Void
+    private function e_onBlockUpdate(e                             : Dynamic) : Void
     {
-        var target : Int = e.command.data.sid;
-        if (target == user.sid)
+        var target                             : Dynamic= e.command.data.sid;
+        if (as3hx.Compat.truthy(target == user.sid))
         {
-            if (_mp.currentUser.blockList.indexOf(target) == -1)
+            if (as3hx.Compat.truthy(_mp.currentUser.blockList.indexOf(target) == -1))
             {
                 Alert.add(sprintf(_lang.string("mp_user_block_unblocked"), {
                                     name : user.name
@@ -349,9 +349,9 @@ class MPUserProfilePrompt extends Prompt
         }
     }
     
-    private function e_onRoomUpdate(e : MPRoomEvent) : Void
+    private function e_onRoomUpdate(e                             : Dynamic) : Void
     {
-        if (e.room != room)
+        if (as3hx.Compat.truthy(e.room != room))
         {
             return;
         }
@@ -359,15 +359,15 @@ class MPUserProfilePrompt extends Prompt
         updateNavigation();
     }
     
-    private function e_onMessageType(e : Event) : Void
+    private function e_onMessageType(e                             : Dynamic) : Void
     {
         _last_message_text = messageText.text;
         messagePlaceholderRight.visible = messagePlaceholderLeft.visible = (_last_message_text.length <= 0);
     }
     
-    public function sendChatMessage(type : Int) : Void
+    public function sendChatMessage(type                             : Dynamic) : Void
     {
-        if (_last_message_text.length > 0)
+        if (as3hx.Compat.truthy(_last_message_text.length > 0))
         {
             _mp.sendCommand(new MPCUserMessage(user, _last_message_text, type));
             _last_message_text = "";
@@ -381,12 +381,12 @@ class MPUserProfilePrompt extends Prompt
 
 class TabProfile extends Sprite
 {
-    private static var _lang : Language = Language.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var prompt : MPUserProfilePrompt;
+    private var prompt                             : Dynamic;
     
     @:allow(classes.mp.prompts)
-    private function new(parent : MPUserProfilePrompt, xpos : Float, ypos : Float, user : MPUser, room : MPRoom)
+    private function new(parent                             : Dynamic, xpos                             : Dynamic, ypos                             : Dynamic, user                             : Dynamic, room                             : Dynamic)
     {
         super();
         this.prompt = parent;
@@ -397,7 +397,7 @@ class TabProfile extends Sprite
         parent.addChild(this);
     }
     
-    public function update(data : UserStats) : Void
+    public function update(data                             : Dynamic) : Void
     {
         this.graphics.lineStyle(1, 0xFFFFFF, 0.35);
         this.graphics.moveTo(315, 11);
@@ -405,10 +405,10 @@ class TabProfile extends Sprite
         
         // Display Scores
         new Text(this, 0, 0, _lang.string("mp_profile_top_5_scores"), 15).setAreaParams(295, 22);
-        var len : Int = Math.min(5, data.equiv_scores.length);
+        var len                             : Dynamic= Math.min(5, data.equiv_scores.length);
         for (i in 0...len)
         {
-            var entry : ProfileScoreEntry = new ProfileScoreEntry(data.equiv_scores[i]);
+            var entry                             : Dynamic= new ProfileScoreEntry(data.equiv_scores[i]);
             entry.y = 30 + (30 * i);
             addChild(entry);
         }
@@ -420,7 +420,7 @@ class TabProfile extends Sprite
         statProgressBar(335, 90, data.tier_total, data.total_tier_points, 0xb9c1ea, "Tier Points", "#b9c1ea");
     }
     
-    private function statProgressBar(ox : Float, oy : Float, value : Float, total : Float, color : Float, label : String, textColor : String) : Void
+    private function statProgressBar(ox                             : Dynamic, oy                             : Dynamic, value                             : Dynamic, total                             : Dynamic, color                             : Dynamic, label                             : Dynamic, textColor                             : Dynamic) : Void
     {
         this.graphics.lineStyle(1, color, 0.35);
         this.graphics.beginFill(0, 0);
@@ -439,18 +439,18 @@ class TabProfile extends Sprite
 
 class TabRoom extends Sprite
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var prompt : MPUserProfilePrompt;
-    private var room : MPRoom;
+    private var prompt                             : Dynamic;
+    private var room                             : Dynamic;
     
-    private var btnOwner : BoxButton;
-    private var btnKick : BoxButton;
-    private var btnBan : BoxButton;
+    private var btnOwner                             : Dynamic;
+    private var btnKick                             : Dynamic;
+    private var btnBan                             : Dynamic;
     
     @:allow(classes.mp.prompts)
-    private function new(parent : MPUserProfilePrompt, xpos : Float, ypos : Float, user : MPUser, room : MPRoom)
+    private function new(parent                             : Dynamic, xpos                             : Dynamic, ypos                             : Dynamic, user                             : Dynamic, room                             : Dynamic)
     {
         super();
         this.prompt = parent;
@@ -466,17 +466,17 @@ class TabRoom extends Sprite
         btnKick = new BoxButton(this, 0, 70, 200, 24, "Kick User", 12, e_onKick);
     }
     
-    private function e_onPromoteOwner(e : Event) : Void
+    private function e_onPromoteOwner(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomUserOwner(room, prompt.user));
     }
     
-    private function e_onBan(e : Event) : Void
+    private function e_onBan(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomUserBlock(room, prompt.user, 1));
     }
     
-    private function e_onKick(e : Event) : Void
+    private function e_onKick(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomUserBlock(room, prompt.user, 0));
     }
@@ -484,25 +484,25 @@ class TabRoom extends Sprite
 
 class TabModerator extends Sprite
 {
-    private static var BAN_LENGTHS : Array<Int> = [2, 5, 30, 60, 1440, 2880, 10080, 20160, 40320, 241920, 525600, 1051200, 52560000];
+    private static var BAN_LENGTHS                             : Dynamic= [2, 5, 30, 60, 1440, 2880, 10080, 20160, 40320, 241920, 525600, 1051200, 52560000];
     
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var prompt : MPUserProfilePrompt;
+    private var prompt                             : Dynamic;
     
-    private var inputLength : BoxText;
-    private var inputPremade : ComboBox;
+    private var inputLength                             : Dynamic;
+    private var inputPremade                             : Dynamic;
     
-    private var btnBan : BoxButton;
-    private var btnMute : BoxButton;
-    private var btnKick : BoxButton;
+    private var btnBan                             : Dynamic;
+    private var btnMute                             : Dynamic;
+    private var btnKick                             : Dynamic;
     
-    private var messageMod : BoxButton;
-    private var messageAdmin : BoxButton;
+    private var messageMod                             : Dynamic;
+    private var messageAdmin                             : Dynamic;
     
     @:allow(classes.mp.prompts)
-    private function new(parent : MPUserProfilePrompt, xpos : Float, ypos : Float, user : MPUser, room : MPRoom)
+    private function new(parent                             : Dynamic, xpos                             : Dynamic, ypos                             : Dynamic, user                             : Dynamic, room                             : Dynamic)
     {
         super();
         this.prompt = parent;
@@ -528,10 +528,10 @@ class TabModerator extends Sprite
         messageAdmin = new BoxButton(this, 161, 163, 150, 24, "<font color=\"#F25C5C\">Message as Admin</font>", 12, e_sendAsAdmin);
     }
     
-    private function e_onMute(e : Event) : Void
+    private function e_onMute(e                             : Dynamic) : Void
     {
-        var duration : Int = as3hx.Compat.parseInt(inputLength.text);
-        if (Math.isNaN(duration) || duration <= 0)
+        var duration                             : Dynamic= as3hx.Compat.parseInt(inputLength.text);
+        if (as3hx.Compat.truthy(Math.isNaN(duration) || duration <= 0))
         {
             return;
         }
@@ -539,10 +539,10 @@ class TabModerator extends Sprite
         _mp.sendCommand(new MPCModMuteUser(prompt.user, duration));
     }
     
-    private function e_onBan(e : Event) : Void
+    private function e_onBan(e                             : Dynamic) : Void
     {
-        var duration : Int = as3hx.Compat.parseInt(inputLength.text);
-        if (Math.isNaN(duration) || duration <= 0)
+        var duration                             : Dynamic= as3hx.Compat.parseInt(inputLength.text);
+        if (as3hx.Compat.truthy(Math.isNaN(duration) || duration <= 0))
         {
             return;
         }
@@ -550,29 +550,29 @@ class TabModerator extends Sprite
         _mp.sendCommand(new MPCModBanUser(prompt.user, duration));
     }
     
-    private function e_onKick(e : Event) : Void
+    private function e_onKick(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCModBanUser(prompt.user, 0));
     }
     
-    private function e_durationChange(e : Event) : Void
+    private function e_durationChange(e                             : Dynamic) : Void
     {
         inputLength.text = Std.string(inputPremade.selectedItem.data);
     }
     
-    private function e_sendAsMod(e : Event) : Void
+    private function e_sendAsMod(e                             : Dynamic) : Void
     {
         prompt.sendChatMessage(1);
     }
     
-    private function e_sendAsAdmin(e : Event) : Void
+    private function e_sendAsAdmin(e                             : Dynamic) : Void
     {
         prompt.sendChatMessage(2);
     }
     
     private function buildDurationLength() : Array<Dynamic>
     {
-        var out : Array<Dynamic> = [];
+        var out                             : Dynamic= [];
         
         for (i in 0...BAN_LENGTHS.length)
         {
@@ -588,12 +588,12 @@ class TabModerator extends Sprite
 
 class ProfileScoreEntry extends Sprite
 {
-    private static var _playlist : Playlist = Playlist.instanceCanon;
+    private static var _playlist                             : Dynamic= Playlist.instanceCanon;
     
-    public var score : UserStatsScore;
+    public var score                             : Dynamic;
     
     @:allow(classes.mp.prompts)
-    private function new(score : UserStatsScore)
+    private function new(score                             : Dynamic)
     {
         super();
         this.score = score;
@@ -603,7 +603,7 @@ class ProfileScoreEntry extends Sprite
         this.graphics.drawRect(0, 0, 295, 25);
         this.graphics.endFill();
         
-        var song : SongInfo = _playlist.playList[score.level_id];
+        var song                             : Dynamic= _playlist.playList[score.level_id];
         
         new Text(this, 5, 0, song.name, 11).setAreaParams(245, 26);
         new Text(this, 5, 0, NumberUtil.numberFormat(score.weight, 2, true), 11, "#cccccc").setAreaParams(285, 26, "right");

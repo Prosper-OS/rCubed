@@ -27,47 +27,47 @@ import openfl.geom.Matrix;
 
 class GameResultFFRScoreList extends Sprite
 {
-    private static var _lang : Language = Language.instance;
+    private static var _lang                       : Dynamic= Language.instance;
     
-    private var _width : Float = 719;
-    private var _height : Float = 235;
+    private var _width                       : Dynamic= 719;
+    private var _height                       : Dynamic= 235;
     
-    private var handler : Dynamic;
+    private var handler                       : Dynamic;
     
-    private var match : MPMatchResultsFFR;
-    private var users : Array<MPMatchResultsUser>;
+    private var match                       : Dynamic;
+    private var users                       : Dynamic;
     
-    private var pane : ScrollPane;
+    private var pane                       : Dynamic;
     
-    private var scrollbarWidth(default, never) : Float = 15;
-    private var scrollbar : ScrollBar;
-    private var scrollbarBG : Sprite;
+    private var scrollbarWidth(default, never)                       : Dynamic= 15;
+    private var scrollbar                       : Dynamic;
+    private var scrollbarBG                       : Dynamic;
     
-    private var useTeamView : Bool = false;
+    private var useTeamView                       : Dynamic= false;
     
     // Team Dividers
-    private var labelHeight(default, never) : Float = 35;
-    private var teamLabels : Array<TeamLabel> = [];
-    private var userLabels : Array<GameResultFFRScoreListUserLabel> = [];
+    private var labelHeight(default, never)                       : Dynamic= 35;
+    private var teamLabels                       : Dynamic= [];
+    private var userLabels                       : Dynamic= [];
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                       : Dynamic= null, xpos                       : Dynamic= 0, ypos                       : Dynamic= 0)
     {
         super();
         this.x = xpos;
         this.y = ypos;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
     }
     
-    public function setHandler(handler : Dynamic) : Void
+    public function setHandler(handler                       : Dynamic) : Void
     {
         this.handler = handler;
     }
     
-    public function setRoom(match : MPMatchResultsFFR) : Void
+    public function setRoom(match                       : Dynamic) : Void
     {
         this.match = match;
         this.users = match.users;
@@ -113,26 +113,26 @@ class GameResultFFRScoreList extends Sprite
     
     public function update() : Void
     {
-        var my : Float = 0;
+        var my                       : Dynamic= 0;
         
-        var GameResultFFRScoreListUserLabel : GameResultFFRScoreListUserLabel;
+        var GameResultFFRScoreListUserLabel                       : Dynamic= null;
         
-        var team : MPMatchResultsTeam;
-        var user : MPMatchResultsUser;
+        var team                       : Dynamic= null;
+        var user                       : Dynamic= null;
         
         // Multiple Teams
-        if (match.teamMode)
+        if (as3hx.Compat.truthy(match.teamMode))
         {
-            var teamLabel : TeamLabel;
+            var teamLabel                       : Dynamic= null;
             
-            for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(match),teams) type: null */ in match.teams)
+            for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(match),teams) type: null */ in as3hx.Compat.iter(match.teams))
             {
                 teamLabel = getTeamLabel(team);
                 teamLabel.y = my;
                 
                 my += labelHeight;
                 
-                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(team),users) type: null */ in team.users)
+                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(team),users) type: null */ in as3hx.Compat.iter(team.users))
                 {
                     GameResultFFRScoreListUserLabel = getUserLabel(user);
                     GameResultFFRScoreListUserLabel.y = my;
@@ -146,7 +146,7 @@ class GameResultFFRScoreList extends Sprite
         {
             
             {
-                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EArray(EField(EIdent(match),teams),EConst(CInt(0))),users) type: null */ in match.teams[0].users)
+                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EArray(EField(EIdent(match),teams),EConst(CInt(0))),users) type: null */ in as3hx.Compat.iter(match.teams[0].users))
                 {
                     GameResultFFRScoreListUserLabel = getUserLabel(user);
                     GameResultFFRScoreListUserLabel.y = my;
@@ -160,34 +160,34 @@ class GameResultFFRScoreList extends Sprite
         scrollbar.visible = (pane.content.height > pane.height - 5);
     }
     
-    private function e_onPaneClick(e : MouseEvent) : Void
+    private function e_onPaneClick(e                       : Dynamic) : Void
     {
-        if (handler == null)
+        if (as3hx.Compat.truthy(handler == null))
         {
             return;
         }
         
-        if (Std.is(e.target, GameResultFFRScoreListUserLabel))
+        if (as3hx.Compat.truthy(Std.is(e.target, GameResultFFRScoreListUserLabel)))
         {
             handler((try cast(e.target, GameResultFFRScoreListUserLabel) catch(e:Dynamic) null).user.index);
         }
     }
     
-    private function e_scrollMouseWheel(e : MouseEvent) : Void
+    private function e_scrollMouseWheel(e                       : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
         
-        var dist : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var dist                       : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(dist);
         scrollbar.scrollTo(dist);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                       : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
@@ -195,7 +195,7 @@ class GameResultFFRScoreList extends Sprite
         pane.scrollTo(e.target.scroll);
     }
     
-    override private function set_width(value : Float) : Float
+    override private function set_width(value                       : Dynamic) : Float
     {
         _width = value;
         redraw();
@@ -207,7 +207,7 @@ class GameResultFFRScoreList extends Sprite
         return _width;
     }
     
-    override private function set_height(value : Float) : Float
+    override private function set_height(value                       : Dynamic) : Float
     {
         _height = height;
         redraw();
@@ -221,17 +221,17 @@ class GameResultFFRScoreList extends Sprite
     
     // //////
     // Object Pool
-    private function getUserLabel(user : MPMatchResultsUser) : GameResultFFRScoreListUserLabel
+    private function getUserLabel(user                       : Dynamic) : GameResultFFRScoreListUserLabel
     {
-        var newLabel : GameResultFFRScoreListUserLabel = new GameResultFFRScoreListUserLabel(user);
+        var newLabel                       : Dynamic= new GameResultFFRScoreListUserLabel(user);
         pane.content.addChild(newLabel);
         
         return newLabel;
     }
     
-    private function getTeamLabel(team : MPMatchResultsTeam) : TeamLabel
+    private function getTeamLabel(team                       : Dynamic) : TeamLabel
     {
-        var newLabel : TeamLabel = new TeamLabel(team);
+        var newLabel                       : Dynamic= new TeamLabel(team);
         pane.content.addChild(newLabel);
         
         return newLabel;
@@ -242,20 +242,20 @@ class GameResultFFRScoreList extends Sprite
 
 class BaseLabel extends Sprite
 {
-    private static var BG_WINNER : Array<Dynamic> = [0xD6BA00, 0xD6BA00];
-    private static var BG_NORMAL : Array<Dynamic> = [0xFFFFFF, 0xFFFFFF];
-    private static var BG_ALPHA : Array<Dynamic> = [0.10, 0.025];
-    private static var BG_RATIO : Array<Dynamic> = [0, 255];
-    private static var BG_MATRIX : Matrix = new Matrix();
+    private static var BG_WINNER                       : Dynamic= [0xD6BA00, 0xD6BA00];
+    private static var BG_NORMAL                       : Dynamic= [0xFFFFFF, 0xFFFFFF];
+    private static var BG_ALPHA                       : Dynamic= [0.10, 0.025];
+    private static var BG_RATIO                       : Dynamic= [0, 255];
+    private static var BG_MATRIX                       : Dynamic= new Matrix();
     
     
-    private var _width : Float = 719;
-    private var _height : Float = 35;
+    public var _width                       : Dynamic= 719;
+    public var _height                       : Dynamic= 35;
     
-    private var hover : Sprite;
-    public var textRank : Text;
-    private var textName : Text;
-    private var textScore : Text;
+    private var hover                       : Dynamic;
+    public var textRank                       : Dynamic;
+    public var textName                       : Dynamic;
+    public var textScore                       : Dynamic;
     
     @:allow(game.results)
     private function new()
@@ -269,7 +269,7 @@ class BaseLabel extends Sprite
         build();
     }
     
-    private function build() : Void
+    public function build() : Void
     {
         hover = new Sprite();
         hover.visible = false;
@@ -280,7 +280,7 @@ class BaseLabel extends Sprite
         addChild(hover);
     }
     
-    private function draw(isWinner : Bool) : Void
+    public function draw(isWinner                       : Dynamic) : Void
     {
         this.graphics.lineStyle(1, 0xFFFFFF, 0.15);
         this.graphics.moveTo(0, _height - 1);
@@ -292,12 +292,12 @@ class BaseLabel extends Sprite
         this.graphics.endFill();
     }
     
-    private function e_showHover(e : MouseEvent) : Void
+    private function e_showHover(e                       : Dynamic) : Void
     {
         hover.visible = true;
     }
     
-    private function e_hideHover(e : MouseEvent) : Void
+    private function e_hideHover(e                       : Dynamic) : Void
     {
         hover.visible = false;
     }
@@ -312,17 +312,17 @@ class BaseLabel extends Sprite
 
 class TeamLabel extends BaseLabel
 {
-    private var team : MPMatchResultsTeam;
+    private var team                       : Dynamic;
     
     @:allow(game.results)
-    private function new(team : MPMatchResultsTeam)
+    private function new(team                       : Dynamic)
     {
         this.team = team;
         
         super();
     }
     
-    override private function build() : Void
+    override public function build() : Void
     {
         draw(team.position == 1);
         
@@ -344,22 +344,22 @@ class TeamLabel extends BaseLabel
 
 class GameResultFFRScoreListUserLabel extends BaseLabel
 {
-    public var user : MPMatchResultsUser;
+    public var user                       : Dynamic;
     
-    private var avatar : Sprite;
+    private var avatar                       : Dynamic;
     
-    private var textRate : Text;
+    private var textRate                       : Dynamic;
     
-    private var textAmazing : Text;
-    private var textPerfect : Text;
-    private var textGood : Text;
-    private var textAverage : Text;
-    private var textMiss : Text;
-    private var textBoo : Text;
-    private var textMaxCombo : Text;
+    private var textAmazing                       : Dynamic;
+    private var textPerfect                       : Dynamic;
+    private var textGood                       : Dynamic;
+    private var textAverage                       : Dynamic;
+    private var textMiss                       : Dynamic;
+    private var textBoo                       : Dynamic;
+    private var textMaxCombo                       : Dynamic;
     
     @:allow(game.results)
-    private function new(user : MPMatchResultsUser)
+    private function new(user                       : Dynamic)
     {
         this.user = user;
         this.buttonMode = true;
@@ -367,7 +367,7 @@ class GameResultFFRScoreListUserLabel extends BaseLabel
         super();
     }
     
-    override private function build() : Void
+    override public function build() : Void
     {
         draw(user.position == 1);
         
@@ -407,7 +407,7 @@ class GameResultFFRScoreListUserLabel extends BaseLabel
         textMaxCombo = new Text(this, 650, 0, NumberUtil.numberFormat(user.score.max_combo), 12);
         textMaxCombo.setAreaParams(64, _height, "center");
         
-        if (!user.alive)
+        if (as3hx.Compat.truthy(!user.alive))
         {
             textRank.alpha = avatar.alpha = textName.alpha = textScore.alpha = textPerfect.alpha = textGood.alpha = textAverage.alpha = textMiss.alpha = textBoo.alpha = textMaxCombo.alpha = 0.4;
         }

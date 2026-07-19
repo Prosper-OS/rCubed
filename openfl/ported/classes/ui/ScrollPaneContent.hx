@@ -6,17 +6,17 @@ import openfl.geom.Rectangle;
 
 class ScrollPaneContent extends Sprite
 {
-    private var doUpdate : Bool = false;
-    private var _width : Float = -1;
-    private var _height : Float = -1;
+    private var doUpdate                             : Dynamic= false;
+    private var _width                             : Dynamic= -1;
+    private var _height                             : Dynamic= -1;
     
-    private var _idx : Int;
-    private var _child : DisplayObject;
+    private var _idx                             : Dynamic;
+    private var _child                             : Dynamic;
     
-    public function update(maskY : Float, maskHeight : Float) : Void
+    public function update(maskY                             : Dynamic, maskHeight                             : Dynamic) : Void
     {
         _idx = as3hx.Compat.parseInt(this.numChildren - 1);
-        while (_idx >= 0)
+        while (as3hx.Compat.truthy(_idx >= 0))
         {
             _child = this.getChildAt(_idx);
             _child.visible = ((_child.y >= maskY || _child.y + _child.height >= maskY) && _child.y < maskY + maskHeight);
@@ -33,13 +33,13 @@ class ScrollPaneContent extends Sprite
      * @param	child
      * @return
      */
-    override public function addChild(child : DisplayObject) : DisplayObject
+    override public function addChild(child                             : Dynamic) : DisplayObject
     {
         child.visible = false;
         return super.addChild(child);
     }
     
-    override public function removeChild(child : DisplayObject) : DisplayObject
+    override public function removeChild(child                             : Dynamic) : DisplayObject
     {
         return super.removeChild(child);
     }
@@ -48,7 +48,7 @@ class ScrollPaneContent extends Sprite
     // account for elements not placed at 0.
     {
         
-        var currentBounds : Rectangle = getBounds(this);
+        var currentBounds                             : Dynamic= getBounds(this);
         
         _width = currentBounds.x + currentBounds.width;  //super.width;  
         _height = (currentBounds.y * 2) + currentBounds.height;
@@ -63,7 +63,7 @@ class ScrollPaneContent extends Sprite
     
     override private function get_width() : Float
     {
-        if (_width == -1)
+        if (as3hx.Compat.truthy(_width == -1))
         {
             updateSizes();
         }
@@ -72,7 +72,7 @@ class ScrollPaneContent extends Sprite
     
     override private function get_height() : Float
     {
-        if (_height == -1)
+        if (as3hx.Compat.truthy(_height == -1))
         {
             updateSizes();
         }
@@ -84,4 +84,3 @@ class ScrollPaneContent extends Sprite
         super();
     }
 }
-

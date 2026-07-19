@@ -19,30 +19,34 @@ import openfl.utils.Timer;
 
 class ReplayHistoryTabLocal extends ReplayHistoryTabBase
 {
-    public var lockUI(never, set) : Bool;
+    private static var e_searchTimer                  : Dynamic;
+    private static var e_startFileSearch                    : Dynamic;
+    private static var e_startFileQueue                    : Dynamic;
+    private static var e_parseTimer                    : Dynamic;
+    public var lockUI(never, set)                       : Dynamic;
 
-    private static var INITIAL_LOAD : Bool = false;
-    public static var REPLAYS : Array<Replay> = [];
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _avars : ArcGlobals = ArcGlobals.instance;
+    private static var INITIAL_LOAD                       : Dynamic= false;
+    public static var REPLAYS                       : Dynamic= [];
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _avars                       : Dynamic= ArcGlobals.instance;
     
-    private var btn_refresh : BoxButton;
+    private var btn_refresh                       : Dynamic;
     
-    private var uiLock : Sprite;
-    private var uiLockBG : Bitmap;
-    private var loadingIndex : Text;
-    private var loadingProgress : ProgressBar;
-    private var loadingCancelButton : BoxButton;
-    private var cancelRequested : Bool = false;
+    private var uiLock                       : Dynamic;
+    private var uiLockBG                       : Dynamic;
+    private var loadingIndex                       : Dynamic;
+    private var loadingProgress                       : Dynamic;
+    private var loadingCancelButton                       : Dynamic;
+    private var cancelRequested                       : Dynamic= false;
     
-    public function new(replayWindow : ReplayHistoryWindow)
+    public function new(replayWindow                       : Dynamic)
     {
         super(replayWindow);
         
         // UI Lock
         uiLock = new Sprite();
-        var lockUIText : Text = new Text(uiLock, 0, 200, _lang.string("replay_loading_external"), 24);
+        var lockUIText                       : Dynamic= new Text(uiLock, 0, 200, _lang.string("replay_loading_external"), 24);
         lockUIText.setAreaParams(780, 30, "center");
         
         loadingIndex = new Text(uiLock, 0, 340, "", 20);
@@ -62,16 +66,16 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
     // Add UI Elements
     {
         
-        if (btn_refresh == null)
+        if (as3hx.Compat.truthy(btn_refresh == null))
         {
             btn_refresh = new BoxButton(null, 5, 410, 162, 29, _lang.string("menu_refresh"), 12, refreshReplays);
         }
         parent.addChild(btn_refresh);
         
         // Initial Load
-        if (!INITIAL_LOAD)
+        if (as3hx.Compat.truthy(!INITIAL_LOAD))
         {
-            if (!_gvars.file_replay_cache.cacheFound)
+            if (as3hx.Compat.truthy(!_gvars.file_replay_cache.cacheFound))
             {
                 refreshReplays();
             }
@@ -91,15 +95,15 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
     
     override public function setValues() : Void
     {
-        var render_list : Array<Dynamic> = [];
-        for (r in REPLAYS)
+        var render_list                       : Dynamic= [];
+        for (r in as3hx.Compat.iter(REPLAYS))
         {
-            if (r.song == null)
+            if (as3hx.Compat.truthy(r.song == null))
             {
                 continue;
             }
             
-            if (parent.searchText.length >= 1 && r.song.name.toLowerCase().indexOf(parent.searchText) == -1)
+            if (as3hx.Compat.truthy(parent.searchText.length >= 1 && r.song.name.toLowerCase().indexOf(parent.searchText) == -1))
             {
                 continue;
             }
@@ -115,14 +119,14 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
         Logger.info(this, "Loading Cached Replays");
         REPLAYS = [];
         
-        var idx : Int = 0;
-        var cache : Dynamic = _gvars.file_replay_cache.cache;
-        var TIME : Float = Date.now().getTime();
+        var idx                       : Dynamic= 0;
+        var cache                       : Dynamic= _gvars.file_replay_cache.cache;
+        var TIME                       : Dynamic= Date.now().getTime();
         
-        var r : Replay;
-        var cacheObj : Dynamic;
+        var r                       : Dynamic= null;
+        var cacheObj                       : Dynamic= null;
         
-        for (key in Reflect.fields(cache))
+        for (key in as3hx.Compat.iter(Reflect.fields(cache)))
         {
             cacheObj = Reflect.field(cache, key);
             
@@ -143,10 +147,10 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
             r.settings = {
                         songRate : Reflect.field(cacheObj, "rate")
                     };
-            if (Reflect.field(cacheObj, "engine") != null)
+            if (as3hx.Compat.truthy(Reflect.field(cacheObj, "engine") != null))
             {
-                var engine : Dynamic = _avars.legacyEngine(Reflect.field(cacheObj, "engine"));
-                if (engine == null)
+                var engine                       : Dynamic= _avars.legacyEngine(Reflect.field(cacheObj, "engine"));
+                if (as3hx.Compat.truthy(engine == null))
                 {
                     engine = {
                                 id : Reflect.field(cacheObj, "engine")
@@ -166,7 +170,7 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
         setValues();
     }
     
-    private function refreshReplays(e : MouseEvent = null) : Void
+    private function refreshReplays(e                       : Dynamic= null) : Void
     {
         Logger.info(this, "Reloading External Replays");
         lockUI = true;
@@ -174,18 +178,18 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
         _gvars.file_replay_cache.clear();
         REPLAYS = [];
         
-        var loadTimer : Timer;
-        var TIME : Float = Date.now().getTime();
+        var loadTimer                       : Dynamic= null;
+        var TIME                       : Dynamic= Date.now().getTime();
         
         // File Searching
-        var dirQueue : Array<FileDirectoryQueue> = [new FileDirectoryQueue(AirContext.getAppFile("replays"), 0)];
-        var fileQueue : Array<File> = [];
-        var activeDirQueue : FileDirectoryQueue;
-        var maxDepth : Int = 2;
+        var dirQueue                       : Dynamic= [new FileDirectoryQueue(AirContext.getAppFile("replays"), 0)];
+        var fileQueue                       : Dynamic= [];
+        var activeDirQueue                       : Dynamic= null;
+        var maxDepth                       : Dynamic= 2;
         
         e_startFileSearch();
         
-        var e_startFileSearch : Void->Void = function() : Void
+        e_startFileSearch = function() : Void
         {
             loadingIndex.text = "";
             loadingProgress.update(0);
@@ -195,18 +199,18 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
             loadTimer.start();
         }
         
-        function e_searchTimer(e : TimerEvent) : Void
+        e_searchTimer = function(e                       : Dynamic) : Void
         {
-            var startTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-            var isDelay : Bool = false;
+            var startTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+            var isDelay                       : Dynamic= false;
             
             // File Loop
-            var found : Array<Dynamic>;
-            var len : Int;
-            var file : File;
-            var i : Int;
+            var found                       : Dynamic= null;
+            var len                       : Dynamic= null;
+            var file                       : Dynamic= null;
+            var i                       : Dynamic= null;
             
-            while (dirQueue.length > 0)
+            while (as3hx.Compat.truthy(dirQueue.length > 0))
             {
                 activeDirQueue = dirQueue.pop();
                 
@@ -217,32 +221,32 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
                 {
                     file = found[i];
                     
-                    if (file.isHidden || !file.exists)
+                    if (as3hx.Compat.truthy(file.isHidden || !file.exists))
                     {
                         continue;
                     }
-                    else if (file.isDirectory)
+                    else if (as3hx.Compat.truthy(file.isDirectory))
                     {
-                        if (activeDirQueue.level < maxDepth)
+                        if (as3hx.Compat.truthy(activeDirQueue.level < maxDepth))
                         {
                             dirQueue.push(new FileDirectoryQueue(file, activeDirQueue.level + 1));
                         }
                     }
-                    else if (file.extension != null && file.extension.toLowerCase() == "txt")
+                    else if (as3hx.Compat.truthy(file.extension != null && file.extension.toLowerCase() == "txt"))
                     {
                         fileQueue.push(file);
                     }
                 }
                 
-                var endTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-                if (endTimer - startTimer > 250)
+                var endTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+                if (as3hx.Compat.truthy(endTimer - startTimer > 250))
                 {
                     isDelay = true;
                     break;
                 }
             }
             
-            if (cancelRequested)
+            if (as3hx.Compat.truthy(cancelRequested))
             {
                 as3hx.Compat.setArrayLength(dirQueue, 0);
                 as3hx.Compat.setArrayLength(fileQueue, 0);
@@ -251,7 +255,7 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
             loadingIndex.text = "#" + fileQueue.length;
             
             // Loaded All Files
-            if (dirQueue.length == 0)
+            if (as3hx.Compat.truthy(dirQueue.length == 0))
             {
                 loadTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, e_searchTimer);
                 e_startFileQueue();
@@ -259,7 +263,7 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
             }
             
             // Not Finished, Continue next frame.
-            if (isDelay && dirQueue.length > 0)
+            if (as3hx.Compat.truthy(isDelay && dirQueue.length > 0))
             {
                 loadTimer.start();
             }
@@ -267,12 +271,12 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
         
         
         
-        var pathIndex : Int;
-        var pathTotal : Int;
+        var pathIndex                       : Dynamic= null;
+        var pathTotal                       : Dynamic= null;
         
-        var e_startFileQueue : Void->Void = function() : Void
+        e_startFileQueue = function() : Void
         {
-            if (fileQueue.length <= 0)
+            if (as3hx.Compat.truthy(fileQueue.length <= 0))
             {
                 lockUI = false;
                 setValues();
@@ -290,16 +294,16 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
             loadTimer.start();
         }
         
-        var e_parseTimer : TimerEvent->Void = function(e : TimerEvent) : Void
+        e_parseTimer = function(e                       : Dynamic) : Void
         {
-            var r : Replay;
-            var chartFile : File;
-            var stringPath : String;
-            var startTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-            var isDelay : Bool = false;
-            var cacheObj : Dynamic;
+            var r                       : Dynamic= null;
+            var chartFile                       : Dynamic= null;
+            var stringPath                       : Dynamic= null;
+            var startTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+            var isDelay                       : Dynamic= false;
+            var cacheObj                       : Dynamic= null;
             
-            while (pathIndex < pathTotal)
+            while (as3hx.Compat.truthy(pathIndex < pathTotal))
             {
                 chartFile = fileQueue[pathIndex];
                 stringPath = chartFile.nativePath;
@@ -309,14 +313,14 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
                 r = new Replay(TIME + pathIndex);
                 
                 // Read File
-                var txt : String = Std.string(AirContext.readFile(chartFile));
+                var txt                       : Dynamic= Std.string(AirContext.readFile(chartFile));
                 r.parseEncode(txt, false);
                 r.fileReplay = true;
-                if (r.isValid())
+                if (as3hx.Compat.truthy(r.isValid()))
                 {
                     r.loadSongInfo();
                     
-                    if (r.song != null)
+                    if (as3hx.Compat.truthy(r.song != null))
                     {
                         REPLAYS[REPLAYS.length] = r;
                         
@@ -327,7 +331,7 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
                                     judge : [r.perfect, r.good, r.average, r.miss, r.boo, r.maxcombo]
                                 };
                         
-                        if (r.settings.arc_engine != null)
+                        if (as3hx.Compat.truthy(r.settings.arc_engine != null))
                         {
                             Reflect.setField(cacheObj, "engine", r.song.engine.id);
                         }
@@ -338,7 +342,7 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
                 
                 pathIndex++;
                 
-                if (cancelRequested)
+                if (as3hx.Compat.truthy(cancelRequested))
                 {
                     pathIndex = 0;
                     pathTotal = 0;
@@ -346,8 +350,8 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
                     as3hx.Compat.setArrayLength(REPLAYS, 0);
                 }
                 
-                var endTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-                if (endTimer - startTimer > 250)
+                var endTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+                if (as3hx.Compat.truthy(endTimer - startTimer > 250))
                 {
                     loadingProgress.update(pathIndex / pathTotal);
                     isDelay = true;
@@ -356,7 +360,7 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
             }
             
             // Loaded All Files
-            if (pathIndex >= pathTotal)
+            if (as3hx.Compat.truthy(pathIndex >= pathTotal))
             {
                 loadTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, e_parseTimer);
                 _gvars.file_replay_cache.save();
@@ -367,31 +371,31 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
             }
             
             // Not Finished, Continue next frame.
-            if (isDelay && pathIndex < pathTotal)
+            if (as3hx.Compat.truthy(isDelay && pathIndex < pathTotal))
             {
                 loadTimer.start();
             }
         }
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == loadingCancelButton)
+        if (as3hx.Compat.truthy(e.target == loadingCancelButton))
         {
             cancelRequested = true;
         }
     }
     
-    private function set_lockUI(val : Bool) : Bool
+    private function set_lockUI(val                       : Dynamic) : Bool
     {
         cancelRequested = false;
-        if (val)
+        if (as3hx.Compat.truthy(val))
         {
             uiLockBG = SpriteUtil.getBitmapSprite(_gvars.gameMain.stage, 0.3);
             uiLock.addChildAt(uiLockBG, 0);
             parent.addChild(uiLock);
         }
-        else if (parent.contains(uiLock))
+        else if (as3hx.Compat.truthy(parent.contains(uiLock)))
         {
             uiLock.removeChildAt(0);
             uiLockBG = null;
@@ -400,22 +404,22 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
         return val;
     }
     
-    override public function prepareReplay(r : Replay) : Replay
+    override public function prepareReplay(r                       : Dynamic) : Replay
     // Incomplete
     {
         
         try
         {
-            if (r.filePath != null)
+            if (as3hx.Compat.truthy(r.filePath != null))
             {
                 Logger.debug(this, "Loading Local replay: " + "replays/" + r.filePath);
-                var txt : String = Std.string(AirContext.readFile(AirContext.getAppFile("replays/" + r.filePath)));
+                var txt                       : Dynamic= Std.string(AirContext.readFile(AirContext.getAppFile("replays/" + r.filePath)));
                 
-                if (txt != null && txt.length > 0)
+                if (as3hx.Compat.truthy(txt != null && txt.length > 0))
                 {
                     r.parseEncode(txt, false);
                     r.fileReplay = true;
-                    if (r.isValid())
+                    if (as3hx.Compat.truthy(r.isValid()))
                     {
                         r.loadSongInfo();
                         return r;
@@ -440,11 +444,15 @@ class ReplayHistoryTabLocal extends ReplayHistoryTabBase
 
 class FileDirectoryQueue
 {
-    public var dir : File;
-    public var level : Int;
+    private static var e_searchTimer                  : Dynamic;
+    private static var e_startFileSearch                    : Dynamic;
+    private static var e_startFileQueue                    : Dynamic;
+    private static var e_parseTimer                    : Dynamic;
+    public var dir                       : Dynamic;
+    public var level                       : Dynamic;
     
     @:allow(popups.replays)
-    private function new(dir : File, level : Int)
+    private function new(dir                       : Dynamic, level                       : Dynamic)
     {
         this.dir = dir;
         this.level = level;

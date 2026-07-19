@@ -5,6 +5,9 @@ class Compat {
 	public static inline var INT_MIN:Int = -2147483648;
 	public static inline var FLOAT_MAX:Float = 1.7976931348623157e+308;
 	public static inline var FLOAT_MIN:Float = 2.2250738585072014e-308;
+	public static inline var ARRAY_CASEINSENSITIVE:Int = 1;
+	public static inline var ARRAY_DESCENDING:Int = 2;
+	public static inline var ARRAY_NUMERIC:Int = 16;
 
 	private static var timers:Array<haxe.Timer> = [];
 
@@ -40,6 +43,128 @@ class Compat {
 		}
 		var parsed = Std.parseFloat(Std.string(value));
 		return Math.isNaN(parsed) ? 0 : parsed;
+	}
+
+	public static function truthy(value:Dynamic):Bool {
+		if (value == null) {
+			return false;
+		}
+		if (Std.isOfType(value, Bool)) {
+			return value;
+		}
+		if (Std.isOfType(value, Int) || Std.isOfType(value, Float)) {
+			return value != 0 && !Math.isNaN(value);
+		}
+		if (Std.isOfType(value, String)) {
+			return value != "";
+		}
+		return true;
+	}
+
+	public static function orValue(left:Dynamic, right:Dynamic):Dynamic {
+		return truthy(left) ? left : right;
+	}
+
+	public static function field(value:Dynamic, key:Dynamic):Dynamic {
+		if (value == null) {
+			return null;
+		}
+		if (Std.isOfType(value, Array)) {
+			var index = parseInt(key);
+			var array:Array<Dynamic> = cast value;
+			return index >= 0 && index < array.length ? array[index] : null;
+		}
+		return Reflect.field(value, Std.string(key));
+	}
+
+	public static function iter(value:Dynamic):Iterator<Dynamic> {
+		return toArray(value).iterator();
+	}
+
+	public static function toArray(value:Dynamic):Array<Dynamic> {
+		if (value == null) {
+			return [];
+		}
+		if (Std.isOfType(value, Array)) {
+			return cast value;
+		}
+		if (Std.isOfType(value, String)) {
+			var text = Std.string(value);
+			var chars:Array<Dynamic> = [];
+			for (i in 0...text.length) {
+				chars.push(text.charAt(i));
+			}
+			return chars;
+		}
+		var iterator = Reflect.field(value, "iterator");
+		if (iterator != null && Reflect.isFunction(iterator)) {
+			try {
+				var out:Array<Dynamic> = [];
+				var it:Iterator<Dynamic> = cast Reflect.callMethod(value, iterator, []);
+				for (item in it) {
+					out.push(item);
+				}
+				return out;
+			} catch (_:Dynamic) {
+			}
+		}
+		var fields = Reflect.fields(value);
+		var values:Array<Dynamic> = [];
+		for (field in fields) {
+			values.push(Reflect.field(value, field));
+		}
+		return values;
+	}
+
+	public static function sortOn(array:Dynamic, fields:Dynamic, options:Dynamic = 0):Dynamic {
+		if (!Std.isOfType(array, Array)) {
+			return array;
+		}
+		var list:Array<Dynamic> = cast array;
+		var fieldList:Array<Dynamic> = Std.isOfType(fields, Array) ? cast fields : [fields];
+		var optionList:Array<Dynamic> = Std.isOfType(options, Array) ? cast options : [options];
+		list.sort(function(a:Dynamic, b:Dynamic):Int {
+			for (i in 0...fieldList.length) {
+				var option = i < optionList.length ? as3hx.Compat.parseInt(optionList[i]) : 0;
+				var result = compareValues(fieldValue(a, fieldList[i]), fieldValue(b, fieldList[i]), option);
+				if (result != 0) {
+					return result;
+				}
+			}
+			return 0;
+		});
+		return array;
+	}
+
+	public static function compareValues(a:Dynamic, b:Dynamic, options:Int = 0):Int {
+		var descending = (options & ARRAY_DESCENDING) != 0;
+		var numeric = (options & ARRAY_NUMERIC) != 0;
+		var caseInsensitive = (options & ARRAY_CASEINSENSITIVE) != 0;
+		var result:Int;
+		if (numeric) {
+			var af = parseFloat(a);
+			var bf = parseFloat(b);
+			result = af < bf ? -1 : (af > bf ? 1 : 0);
+		} else {
+			var asText = Std.string(a);
+			var bsText = Std.string(b);
+			if (caseInsensitive) {
+				asText = asText.toLowerCase();
+				bsText = bsText.toLowerCase();
+			}
+			result = asText < bsText ? -1 : (asText > bsText ? 1 : 0);
+		}
+		return descending ? -result : result;
+	}
+
+	private static function fieldValue(value:Dynamic, field:Dynamic):Dynamic {
+		if (Std.isOfType(value, Array)) {
+			var index = Std.parseInt(Std.string(field));
+			if (index != null) {
+				return (cast value:Array<Dynamic>)[index];
+			}
+		}
+		return Reflect.field(value, Std.string(field));
 	}
 
 	public static function setArrayLength<T>(array:Array<T>, length:Int):Void {

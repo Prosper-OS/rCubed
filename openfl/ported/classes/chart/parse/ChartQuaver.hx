@@ -12,92 +12,92 @@ import openfl.utils.ByteArray;
  */
 class ChartQuaver extends ChartBase
 {
-    public var COLORS : Dynamic = {
+    public var COLORS                             : Dynamic= {
             "4" : ["white", "blue", "blue", "white"],
             "7" : ["white", "blue", "white", "red", "white", "blue", "white"]
         };
     
-    public var collections : Dynamic;
+    public var collections                             : Dynamic;
     
-    override public function load(fileData : ByteArray, fileName : String = null) : Bool
+    override public function load(fileData                             : Dynamic, fileName                             : Dynamic= null) : Bool
     {
         try
         {
             fileData.position = 0;
             
-            var buff : String = fileData.readUTFBytes(fileData.length).replace(new as3hx.Compat.Regex('\\r\\n|\\r', "gm"), "\n");
+            var buff                             : Dynamic= new as3hx.Compat.Regex('\\r\\n|\\r', "gm").replace(fileData.readUTFBytes(fileData.length), "\n");
             
             // Decode YAML
             collections = YAML.decode(buff);
             
             // Build data
-            var audioExt : String = Reflect.field(collections, "AudioFile").substr(-3).toLowerCase();
-            if (!ignoreValidation && (audioExt != "mp3"))
+            var audioExt                             : Dynamic= Reflect.field(collections, "AudioFile").substr(-3).toLowerCase();
+            if (as3hx.Compat.truthy(!ignoreValidation && (audioExt != "mp3")))
             {
                 trace("QUA: Invalid: [", audioExt, "]");
                 return false;
             }
             
             Reflect.setField(data, "music", Reflect.field(collections, "AudioFile"));
-            Reflect.setField(data, "title", Reflect.field(collections, "Title") || fileName);
+            Reflect.setField(data, "title", as3hx.Compat.orValue(Reflect.field(collections, "Title"), fileName));
             Reflect.setField(data, "artist", Reflect.field(collections, "Artist"));
             Reflect.setField(data, "stepauthor", Reflect.field(collections, "Creator"));
             
-            if (Reflect.field(collections, "BackgroundFile") != null)
+            if (as3hx.Compat.truthy(Reflect.field(collections, "BackgroundFile") != null))
             {
                 Reflect.setField(data, "banner", Reflect.field(collections, "BackgroundFile"));
                 Reflect.setField(data, "background", Reflect.field(collections, "BackgroundFile"));
             }
             
             // Build NoteMap Object
-            var columnCount : Int = standardType(Reflect.field(collections, "Mode"));
-            var noteCollection : Array<Dynamic> = Reflect.field(collections, "HitObjects");
-            var noteArray : Array<Dynamic> = [];
-            var collectionEntry : Dynamic;
+            var columnCount                             : Dynamic= standardType(Reflect.field(collections, "Mode"));
+            var noteCollection                             : Dynamic= Reflect.field(collections, "HitObjects");
+            var noteArray                             : Dynamic= [];
+            var collectionEntry                             : Dynamic= null;
             for (note in 0...noteCollection.length)
             {
                 collectionEntry = noteCollection[note];
                 
-                var noteTime : Float = as3hx.Compat.parseFloat(Reflect.field(collectionEntry, "StartTime"));
-                var noteColumn : Int = as3hx.Compat.parseInt(Reflect.field(collectionEntry, "Lane")) - 1;
+                var noteTime                             : Dynamic= as3hx.Compat.parseFloat(Reflect.field(collectionEntry, "StartTime"));
+                var noteColumn                             : Dynamic= as3hx.Compat.parseInt(Reflect.field(collectionEntry, "Lane")) - 1;
                 
-                if (Math.isNaN(noteTime))
+                if (as3hx.Compat.truthy(Math.isNaN(noteTime)))
                 {
                     noteTime = 0;
                 }
                 
-                var noteHeldTime : Float = 0;
+                var noteHeldTime                             : Dynamic= 0;
                 
                 // Held Note
-                if (Reflect.field(collectionEntry, "EndTime") != null)
+                if (as3hx.Compat.truthy(Reflect.field(collectionEntry, "EndTime") != null))
                 {
                     noteHeldTime = ((as3hx.Compat.parseFloat(Reflect.field(collectionEntry, "EndTime"))) - noteTime) / 1000;
                 }
                 
-                noteArray[noteArray.length] = [noteTime / 1000, Reflect.field(Reflect.field(COLUMNS, Std.string(columnCount)), Std.string(noteColumn)), Reflect.field(Reflect.field(COLORS, Std.string(columnCount)), Std.string(noteColumn)), noteHeldTime];
+                noteArray[noteArray.length] = [noteTime / 1000, Reflect.field(as3hx.Compat.field(COLUMNS, columnCount), Std.string(noteColumn)), Reflect.field(as3hx.Compat.field(COLORS, columnCount), Std.string(noteColumn)), noteHeldTime];
             }
             
             // Invalid Column Count
-            if (Lambda.indexOf(validColumnCounts, columnCount) == -1)
+            if (as3hx.Compat.truthy(Lambda.indexOf(validColumnCounts, columnCount) == -1))
             {
                 trace("QUA: Invalid: [ Keys", columnCount, "]");
                 return false;
             }
             
             // No Notes in the file.
-            if (noteArray.length <= 0)
+            if (as3hx.Compat.truthy(noteArray.length <= 0))
             {
                 trace("QUA: Invalid: [ No Notes ]");
                 return false;
             }
             
             // Determine File Time
-            var maxChartTime : Float = 1;
-            var i : Int = as3hx.Compat.parseInt(noteArray.length - 1);
-            while (i >= 0)
+            var maxChartTime                             : Dynamic= 1;
+            var i                             : Dynamic= as3hx.Compat.parseInt(noteArray.length - 1);
+            while (as3hx.Compat.truthy(i >= 0))
             {
                 maxChartTime = Math.max(maxChartTime, noteArray[i][0] + noteArray[i][3]);
-                if (Math.isNaN(maxChartTime))
+                if (as3hx.Compat.truthy(Math.isNaN(maxChartTime)))
                 {
                     maxChartTime = 1;
                     break;
@@ -106,11 +106,11 @@ class ChartQuaver extends ChartBase
             }
             
             // Determine Hold Count
-            var maxHoldCount : Int = 0;
-            var h : Int = as3hx.Compat.parseInt(noteArray.length - 1);
-            while (h >= 0)
+            var maxHoldCount                             : Dynamic= 0;
+            var h                             : Dynamic= as3hx.Compat.parseInt(noteArray.length - 1);
+            while (as3hx.Compat.truthy(h >= 0))
             {
-                if (noteArray[h][3] > 0)
+                if (as3hx.Compat.truthy(noteArray[h][3] > 0))
                 {
                     maxHoldCount++;
                 }
@@ -122,7 +122,7 @@ class ChartQuaver extends ChartBase
             Reflect.setField(data, "difficulty", Math.round(Reflect.field(data, "nps")));
             
             // Fill Chart Data
-            var noteArrayObject : Dynamic = {
+            var noteArrayObject                             : Dynamic= {
                 "class" : Reflect.field(collections, "DifficultyName"),
                 class_color : getDifficultyClass(Reflect.field(data, "difficulty")),
                 desc : Reflect.field(collections, "Description"),
@@ -137,12 +137,12 @@ class ChartQuaver extends ChartBase
                 stepauthor : Reflect.field(collections, "Creator")
             };
             /*
-               if (collections["SliderVelocities"] != null)
+               if (as3hx.Compat.truthy(collections["SliderVelocities"] != null))
                {
                noteArrayObject["slider_velocities"] = sliderVelocityList(collections["SliderVelocities"]);
                }
              */
-            var chartArrayObject : Dynamic = {
+            var chartArrayObject                             : Dynamic= {
                 columns : columnCount,
                 data : noteArrayObject,
                 notes : noteArray,
@@ -169,7 +169,7 @@ class ChartQuaver extends ChartBase
      * @param type
      * @return
      */
-    private function standardType(type : String) : Int
+    private function standardType(type                             : Dynamic) : Int
     {
         switch (type)
         {
@@ -183,25 +183,25 @@ class ChartQuaver extends ChartBase
         return 0;
     }
     
-    private function getDifficultyClass(val : Float) : String
+    private function getDifficultyClass(val                             : Dynamic) : String
     {
-        if (val >= 14)
+        if (as3hx.Compat.truthy(val >= 14))
         {
             return "Edit";
         }
-        if (val >= 11)
+        if (as3hx.Compat.truthy(val >= 11))
         {
             return "Challenge";
         }
-        if (val >= 9)
+        if (as3hx.Compat.truthy(val >= 9))
         {
             return "Hard";
         }
-        if (val >= 6.5)
+        if (as3hx.Compat.truthy(val >= 6.5))
         {
             return "Medium";
         }
-        if (val >= 3.5)
+        if (as3hx.Compat.truthy(val >= 3.5))
         {
             return "Easy";
         }

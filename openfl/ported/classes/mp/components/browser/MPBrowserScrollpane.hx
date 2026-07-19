@@ -15,27 +15,27 @@ import openfl.ui.ContextMenuItem;
 
 class MPBrowserScrollpane extends Sprite implements IScrollPane
 {
-    public var doScroll(get, never) : Bool;
-    public var scrollFactorVertical(get, never) : Float;
+    public var doScroll(get, never)                             : Dynamic;
+    public var scrollFactorVertical(get, never)                             : Dynamic;
 
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var _width : Float = 100;
-    private var _height : Float = 100;
+    private var _width                             : Dynamic= 100;
+    private var _height                             : Dynamic= 100;
     
-    private var entryButtons : Array<MPBrowserEntry> = new Array<MPBrowserEntry>();
-    private var renderElements : Array<MPRoom>;
-    private var renderCount : Int = 0;
+    private var entryButtons                             : Dynamic= new Array<MPBrowserEntry>();
+    private var renderElements                             : Dynamic;
+    private var renderCount                             : Dynamic= 0;
     
-    private var _scrollY : Float = 0;
-    private var _calcHeight : Int = 0;
+    private var _scrollY                             : Dynamic= 0;
+    private var _calcHeight                             : Dynamic= 0;
     
-    private var _helper_text : Text;
+    private var _helper_text                             : Dynamic;
     
-    private var roomContextMenu : ContextMenu;
+    private var roomContextMenu                             : Dynamic;
     
-    public function new(parent : Sprite, xpos : Float, ypos : Float, wid : Float, hei : Float)
+    public function new(parent                             : Dynamic, xpos                             : Dynamic, ypos                             : Dynamic, wid                             : Dynamic, hei                             : Dynamic)
     {
         super();
         _width = wid;
@@ -54,9 +54,9 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
         _helper_text.setAreaParams(_width, _height, "center");
         
         // Room Context Menu
-        var songItemContextMenuItem : ContextMenuItem;
+        var songItemContextMenuItem                             : Dynamic= null;
         
-        if (_mp.currentUser.permissions.mod)
+        if (as3hx.Compat.truthy(_mp.currentUser.permissions.mod))
         {
             roomContextMenu = new ContextMenu();
             
@@ -70,19 +70,19 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      * Sets the data for the Server Browser to use as a reference for drawing.
      * @param list Array on MPRoom Items to use.
      */
-    public function setRenderList(list : Array<Dynamic>, sortList : Bool = true) : Void
+    public function setRenderList(list                             : Dynamic, sortList                             : Dynamic= true) : Void
     {
         clearButtons(true);
         
-        var i : Int;
+        var i                             : Dynamic= null;
         
         _helper_text.visible = (list.length <= 0);
         
         renderCount = list.length;
         
-        if (sortList)
+        if (as3hx.Compat.truthy(sortList))
         {
-            list.sortOn(["name"], [Array.CASEINSENSITIVE]);
+            as3hx.Compat.sortOn(list, ["name"], [as3hx.Compat.ARRAY_CASEINSENSITIVE]);
         }
         
         _scrollY = 0;
@@ -104,27 +104,27 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      */
     public function updateChildrenVisibility() : Void
     {
-        if (renderElements == null || renderElements.length == 0)
+        if (as3hx.Compat.truthy(renderElements == null || renderElements.length == 0))
         {
             return;
         }
         
-        var i : Int;
+        var i                             : Dynamic= null;
         
-        var entryButton : MPBrowserEntry;
-        var _y : Float;
-        var _inBounds : Bool;
-        var entryObject : MPRoom;
+        var entryButton                             : Dynamic= null;
+        var _y                             : Dynamic= null;
+        var _inBounds                             : Dynamic= null;
+        var entryObject                             : Dynamic= null;
         
-        var GAP : Int = as3hx.Compat.parseInt(MPBrowserEntry.ENTRY_HEIGHT + 5);
-        var startingIndex : Int = Math.max(0, Math.floor((_scrollY * -1) / GAP) - 1);
-        var lastIndex : Int = Math.min(renderCount, startingIndex + (height / GAP) + 3);
-        var START_POINT : Int = as3hx.Compat.parseInt(_scrollY + 5);
+        var GAP                             : Dynamic= as3hx.Compat.parseInt(MPBrowserEntry.ENTRY_HEIGHT + 5);
+        var startingIndex                             : Dynamic= Math.max(0, Math.floor((_scrollY * -1) / GAP) - 1);
+        var lastIndex                             : Dynamic= Math.min(renderCount, startingIndex + (height / GAP) + 3);
+        var START_POINT                             : Dynamic= as3hx.Compat.parseInt(_scrollY + 5);
         
         // Update Existing
-        var len : Int = as3hx.Compat.parseInt(entryButtons.length - 1);
+        var len                             : Dynamic= as3hx.Compat.parseInt(entryButtons.length - 1);
         i = len;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             entryButton = entryButtons[i];
             entryButton.isStale = true;
@@ -133,7 +133,7 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
             _inBounds = (_y > -GAP && _y < height);
             
             // Unlink RoomButton no longer on stage.
-            if (!_inBounds)
+            if (as3hx.Compat.truthy(!_inBounds))
             {
                 removeEntryButton(entryButton);
             }
@@ -152,7 +152,7 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
             entryObject = renderElements[i];
             
             // Check for Existing Button
-            if (findEntryButton(entryObject) != null)
+            if (as3hx.Compat.truthy(findEntryButton(entryObject) != null))
             {
                 continue;
             }
@@ -161,13 +161,13 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
             _y = START_POINT + i * GAP;
             _inBounds = (_y > -GAP && _y < height);
             
-            if (_inBounds)
+            if (as3hx.Compat.truthy(_inBounds))
             {
                 entryButton = getEntryButton();
                 entryButton.index = i;
                 entryButton.setData(entryObject);
                 
-                if (roomContextMenu != null)
+                if (as3hx.Compat.truthy(roomContextMenu != null))
                 {
                     entryButton.contextMenu = roomContextMenu;
                 }
@@ -181,10 +181,10 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
         // Remove Old Room Buttons
         len = as3hx.Compat.parseInt(entryButtons.length - 1);
         i = len;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             entryButton = entryButtons[i];
-            if (entryButton.isStale)
+            if (as3hx.Compat.truthy(entryButton.isStale))
             {
                 removeEntryButton(entryButton);
             }
@@ -198,7 +198,7 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      * @param _y
      * @param btn
      */
-    public function moveEntryButton(_y : Int, btn : MPBrowserEntry) : Void
+    public function moveEntryButton(_y                             : Dynamic, btn                             : Dynamic) : Void
     {
         btn.y = _y;
         btn.isStale = false;
@@ -209,17 +209,17 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      * @param room MPRoom to look for.
      * @return If a MPBrowserEntry exist already for this room.
      */
-    public function findEntryButton(room : MPRoom) : MPBrowserEntry
+    public function findEntryButton(room                             : Dynamic) : MPBrowserEntry
     {
-        if (entryButtons.length == 0)
+        if (as3hx.Compat.truthy(entryButtons.length == 0))
         {
             return null;
         }
         
-        var len : Int = as3hx.Compat.parseInt(entryButtons.length - 1);
-        while (len >= 0)
+        var len                             : Dynamic= as3hx.Compat.parseInt(entryButtons.length - 1);
+        while (as3hx.Compat.truthy(len >= 0))
         {
-            if (entryButtons[len].room == room)
+            if (as3hx.Compat.truthy(entryButtons[len].room == room))
             {
                 return entryButtons[len];
             }
@@ -233,10 +233,10 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      * back into the object pool.
      * @param btn MPBrowserEntry to remove.
      */
-    public function removeEntryButton(btn : MPBrowserEntry) : Void
+    public function removeEntryButton(btn                             : Dynamic) : Void
     {
-        var idx : Int = Lambda.indexOf(entryButtons, btn);
-        if (idx >= 0)
+        var idx                             : Dynamic= Lambda.indexOf(entryButtons, btn);
+        if (as3hx.Compat.truthy(idx >= 0))
         {
             entryButtons.splice(idx, 1);
         }
@@ -261,16 +261,16 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      * Removes all MPBrowserEntrys from the stage.
      * @param force Force Remove, regardless of sweep value.
      */
-    public function clearButtons(force : Bool = false) : Void
+    public function clearButtons(force                             : Dynamic= false) : Void
     {
-        var entryButton : MPBrowserEntry;
+        var entryButton                             : Dynamic= null;
         
         // Remove Old Entry Buttons
-        var len : Int = as3hx.Compat.parseInt(entryButtons.length - 1);
-        while (len >= 0)
+        var len                             : Dynamic= as3hx.Compat.parseInt(entryButtons.length - 1);
+        while (as3hx.Compat.truthy(len >= 0))
         {
             entryButton = entryButtons[len];
-            if (entryButton.isStale || force)
+            if (as3hx.Compat.truthy(entryButton.isStale || force))
             {
                 removeEntryButton(entryButton);
             }
@@ -293,10 +293,10 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      */
     private function get_scrollFactorVertical() : Float
     {
-        return Math.max(Math.min(height / _calcHeight, 1), 0) || 0;
+        return as3hx.Compat.parseFloat(as3hx.Compat.orValue(Math.max(Math.min(height / _calcHeight, 1), 0), 0));
     }
     
-    public function scrollTo(val : Float) : Void
+    public function scrollTo(val                             : Dynamic) : Void
     {
         _scrollY = -((_calcHeight - _height) * Math.max(Math.min(val, 1), 0));
         updateChildrenVisibility();
@@ -308,19 +308,19 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
      * @param	child Child to show.
      * @return	Scroll Value required to show child in center of scroll pane.
      */
-    public function scrollChildVertical(child : DisplayObject) : Float
+    public function scrollChildVertical(child                             : Dynamic) : Float
     // Checks
     {
         
-        if (child == null || !this.contains(child) || !doScroll)
+        if (as3hx.Compat.truthy(child == null || !this.contains(child) || !doScroll))
         {
             return 0;
         }
         
-        var _y : Int = as3hx.Compat.parseInt((try cast(child, MPBrowserEntry) catch(e:Dynamic) null).index * (MPBrowserEntry.ENTRY_HEIGHT + 5));  // Calculate Real Y.  
+        var _y                             : Dynamic= as3hx.Compat.parseInt((try cast(child, MPBrowserEntry) catch(e:Dynamic) null).index * (MPBrowserEntry.ENTRY_HEIGHT + 5));  // Calculate Real Y.  
         
         // Child is to tall, Scroll to top.
-        if (child.height > height)
+        if (as3hx.Compat.truthy(child.height > height))
         {
             return Math.max(Math.min(_y / (_calcHeight - _height), 1), 0);
         }
@@ -328,20 +328,20 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
         return Math.max(Math.min(((_y + (child.height / 2)) - (_height / 2)) / (_calcHeight - _height), 1), 0);
     }
     
-    private function e_roomDelete(e : ContextMenuEvent) : Void
+    private function e_roomDelete(e                             : Dynamic) : Void
     {
-        var entry : MPBrowserEntry = (try cast(e.contextMenuOwner, MPBrowserEntry) catch(e:Dynamic) null);
+        var entry                             : Dynamic= (try cast(e.contextMenuOwner, MPBrowserEntry) catch(e:Dynamic) null);
         _mp.sendCommand(new MPCRoomDelete(entry.room));
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /** MPBrowserEntry Pool Vector */
-    private static var __vectorMPBrowserEntry : Array<MPBrowserEntry> = new Array<MPBrowserEntry>();
+    private static var __vectorMPBrowserEntry                             : Dynamic= new Array<MPBrowserEntry>();
     
     /** Retrieves a RoomButton instance from the pool. */
     public static function getEntryButton() : MPBrowserEntry
     {
-        if (__vectorMPBrowserEntry.length == 0)
+        if (as3hx.Compat.truthy(__vectorMPBrowserEntry.length == 0))
         {
             return new MPBrowserEntry();
         }
@@ -353,9 +353,9 @@ class MPBrowserScrollpane extends Sprite implements IScrollPane
     
     /** Stores a MPBrowserEntry instance in the pool.
      *  Don't keep any references to the object after moving it to the pool! */
-    public static function putEntryButton(roomButton : MPBrowserEntry) : Void
+    public static function putEntryButton(roomButton                             : Dynamic) : Void
     {
-        if (roomButton != null)
+        if (as3hx.Compat.truthy(roomButton != null))
         {
             roomButton.clear();
             __vectorMPBrowserEntry[__vectorMPBrowserEntry.length] = roomButton;

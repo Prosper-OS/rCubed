@@ -5,18 +5,18 @@ import openfl.net.Socket;
 
 class SocketClientHandlerFactory
 {
-    public var type : String = "unknown";
+    public var type                              : Dynamic= "unknown";
     
-    private var messageSerializer : IMessageSerializer;
-    private var crossDomainPolicyXML : FastXML;
+    public var messageSerializer                              : Dynamic;
+    public var crossDomainPolicyXML                              : Dynamic;
     
-    public function new(messageSerializer : IMessageSerializer, crossDomainPolicyXML : FastXML = null)
+    public function new(messageSerializer                              : Dynamic, crossDomainPolicyXML                              : Dynamic= null)
     {
         this.messageSerializer = messageSerializer;
         this.crossDomainPolicyXML = crossDomainPolicyXML;
     }
     
-    public function createHandler(socket : Socket) : SocketClientHandler
+    public function createHandler(socket                              : Dynamic) : SocketClientHandler
     {
         return new SocketClientHandler(socket, messageSerializer, crossDomainPolicyXML);
     }

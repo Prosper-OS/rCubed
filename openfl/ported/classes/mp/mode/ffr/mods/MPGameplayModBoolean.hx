@@ -3,11 +3,11 @@ package classes.mp.mode.ffr.mods;
 
 class MPGameplayModBoolean
 {
-    public var mod : String;
-    public var enabled : Bool = false;
-    public var value : Bool;
+    public var mod                             : Dynamic;
+    public var enabled                             : Dynamic= false;
+    public var value                             : Dynamic;
     
-    public function new(mod : String, enabled : Bool = false, value : Bool = false)
+    public function new(mod                             : Dynamic, enabled                             : Dynamic= false, value                             : Dynamic= false)
     {
         this.mod = mod;
         this.enabled = enabled;

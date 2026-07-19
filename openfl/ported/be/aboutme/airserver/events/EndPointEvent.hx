@@ -6,18 +6,18 @@ import openfl.events.Event;
 class EndPointEvent extends Event
 {
     
-    public static inline var CLIENT_HANDLER_ADDED : String = "clientHandlerAdded";
+    public static inline var CLIENT_HANDLER_ADDED                              : Dynamic= "clientHandlerAdded";
     
-    public var clientHandler : IClientHandler;
+    public var clientHandler                              : Dynamic;
     
-    public function new(type : String, bubbles : Bool = false, cancelable : Bool = false)
+    public function new(type                              : Dynamic, bubbles                              : Dynamic= false, cancelable                              : Dynamic= false)
     {
         super(type, bubbles, cancelable);
     }
     
     override public function clone() : Event
     {
-        var e : EndPointEvent = new EndPointEvent(type, bubbles, cancelable);
+        var e                              : Dynamic= new EndPointEvent(type, bubbles, cancelable);
         e.clientHandler = clientHandler;
         return e;
     }

@@ -6,35 +6,35 @@ import com.worlize.websocket.WebSocketMessage;
 
 class MPSocketDataText
 {
-    public var type : String;
-    public var action : String;
-    public var data : Dynamic;
+    public var type                             : Dynamic;
+    public var action                             : Dynamic;
+    public var data                             : Dynamic;
     
-    public function new(type : String, action : String, data : Dynamic = null)
+    public function new(type                             : Dynamic, action                             : Dynamic, data                             : Dynamic= null)
     {
         this.type = type;
         this.action = action;
         this.data = data;
     }
     
-    public static function parse(message : WebSocketMessage) : MPSocketDataText
+    public static function parse(message                             : Dynamic) : MPSocketDataText
     {
         try
         {
-            if (message.type == WebSocketMessage.TYPE_UTF8)
+            if (as3hx.Compat.truthy(message.type == WebSocketMessage.TYPE_UTF8))
             {
-                var strData : String = message.utf8Data;
-                if (strData == null || strData.length == 0)
+                var strData                             : Dynamic= message.utf8Data;
+                if (as3hx.Compat.truthy(strData == null || strData.length == 0))
                 {
                     return null;
                 }
                 
                 // JSON String
-                if (strData.charAt(0) == "{")
+                if (as3hx.Compat.truthy(strData.charAt(0) == "{"))
                 {
-                    var json : Dynamic = haxe.Json.parse(strData);
+                    var json                             : Dynamic= haxe.Json.parse(strData);
                     
-                    if (json.t == null || json.a == null)
+                    if (as3hx.Compat.truthy(json.t == null || json.a == null))
                     {
                         return null;
                     }

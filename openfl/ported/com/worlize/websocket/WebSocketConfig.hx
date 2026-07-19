@@ -20,19 +20,19 @@ package com.worlize.websocket;
 class WebSocketConfig
 {
     // 1 MiB max frame size
-    public var maxReceivedFrameSize : Int = 0x100000;
+    public var maxReceivedFrameSize                          : Dynamic= 0x100000;
     
     // 8 MiB max message size, only applicable if
     // assembleFragments is true
-    public var maxMessageSize : Int = 0x800000;  // 8 MiB  
+    public var maxMessageSize                          : Dynamic= 0x800000;  // 8 MiB  
     
     // Outgoing messages larger than fragmentationThreshold will be
     // split into multiple fragments.
-    public var fragmentOutgoingMessages : Bool = true;
+    public var fragmentOutgoingMessages                          : Dynamic= true;
     
     // Outgoing frames are fragmented if they exceed this threshold.
     // Default is 16KiB
-    public var fragmentationThreshold : Int = 0x4000;
+    public var fragmentationThreshold                          : Dynamic= 0x4000;
     
     // If true, fragmented messages will be automatically assembled
     // and the full message will be emitted via a 'message' event.
@@ -41,12 +41,12 @@ class WebSocketConfig
     // fragmented frames.  Single-frame messages will emit a 'message'
     // event in addition to the 'frame' event.
     // Most users will want to leave this set to 'true'
-    public var assembleFragments : Bool = true;
+    public var assembleFragments                          : Dynamic= true;
     
     // The number of milliseconds to wait after sending a close frame
     // for an acknowledgement to come back before giving up and just
     // closing the socket.
-    public var closeTimeout : Int = 5000;
+    public var closeTimeout                          : Dynamic= 5000;
 
     public function new()
     {

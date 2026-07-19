@@ -34,19 +34,19 @@ import openfl.events.MouseEvent;
 
 class PushButton extends Component
 {
-    public var label(get, set) : String;
-    public var selected(get, set) : Bool;
-    public var toggle(get, set) : Bool;
-    public var fontSize(never, set) : Int;
-    public var align(never, set) : String;
+    public var label(get, set)                            : Dynamic;
+    public var selected(get, set)                            : Dynamic;
+    public var toggle(get, set)                            : Dynamic;
+    public var fontSize(never, set)                            : Dynamic;
+    public var align(never, set)                            : Dynamic;
 
-    private var _label : Label;
-    private var _labelText : String = "";
-    private var _over : Bool = false;
-    private var _down : Bool = false;
-    private var _selected : Bool = false;
-    private var _toggle : Bool = false;
-    private var _align : String = "left";
+    public var _label                            : Dynamic;
+    public var _labelText                            : Dynamic= "";
+    public var _over                            : Dynamic= false;
+    public var _down                            : Dynamic= false;
+    public var _selected                            : Dynamic= false;
+    public var _toggle                            : Dynamic= false;
+    public var _align                            : Dynamic= "left";
     
     /**
      * Constructor
@@ -56,10 +56,10 @@ class PushButton extends Component
      * @param label The string to use for the initial label of this component.
      * @param defaultHandler The event handling function to handle the default event for this component (click in this case).
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, label : String = "", defaultHandler : Dynamic = null)
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, label                            : Dynamic= "", defaultHandler                            : Dynamic= null)
     {
         super(parent, xpos, ypos);
-        if (defaultHandler != null)
+        if (as3hx.Compat.truthy(defaultHandler != null))
         {
             addEventListener(MouseEvent.CLICK, defaultHandler);
         }
@@ -69,7 +69,7 @@ class PushButton extends Component
     /**
      * Initializes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         buttonMode = true;
@@ -80,7 +80,7 @@ class PushButton extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         _label = new Label();
         addChild(_label);
@@ -92,10 +92,10 @@ class PushButton extends Component
     /**
      * Draws the face of the button, color based on state.
      */
-    private function drawFace() : Void
+    public function drawFace() : Void
     {
         this.graphics.clear();
-        if (_down)
+        if (as3hx.Compat.truthy(_down))
         {
             this.graphics.lineStyle(1, 0xFFFFFF, 0.55, true);
             this.graphics.beginFill(0xFFFFFF, 0.1225);
@@ -126,7 +126,7 @@ class PushButton extends Component
         _label.text = _labelText;
         _label.autoSize = true;
         _label.draw();
-        if (_label.width > _width - 4)
+        if (as3hx.Compat.truthy(_label.width > _width - 4))
         {
             _label.autoSize = false;
             _label.width = _width - 4;
@@ -137,7 +137,7 @@ class PushButton extends Component
         }
         _label.draw();
         
-        if (_align == "center")
+        if (as3hx.Compat.truthy(_align == "center"))
         {
             _label.move(_width / 2 - _label.width / 2, _height / 2 - _label.height / 2 - 1);
         }
@@ -158,7 +158,7 @@ class PushButton extends Component
      * Internal mouseOver handler.
      * @param event The MouseEvent passed by the system.
      */
-    private function onMouseOver(event : MouseEvent) : Void
+    public function onMouseOver(event                            : Dynamic) : Void
     {
         _over = true;
         addEventListener(MouseEvent.ROLL_OUT, onMouseOut);
@@ -168,7 +168,7 @@ class PushButton extends Component
      * Internal mouseOut handler.
      * @param event The MouseEvent passed by the system.
      */
-    private function onMouseOut(event : MouseEvent) : Void
+    public function onMouseOut(event                            : Dynamic) : Void
     {
         _over = false;
         removeEventListener(MouseEvent.ROLL_OUT, onMouseOut);
@@ -178,7 +178,7 @@ class PushButton extends Component
      * Internal mouseOut handler.
      * @param event The MouseEvent passed by the system.
      */
-    private function onMouseGoDown(event : MouseEvent) : Void
+    public function onMouseGoDown(event                            : Dynamic) : Void
     {
         _down = true;
         drawFace();
@@ -189,9 +189,9 @@ class PushButton extends Component
      * Internal mouseUp handler.
      * @param event The MouseEvent passed by the system.
      */
-    private function onMouseGoUp(event : MouseEvent) : Void
+    public function onMouseGoUp(event                            : Dynamic) : Void
     {
-        if (_toggle && _over)
+        if (as3hx.Compat.truthy(_toggle && _over))
         {
             _selected = !_selected;
         }
@@ -210,7 +210,7 @@ class PushButton extends Component
     /**
      * Sets / gets the label text shown on this Pushbutton.
      */
-    private function set_label(str : String) : String
+    private function set_label(str                            : Dynamic) : String
     {
         _labelText = str;
         draw();
@@ -222,9 +222,9 @@ class PushButton extends Component
         return _labelText;
     }
     
-    private function set_selected(value : Bool) : Bool
+    private function set_selected(value                            : Dynamic) : Bool
     {
-        if (!_toggle)
+        if (as3hx.Compat.truthy(!_toggle))
         {
             value = false;
         }
@@ -240,7 +240,7 @@ class PushButton extends Component
         return _selected;
     }
     
-    private function set_toggle(value : Bool) : Bool
+    private function set_toggle(value                            : Dynamic) : Bool
     {
         _toggle = value;
         return value;
@@ -251,13 +251,13 @@ class PushButton extends Component
         return _toggle;
     }
     
-    private function set_fontSize(val : Int) : Int
+    private function set_fontSize(val                            : Dynamic) : Int
     {
         _label.fontSize = val;
         return val;
     }
     
-    private function set_align(dir : String) : String
+    private function set_align(dir                            : Dynamic) : String
     {
         _align = dir;
         draw();

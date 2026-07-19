@@ -11,23 +11,23 @@ import openfl.events.MouseEvent;
 
 class MPBrowserEntry extends Sprite
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _gvars                             : Dynamic= GlobalVariables.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    public static inline var ENTRY_HEIGHT : Int = 50;
+    public static inline var ENTRY_HEIGHT                             : Dynamic= 50;
     
-    public var room : MPRoom;
+    public var room                             : Dynamic;
     
-    private var title : Text;
-    private var users : Text;
-    private var range : Text;
-    private var type : Text;
-    private var owner : Text;
+    private var title                             : Dynamic;
+    private var users                             : Dynamic;
+    private var range                             : Dynamic;
+    private var type                             : Dynamic;
+    private var owner                             : Dynamic;
     
-    private var lockIcon : IconLock;
+    private var lockIcon                             : Dynamic;
     
-    public var index : Int = 0;
-    public var isStale : Bool = false;
+    public var index                             : Dynamic= 0;
+    public var isStale                             : Dynamic= false;
     
     public function new()
     {
@@ -38,13 +38,13 @@ class MPBrowserEntry extends Sprite
         lockIcon.y = 15;
         this.addChild(lockIcon);
         
-        var usersIcon : IconUsers = new IconUsers();
+        var usersIcon                             : Dynamic= new IconUsers();
         usersIcon.scaleX = usersIcon.scaleY = (17 / usersIcon.width);
         usersIcon.x = 564;
         usersIcon.y = 15;
         this.addChild(usersIcon);
         
-        var profileIcon : IconProfile = new IconProfile();
+        var profileIcon                             : Dynamic= new IconProfile();
         profileIcon.scaleX = profileIcon.scaleY = (15 / profileIcon.height);
         profileIcon.x = 564;
         profileIcon.y = 37;
@@ -75,7 +75,7 @@ class MPBrowserEntry extends Sprite
         draw(false);
     }
     
-    public function draw(hover : Bool) : Void
+    public function draw(hover                             : Dynamic) : Void
     {
         this.graphics.clear();
         this.graphics.lineStyle(1, 0xFFFFFF, 0.35);
@@ -84,7 +84,7 @@ class MPBrowserEntry extends Sprite
         this.graphics.endFill();
     }
     
-    public function setData(item : MPRoom) : Void
+    public function setData(item                             : Dynamic) : Void
     {
         room = item;
         
@@ -92,7 +92,7 @@ class MPBrowserEntry extends Sprite
         type.text = _lang.string("mp_room_type_" + room.type);
         owner.text = room.ownerName;
         
-        if (room.teamCount > 0)
+        if (as3hx.Compat.truthy(room.teamCount > 0))
         {
             users.text = (room.userCount - room.spectatorCount) + "/" + (room.maxPlayers * (room.teamCount - 1)) + ((room.spectatorCount > 0) ? (" - " + room.spectatorCount) : "");
         }
@@ -101,11 +101,11 @@ class MPBrowserEntry extends Sprite
             users.text = Std.string(room.spectatorCount);
         }
         
-        if (room.skillMin >= 0 && room.skillMax >= 0)
+        if (as3hx.Compat.truthy(room.skillMin >= 0 && room.skillMax >= 0))
         {
             range.visible = true;
             
-            if (room.skillMin == room.skillMax)
+            if (as3hx.Compat.truthy(room.skillMin == room.skillMax))
             {
                 range.text = "[ <font color=\"" + _gvars.getDivisionColor(room.skillMin) + "\">" + room.skillMin + "</font> ]";
             }
@@ -121,7 +121,7 @@ class MPBrowserEntry extends Sprite
         
         range.x = 550 - users.textfield.textWidth - range.width - 10;
         
-        if (item.hasPassword)
+        if (as3hx.Compat.truthy(item.hasPassword))
         {
             lockIcon.visible = true;
             title.x = 26;
@@ -140,12 +140,12 @@ class MPBrowserEntry extends Sprite
         room = null;
     }
     
-    private function e_onOver(event : MouseEvent) : Void
+    private function e_onOver(event                             : Dynamic) : Void
     {
         draw(true);
     }
     
-    private function e_onOut(event : MouseEvent) : Void
+    private function e_onOut(event                             : Dynamic) : Void
     {
         draw(false);
     }

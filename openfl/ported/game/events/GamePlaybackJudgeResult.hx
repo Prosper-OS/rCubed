@@ -5,19 +5,19 @@ import openfl.utils.IDataOutput;
 
 class GamePlaybackJudgeResult extends GamePlaybackEvent
 {
-    public static inline var ID : Int = 2;
+    public static inline var ID                       : Dynamic= 2;
     
-    public var noteID : Int;
-    public var accuracy : Int;
+    public var noteID                       : Dynamic;
+    public var accuracy                       : Dynamic;
     
-    public function new(index : Int, noteID : Int, accuracy : Int, timestamp : Float)
+    public function new(index                       : Dynamic, noteID                       : Dynamic, accuracy                       : Dynamic, timestamp                       : Dynamic)
     {
         super(ID, index, timestamp);
         this.noteID = index;
         this.accuracy = accuracy;
     }
     
-    override public function writeData(output : IDataOutput) : Void
+    override public function writeData(output                       : Dynamic) : Void
     {
         output.writeByte(ID);
         output.writeByte(4 + 4 + 4 + 2);  // Length of everything below this.  
@@ -27,12 +27,12 @@ class GamePlaybackJudgeResult extends GamePlaybackEvent
         output.writeShort(accuracy);
     }
     
-    public static function readData(input : IDataInput) : GamePlaybackJudgeResult
+    public static function readData(input                       : Dynamic) : GamePlaybackJudgeResult
     {
-        var index : Int = input.readUnsignedInt();
-        var timestamp : Int = input.readUnsignedInt();
-        var noteID : Int = input.readInt();
-        var accuracy : Int = input.readShort();
+        var index                       : Dynamic= input.readUnsignedInt();
+        var timestamp                       : Dynamic= input.readUnsignedInt();
+        var noteID                       : Dynamic= input.readInt();
+        var accuracy                       : Dynamic= input.readShort();
         
         return new GamePlaybackJudgeResult(index, noteID, accuracy, timestamp);
     }

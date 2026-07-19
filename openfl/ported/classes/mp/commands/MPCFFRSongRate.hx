@@ -4,10 +4,10 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRSongRate implements IMPCommand
 {
-    public var room : MPRoomFFR;
-    public var rate : Float;
+    public var room                             : Dynamic;
+    public var rate                             : Dynamic;
     
-    public function new(room : MPRoomFFR, rate : Float)
+    public function new(room                             : Dynamic, rate                             : Dynamic)
     {
         this.room = room;
         this.rate = rate;

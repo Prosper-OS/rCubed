@@ -27,45 +27,45 @@ import openfl.utils.Dictionary;
 
 class Multiplayer extends EventDispatcher
 {
-    public var connected(get, never) : Bool;
-    public var inGameRoom(get, never) : Bool;
-    public var isPlayerInRoom(get, never) : Bool;
-    public static var instance(get, never) : Multiplayer;
+    public var connected(get, never)                             : Dynamic;
+    public var inGameRoom(get, never)                             : Dynamic;
+    public var isPlayerInRoom(get, never)                             : Dynamic;
+    public static var instance(get, never)                             : Dynamic;
 
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _lang : Language = Language.instance;
-    private static var _site : Site = Site.instance;
+    private static var _gvars                             : Dynamic= GlobalVariables.instance;
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var _site                             : Dynamic= Site.instance;
     
-    private static var _instance : Multiplayer = null;
+    private static var _instance                             : Dynamic= null;
     
-    public static inline var SERVER_VERSION : Int = 4;
+    public static inline var SERVER_VERSION                             : Dynamic= 4;
     
-    private var _listeners : Array<Dynamic> = [];
+    private var _listeners                             : Dynamic= [];
     
-    private var DEBUG : Bool = false;
-    private var AUTO_JOIN_LOBBY : Bool = true;
+    private var DEBUG                             : Dynamic= false;
+    private var AUTO_JOIN_LOBBY                             : Dynamic= true;
     
-    private var websocket : WebSocket;
+    private var websocket                             : Dynamic;
     
-    public static var VALID_GAME_TYPES : Array<Dynamic> = ["ffr"];
+    public static var VALID_GAME_TYPES                             : Dynamic= ["ffr"];
     
     // Cache for Data
-    public var users : Array<MPUser>;
-    public var users_map : Dictionary<Dynamic, Dynamic>;
+    public var users                             : Dynamic;
+    public var users_map                             : Dynamic;
     
-    public var rooms : Array<MPRoom>;
-    public var rooms_map : Dictionary<Dynamic, Dynamic>;
+    public var rooms                             : Dynamic;
+    public var rooms_map                             : Dynamic;
     
-    public var pms : Array<MPUserChatHistory>;
-    public var pms_map : Dictionary<Dynamic, Dynamic>;
+    public var pms                             : Dynamic;
+    public var pms_map                             : Dynamic;
     
-    public var LOBBY : MPRoom;
-    public var GAME_ROOM : MPRoom;
+    public var LOBBY                             : Dynamic;
+    public var GAME_ROOM                             : Dynamic;
     
-    public var SYSTEM_USER : MPUser;
+    public var SYSTEM_USER                             : Dynamic;
     
-    public var currentUser : MPUser;
-    public var activeRooms : Array<MPRoom>;
+    public var currentUser                             : Dynamic;
+    public var activeRooms                             : Dynamic;
     
     /**
      * Handles data syncing before server and client before informing the rest of the game.
@@ -74,39 +74,39 @@ class Multiplayer extends EventDispatcher
      * !!! Don't alter anything in this class directly. !!!
      * Responsible for the loss of Velocity's sanity.
      */
-    public function new(en : MultiplayerSingletonEnforcer)
+    public function new(en                             : Dynamic)
     {
         super();
-        if (en == null)
+        if (as3hx.Compat.truthy(en == null))
         {
             throw cast(("Multi-Instance Blocked"), Error);
         }
     }
     
     /*
-       public override function dispatchEvent(event:Event):Boolean
+       public override function dispatchEvent(event                            : Dynamic):Boolean
        {
-       if (event is MPEvent)
+       if (as3hx.Compat.truthy(event is MPEvent))
        trace(event as MPEvent);
 
        return super.dispatchEvent(event);
        }
      */
     
-    override public function addEventListener(type : String, listener : Dynamic, useCapture : Bool = false, priority : Int = 0, useWeakReference : Bool = false) : Void
+    override public function addEventListener(type                             : Dynamic, listener                             : Dynamic, useCapture                             : Dynamic= false, priority                             : Dynamic= 0, useWeakReference                             : Dynamic= false) : Void
     {
         super.addEventListener(type, listener, useCapture, priority, useWeakReference);
         _listeners.push([type, listener, useCapture, priority, useWeakReference]);
     }
     
-    override public function removeEventListener(type : String, listener : Dynamic, useCapture : Bool = false) : Void
+    override public function removeEventListener(type                             : Dynamic, listener                             : Dynamic, useCapture                             : Dynamic= false) : Void
     {
         super.removeEventListener(type, listener, useCapture);
-        var i : Float = _listeners.length - 1;
-        while (i >= 0)
+        var i                             : Dynamic= _listeners.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var lis : Array<Dynamic> = Reflect.field(_listeners, Std.string(i));
-            if (lis[0] == type && lis[1] == listener && lis[2] == useCapture)
+            var lis                             : Dynamic= as3hx.Compat.field(_listeners, i);
+            if (as3hx.Compat.truthy(lis[0] == type && lis[1] == listener && lis[2] == useCapture))
             {
                 _listeners.splice(i, 1);
             }
@@ -126,7 +126,7 @@ class Multiplayer extends EventDispatcher
     
     private function init() : Void
     {
-        websocket = new WebSocket(new WebSocketURI(_site.data["game_mp_host"], _site.data["game_mp_port"]), "*", "r3");
+        websocket = new WebSocket(new WebSocketURI(Reflect.field(_site.data, "game_mp_host"), as3hx.Compat.parseInt(Reflect.field(_site.data, "game_mp_port"))), "*", "r3");
         websocket.addEventListener(WebSocketEvent.CLOSED, handleWebSocketClosed);
         websocket.addEventListener(WebSocketEvent.OPEN, handleWebSocketOpen);
         websocket.addEventListener(WebSocketEvent.MESSAGE, handleWebSocketMessage);
@@ -140,12 +140,12 @@ class Multiplayer extends EventDispatcher
      */
     public function connect() : Void
     {
-        if (websocket == null)
+        if (as3hx.Compat.truthy(websocket == null))
         {
             init();
         }
         
-        if (!websocket.connected)
+        if (as3hx.Compat.truthy(!websocket.connected))
         {
             this.currentUser = null;
             this.users = [];
@@ -171,7 +171,7 @@ class Multiplayer extends EventDispatcher
     
     public function disconnect() : Void
     {
-        if (websocket != null)
+        if (as3hx.Compat.truthy(websocket != null))
         {
             websocket.close();
         }
@@ -200,53 +200,53 @@ class Multiplayer extends EventDispatcher
     
     public function clearEvents() : Void
     {
-        var i : Float = _listeners.length - 1;
-        while (i >= 0)
+        var i                             : Dynamic= _listeners.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var lis : Array<Dynamic> = Reflect.field(_listeners, Std.string(i));
+            var lis                             : Dynamic= as3hx.Compat.field(_listeners, i);
             super.removeEventListener(lis[0], lis[1], lis[2]);
             i--;
         }
         as3hx.Compat.setArrayLength(_listeners, 0);
     }
     
-    private function handleWebSocketOpen(event : WebSocketEvent) : Void
+    private function handleWebSocketOpen(event                             : Dynamic) : Void
     {
         dispatchEvent(new MPEvent(MPEvent.SOCKET_CONNECT, null));
     }
     
-    private function handleWebSocketClosed(event : WebSocketEvent) : Void
+    private function handleWebSocketClosed(event                             : Dynamic) : Void
     {
         dispatchEvent(new MPEvent(MPEvent.SOCKET_DISCONNECT, new MPSocketDataText("disconnect", "Disconnect")));
     }
     
-    private function handleConnectionFail(event : WebSocketErrorEvent) : Void
+    private function handleConnectionFail(event                             : Dynamic) : Void
     //trace("Connection Failure: " + event.text);
     {
         
         dispatchEvent(new MPEvent(MPEvent.SOCKET_ERROR, new MPSocketDataText("error", event.text)));
     }
     
-    private function handleErrorEvent(event : ErrorEvent) : Void
+    private function handleErrorEvent(event                             : Dynamic) : Void
     //trace("Error Event: " + event.text);
     {
         
         dispatchEvent(new MPEvent(MPEvent.SOCKET_ERROR, new MPSocketDataText("error", event.text)));
     }
     
-    private function handleWebSocketMessage(event : WebSocketEvent) : Void
+    private function handleWebSocketMessage(event                             : Dynamic) : Void
     {
-        if (event == null)
+        if (as3hx.Compat.truthy(event == null))
         {
             return;
         }
         
-        if (event.message.type == WebSocketMessage.TYPE_UTF8)
+        if (as3hx.Compat.truthy(event.message.type == WebSocketMessage.TYPE_UTF8))
         {
-            var tcmd : MPSocketDataText = MPSocketDataText.parse(event.message);
+            var tcmd                             : Dynamic= MPSocketDataText.parse(event.message);
             //trace(command);
             
-            if (tcmd == null)
+            if (as3hx.Compat.truthy(tcmd == null))
             {
                 return;
             }
@@ -267,18 +267,18 @@ class Multiplayer extends EventDispatcher
                 case "mode":
                     return handleModeCommand(tcmd);
                 default:
-                    if (DEBUG)
+                    if (as3hx.Compat.truthy(DEBUG))
                     {
                         trace(tcmd);
                     }
             }
         }
-        else if (event.message.type == WebSocketMessage.TYPE_BINARY)
+        else if (as3hx.Compat.truthy(event.message.type == WebSocketMessage.TYPE_BINARY))
         {
-            var rcmd : MPSocketDataRaw = MPSocketDataRaw.parse(event.message);
+            var rcmd                             : Dynamic= MPSocketDataRaw.parse(event.message);
             //trace(command);
             
-            if (rcmd == null)
+            if (as3hx.Compat.truthy(rcmd == null))
             {
                 return;
             }
@@ -299,7 +299,7 @@ class Multiplayer extends EventDispatcher
                 case 4:
                     return handleModeRawCommand(rcmd);
                 default:
-                    if (DEBUG)
+                    if (as3hx.Compat.truthy(DEBUG))
                     {
                         trace(rcmd);
                     }
@@ -307,7 +307,7 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function handleSysCommand(command : MPSocketDataText) : Void
+    public function handleSysCommand(command                             : Dynamic) : Void
     {
         var _sw2_ = (command.action);        
 
@@ -342,7 +342,7 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function handleRoomCommand(command : MPSocketDataText) : Void
+    public function handleRoomCommand(command                             : Dynamic) : Void
     {
         var _sw3_ = (command.action);        
 
@@ -411,7 +411,7 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function handleUserCommand(command : MPSocketDataText) : Void
+    public function handleUserCommand(command                             : Dynamic) : Void
     {
         var _sw4_ = (command.action);        
 
@@ -428,12 +428,12 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function handleModeCommand(command : MPSocketDataText) : Void
+    public function handleModeCommand(command                             : Dynamic) : Void
     {
         roomModeCommand(command);
     }
     
-    public function handleSysRawCommand(command : MPSocketDataRaw) : Void
+    public function handleSysRawCommand(command                             : Dynamic) : Void
     {
         var _sw5_ = (command.action);        
 
@@ -444,7 +444,7 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function handleRoomRawCommand(command : MPSocketDataRaw) : Void
+    public function handleRoomRawCommand(command                             : Dynamic) : Void
     {
         var _sw6_ = (command.action);        
 
@@ -455,7 +455,7 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function handleUserRawCommand(command : MPSocketDataRaw) : Void
+    public function handleUserRawCommand(command                             : Dynamic) : Void
     {
         var _sw7_ = (command.action);        
 
@@ -466,14 +466,14 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function handleModeRawCommand(command : MPSocketDataRaw) : Void
+    public function handleModeRawCommand(command                             : Dynamic) : Void
     {
         roomModeRawCommand(command);
     }
     
-    public function sendBytes(data : ByteArray) : Bool
+    public function sendBytes(data                             : Dynamic) : Bool
     {
-        if (!websocket.connected)
+        if (as3hx.Compat.truthy(!websocket.connected))
         {
             return false;
         }
@@ -482,9 +482,9 @@ class Multiplayer extends EventDispatcher
         return true;
     }
     
-    public function sendUTF(data : String) : Bool
+    public function sendUTF(data                             : Dynamic) : Bool
     {
-        if (!websocket.connected)
+        if (as3hx.Compat.truthy(!websocket.connected))
         {
             return false;
         }
@@ -493,9 +493,9 @@ class Multiplayer extends EventDispatcher
         return true;
     }
     
-    public function sendCommand(cmd : IMPCommand) : Bool
+    public function sendCommand(cmd                             : Dynamic) : Bool
     {
-        if (!websocket.connected)
+        if (as3hx.Compat.truthy(!websocket.connected))
         {
             return false;
         }
@@ -514,9 +514,9 @@ class Multiplayer extends EventDispatcher
         sendUTF(MPCommands.UPDATE_ROOM_LIST);
     }
     
-    public function getRoom(uid : Int) : MPRoom
+    public function getRoom(uid                             : Dynamic) : MPRoom
     {
-        if (rooms_map[uid] != null)
+        if (as3hx.Compat.truthy(rooms_map[uid] != null))
         {
             return rooms_map[uid];
         }
@@ -524,9 +524,9 @@ class Multiplayer extends EventDispatcher
         return null;
     }
     
-    public function setRoom(room : MPRoom) : Void
+    public function setRoom(room                             : Dynamic) : Void
     {
-        if (rooms_map[room.uid] == null)
+        if (as3hx.Compat.truthy(rooms_map[room.uid] == null))
         {
             rooms_map[room.uid] = room;
             rooms.push(room);
@@ -535,9 +535,9 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    public function getUser(uid : Int) : MPUser
+    public function getUser(uid                             : Dynamic) : MPUser
     {
-        if (users_map[uid] != null)
+        if (as3hx.Compat.truthy(users_map[uid] != null))
         {
             return users_map[uid];
         }
@@ -545,9 +545,9 @@ class Multiplayer extends EventDispatcher
         return null;
     }
     
-    public function setUser(user : MPUser) : Void
+    public function setUser(user                             : Dynamic) : Void
     {
-        if (users_map[user.uid] == null)
+        if (as3hx.Compat.truthy(users_map[user.uid] == null))
         {
             users.push(user);
             users_map[user.uid] = user;
@@ -561,14 +561,14 @@ class Multiplayer extends EventDispatcher
     
     private function _staleUsers() : Void
     {
-        var i : Float;
-        var user : MPUser;
+        var i                             : Dynamic= null;
+        var user                             : Dynamic= null;
         
         // Mark all Users as Stale
         i = users.length - 1;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            Reflect.setField(users, Std.string(i), true).isStale;
+            users[as3hx.Compat.parseInt(i)].isStale = true;
             i--;
         }
         
@@ -577,9 +577,9 @@ class Multiplayer extends EventDispatcher
         SYSTEM_USER.isStale = false;
         
         // Check References to User in Rooms
-        for (room in rooms)
+        for (room in as3hx.Compat.iter(rooms))
         {
-            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(room),users) type: null */ in room.users)
+            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(room),users) type: null */ in as3hx.Compat.iter(room.users))
             {
                 user.isStale = false;
             }
@@ -587,11 +587,11 @@ class Multiplayer extends EventDispatcher
         
         // Delete Stale Users
         i = users.length - 1;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            user = Reflect.field(users, Std.string(i));
+            user = as3hx.Compat.field(users, i);
             
-            if (user.isStale)
+            if (as3hx.Compat.truthy(user.isStale))
             {
                 Reflect.deleteField(users_map, Std.string(null));
                 users.splice(i, 1);
@@ -601,7 +601,7 @@ class Multiplayer extends EventDispatcher
     }
     
     ///////////////////////////////////
-    private function sysLoginOK(command : MPSocketDataText) : Void
+    private function sysLoginOK(command                             : Dynamic) : Void
     {
         this.currentUser = new MPUser();
         this.currentUser.update(command.data);
@@ -612,33 +612,33 @@ class Multiplayer extends EventDispatcher
         dispatchEvent(new MPEvent(MPEvent.SYS_LOGIN_OK, command));
     }
     
-    private function sysRoomList(command : MPSocketDataText) : Void
+    private function sysRoomList(command                             : Dynamic) : Void
     {
-        var i : Float;
-        var temp_rooms : Array<Dynamic> = try cast(command.data, Array<Dynamic>) catch(e:Dynamic) null;
-        var temp_room : MPRoom;
+        var i                             : Dynamic= null;
+        var temp_rooms                             : Dynamic= try cast(command.data, Array<Dynamic>) catch(e:Dynamic) null;
+        var temp_room                             : Dynamic= null;
         
         // Mark all Rooms as Stale
         i = rooms.length - 1;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            Reflect.setField(rooms, Std.string(i), true).isStale;
+            rooms[as3hx.Compat.parseInt(i)].isStale = true;
             i--;
         }
         
         // Add / Update Existing Rooms
         i = temp_rooms.length - 1;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            _roomUpdateDirect(Reflect.field(temp_rooms, Std.string(i)));
+            _roomUpdateDirect(as3hx.Compat.field(temp_rooms, i));
             i--;
         }
         
         // Delete Stale Rooms
         i = rooms.length - 1;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            if (Reflect.field(rooms, Std.string(i)).isStale)
+            if (as3hx.Compat.truthy(as3hx.Compat.field(rooms, i).isStale))
             {
                 Reflect.deleteField(rooms_map, Std.string(null));
                 rooms.splice(i, 1);
@@ -650,18 +650,18 @@ class Multiplayer extends EventDispatcher
         garbageCollection();
         
         // Find Lobby
-        if (LOBBY == null)
+        if (as3hx.Compat.truthy(LOBBY == null))
         {
-            for (room/* AS3HX WARNING could not determine type for var: room exp: EField(EIdent(this),rooms) type: null */ in this.rooms)
+            for (room/* AS3HX WARNING could not determine type for var: room exp: EField(EIdent(this),rooms) type: null */ in as3hx.Compat.iter(this.rooms))
             {
-                if (room.type == "lobby")
+                if (as3hx.Compat.truthy(room.type == "lobby"))
                 {
                     LOBBY = room;
                     break;
                 }
             }
             
-            if (AUTO_JOIN_LOBBY)
+            if (as3hx.Compat.truthy(AUTO_JOIN_LOBBY))
             {
                 joinLobby();
             }
@@ -670,17 +670,17 @@ class Multiplayer extends EventDispatcher
         dispatchEvent(new MPEvent(MPEvent.SYS_ROOM_LIST, command));
     }
     
-    private function sysUserList(command : MPSocketDataText) : Void
+    private function sysUserList(command                             : Dynamic) : Void
     {
-        var i : Float;
-        var temp_users : Array<Dynamic> = try cast(command.data, Array<Dynamic>) catch(e:Dynamic) null;
-        var temp_user : MPUser;
+        var i                             : Dynamic= null;
+        var temp_users                             : Dynamic= try cast(command.data, Array<Dynamic>) catch(e:Dynamic) null;
+        var temp_user                             : Dynamic= null;
         
         // Add / Update Existing Users
         i = temp_users.length - 1;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            _userUpdateDirect(Reflect.field(temp_users, Std.string(i)));
+            _userUpdateDirect(as3hx.Compat.field(temp_users, i));
             i--;
         }
         
@@ -689,38 +689,38 @@ class Multiplayer extends EventDispatcher
         dispatchEvent(new MPEvent(MPEvent.SYS_USER_LIST, command));
     }
     
-    private function sysAlert(command : MPSocketDataText) : Void
+    private function sysAlert(command                             : Dynamic) : Void
     {
-        var color : Float = (command.data.color) ? command.data.color : 0;
-        var age : Float = (command.data.age) ? command.data.age : 120;
+        var color                             : Dynamic= (command.data.color) ? command.data.color : 0;
+        var age                             : Dynamic= (command.data.age) ? command.data.age : 120;
         
-        if (command.data.lang != null)
+        if (as3hx.Compat.truthy(command.data.lang != null))
         {
             Alert.add(_lang.string(command.data.lang), age, color);
         }
-        else if (command.data.msg != null)
+        else if (as3hx.Compat.truthy(command.data.msg != null))
         {
             Alert.add(command.data.msg, age, color);
         }
     }
     
-    private function roomUpdate(command : MPSocketDataText) : Void
+    private function roomUpdate(command                             : Dynamic) : Void
     {
         _roomUpdateDirect(command.data);
         
-        var room : MPRoom = rooms_map[command.data.uid];
+        var room                             : Dynamic= rooms_map[command.data.uid];
         dispatchEvent(new MPRoomEvent(MPEvent.ROOM_UPDATE, command, room));
     }
     
-    private function roomCreateOK(command : MPSocketDataText) : Void
+    private function roomCreateOK(command                             : Dynamic) : Void
     {
         _roomUpdateDirect(command.data);
         
-        var room : MPRoom = rooms_map[command.data.uid];
+        var room                             : Dynamic= rooms_map[command.data.uid];
         room.onJoin();
         activeRooms.push(room);
         
-        if (room.type != "lobby")
+        if (as3hx.Compat.truthy(room.type != "lobby"))
         {
             GAME_ROOM = room;
         }
@@ -728,15 +728,15 @@ class Multiplayer extends EventDispatcher
         dispatchEvent(new MPRoomEvent(MPEvent.ROOM_CREATE_OK, command, room));
     }
     
-    private function roomJoinOK(command : MPSocketDataText) : Void
+    private function roomJoinOK(command                             : Dynamic) : Void
     {
         _roomUpdateDirect(command.data);
         
-        var room : MPRoom = rooms_map[command.data.uid];
+        var room                             : Dynamic= rooms_map[command.data.uid];
         room.onJoin();
         activeRooms.push(room);
         
-        if (room.type != "lobby")
+        if (as3hx.Compat.truthy(room.type != "lobby"))
         {
             GAME_ROOM = room;
         }
@@ -744,24 +744,24 @@ class Multiplayer extends EventDispatcher
         dispatchEvent(new MPRoomEvent(MPEvent.ROOM_JOIN_OK, command, room));
     }
     
-    private function roomLeaveOK(command : MPSocketDataText) : Void
+    private function roomLeaveOK(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
+        var room                             : Dynamic= rooms_map[command.data.uid];
         room.onLeave();
         
-        var idx : Int = Lambda.indexOf(activeRooms, room);
-        if (idx != -1)
+        var idx                             : Dynamic= Lambda.indexOf(activeRooms, room);
+        if (as3hx.Compat.truthy(idx != -1))
         {
             activeRooms.splice(idx, 1);
         }
         
-        if (room == GAME_ROOM)
+        if (as3hx.Compat.truthy(room == GAME_ROOM))
         {
             GAME_ROOM = null;
         }
         
         // Clear Extra Data from Room
-        if (room != null)
+        if (as3hx.Compat.truthy(room != null))
         {
             room.clearExtra();
         }
@@ -774,19 +774,19 @@ class Multiplayer extends EventDispatcher
      * Called when Room Delete command is OK.
      *
      */
-    private function roomDeleteOK(command : MPSocketDataText) : Void
+    private function roomDeleteOK(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
+        var room                             : Dynamic= rooms_map[command.data.uid];
         
-        if (_roomDeleteDirect(command.data))
+        if (as3hx.Compat.truthy(_roomDeleteDirect(command.data)))
         {
-            var idx : Int = Lambda.indexOf(activeRooms, room);
-            if (idx != -1)
+            var idx                             : Dynamic= Lambda.indexOf(activeRooms, room);
+            if (as3hx.Compat.truthy(idx != -1))
             {
                 activeRooms.splice(idx, 1);
             }
             
-            if (room == GAME_ROOM)
+            if (as3hx.Compat.truthy(room == GAME_ROOM))
             {
                 GAME_ROOM = null;
             }
@@ -803,12 +803,12 @@ class Multiplayer extends EventDispatcher
      * Called when a Room Edit command is OK.
      * Updates the cached room if it exist, or fails otherwise.
      */
-    private function roomEditOK(command : MPSocketDataText) : Void
+    private function roomEditOK(command                             : Dynamic) : Void
     {
-        var uid : Int = command.data.uid;
-        var room : MPRoom = rooms_map[uid];
+        var uid                             : Dynamic= command.data.uid;
+        var room                             : Dynamic= rooms_map[uid];
         
-        if (room != null)
+        if (as3hx.Compat.truthy(room != null))
         {
             room.update(command.data);
             dispatchEvent(new MPRoomEvent(MPEvent.ROOM_EDIT_OK, command, room));
@@ -819,19 +819,19 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    private function roomUserJoin(command : MPSocketDataText) : Void
+    private function roomUserJoin(command                             : Dynamic) : Void
     {
-        var uid : Int = command.data.uid;
-        var room : MPRoom = rooms_map[uid];
-        var user : MPUser = _userUpdateDirect(command.data.user);
+        var uid                             : Dynamic= command.data.uid;
+        var room                             : Dynamic= rooms_map[uid];
+        var user                             : Dynamic= _userUpdateDirect(command.data.user);
         
-        if (room == null)
+        if (as3hx.Compat.truthy(room == null))
         {
             return;
         }
         
         // Existing
-        if (user != null)
+        if (as3hx.Compat.truthy(user != null))
         {
             user.update(command.data.user);
         }
@@ -852,12 +852,12 @@ class Multiplayer extends EventDispatcher
         dispatchEvent(new MPRoomEvent(MPEvent.ROOM_USER_JOIN, command, room, user));
     }
     
-    private function roomUserLeave(command : MPSocketDataText) : Void
+    private function roomUserLeave(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
-        var user : MPUser = users_map[command.data.userUID];
+        var room                             : Dynamic= rooms_map[command.data.uid];
+        var user                             : Dynamic= users_map[command.data.userUID];
         
-        if (room != null && user != null)
+        if (as3hx.Compat.truthy(room != null && user != null))
         {
             room.userLeave(user);
             dispatchEvent(new MPRoomEvent(MPEvent.ROOM_USER_LEAVE, command, room, user));
@@ -865,95 +865,95 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    private function roomTeamUpdate(command : MPSocketDataText) : Void
+    private function roomTeamUpdate(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
+        var room                             : Dynamic= rooms_map[command.data.uid];
         
-        if (room != null)
+        if (as3hx.Compat.truthy(room != null))
         {
             dispatchEvent(new MPRoomEvent(MPEvent.ROOM_TEAM_UPDATE, command, room));
         }
     }
     
-    private function roomTeamAdd(command : MPSocketDataText) : Void
+    private function roomTeamAdd(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
-        var user : MPUser = users_map[command.data.userUID];
+        var room                             : Dynamic= rooms_map[command.data.uid];
+        var user                             : Dynamic= users_map[command.data.userUID];
         
-        if (room != null && user != null)
+        if (as3hx.Compat.truthy(room != null && user != null))
         {
             room.userJoinTeam(user, command.data.teamUID, command.data.vars);
             dispatchEvent(new MPRoomEvent(MPEvent.ROOM_TEAM_ADD, command, room));
         }
     }
     
-    private function roomTeamRemove(command : MPSocketDataText) : Void
+    private function roomTeamRemove(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
-        var user : MPUser = users_map[command.data.userUID];
+        var room                             : Dynamic= rooms_map[command.data.uid];
+        var user                             : Dynamic= users_map[command.data.userUID];
         
-        if (room != null && user != null)
+        if (as3hx.Compat.truthy(room != null && user != null))
         {
             room.userLeaveTeam(user, command.data.teamUID);
             dispatchEvent(new MPRoomEvent(MPEvent.ROOM_TEAM_REMOVE, command, room));
         }
     }
     
-    private function roomTeamCaptain(command : MPSocketDataText) : Void
+    private function roomTeamCaptain(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
-        var user : MPUser = users_map[command.data.userUID];
+        var room                             : Dynamic= rooms_map[command.data.uid];
+        var user                             : Dynamic= users_map[command.data.userUID];
         
-        if (room != null && user != null)
+        if (as3hx.Compat.truthy(room != null && user != null))
         {
             room.userTeamCaptain(user, command.data.teamUID);
             dispatchEvent(new MPRoomEvent(MPEvent.ROOM_TEAM_CAPTAIN, command, room));
         }
     }
     
-    private function roomMessage(command : MPSocketDataText) : Void
+    private function roomMessage(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
-        var user : MPUser = users_map[command.data.userUID];
+        var room                             : Dynamic= rooms_map[command.data.uid];
+        var user                             : Dynamic= users_map[command.data.userUID];
         
-        if (room != null && user != null && command.data.message)
+        if (as3hx.Compat.truthy(room != null && user != null && command.data.message))
         {
             dispatchEvent(new MPRoomEvent(MPEvent.ROOM_MESSAGE, command, room, user));
         }
     }
     
-    private function roomModeCommand(command : MPSocketDataText) : Void
+    private function roomModeCommand(command                             : Dynamic) : Void
     {
-        var room : MPRoom = rooms_map[command.data.uid];
-        var user : MPUser = users_map[command.data.userUID];
+        var room                             : Dynamic= rooms_map[command.data.uid];
+        var user                             : Dynamic= users_map[command.data.userUID];
         
-        if (room != null)
+        if (as3hx.Compat.truthy(room != null))
         {
             room.modeCommand(command, user);
         }
     }
     
-    private function roomModeRawCommand(command : MPSocketDataRaw) : Void
+    private function roomModeRawCommand(command                             : Dynamic) : Void
     {
         command.data.position = 2;
-        var roomUID : Float = command.data.readUnsignedInt();
-        var playerUID : Float = command.data.readUnsignedInt();
+        var roomUID                             : Dynamic= command.data.readUnsignedInt();
+        var playerUID                             : Dynamic= command.data.readUnsignedInt();
         
-        var room : MPRoom = Reflect.field(rooms_map, Std.string(roomUID));
-        var user : MPUser = Reflect.field(users_map, Std.string(playerUID));
+        var room                             : Dynamic= as3hx.Compat.field(rooms_map, roomUID);
+        var user                             : Dynamic= as3hx.Compat.field(users_map, playerUID);
         
-        if (room != null)
+        if (as3hx.Compat.truthy(room != null))
         {
             room.modeRawCommand(command, user);
         }
     }
     
-    private function userMessage(command : MPSocketDataText) : Void
+    private function userMessage(command                             : Dynamic) : Void
     {
-        var user_sender : MPUser = _userUpdateDirect(command.data.user);
-        var user_chat : MPUser = users_map[command.data.uid];
+        var user_sender                             : Dynamic= _userUpdateDirect(command.data.user);
+        var user_chat                             : Dynamic= users_map[command.data.uid];
         
-        if (user_chat != null && user_sender != null && command.data.message)
+        if (as3hx.Compat.truthy(user_chat != null && user_sender != null && command.data.message))
         {
             _userGetHistory(user_chat).addMessage(user_chat, user_sender, command.data);
             _pmSort();
@@ -961,12 +961,12 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    private function userRoomInvite(command : MPSocketDataText) : Void
+    private function userRoomInvite(command                             : Dynamic) : Void
     {
-        var user_sender : MPUser = _userUpdateDirect(command.data.user);
-        var user : MPUser = users_map[command.data.uid];
+        var user_sender                             : Dynamic= _userUpdateDirect(command.data.user);
+        var user                             : Dynamic= users_map[command.data.uid];
         
-        if (user != null && user_sender != null && command.data.name && command.data.code)
+        if (as3hx.Compat.truthy(user != null && user_sender != null && command.data.name && command.data.code))
         {
             _userGetHistory(user).addGameInvite(user, user_sender, command.data);
             _pmSort();
@@ -974,13 +974,13 @@ class Multiplayer extends EventDispatcher
         }
     }
     
-    private function userBlockUpdate(command : MPSocketDataText) : Void
+    private function userBlockUpdate(command                             : Dynamic) : Void
     {
         currentUser.blockList = command.data.list;
         dispatchEvent(new MPEvent(MPEvent.USER_BLOCK_UPDATE, command));
     }
     
-    private function _roomGetClass(room_data : Dynamic) : MPRoom
+    private function _roomGetClass(room_data                             : Dynamic) : MPRoom
     {
         var _sw8_ = (room_data.type);        
 
@@ -999,13 +999,13 @@ class Multiplayer extends EventDispatcher
      * Create or Update an existing Room object within cache.
      * @param room_data Object Data containing room information.
      */
-    private function _roomUpdateDirect(room_data : Dynamic) : MPRoom
+    private function _roomUpdateDirect(room_data                             : Dynamic) : MPRoom
     {
-        var uid : Int = room_data.uid;
-        var room : MPRoom = rooms_map[uid];
+        var uid                             : Dynamic= room_data.uid;
+        var room                             : Dynamic= rooms_map[uid];
         
         // Existing
-        if (room != null)
+        if (as3hx.Compat.truthy(room != null))
         {
             room.update(room_data);
         }
@@ -1029,17 +1029,17 @@ class Multiplayer extends EventDispatcher
      * @param room_data
      * @return
      */
-    private function _roomDeleteDirect(room_data : Dynamic) : Bool
+    private function _roomDeleteDirect(room_data                             : Dynamic) : Bool
     {
-        var uid : Int = room_data.uid;
-        var room : MPRoom = rooms_map[uid];
+        var uid                             : Dynamic= room_data.uid;
+        var room                             : Dynamic= rooms_map[uid];
         
         // Clear Extra Data from Room.
-        if (room != null)
+        if (as3hx.Compat.truthy(room != null))
         {
             room.clear();
             
-            var i : Float = Lambda.indexOf(rooms, room);
+            var i                             : Dynamic= Lambda.indexOf(rooms, room);
             rooms.splice(i, 1);
             Reflect.deleteField(rooms_map, Std.string(null));
             
@@ -1061,13 +1061,13 @@ class Multiplayer extends EventDispatcher
      * Create or Update an existing User object within cache.
      * @param room_data Object Data containing room information.
      */
-    private function _userUpdateDirect(user_data : Dynamic) : MPUser
+    private function _userUpdateDirect(user_data                             : Dynamic) : MPUser
     {
-        var uid : Int = user_data.uid;
-        var user : MPUser = users_map[uid];
+        var uid                             : Dynamic= user_data.uid;
+        var user                             : Dynamic= users_map[uid];
         
         // Existing
-        if (user != null)
+        if (as3hx.Compat.truthy(user != null))
         {
             user.update(user_data);
         }
@@ -1092,12 +1092,12 @@ class Multiplayer extends EventDispatcher
      * @param user
      * @return
      */
-    private function _userGetHistory(user : MPUser) : MPUserChatHistory
+    private function _userGetHistory(user                             : Dynamic) : MPUserChatHistory
     {
-        var history : MPUserChatHistory = pms_map[user.sid];
+        var history                             : Dynamic= pms_map[user.sid];
         
         // Create New
-        if (history == null)
+        if (as3hx.Compat.truthy(history == null))
         {
             history = new MPUserChatHistory(user);
             pms.push(history);
@@ -1118,15 +1118,15 @@ class Multiplayer extends EventDispatcher
     ///////////////////////////////////
     public function joinLobby() : Void
     {
-        if (LOBBY != null)
+        if (as3hx.Compat.truthy(LOBBY != null))
         {
             joinRoom(LOBBY);
         }
     }
     
-    public function joinRoom(room : MPRoom, password : String = null) : Void
+    public function joinRoom(room                             : Dynamic, password                             : Dynamic= null) : Void
     {
-        if (Lambda.indexOf(activeRooms, room) == -1)
+        if (as3hx.Compat.truthy(Lambda.indexOf(activeRooms, room) == -1))
         {
             sendCommand(new MPCRoomJoin(room, password));
         }
@@ -1139,7 +1139,7 @@ class Multiplayer extends EventDispatcher
     
     private function get_isPlayerInRoom() : Bool
     {
-        if (!connected || GAME_ROOM == null)
+        if (as3hx.Compat.truthy(!connected || GAME_ROOM == null))
         {
             return false;
         }
@@ -1149,9 +1149,9 @@ class Multiplayer extends EventDispatcher
     
     public function hasUnreadPM() : Bool
     {
-        for (history in pms)
+        for (history in as3hx.Compat.iter(pms))
         {
-            if (history.newMessage)
+            if (as3hx.Compat.truthy(history.newMessage))
             {
                 return true;
             }
@@ -1165,12 +1165,12 @@ class Multiplayer extends EventDispatcher
     
     public function ffrUpdateRate() : Bool
     {
-        if (!connected || GAME_ROOM == null || !(Std.is(GAME_ROOM, MPRoomFFR)))
+        if (as3hx.Compat.truthy(!connected || GAME_ROOM == null || !(Std.is(GAME_ROOM, MPRoomFFR))))
         {
             return false;
         }
         
-        if (GAME_ROOM.teamSpectator.contains(currentUser))
+        if (as3hx.Compat.truthy(GAME_ROOM.teamSpectator.contains(currentUser)))
         {
             return false;
         }
@@ -1178,14 +1178,14 @@ class Multiplayer extends EventDispatcher
         return sendCommand(new MPCFFRSongRate(try cast(GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null, _gvars.playerUser.songRate));
     }
     
-    public function ffrSelectSong(song : SongInfo) : Bool
+    public function ffrSelectSong(song                             : Dynamic) : Bool
     {
-        if (song == null || !connected || GAME_ROOM == null || !(Std.is(GAME_ROOM, MPRoomFFR)))
+        if (as3hx.Compat.truthy(song == null || !connected || GAME_ROOM == null || !(Std.is(GAME_ROOM, MPRoomFFR))))
         {
             return false;
         }
         
-        var cmd : MPCFFRSong = new MPCFFRSong(try cast(GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null);
+        var cmd                             : Dynamic= new MPCFFRSong(try cast(GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null);
         cmd.name = song.name;
         cmd.author = song.author;
         cmd.time = song.time;
@@ -1196,7 +1196,7 @@ class Multiplayer extends EventDispatcher
         cmd.level_id = song.level_id;
         
         // File Loader
-        if (song.engine && song.engine.id == "fileloader")
+        if (as3hx.Compat.truthy(song.engine && song.engine.id == "fileloader"))
         {
             cmd.engine = {
                         id : "fileloader",
@@ -1212,7 +1212,7 @@ class Multiplayer extends EventDispatcher
     ///////////////////////////////////
     private static function get_instance() : Multiplayer
     {
-        if (_instance == null)
+        if (as3hx.Compat.truthy(_instance == null))
         {
             _instance = new Multiplayer(new MultiplayerSingletonEnforcer());
         }

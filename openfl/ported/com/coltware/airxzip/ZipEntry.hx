@@ -17,16 +17,16 @@ import openfl.utils.*;
 class ZipEntry extends EventDispatcher
 {
     
-    public static var METHOD_NONE : Int = 0;
-    public static var METHOD_DEFLATE : Int = 8;
+    public static var METHOD_NONE                            : Dynamic= 0;
+    public static var METHOD_DEFLATE                            : Dynamic= 8;
     
-    public var _header : ZipHeader;
-    public var _headerLocal : ZipHeader;
-    private var _content : ByteArray;
+    public var _header                            : Dynamic;
+    public var _headerLocal                            : Dynamic;
+    private var _content                            : Dynamic;
     
-    private var _stream : IDataInput;
+    private var _stream                            : Dynamic;
     
-    public function new(stream : IDataInput)
+    public function new(stream                            : Dynamic)
     {
         super();
         _stream = stream;
@@ -35,7 +35,7 @@ class ZipEntry extends EventDispatcher
     /**
 		*  @private
 		*/
-    public function setHeader(h : ZipHeader) : Void
+    public function setHeader(h                            : Dynamic) : Void
     {
         _header = h;
     }
@@ -56,8 +56,8 @@ class ZipEntry extends EventDispatcher
     
     public function isCompressed() : Bool
     {
-        var method : Int = _header.getCompressMethod();
-        if (method == 0)
+        var method                            : Dynamic= _header.getCompressMethod();
+        if (as3hx.Compat.truthy(method == 0))
         {
             return false;
         }
@@ -75,7 +75,7 @@ class ZipEntry extends EventDispatcher
 		*  ????utf-8 ???? shift_jis ??????????????????
 		*
 		*/
-    public function getFilename(charset : String = null) : String
+    public function getFilename(charset                            : Dynamic= null) : String
     {
         return _header.getFilename(charset);
     }
@@ -147,7 +147,7 @@ class ZipEntry extends EventDispatcher
     
     public function isEncrypted() : Bool
     {
-        if ((_header._bitFlag & 1) != 0)
+        if (as3hx.Compat.truthy((_header._bitFlag & 1) != 0))
         {
             return true;
         }

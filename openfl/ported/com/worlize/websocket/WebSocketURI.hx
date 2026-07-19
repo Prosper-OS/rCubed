@@ -3,12 +3,12 @@ package com.worlize.websocket;
 
 class WebSocketURI
 {
-    public var scheme : String;
-    public var host : String;
-    public var port : Int;
-    public var path : String;
+    public var scheme                          : Dynamic;
+    public var host                          : Dynamic;
+    public var port                          : Dynamic;
+    public var path                          : Dynamic;
     
-    public function new(host : String, port : Int = 80, scheme : String = "ws", path : String = "/")
+    public function new(host                          : Dynamic, port                          : Dynamic= 80, scheme                          : Dynamic= "ws", path                          : Dynamic= "/")
     {
         this.host = host;
         this.port = port;

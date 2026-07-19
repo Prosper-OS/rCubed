@@ -8,23 +8,23 @@ import openfl.geom.Rectangle;
 
 class ScrollBar extends Sprite
 {
-    public var draggerVisibility(get, set) : Bool;
+    public var draggerVisibility(get, set)                             : Dynamic;
 
-    private var _width : Int;
-    private var _height : Int;
-    private var _dragger : Sprite;
-    private var _background : Sprite;
-    private var _bottom : Float;
-    private var _bounds : Rectangle;
+    private var _width                             : Dynamic;
+    private var _height                             : Dynamic;
+    private var _dragger                             : Dynamic;
+    private var _background                             : Dynamic;
+    private var _bottom                             : Dynamic;
+    private var _bounds                             : Dynamic;
     
-    public var scroll : Float = 0;
+    public var scroll                             : Dynamic= 0;
     
-    private var _listener : Dynamic = null;
+    private var _listener                             : Dynamic= null;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, width : Int = 0, height : Int = 0, dragger : Sprite = null, background : Sprite = null, listener : Dynamic = null)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, width                             : Dynamic= 0, height                             : Dynamic= 0, dragger                             : Dynamic= null, background                             : Dynamic= null, listener                             : Dynamic= null)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -38,7 +38,7 @@ class ScrollBar extends Sprite
         this._background = background;
         
         //- Draw Background if one isn't provided
-        if (_background == null)
+        if (as3hx.Compat.truthy(_background == null))
         {
             _background = new Sprite();
             _background.graphics.beginFill(0xFFFFFF, 0.12);
@@ -48,7 +48,7 @@ class ScrollBar extends Sprite
         this.addChild(_background);
         
         //- Draw Dragger if one isn't provided
-        if (_dragger == null)
+        if (as3hx.Compat.truthy(_dragger == null))
         {
             _dragger = new Sprite();
             _dragger.graphics.beginFill(0xFFFFFF, 0.5);
@@ -71,7 +71,7 @@ class ScrollBar extends Sprite
         _bottom = Math.floor(_height - _dragger.height);
         
         //- Set click event listener
-        if (listener != null)
+        if (as3hx.Compat.truthy(listener != null))
         {
             this._listener = listener;
             this.addEventListener(Event.CHANGE, listener);
@@ -84,13 +84,13 @@ class ScrollBar extends Sprite
         scroll = 0;
     }
     
-    public function scrollTo(val : Float) : Void
+    public function scrollTo(val                             : Dynamic) : Void
     {
-        if (val < 0)
+        if (as3hx.Compat.truthy(val < 0))
         {
             val = 0;
         }
-        if (val > 1)
+        if (as3hx.Compat.truthy(val > 1))
         {
             val = 1;
         }
@@ -98,7 +98,7 @@ class ScrollBar extends Sprite
         _dragger.y = (_bottom * val);
     }
     
-    private function set_draggerVisibility(visible : Bool) : Bool
+    private function set_draggerVisibility(visible                             : Dynamic) : Bool
     {
         _dragger.visible = visible;
         return visible;
@@ -110,7 +110,7 @@ class ScrollBar extends Sprite
     }
     
     ///- Dragger Events
-    private function draggerDown(e : MouseEvent) : Void
+    private function draggerDown(e                             : Dynamic) : Void
     {
         _bounds = new Rectangle(0, 0, 0, _bottom);
         _dragger.startDrag(false, _bounds);
@@ -118,7 +118,7 @@ class ScrollBar extends Sprite
         e.target.stage.addEventListener(MouseEvent.MOUSE_UP, draggerUpOutside);
     }
     
-    private function draggerUp(e : MouseEvent) : Void
+    private function draggerUp(e                             : Dynamic) : Void
     {
         e.stopImmediatePropagation();
         _dragger.stopDrag();
@@ -126,14 +126,14 @@ class ScrollBar extends Sprite
         e.target.stage.removeEventListener(MouseEvent.MOUSE_UP, draggerUpOutside);
     }
     
-    private function draggerUpOutside(e : MouseEvent) : Void
+    private function draggerUpOutside(e                             : Dynamic) : Void
     {
         _dragger.stopDrag();
         e.target.stage.removeEventListener(MouseEvent.MOUSE_MOVE, draggerMove);
         e.target.stage.removeEventListener(MouseEvent.MOUSE_UP, draggerUpOutside);
     }
     
-    private function draggerMove(e : MouseEvent) : Void
+    private function draggerMove(e                             : Dynamic) : Void
     {
         scroll = (_dragger.y / _bottom);
         this.dispatchEvent(new Event(Event.CHANGE));

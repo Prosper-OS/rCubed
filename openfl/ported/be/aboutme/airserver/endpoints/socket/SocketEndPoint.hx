@@ -13,14 +13,14 @@ import openfl.net.ServerSocket;
 
 class SocketEndPoint extends EventDispatcher implements IEndPoint
 {
-    private var port : Int;
-    private var portLimit : Int;
-    private var socketClientHandlerFactory : SocketClientHandlerFactory;
-    private var serverSocket : ServerSocket;
+    private var port                              : Dynamic;
+    private var portLimit                              : Dynamic;
+    private var socketClientHandlerFactory                              : Dynamic;
+    private var serverSocket                              : Dynamic;
     
-    private var clientHandlers : Array<SocketClientHandler>;
+    private var clientHandlers                              : Dynamic;
     
-    public function new(port : Int, socketClientHandlerFactory : SocketClientHandlerFactory)
+    public function new(port                              : Dynamic, socketClientHandlerFactory                              : Dynamic)
     {
         super();
         this.port = port;
@@ -33,7 +33,7 @@ class SocketEndPoint extends EventDispatcher implements IEndPoint
     {
         clientHandlers = new Array<SocketClientHandler>();
         
-        while (this.port < this.portLimit)
+        while (as3hx.Compat.truthy(this.port < this.portLimit))
         {
             try {
 serverSocket = new ServerSocket();
@@ -56,7 +56,7 @@ serverSocket = new ServerSocket();
     //close all socket clienthandlers
     {
         
-        for (clientHandler in clientHandlers)
+        for (clientHandler in as3hx.Compat.iter(clientHandlers))
         {
             clientHandler.close();
         }
@@ -65,45 +65,45 @@ serverSocket = new ServerSocket();
         clientHandlers = new Array<SocketClientHandler>();
         
         //close the socket
-        if (serverSocket != null && serverSocket.bound)
+        if (as3hx.Compat.truthy(serverSocket != null && serverSocket.bound))
         {
             serverSocket.close();
         }
     }
     
-    private function clientConnectHandler(event : ServerSocketConnectEvent) : Void
+    private function clientConnectHandler(event                              : Dynamic) : Void
     //create the clienthandler
     {
         
-        var clientHandler : IClientHandler = socketClientHandlerFactory.createHandler(event.socket);
+        var clientHandler                              : Dynamic= socketClientHandlerFactory.createHandler(event.socket);
         
         //add event listeners to the clienthandler
         clientHandler.addEventListener(Event.CLOSE, clientHandlerCloseHandler, false, 0, true);
         clientHandlers.push(clientHandler);
         
         //dispatch added event
-        var e : EndPointEvent = new EndPointEvent(EndPointEvent.CLIENT_HANDLER_ADDED);
+        var e                              : Dynamic= new EndPointEvent(EndPointEvent.CLIENT_HANDLER_ADDED);
         e.clientHandler = clientHandler;
         dispatchEvent(e);
     }
     
-    private function serverSocketCloseHandler(event : Event) : Void
+    private function serverSocketCloseHandler(event                              : Dynamic) : Void
     {
         close();
     }
     
-    private function clientHandlerCloseHandler(event : Event) : Void
+    private function clientHandlerCloseHandler(event                              : Dynamic) : Void
     {
-        var clientHandler : IClientHandler = try cast(event.target, IClientHandler) catch(e:Dynamic) null;
+        var clientHandler                              : Dynamic= try cast(event.target, IClientHandler) catch(e:Dynamic) null;
         
         //remove event listener
         clientHandler.removeEventListener(Event.CLOSE, clientHandlerCloseHandler);
         
         //remove it from the vector
-        var i : Int = as3hx.Compat.parseInt(clientHandlers.length - 1);
-        while (i >= 0)
+        var i                              : Dynamic= as3hx.Compat.parseInt(clientHandlers.length - 1);
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            if (clientHandlers[i] == clientHandler)
+            if (as3hx.Compat.truthy(clientHandlers[i] == clientHandler))
             {
                 clientHandlers.splice(i, 1);
             }

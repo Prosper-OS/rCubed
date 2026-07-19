@@ -3,17 +3,17 @@ package popups.filebrowser;
 
 class FileFolder
 {
-    public var folder : String;
-    public var file : String;
-    public var data : Array<FileFolderItem>;
+    public var folder                       : Dynamic;
+    public var file                       : Dynamic;
+    public var data                       : Dynamic;
     
-    public var author : String;
-    public var name : String;
-    public var stepauthor : String;
-    public var banner : String;
-    public var ext : String;
+    public var author                       : Dynamic;
+    public var name                       : Dynamic;
+    public var stepauthor                       : Dynamic;
+    public var banner                       : Dynamic;
+    public var ext                       : Dynamic;
     
-    public function new(folder : String, file : String, ext : String, item : FileFolderItem)
+    public function new(folder                       : Dynamic, file                       : Dynamic, ext                       : Dynamic, item                       : Dynamic)
     {
         this.folder = folder;
         this.file = file;

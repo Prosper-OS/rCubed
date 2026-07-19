@@ -6,12 +6,12 @@ import openfl.events.Event;
 class AIRServerEvent extends Event
 {
     
-    public static inline var CLIENT_ADDED : String = "clientAdded";
-    public static inline var CLIENT_REMOVED : String = "clientRemoved";
+    public static inline var CLIENT_ADDED                              : Dynamic= "clientAdded";
+    public static inline var CLIENT_REMOVED                              : Dynamic= "clientRemoved";
     
-    public var client : Client;
+    public var client                              : Dynamic;
     
-    public function new(type : String, bubbles : Bool = false, cancelable : Bool = false)
+    public function new(type                              : Dynamic, bubbles                              : Dynamic= false, cancelable                              : Dynamic= false)
     {
         super(type, bubbles, cancelable);
     }

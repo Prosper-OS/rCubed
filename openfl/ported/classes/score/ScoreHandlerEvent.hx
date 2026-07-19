@@ -5,15 +5,15 @@ import game.GameScoreResult;
 
 class ScoreHandlerEvent extends Event
 {
-    public static inline var SUCCESS : String = "success";
-    public static inline var FAILURE : String = "failure";
+    public static inline var SUCCESS                             : Dynamic= "success";
+    public static inline var FAILURE                             : Dynamic= "failure";
     
-    public var result : GameScoreResult;
-    public var rank : String;
-    public var last_best : String;
-    public var hash : String;
+    public var result                             : Dynamic;
+    public var rank                             : Dynamic;
+    public var last_best                             : Dynamic;
+    public var hash                             : Dynamic;
     
-    public function new(type : String, result : GameScoreResult, rank : String, best : String, hash : String = "")
+    public function new(type                             : Dynamic, result                             : Dynamic, rank                             : Dynamic, best                             : Dynamic, hash                             : Dynamic= "")
     {
         super(type, false, false);
         this.result = result;

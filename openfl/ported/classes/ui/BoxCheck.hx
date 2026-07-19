@@ -7,21 +7,21 @@ import openfl.events.MouseEvent;
 
 class BoxCheck extends Sprite
 {
-    public var highlight(get, never) : Bool;
-    public var checked(get, set) : Bool;
+    public var highlight(get, never)                             : Dynamic;
+    public var checked(get, set)                             : Dynamic;
 
     // Display
-    private var _width : Float = 14;
-    private var _height : Float = 14;
-    private var _highlight : Bool = false;
-    private var _active : Bool = false;
+    private var _width                             : Dynamic= 14;
+    private var _height                             : Dynamic= 14;
+    private var _highlight                             : Dynamic= false;
+    private var _active                             : Dynamic= false;
     
-    private var _listener : Dynamic = null;
+    private var _listener                             : Dynamic= null;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, listener : Dynamic = null)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, listener                             : Dynamic= null)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -36,7 +36,7 @@ class BoxCheck extends Sprite
         this.y = ypos;
         
         //- Set click event listener
-        if (listener != null)
+        if (as3hx.Compat.truthy(listener != null))
         {
             this._listener = listener;
             this.addEventListener(MouseEvent.CLICK, listener);
@@ -47,7 +47,7 @@ class BoxCheck extends Sprite
     
     public function dispose() : Void
     {
-        if (_listener != null)
+        if (as3hx.Compat.truthy(_listener != null))
         {
             this.removeEventListener(MouseEvent.CLICK, _listener);
         }
@@ -62,7 +62,7 @@ class BoxCheck extends Sprite
         this.graphics.endFill();
         
         // X
-        if (checked)
+        if (as3hx.Compat.truthy(checked))
         {
             this.graphics.lineStyle(0, 0, 0);
             this.graphics.beginFill(0xFFFFFF, 0.75);
@@ -78,7 +78,7 @@ class BoxCheck extends Sprite
         return _highlight || _active;
     }
     
-    private function set_checked(val : Bool) : Bool
+    private function set_checked(val                             : Dynamic) : Bool
     {
         _active = val;
         draw();

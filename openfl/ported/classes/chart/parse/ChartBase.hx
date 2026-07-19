@@ -4,11 +4,11 @@ import openfl.utils.ByteArray;
 
 class ChartBase
 {
-    public var ignoreValidation : Bool = false;
+    public var ignoreValidation                             : Dynamic= false;
     
-    public var validColumnCounts : Array<Dynamic> = [4];  //, 5, 6, 7, 8, 9, 10];  
+    public var validColumnCounts                             : Dynamic= [4];  //, 5, 6, 7, 8, 9, 10];  
     
-    public static var COLUMNS : Dynamic = {
+    public var COLUMNS                             : Dynamic= {
             "4" : ["L", "D", "U", "R"],
             "5" : ["L", "D", "C", "U", "R"],
             "6" : ["L", "Q", "D", "U", "W", "R"],
@@ -18,24 +18,24 @@ class ChartBase
             "10" : ["L", "D", "C", "U", "R", "Q", "W", "V", "T", "Y"]
         };
     
-    public var data : Dynamic = {
+    public var data                             : Dynamic= {
             notes : []
         };
-    public var charts : Array<Dynamic> = [];
+    public var charts                             : Dynamic= [];
     
-    public var loaded : Bool = false;
-    public var parsed : Bool = false;
+    public var loaded                             : Dynamic= false;
+    public var parsed                             : Dynamic= false;
     
     public function parse() : Void
     {
     }
     
-    public function load(fileData : ByteArray, fileName : String = null) : Bool
+    public function load(fileData                             : Dynamic, fileName                             : Dynamic= null) : Bool
     {
         return false;
     }
     
-    public function getChartTimeFast(chart_index : Dynamic = null) : Float
+    public function getChartTimeFast(chart_index                             : Dynamic= null) : Float
     {
         return 0;
     }

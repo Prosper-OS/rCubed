@@ -5,9 +5,9 @@ import be.aboutme.airserver.messages.Message;
 interface IMessageSerializer
 {
 
-    function serialize(message : Message) : Dynamic
+    function serialize(message                              : Dynamic) : Dynamic
     ;
-    function deserialize(serialized : Dynamic) : Array<Message>
+    function deserialize(serialized                              : Dynamic) : Array<Message>
     ;
 }
 

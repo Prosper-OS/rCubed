@@ -3,21 +3,21 @@ package classes.user;
 
 class UserStatsScore
 {
-    public var pa_string(get, never) : String;
-    public var score(get, never) : Float;
+    public var pa_string(get, never)                            : Dynamic;
+    public var score(get, never)                            : Dynamic;
 
-    public var level_id : Float;
+    public var level_id                            : Dynamic;
     
-    public var perfect : Float;
-    public var good : Float;
-    public var average : Float;
-    public var miss : Float;
-    public var boo : Float;
-    public var combo : Float;
+    public var perfect                            : Dynamic;
+    public var good                            : Dynamic;
+    public var average                            : Dynamic;
+    public var miss                            : Dynamic;
+    public var boo                            : Dynamic;
+    public var combo                            : Dynamic;
     
-    public var weight : Float;
+    public var weight                            : Dynamic;
     
-    public function new(data : Dynamic)
+    public function new(data                            : Dynamic)
     {
         level_id = data.song;
         

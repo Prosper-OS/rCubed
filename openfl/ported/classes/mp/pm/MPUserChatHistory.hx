@@ -12,16 +12,16 @@ import r3.air.desktop.NotificationType;
 
 class MPUserChatHistory
 {
-    private static var _lang : Language = Language.instance;
-    private static var DATE : Date = Date.now();
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var DATE                             : Dynamic= Date.now();
     
-    private var MAX_HISTORY : Int = 200;
-    public var messages : Array<MPChatLogEntry> = [];
-    public var user : MPUser;
-    public var newMessage : Bool = false;
-    public var lastMessage : Float = 0;
+    private var MAX_HISTORY                             : Dynamic= 200;
+    public var messages                             : Dynamic= [];
+    public var user                             : Dynamic;
+    public var newMessage                             : Dynamic= false;
+    public var lastMessage                             : Dynamic= 0;
     
-    public function new(user : MPUser)
+    public function new(user                             : Dynamic)
     {
         this.user = user;
         
@@ -30,27 +30,27 @@ class MPUserChatHistory
                         }) + "</font>"));
     }
     
-    public function add(entry : MPChatLogEntry) : Void
+    public function add(entry                             : Dynamic) : Void
     {
         lastMessage = Date.now().getTime();
         messages.push(entry);
         
-        if (messages.length > MAX_HISTORY)
+        if (as3hx.Compat.truthy(messages.length > MAX_HISTORY))
         {
             messages.splice(0, messages.length - MAX_HISTORY);
         }
     }
     
-    public function addMessage(user : MPUser, sender : MPUser, data : Dynamic) : Void
+    public function addMessage(user                             : Dynamic, sender                             : Dynamic, data                             : Dynamic) : Void
     {
         DATE.setTime(data.timestamp);
         
-        var type : Float = data.type;
-        var color : String = ((type == MPChatTypes.ADMIN) ? MPColors.MESSAGE_ADMIN_COLOR : ((type == MPChatTypes.MOD) ? MPColors.MESSAGE_MOD_COLOR : MPColors.MESSAGE_COLOR));
+        var type                             : Dynamic= data.type;
+        var color                             : Dynamic= ((type == MPChatTypes.ADMIN) ? MPColors.MESSAGE_ADMIN_COLOR : ((type == MPChatTypes.MOD) ? MPColors.MESSAGE_MOD_COLOR : MPColors.MESSAGE_COLOR));
         
-        var message : String = "";
+        var message                             : Dynamic= "";
         
-        if (type == MPChatTypes.SYSTEM)
+        if (as3hx.Compat.truthy(type == MPChatTypes.SYSTEM))
         {
             message += "<font face=\"" + Fonts.BASE_FONT + "\" color=\"" + MPColors.SYSTEM_MESSAGE_COLOR + "\"><i>" + data.message + "</i></font>";
         }
@@ -64,7 +64,7 @@ class MPUserChatHistory
         newMessage = true;
     }
     
-    public function addGameInvite(user : MPUser, sender : MPUser, data : Dynamic) : Void
+    public function addGameInvite(user                             : Dynamic, sender                             : Dynamic, data                             : Dynamic) : Void
     {
         Main.window.notifyUser(NotificationType.INFORMATIONAL);
         
@@ -78,9 +78,9 @@ class MPUserChatHistory
         newMessage = false;
     }
     
-    public static function sort(a : MPUserChatHistory, b : MPUserChatHistory) : Int
+    public static function sort(a                             : Dynamic, b                             : Dynamic) : Int
     {
-        if (a.lastMessage > b.lastMessage)
+        if (as3hx.Compat.truthy(a.lastMessage > b.lastMessage))
         {
             return -1;
         }

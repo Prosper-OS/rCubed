@@ -13,26 +13,26 @@ import openfl.net.URLVariables;
 
 class Site extends EventDispatcher
 {
-    public static var instance(get, never) : Site;
+    public static var instance(get, never)                              : Dynamic;
 
     ///- Singleton Instance
-    private static var _instance : Site = null;
+    private static var _instance                              : Dynamic= null;
     
     ///- Private Locals
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _loader : URLLoader;
-    private var _isLoaded : Bool = false;
-    private var _isLoading : Bool = false;
-    private var _loadError : Bool = false;
+    private var _gvars                              : Dynamic= GlobalVariables.instance;
+    private var _loader                              : Dynamic;
+    private var _isLoaded                              : Dynamic= false;
+    private var _isLoading                              : Dynamic= false;
+    private var _loadError                              : Dynamic= false;
     
     ///- Public Locals
-    public var data : Dynamic;
+    public var data                              : Dynamic;
     
     ///- Constructor
-    public function new(en : SiteSingletonEnforcer)
+    public function new(en                              : Dynamic)
     {
         super();
-        if (en == null)
+        if (as3hx.Compat.truthy(en == null))
         {
             throw cast(("Multi-Instance Blocked"), Error);
         }
@@ -40,7 +40,7 @@ class Site extends EventDispatcher
     
     private static function get_instance() : Site
     {
-        if (_instance == null)
+        if (as3hx.Compat.truthy(_instance == null))
         {
             _instance = new Site(new SiteSingletonEnforcer());
         }
@@ -62,7 +62,7 @@ class Site extends EventDispatcher
     // Kill old Loading Stream
     {
         
-        if (_loader != null && _isLoading)
+        if (as3hx.Compat.truthy(_loader != null && _isLoading))
         {
             removeLoaderListeners();
             _loader.close();
@@ -74,8 +74,8 @@ class Site extends EventDispatcher
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.SITE_DATA_URL) + "?d=" + Date.now().getTime());
-        var requestVars : URLVariables = new URLVariables();
+        var req                              : Dynamic= new URLRequest(URLs.resolve(URLs.SITE_DATA_URL) + "?d=" + Date.now().getTime());
+        var requestVars                              : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.session = _gvars.userSession;
         req.data = requestVars;
@@ -84,13 +84,13 @@ class Site extends EventDispatcher
         _isLoading = true;
     }
     
-    private function siteLoadComplete(e : Event) : Void
+    private function siteLoadComplete(e                              : Dynamic) : Void
     {
         Logger.info(this, "Data Loaded");
         removeLoaderListeners();
         
         // Parse Response
-        var siteDataString : String = e.target.data;
+        var siteDataString                              : Dynamic= e.target.data;
         try
         {
             data = haxe.Json.parse(siteDataString);
@@ -122,22 +122,22 @@ class Site extends EventDispatcher
         
         // Tokens
         _gvars.TOKENS = { };
-        var tokens : Dynamic = { };
-        for (tok/* AS3HX WARNING could not determine type for var: tok exp: EField(EIdent(data),game_tokens) type: null */ in data.game_tokens)
+        var tokens                              : Dynamic= { };
+        for (tok/* AS3HX WARNING could not determine type for var: tok exp: EField(EIdent(data),game_tokens) type: null */ in as3hx.Compat.iter(data.game_tokens))
         {
-            if (Reflect.field(tokens, Std.string(tok.type)) == null)
+            if (as3hx.Compat.truthy(as3hx.Compat.field(tokens, tok.type) == null))
             {
                 Reflect.setField(tokens, Std.string(tok.type), []);
             }
             
-            if (tok.picture != null)
+            if (as3hx.Compat.truthy(tok.picture != null))
             {
                 tok.picture = URLs.resolve(tok.picture);
             }
             
-            Reflect.setField(Reflect.field(tokens, Std.string(tok.type)), Std.string(tok.id), tok);
+            Reflect.setField(as3hx.Compat.field(tokens, tok.type), Std.string(tok.id), tok);
             
-            if (tok.level)
+            if (as3hx.Compat.truthy(tok.level))
             {
                 _gvars.TOKENS[tok.level] = tok;
             }
@@ -150,7 +150,7 @@ class Site extends EventDispatcher
         this.dispatchEvent(new Event(GlobalVariables.LOAD_COMPLETE));
     }
     
-    private function siteLoadError(err : ErrorEvent = null) : Void
+    private function siteLoadError(err                              : Dynamic= null) : Void
     {
         Logger.error(this, "Load Failure: " + Logger.event_error(err));
         _loadError = true;

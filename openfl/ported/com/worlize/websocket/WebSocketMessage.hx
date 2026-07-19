@@ -20,12 +20,12 @@ import openfl.utils.ByteArray;
 
 class WebSocketMessage
 {
-    public static inline var TYPE_BINARY : String = "binary";
-    public static inline var TYPE_UTF8 : String = "utf8";
+    public static inline var TYPE_BINARY                          : Dynamic= "binary";
+    public static inline var TYPE_UTF8                          : Dynamic= "utf8";
     
-    public var type : String;
-    public var utf8Data : String;
-    public var binaryData : ByteArray;
+    public var type                          : Dynamic;
+    public var utf8Data                          : Dynamic;
+    public var binaryData                          : Dynamic;
 
     public function new()
     {

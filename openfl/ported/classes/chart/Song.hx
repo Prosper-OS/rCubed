@@ -29,75 +29,75 @@ import game.GameOptions;
 
 class Song extends EventDispatcher
 {
-    public var progress(get, never) : Int;
-    public var totalNotes(get, never) : Int;
-    public var chartTime(get, never) : Float;
-    public var chartTimeFormatted(get, never) : String;
+    public var progress(get, never)                             : Dynamic;
+    public var totalNotes(get, never)                             : Dynamic;
+    public var chartTime(get, never)                             : Dynamic;
+    public var chartTimeFormatted(get, never)                             : Dynamic;
 
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
+    private var _gvars                             : Dynamic= GlobalVariables.instance;
     
-    public var musicLoader : Dynamic;
+    public var musicLoader                             : Dynamic;
     
-    public var id : Int;
-    public var songInfo : SongInfo;
-    public var type : String;
+    public var id                             : Dynamic;
+    public var songInfo                             : Dynamic;
+    public var type                             : Dynamic;
     
-    public var isDirty : Bool = true;
+    public var isDirty                             : Dynamic= true;
     
-    private var baseSound : Sound;
-    public var sound : Sound;
-    public var background : MovieClip;
-    public var chart : NoteChart;
+    private var baseSound                             : Dynamic;
+    public var sound                             : Dynamic;
+    public var background                             : Dynamic;
+    public var chart                             : Dynamic;
     
-    public var noteMod : NoteMod;
-    public var options : GameOptions;
-    public var soundChannel : SoundChannel;
-    public var musicPausePosition : Int;
-    public var musicIsPlaying : Bool = false;
-    public var mp3Frame : Int = 0;
-    public var mp3Rate : Float = 1;
+    public var noteMod                             : Dynamic;
+    public var options                             : Dynamic;
+    public var soundChannel                             : Dynamic;
+    public var musicPausePosition                             : Dynamic;
+    public var musicIsPlaying                             : Dynamic= false;
+    public var mp3Frame                             : Dynamic= 0;
+    public var mp3Rate                             : Dynamic= 1;
     
-    private var rateReverse : Bool = false;
-    private var rateRate : Float = 1;
-    private var rateSample : Int = 0;
-    private var rateSampleCount : Int = 0;
-    private var rateSamples : ByteArray = new ByteArray();
+    private var rateReverse                             : Dynamic= false;
+    private var rateRate                             : Dynamic= 1;
+    private var rateSample                             : Dynamic= 0;
+    private var rateSampleCount                             : Dynamic= 0;
+    private var rateSamples                             : Dynamic= new ByteArray();
     
-    public var isLoaded : Bool = false;
-    public var isChartLoaded : Bool = false;
-    public var isMusicLoaded : Bool = false;
-    public var loadFail : Bool = false;
+    public var isLoaded                             : Dynamic= false;
+    public var isChartLoaded                             : Dynamic= false;
+    public var isMusicLoaded                             : Dynamic= false;
+    public var loadFail                             : Dynamic= false;
     
-    public var isMusicLoaderLoading : Bool = false;
+    public var isMusicLoaderLoading                             : Dynamic= false;
     
-    public var bytesSWF : ByteArray = null;
-    public var bytesLoaded : Int = 0;
-    public var bytesTotal : Int = 0;
+    public var bytesSWF                             : Dynamic= null;
+    public var bytesLoaded                             : Dynamic= 0;
+    public var bytesTotal                             : Dynamic= 0;
     
-    private var musicForcibleLoader : ForcibleLoader;
+    private var musicForcibleLoader                             : Dynamic;
     
-    public var musicStartFrames : Int = 0;
-    public var musicStartTime : Int = 0;
+    public var musicStartFrames                             : Dynamic= 0;
+    public var musicStartTime                             : Dynamic= 0;
     
-    private var localFileData : ByteArray = null;
-    private var localFileHash : String = "";
+    private var localFileData                             : Dynamic= null;
+    private var localFileHash                             : Dynamic= "";
     
-    public function new(songInfo : SongInfo, doLoad : Bool = true)
+    public function new(songInfo                             : Dynamic, doLoad                             : Dynamic= true)
     {
         super();
         this.songInfo = songInfo;
         this.id = songInfo.level;
-        this.type = songInfo.chart_type || NoteChart.FFR_MP3;
+        this.type = as3hx.Compat.orValue(songInfo.chart_type, NoteChart.FFR_MP3);
         
         options = _gvars.options;
         
-        if (type == "EDITOR")
+        if (as3hx.Compat.truthy(type == "EDITOR"))
         {
             chart = new NoteChart(null);
             return;
         }
         
-        if (doLoad)
+        if (as3hx.Compat.truthy(doLoad))
         {
             load();
         }
@@ -109,7 +109,7 @@ class Song extends EventDispatcher
         isLoaded = isChartLoaded = isMusicLoaded = false;
         loadFail = true;
         
-        if (musicLoader != null && isMusicLoaderLoading)
+        if (as3hx.Compat.truthy(musicLoader != null && isMusicLoaderLoading))
         {
             musicLoader.close();
             isMusicLoaderLoading = false;
@@ -123,16 +123,16 @@ class Song extends EventDispatcher
     // Load Stored SWF
     {
         
-        var url_file_hash : String = "";
-        if ((_gvars.air_useLocalFileCache) && AirContext.doesFileExist(AirContext.getSongCachePath(this) + "data.bin"))
+        var url_file_hash                             : Dynamic= "";
+        if (as3hx.Compat.truthy((_gvars.air_useLocalFileCache) && AirContext.doesFileExist(AirContext.getSongCachePath(this) + "data.bin")))
         {
             localFileData = AirContext.readFile(AirContext.getAppFile(AirContext.getSongCachePath(this) + "data.bin"), (songInfo.engine) ? 0 : id);
             localFileHash = MD5.hashBytes(localFileData);
             url_file_hash = "hash=" + localFileHash + "&";
             
-            if (songInfo.engine)
+            if (as3hx.Compat.truthy(songInfo.engine))
             {
-                if (localFileData != null && localFileHash == songInfo.swf_hash && type == NoteChart.FFR_MP3)
+                if (as3hx.Compat.truthy(localFileData != null && localFileHash == songInfo.swf_hash && type == NoteChart.FFR_MP3))
                 {
                     removeLoaderListeners();
                     musicLoader = new Loader();
@@ -157,7 +157,7 @@ class Song extends EventDispatcher
     
     private function get_progress() : Int
     {
-        if (musicLoader != null)
+        if (as3hx.Compat.truthy(musicLoader != null))
         {
             return Math.floor(((bytesLoaded / bytesTotal) * 99) + ((isChartLoaded) ? 1 : 0));
         }
@@ -165,9 +165,9 @@ class Song extends EventDispatcher
         return 0;
     }
     
-    public function getMusicContentLoader(isLoader : Bool = false) : Dynamic
+    public function getMusicContentLoader(isLoader                             : Dynamic= false) : Dynamic
     {
-        if (isLoader)
+        if (as3hx.Compat.truthy(isLoader))
         {
             return musicLoader.contentLoaderInfo;
         }
@@ -175,9 +175,9 @@ class Song extends EventDispatcher
         return (type == NoteChart.FFR_MP3) ? musicLoader : musicLoader.contentLoaderInfo;
     }
     
-    private function urlGen(fileHash : String = "") : String
+    private function urlGen(fileHash                             : Dynamic= "") : String
     {
-        if (songInfo.engine)
+        if (as3hx.Compat.truthy(songInfo.engine))
         {
             return ChartFFRLegacy.songUrl(songInfo);
         }
@@ -185,18 +185,18 @@ class Song extends EventDispatcher
         return URLs.resolve(URLs.SONG_DATA_URL) + "?" + fileHash + "id=" + songInfo.play_hash + ((_gvars.userSession != "0") ? "&session=" + _gvars.userSession : "");
     }
     
-    private function addLoaderListeners(isLoader : Bool = false) : Void
+    private function addLoaderListeners(isLoader                             : Dynamic= false) : Void
     {
-        var music : Dynamic = getMusicContentLoader(isLoader);
+        var music                             : Dynamic= getMusicContentLoader(isLoader);
         
-        if (music != null)
+        if (as3hx.Compat.truthy(music != null))
         {
             music.addEventListener(Event.COMPLETE, musicCompleteHandler);
             music.addEventListener(IOErrorEvent.IO_ERROR, musicLoadError);
             music.addEventListener(SecurityErrorEvent.SECURITY_ERROR, musicLoadError);
         }
         
-        if (musicLoader != null)
+        if (as3hx.Compat.truthy(musicLoader != null))
         {
             musicLoader.addEventListener(ProgressEvent.PROGRESS, musicProgressHandler);
         }
@@ -204,16 +204,16 @@ class Song extends EventDispatcher
     
     private function removeLoaderListeners() : Void
     {
-        var music : Dynamic = getMusicContentLoader();
+        var music                             : Dynamic= getMusicContentLoader();
         
-        if (music != null)
+        if (as3hx.Compat.truthy(music != null))
         {
             music.removeEventListener(Event.COMPLETE, musicCompleteHandler);
             music.removeEventListener(IOErrorEvent.IO_ERROR, musicLoadError);
             music.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, musicLoadError);
         }
         
-        if (musicLoader != null)
+        if (as3hx.Compat.truthy(musicLoader != null))
         {
             musicLoader.removeEventListener(ProgressEvent.PROGRESS, musicProgressHandler);
         }
@@ -221,7 +221,7 @@ class Song extends EventDispatcher
     
     public function loadComplete() : Void
     {
-        if (isChartLoaded && isMusicLoaded)
+        if (as3hx.Compat.truthy(isChartLoaded && isMusicLoaded))
         {
             removeLoaderListeners();
             isLoaded = true;
@@ -229,23 +229,23 @@ class Song extends EventDispatcher
         }
     }
     
-    private function musicProgressHandler(e : ProgressEvent) : Void
+    private function musicProgressHandler(e                             : Dynamic) : Void
     {
         bytesLoaded = e.bytesLoaded;
         bytesTotal = e.bytesTotal;
     }
     
-    private function musicCompleteHandler(e : Event) : Void
+    private function musicCompleteHandler(e                             : Dynamic) : Void
     {
         Logger.success(this, "Music Load Success");
-        var chartData : ByteArray;
-        if (type == NoteChart.FFR_MP3)
+        var chartData                            : Dynamic= null;
+        if (as3hx.Compat.truthy(type == NoteChart.FFR_MP3))
         {
-            if (Std.is(e.target, URLLoader))
+            if (as3hx.Compat.truthy(Std.is(e.target, URLLoader)))
             {
                 chartData = e.target.data;
             }
-            else if (Std.is(e.target, LoaderInfo))
+            else if (as3hx.Compat.truthy(Std.is(e.target, LoaderInfo)))
             {
                 chartData = e.target.bytes;
             }
@@ -253,28 +253,28 @@ class Song extends EventDispatcher
             bytesLoaded = bytesTotal = chartData.length;  // Update Progress Bar in case.  
             
             // Check 404 Response
-            if (chartData.length == 0 || (chartData.length == 3 && chartData.readUTFBytes(3) == "404"))
+            if (as3hx.Compat.truthy(chartData.length == 0 || (chartData.length == 3 && chartData.readUTFBytes(3) == "404")))
             {
                 loadFail = true;
                 return;
             }
             
             // Check for server response for matching hash. Encode Compressed SWF Data
-            var storeChartData : ByteArray;
-            if (_gvars.air_useLocalFileCache) {
-if (this.songInfo.engine && localFileData != null)
+            var storeChartData                            : Dynamic= null;
+            if (as3hx.Compat.truthy(_gvars.air_useLocalFileCache)) {
+if (as3hx.Compat.truthy(this.songInfo.engine && localFileData != null))
                 {
                 }
-                else if (chartData.length == 3)
+                else if (as3hx.Compat.truthy(chartData.length == 3))
                 {
                     chartData.position = 0;
-                    var code : String = chartData.readUTFBytes(3);
-                    if (code == "404")
+                    var code                             : Dynamic= chartData.readUTFBytes(3);
+                    if (as3hx.Compat.truthy(code == "404"))
                     {
                         loadFail = true;
                         return;
                     }
-                    if (code == "403")
+                    if (as3hx.Compat.truthy(code == "403"))
                     {
                         chartData = localFileData;
                         bytesLoaded = bytesTotal = localFileData.length;
@@ -291,16 +291,16 @@ if (this.songInfo.engine && localFileData != null)
             chartLoadComplete(e);
             
             // Extract MP3 Data and load into Sound.
-            var metadata : Dynamic = { };
+            var metadata                             : Dynamic= { };
             loadSoundBytes(MP3Extraction.extractSound(chartData, metadata));
             mp3Frame = as3hx.Compat.parseInt(metadata.frame - 2);
             mp3Rate = MP3Extraction.formatRate(metadata.format) / 44100;
             
             // Generate a SWF containing no audio, used as a background.
-            var mloader : Loader = new Loader();
-            var mbytes : ByteArray = SwfSilencer.stripSound(chartData);
+            var mloader                             : Dynamic= new Loader();
+            var mbytes                             : Dynamic= SwfSilencer.stripSound(chartData);
             mloader.contentLoaderInfo.addEventListener(Event.COMPLETE, backgoundCompleteHandler);
-            if (mbytes == null)
+            if (as3hx.Compat.truthy(mbytes == null))
             {
                 loadFail = true;
                 return;
@@ -308,7 +308,7 @@ if (this.songInfo.engine && localFileData != null)
             mloader.loadBytes(mbytes, AirContext.getLoaderContext());
             
             // Store SWF
-            if (_gvars.air_useLocalFileCache && storeChartData != null)
+            if (as3hx.Compat.truthy(_gvars.air_useLocalFileCache && storeChartData != null))
             {
                 try
                 {
@@ -327,25 +327,25 @@ if (this.songInfo.engine && localFileData != null)
         bytesSWF = chartData;
     }
     
-    private function backgoundCompleteHandler(e : Event) : Void
+    private function backgoundCompleteHandler(e                             : Dynamic) : Void
     {
-        var info : LoaderInfo = try cast(e.currentTarget, LoaderInfo) catch(e:Dynamic) null;
+        var info                             : Dynamic= try cast(e.currentTarget, LoaderInfo) catch(e:Dynamic) null;
         background = try cast(info.content, MovieClip) catch(e:Dynamic) null;
         
         isMusicLoaded = true;
         loadComplete();
     }
     
-    private function chartLoadComplete(e : Event = null) : Void
+    private function chartLoadComplete(e                             : Dynamic= null) : Void
     {
         Logger.success(this, "Chart Load Success");
-        Logger.info(this, "Chart parsed with " + chart.Notes.length + " notes, " + ((chart.Notes.length > 0) ? TimeUtil.convertToHHMMSS(chart.Notes[chart.Notes.length - 1].time) : "0:00") + " length.");
+        Logger.info(this, "Chart parsed with " + chart.Notes.length + " notes, " + ((chart.Notes.length > 0) ? TimeUtil.convertToHHMMSS(as3hx.Compat.parseInt(chart.Notes[as3hx.Compat.parseInt(chart.Notes.length - 1)].time)) : "0:00") + " length.");
         
         isChartLoaded = true;
         loadComplete();
     }
     
-    private function musicLoadError(err : ErrorEvent = null) : Void
+    private function musicLoadError(err                             : Dynamic= null) : Void
     {
         Logger.error(this, "Music Load Error: " + Logger.event_error(err));
         isMusicLoaderLoading = false;
@@ -353,22 +353,22 @@ if (this.songInfo.engine && localFileData != null)
         loadFail = true;
     }
     
-    public function handleDirty(options : GameOptions) : Void
+    public function handleDirty(options                             : Dynamic) : Void
     {
-        if (!isDirty)
+        if (as3hx.Compat.truthy(!isDirty))
         {
             return;
         }
         
         // Remove Old Sound
-        if (sound != null)
+        if (as3hx.Compat.truthy(sound != null))
         {
             sound.removeEventListener("sampleData", onReverseSound);
             sound.removeEventListener("sampleData", onRateSound);
             sound = null;
         }
         
-        if (soundChannel != null)
+        if (as3hx.Compat.truthy(soundChannel != null))
         {
             soundChannel.removeEventListener(Event.SOUND_COMPLETE, stopSound);
             soundChannel.stop();
@@ -379,11 +379,11 @@ if (this.songInfo.engine && localFileData != null)
         rateRate = options.songRate;
         
         // Add Sound
-        if (rateRate != 1 || rateReverse)
+        if (as3hx.Compat.truthy(rateRate != 1 || rateReverse))
         {
             sound = new Sound();
             
-            if (rateReverse)
+            if (as3hx.Compat.truthy(rateReverse))
             {
                 sound.addEventListener("sampleData", onReverseSound);
             }
@@ -400,7 +400,7 @@ if (this.songInfo.engine && localFileData != null)
         isDirty = false;
     }
     
-    public function loadSoundBytes(bytes : ByteArray) : Void
+    public function loadSoundBytes(bytes                             : Dynamic) : Void
     {
         bytes.position = 0;
         baseSound = new Sound();
@@ -409,7 +409,7 @@ if (this.songInfo.engine && localFileData != null)
     
     public function getSoundObject() : Sound
     {
-        if (rateRate != 1 || rateReverse)
+        if (as3hx.Compat.truthy(rateRate != 1 || rateReverse))
         {
             return baseSound;
         }
@@ -417,30 +417,30 @@ if (this.songInfo.engine && localFileData != null)
         return sound;
     }
     
-    private function onRateSound(e : SampleDataEvent) : Void
+    private function onRateSound(e                             : Dynamic) : Void
     {
-        var osamples : Int = 0;
-        var sample : Int = 0;
-        var sampleDiff : Int = 0;
-        while (osamples < 4096)
+        var osamples                             : Dynamic= 0;
+        var sample                             : Dynamic= 0;
+        var sampleDiff                             : Dynamic= 0;
+        while (as3hx.Compat.truthy(osamples < 4096))
         {
             sample = as3hx.Compat.parseInt((e.position + osamples) * rateRate);
             sampleDiff = as3hx.Compat.parseInt(sample - rateSample);
-            while (sampleDiff < 0 || sampleDiff >= rateSampleCount)
+            while (as3hx.Compat.truthy(sampleDiff < 0 || sampleDiff >= rateSampleCount))
             {
                 rateSample += rateSampleCount;
                 rateSamples.position = 0;
                 sampleDiff = as3hx.Compat.parseInt(sample - rateSample);
-                var seekExtract : Bool = (sampleDiff < 0 || sampleDiff > 8192);
-                rateSampleCount = (try cast(baseSound, Dynamic) catch(e:Dynamic) null).extract(rateSamples, 4096, (seekExtract) ? sample * mp3Rate : -1);
+                var seekExtract                             : Dynamic= (sampleDiff < 0 || sampleDiff > 8192);
+                rateSampleCount = baseSound.extract(rateSamples, 4096, as3hx.Compat.parseFloat((seekExtract) ? sample * mp3Rate : -1));
                 
-                if (seekExtract)
+                if (as3hx.Compat.truthy(seekExtract))
                 {
                     rateSample = sample;
                     sampleDiff = as3hx.Compat.parseInt(sample - rateSample);
                 }
                 
-                if (rateSampleCount <= 0)
+                if (as3hx.Compat.truthy(rateSampleCount <= 0))
                 {
                     return;
                 }
@@ -452,29 +452,29 @@ if (this.songInfo.engine && localFileData != null)
         }
     }
     
-    private function onReverseSound(e : SampleDataEvent) : Void
+    private function onReverseSound(e                             : Dynamic) : Void
     {
-        var osamples : Int = 0;
-        while (osamples < 4096)
+        var osamples                             : Dynamic= 0;
+        while (as3hx.Compat.truthy(osamples < 4096))
         {
-            var sample : Int = as3hx.Compat.parseInt((e.position + osamples) * rateRate);
-            sample = as3hx.Compat.parseInt((chart.Notes[chart.Notes.length - 1].frame * 1470) - sample + (63 - mp3Frame) * 1470 / rateRate);
-            if (sample < 0)
+            var sample                             : Dynamic= as3hx.Compat.parseInt((e.position + osamples) * rateRate);
+            sample = as3hx.Compat.parseInt((chart.Notes[as3hx.Compat.parseInt(chart.Notes.length - 1)].frame * 1470) - sample + (63 - mp3Frame) * 1470 / rateRate);
+            if (as3hx.Compat.truthy(sample < 0))
             {
                 return;
             }
-            var sampleDiff : Int = as3hx.Compat.parseInt(sample - rateSample);
-            if (sampleDiff < 0 || sampleDiff >= rateSampleCount)
+            var sampleDiff                             : Dynamic= as3hx.Compat.parseInt(sample - rateSample);
+            if (as3hx.Compat.truthy(sampleDiff < 0 || sampleDiff >= rateSampleCount))
             {
                 rateSample += rateSampleCount;
                 rateSamples.position = 0;
                 sampleDiff = as3hx.Compat.parseInt(sample - rateSample);
-                var seekPosition : Int = as3hx.Compat.parseInt(sample - 4095);
+                var seekPosition                             : Dynamic= as3hx.Compat.parseInt(sample - 4095);
                 rateSampleCount = baseSound.extract(rateSamples, 4096, seekPosition * mp3Rate);
                 rateSample = seekPosition;
                 sampleDiff = as3hx.Compat.parseInt(sample - rateSample);
                 
-                if (rateSampleCount < 4096)
+                if (as3hx.Compat.truthy(rateSampleCount < 4096))
                 {
                     rateSamples.position = rateSampleCount * 8;
                     for (i in rateSampleCount...4096)
@@ -492,31 +492,31 @@ if (this.songInfo.engine && localFileData != null)
         }
     }
     
-    private function stopSound(e : Dynamic) : Void
+    private function stopSound(e                             : Dynamic) : Void
     {
         musicIsPlaying = false;
     }
     
     ///- Song Function
-    public function start(seek : Int = 0) : Void
+    public function start(seek                             : Dynamic= 0) : Void
     {
         updateMusicOffset();
         
-        if (soundChannel != null)
+        if (as3hx.Compat.truthy(soundChannel != null))
         {
             soundChannel.removeEventListener(Event.SOUND_COMPLETE, stopSound);
             soundChannel.stop();
             soundChannel = null;
         }
         
-        if (sound != null)
+        if (as3hx.Compat.truthy(sound != null))
         {
             soundChannel = sound.play(musicStartTime + seek);
             soundChannel.soundTransform = SoundMixer.soundTransform;
             soundChannel.addEventListener(Event.SOUND_COMPLETE, stopSound);
         }
         
-        if (background != null)
+        if (as3hx.Compat.truthy(background != null))
         {
             background.gotoAndPlay(2 + musicStartFrames + as3hx.Compat.parseInt(seek * 30 / 1000));
         }
@@ -526,12 +526,12 @@ if (this.songInfo.engine && localFileData != null)
     
     public function stop() : Void
     {
-        if (background != null)
+        if (as3hx.Compat.truthy(background != null))
         {
             background.stop();
         }
         
-        if (soundChannel != null)
+        if (as3hx.Compat.truthy(soundChannel != null))
         {
             soundChannel.removeEventListener(Event.SOUND_COMPLETE, stopSound);
             soundChannel.stop();
@@ -543,8 +543,8 @@ if (this.songInfo.engine && localFileData != null)
     
     public function pause() : Void
     {
-        var pausePosition : Int = 0;
-        if (soundChannel != null)
+        var pausePosition                             : Dynamic= 0;
+        if (as3hx.Compat.truthy(soundChannel != null))
         {
             pausePosition = soundChannel.position;
         }
@@ -554,11 +554,11 @@ if (this.songInfo.engine && localFileData != null)
     
     public function resume() : Void
     {
-        if (background != null)
+        if (as3hx.Compat.truthy(background != null))
         {
             background.play();
         }
-        if (sound != null)
+        if (as3hx.Compat.truthy(sound != null))
         {
             soundChannel = sound.play(musicPausePosition);
             soundChannel.addEventListener(Event.SOUND_COMPLETE, stopSound);
@@ -566,13 +566,13 @@ if (this.songInfo.engine && localFileData != null)
         musicIsPlaying = true;
     }
     
-    private function playClips(clip : MovieClip) : Void
+    private function playClips(clip                             : Dynamic) : Void
     {
         clip.gotoAndPlay(2 + musicStartFrames);
         for (i in 0...clip.numChildren)
         {
-            var subclip : MovieClip = try cast(clip.getChildAt(i), MovieClip) catch(e:Dynamic) null;
-            if (subclip != null)
+            var subclip                             : Dynamic= try cast(clip.getChildAt(i), MovieClip) catch(e:Dynamic) null;
+            if (as3hx.Compat.truthy(subclip != null))
             {
                 playClips(subclip);
             }
@@ -583,16 +583,16 @@ if (this.songInfo.engine && localFileData != null)
     {
         stop();
         start();
-        if (background != null)
+        if (as3hx.Compat.truthy(background != null))
         {
             playClips(background);
         }
     }
     
     ///- Note Functions
-    public function getNote(index : Int) : Note
+    public function getNote(index                             : Dynamic) : Note
     {
-        if (noteMod.required())
+        if (as3hx.Compat.truthy(noteMod.required()))
         {
             return noteMod.transformNote(index);
         }
@@ -602,12 +602,12 @@ if (this.songInfo.engine && localFileData != null)
     
     private function get_totalNotes() : Int
     {
-        if (noteMod.required())
+        if (as3hx.Compat.truthy(noteMod.required()))
         {
             return noteMod.transformTotalNotes();
         }
         
-        if (!chart.Notes)
+        if (as3hx.Compat.truthy(!chart.Notes))
         {
             return 0;
         }
@@ -617,12 +617,12 @@ if (this.songInfo.engine && localFileData != null)
     
     private function get_chartTime() : Float
     {
-        if (noteMod.required())
+        if (as3hx.Compat.truthy(noteMod.required()))
         {
             return noteMod.transformSongLength();
         }
         
-        if (!chart.Notes || chart.Notes.length <= 0)
+        if (as3hx.Compat.truthy(chart.Notes == null || chart.Notes.length <= 0))
         {
             return 0;
         }
@@ -632,11 +632,11 @@ if (this.songInfo.engine && localFileData != null)
     
     private function get_chartTimeFormatted() : String
     {
-        var totalSecs : Int = as3hx.Compat.parseInt(chartTime);
-        var minutes : String = Std.string(Math.floor(totalSecs / 60));
-        var seconds : String = Std.string(totalSecs % 60);
+        var totalSecs                             : Dynamic= as3hx.Compat.parseInt(chartTime);
+        var minutes                             : Dynamic= Std.string(Math.floor(totalSecs / 60));
+        var seconds                             : Dynamic= Std.string(totalSecs % 60);
         
-        if (seconds.length == 1)
+        if (as3hx.Compat.truthy(seconds.length == 1))
         {
             seconds = "0" + seconds;
         }
@@ -651,15 +651,15 @@ if (this.songInfo.engine && localFileData != null)
         rateRate = options.songRate;
         noteMod.start(options);
         
-        if (options.isolation && totalNotes > 0)
+        if (as3hx.Compat.truthy(options.isolation && totalNotes > 0))
         {
-            if (rateReverse)
+            if (as3hx.Compat.truthy(rateReverse))
             {
-                musicStartFrames = Math.max(0, chart.Notes[chart.Notes.length - 1].frame - chart.Notes[Math.max(0, chart.Notes.length - 1 - options.isolationOffset)].frame - 60);
+                musicStartFrames = Math.max(0, chart.Notes[as3hx.Compat.parseInt(chart.Notes.length - 1)].frame - chart.Notes[as3hx.Compat.parseInt(Math.max(0, chart.Notes.length - 1 - options.isolationOffset))].frame - 60);
             }
             else
             {
-                musicStartFrames = Math.max(0, chart.Notes[options.isolationOffset].frame - 60);
+                musicStartFrames = Math.max(0, chart.Notes[as3hx.Compat.parseInt(options.isolationOffset)].frame - 60);
             }
         }
         else
@@ -672,7 +672,7 @@ if (this.songInfo.engine && localFileData != null)
     
     public function getPosition() : Int
     {
-        if (soundChannel != null)
+        if (as3hx.Compat.truthy(soundChannel != null))
         {
             return as3hx.Compat.parseInt(soundChannel.position - musicStartTime);
         }

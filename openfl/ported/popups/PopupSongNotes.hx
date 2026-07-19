@@ -32,42 +32,42 @@ import menu.MenuSongSelection;
 
 class PopupSongNotes extends MenuPanel
 {
-    private var _lang : Language = Language.instance;
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _playlist : Playlist = Playlist.instance;
-    private var _loader : URLLoader;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _playlist                       : Dynamic= Playlist.instance;
+    private var _loader                       : Dynamic;
     
     //- Background
-    private var box : Box;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    private var songInfo : Dynamic;
-    private var sDetails : UserSongData;
+    private var songInfo                       : Dynamic;
+    private var sDetails                       : Dynamic;
     
-    private var sRating : StarSelector;
-    private var sFavorite : HeartSelector;
+    private var sRating                       : Dynamic;
+    private var sFavorite                       : Dynamic;
     
-    private var notesLength : Text;
-    private var notesField : TextField;
-    private var setMirrorInvert : BoxCheck;
-    private var setCustomOffsets : BoxCheck;
+    private var notesLength                       : Dynamic;
+    private var notesField                       : Dynamic;
+    private var setMirrorInvert                       : Dynamic;
+    private var setCustomOffsets                       : Dynamic;
     
-    private var optionMusicOffset : ValidatedText;
-    private var optionJudgeOffset : ValidatedText;
+    private var optionMusicOffset                       : Dynamic;
+    private var optionJudgeOffset                       : Dynamic;
     
-    private var revertOptions : BoxButton;
-    private var confirmOptions : BoxButton;
-    private var closeOptions : BoxButton;
-    private var populateOffsets : BoxButton;
+    private var revertOptions                       : Dynamic;
+    private var confirmOptions                       : Dynamic;
+    private var closeOptions                       : Dynamic;
+    private var populateOffsets                       : Dynamic;
     
-    public var songRatingValue : Float;
+    public var songRatingValue                       : Dynamic;
     
-    public function new(myParent : MenuPanel, songInfo : SongInfo)
+    public function new(myParent                       : Dynamic, songInfo                       : Dynamic)
     {
         super(myParent);
         this.songInfo = songInfo;
         
-        var engineId : String = (songInfo.engine != null) ? songInfo.engine.id : Constant.BRAND_NAME_SHORT_LOWER;
+        var engineId                       : Dynamic= (songInfo.engine != null) ? songInfo.engine.id : Constant.BRAND_NAME_SHORT_LOWER;
         sDetails = UserSongNotes.getSongDetailsSafe(engineId, songInfo.level_id);
         
         songRatingValue = _gvars.playerUser.getSongRating(songInfo);
@@ -78,7 +78,7 @@ class PopupSongNotes extends MenuPanel
         bmp = SpriteUtil.getBitmapSprite(stage);
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, (Main.GAME_WIDTH - 390) / 2, -1, false, false);
+        var bgbox                       : Dynamic= new Box(this, (Main.GAME_WIDTH - 390) / 2, -1, false, false);
         bgbox.setSize(390, Main.GAME_HEIGHT + 2);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -88,7 +88,7 @@ class PopupSongNotes extends MenuPanel
         box.setSize(bgbox.width, bgbox.height);
         box.activeAlpha = 0.4;
         
-        var titleDisplay : Text = new Text(box, 5, 20, "- " + Reflect.field(songInfo, "name") + " -", 20);
+        var titleDisplay                       : Dynamic= new Text(box, 5, 20, "- " + Reflect.field(songInfo, "name") + " -", 20);
         titleDisplay.width = box.width - 10;
         titleDisplay.align = Text.CENTER;
         
@@ -97,13 +97,13 @@ class PopupSongNotes extends MenuPanel
         box.graphics.moveTo(10, 65);
         box.graphics.lineTo(box.width - 10, 65);
         
-        var lblSongRating : Text = new Text(box, 20, 69, _lang.string("song_rating_label"), 14);
+        var lblSongRating                       : Dynamic= new Text(box, 20, 69, _lang.string("song_rating_label"), 14);
         lblSongRating.width = 145;
         lblSongRating.align = Text.LEFT;
         
         sRating = new StarSelector(box, 22, 95);
         
-        var lblSongFavorite : Text = new Text(box, box.width - 165, 68, _lang.string("song_favorite_label"), 14);
+        var lblSongFavorite                       : Dynamic= new Text(box, box.width - 165, 68, _lang.string("song_favorite_label"), 14);
         lblSongFavorite.width = 145;
         lblSongFavorite.align = Text.RIGHT;
         
@@ -114,11 +114,11 @@ class PopupSongNotes extends MenuPanel
         box.graphics.moveTo(10, 130);
         box.graphics.lineTo(box.width - 10, 130);
         
-        var xOff : Int = 20;
-        var yOff : Int = 140;
+        var xOff                       : Dynamic= 20;
+        var yOff                       : Dynamic= 140;
         
         //- Notes Field
-        var notesLabel : Text = new Text(box, xOff, yOff, _lang.string("song_notes"));
+        var notesLabel                       : Dynamic= new Text(box, xOff, yOff, _lang.string("song_notes"));
         
         notesLength = new Text(box, box.width - xOff, yOff, "(0 / 250)");
         notesLength.align = "right";
@@ -146,16 +146,16 @@ class PopupSongNotes extends MenuPanel
         yOff += 90;
         
         // Settings
-        var setMirrorInvertText : Text = new Text(box, xOff + 22, yOff, _lang.string("song_notes_setting_mirror_invert"));
+        var setMirrorInvertText                       : Dynamic= new Text(box, xOff + 22, yOff, _lang.string("song_notes_setting_mirror_invert"));
         setMirrorInvert = new BoxCheck(box, xOff + 2, yOff + 2, clickHandler);
         yOff += 30;
         
-        var setCustomOffsetsText : Text = new Text(box, xOff + 22, yOff, _lang.string("song_notes_setting_custom_offsets"));
+        var setCustomOffsetsText                       : Dynamic= new Text(box, xOff + 22, yOff, _lang.string("song_notes_setting_custom_offsets"));
         setCustomOffsets = new BoxCheck(box, xOff + 2, yOff + 2, clickHandler);
         yOff += 30;
         
         //- Global Offset
-        var gameOffset : Text = new Text(box, xOff, yOff, _lang.string("options_global_offset"));
+        var gameOffset                       : Dynamic= new Text(box, xOff, yOff, _lang.string("options_global_offset"));
         yOff += 20;
         
         optionMusicOffset = new ValidatedText(box, xOff, yOff, 100, 20, ValidatedText.R_FLOAT, changeHandler);
@@ -166,7 +166,7 @@ class PopupSongNotes extends MenuPanel
         yOff += 30;
         
         //- Judge Offset
-        var gameJudgeOffset : Text = new Text(box, xOff, yOff, _lang.string("options_judge_offset"));
+        var gameJudgeOffset                       : Dynamic= new Text(box, xOff, yOff, _lang.string("options_judge_offset"));
         yOff += 20;
         
         optionJudgeOffset = new ValidatedText(box, xOff, yOff, 100, 20, ValidatedText.R_FLOAT, changeHandler);
@@ -187,7 +187,7 @@ class PopupSongNotes extends MenuPanel
     
     private function refreshFields() : Void
     {
-        if (sDetails != null)
+        if (as3hx.Compat.truthy(sDetails != null))
         {
             sRating.value = songRatingValue;
             sFavorite.checked = sDetails.song_favorite;
@@ -200,7 +200,7 @@ class PopupSongNotes extends MenuPanel
         }
     }
     
-    private function e_notesFieldChange(e : Event) : Void
+    private function e_notesFieldChange(e                       : Dynamic) : Void
     {
         notesLength.text = "(" + notesField.length + " / 250)";
     }
@@ -226,29 +226,29 @@ class PopupSongNotes extends MenuPanel
         box = null;
     }
     
-    private function changeHandler(e : Event) : Void
+    private function changeHandler(e                       : Dynamic) : Void
     {
-        if (Std.is(e.target, ValidatedText))
+        if (as3hx.Compat.truthy(Std.is(e.target, ValidatedText)))
         {
             (try cast(e.target, ValidatedText) catch(e:Dynamic) null).validate(0);
         }
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     //- Use Inverse Chart Mirror
     {
         
-        if (e.target == setMirrorInvert)
+        if (as3hx.Compat.truthy(e.target == setMirrorInvert))
         {
             setMirrorInvert.checked = !setMirrorInvert.checked;
         }
         //- Use Custom Offsets
-        else if (e.target == setCustomOffsets)
+        else if (as3hx.Compat.truthy(e.target == setCustomOffsets))
         {
             setCustomOffsets.checked = !setCustomOffsets.checked;
         }
         //- Apply Current Offsets
-        else if (e.target == populateOffsets)
+        else if (as3hx.Compat.truthy(e.target == populateOffsets))
         {
             setCustomOffsets.checked = true;
             optionMusicOffset.text = Std.string(_gvars.activeUser.GLOBAL_OFFSET);
@@ -257,7 +257,7 @@ class PopupSongNotes extends MenuPanel
             optionJudgeOffset.validate(0);
         }
         //- Revert
-        else if (e.target == revertOptions)
+        else if (as3hx.Compat.truthy(e.target == revertOptions))
         {
             sFavorite.checked = false;
             setMirrorInvert.checked = false;
@@ -270,19 +270,19 @@ class PopupSongNotes extends MenuPanel
             optionJudgeOffset.validate(0);
         }
         //- Confirm Rating
-        else if (e.target == confirmOptions)
+        else if (as3hx.Compat.truthy(e.target == confirmOptions))
         {
             saveRatings();
             saveDetails();
             removePopup();
             
             // Update the Note Hover Directly
-            if (_gvars.gameMain.activePanel != null && Std.is(_gvars.gameMain.activePanel, MainMenu))
+            if (as3hx.Compat.truthy(_gvars.gameMain.activePanel != null && Std.is(_gvars.gameMain.activePanel, MainMenu)))
             {
-                var mmmenu : MainMenu = (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
-                if (mmmenu.panel != null && (Std.is(mmmenu.panel, MenuSongSelection)))
+                var mmmenu                       : Dynamic= (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
+                if (as3hx.Compat.truthy(mmmenu.panel != null && (Std.is(mmmenu.panel, MenuSongSelection))))
                 {
-                    var msmenu : MenuSongSelection = (try cast(mmmenu.panel, MenuSongSelection) catch(e:Dynamic) null);
+                    var msmenu                       : Dynamic= (try cast(mmmenu.panel, MenuSongSelection) catch(e:Dynamic) null);
                     msmenu.updateSongItemNote(songInfo.level);
                 }
             }
@@ -290,7 +290,7 @@ class PopupSongNotes extends MenuPanel
             return;
         }
         //- Close
-        else if (e.target == closeOptions)
+        else if (as3hx.Compat.truthy(e.target == closeOptions))
         {
             removePopup();
             return;
@@ -307,13 +307,13 @@ class PopupSongNotes extends MenuPanel
         sDetails.notes = notesField.text;
         
         // Song Rating
-        if (sDetails.engine != Constant.BRAND_NAME_SHORT_LOWER)
+        if (as3hx.Compat.truthy(sDetails.engine != Constant.BRAND_NAME_SHORT_LOWER))
         {
             sDetails.song_rating = sRating.value;
         }
         else
         {
-            _gvars.playerUser.songRatings[Reflect.setField(songInfo, "level", sRating.value)];
+            Reflect.setField(_gvars.playerUser.songRatings, Std.string(Reflect.field(songInfo, "level")), sRating.value);
         }
         
         _gvars.writeUserSongData();
@@ -321,7 +321,7 @@ class PopupSongNotes extends MenuPanel
     
     private function saveRatings() : Void
     {
-        if (sRating.value == songRatingValue || sDetails.engine != Constant.BRAND_NAME_SHORT_LOWER)
+        if (as3hx.Compat.truthy(sRating.value == songRatingValue || sDetails.engine != Constant.BRAND_NAME_SHORT_LOWER))
         {
             return;
         }
@@ -329,8 +329,8 @@ class PopupSongNotes extends MenuPanel
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.SONG_RATING_URL) + "?d=" + Date.now().getTime());
-        var requestVars : URLVariables = new URLVariables();
+        var req                       : Dynamic= new URLRequest(URLs.resolve(URLs.SONG_RATING_URL) + "?d=" + Date.now().getTime());
+        var requestVars                       : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.session = _gvars.userSession;
         requestVars.id = Reflect.field(songInfo, "level");
@@ -348,22 +348,22 @@ class PopupSongNotes extends MenuPanel
         _loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, ratingLoadError);
     }
     
-    private function ratingLoadComplete(e : Event) : Void
+    private function ratingLoadComplete(e                       : Dynamic) : Void
     {
         removeLoaderListeners();
         
         try
         {
-            var _data : Dynamic = haxe.Json.parse(e.target.data);
-            if (Reflect.field(_data, "result") != null && Reflect.field(_data, "result") == "success")
+            var _data                       : Dynamic= haxe.Json.parse(e.target.data);
+            if (as3hx.Compat.truthy(Reflect.field(_data, "result") != null && Reflect.field(_data, "result") == "success"))
             {
-                _gvars.playerUser.songRatings[Reflect.setField(songInfo, "level", sRating.value)];
+                Reflect.setField(_gvars.playerUser.songRatings, Std.string(Reflect.field(songInfo, "level")), sRating.value);
                 
                 //Alert.add("Saved rating for " + sObject["name"] + "!", 120, Alert.GREEN);
                 
-                if (Reflect.field(_data, "type") != null && Reflect.field(_data, "type") == 1)
+                if (as3hx.Compat.truthy(Reflect.field(_data, "type") != null && Reflect.field(_data, "type") == 1))
                 {
-                    _playlist.playList[Reflect.setField(songInfo, "level", Reflect.field(_data, "new_value"))]["song_rating"];
+                    Reflect.setField(as3hx.Compat.field(_playlist.playList, Reflect.field(songInfo, "level")), "song_rating", Reflect.field(_data, "new_value"));
                 }
             }
             else
@@ -383,7 +383,7 @@ class PopupSongNotes extends MenuPanel
         _loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, ratingLoadError);
     }
     
-    private function ratingLoadError(e : Event) : Void
+    private function ratingLoadError(e                       : Dynamic) : Void
     {
         removeLoaderListeners();
     }

@@ -20,17 +20,17 @@ import openfl.events.Event;
 
 class WebSocketEvent extends Event
 {
-    public static inline var OPEN : String = "open";
-    public static inline var CLOSED : String = "closed";
-    public static inline var MESSAGE : String = "message";
-    public static inline var FRAME : String = "frame";
-    public static inline var PING : String = "ping";
-    public static inline var PONG : String = "pong";
+    public static inline var OPEN                          : Dynamic= "open";
+    public static inline var CLOSED                          : Dynamic= "closed";
+    public static inline var MESSAGE                          : Dynamic= "message";
+    public static inline var FRAME                          : Dynamic= "frame";
+    public static inline var PING                          : Dynamic= "ping";
+    public static inline var PONG                          : Dynamic= "pong";
     
-    public var message : WebSocketMessage;
-    public var frame : WebSocketFrame;
+    public var message                          : Dynamic;
+    public var frame                          : Dynamic;
     
-    public function new(type : String, bubbles : Bool = false, cancelable : Bool = false)
+    public function new(type                          : Dynamic, bubbles                          : Dynamic= false, cancelable                          : Dynamic= false)
     {
         super(type, bubbles, cancelable);
     }

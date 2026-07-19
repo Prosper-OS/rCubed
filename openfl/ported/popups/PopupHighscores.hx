@@ -19,29 +19,29 @@ import menu.MenuPanel;
 
 class PopupHighscores extends MenuPanel
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
     // - Background
-    private var box : Box;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    private var page : Int = 0;
-    private var maxPage : Int = 1000;
-    private var throbber : Throbber;
-    private var pageText : Text;
-    private var myUsernameText : Text;
-    private var myScoreText : Text;
-    private var myAVText : Text;
-    private var songInfo : SongInfo;
-    private var scorePane : Sprite;
+    private var page                       : Dynamic= 0;
+    private var maxPage                       : Dynamic= 1000;
+    private var throbber                       : Dynamic;
+    private var pageText                       : Dynamic;
+    private var myUsernameText                       : Dynamic;
+    private var myScoreText                       : Dynamic;
+    private var myAVText                       : Dynamic;
+    private var songInfo                       : Dynamic;
+    private var scorePane                       : Dynamic;
     
-    private var prevBtn : BoxButton;
-    private var nextBtn : BoxButton;
-    private var closeBtn : BoxButton;
-    private var refreshBtn : BoxButton;
+    private var prevBtn                       : Dynamic;
+    private var nextBtn                       : Dynamic;
+    private var closeBtn                       : Dynamic;
+    private var refreshBtn                       : Dynamic;
     
-    public function new(myParent : MenuPanel, songInfo : SongInfo)
+    public function new(myParent                       : Dynamic, songInfo                       : Dynamic)
     {
         super(myParent);
         this.songInfo = songInfo;
@@ -52,7 +52,7 @@ class PopupHighscores extends MenuPanel
         bmp = SpriteUtil.getBitmapSprite(stage);
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, 20, 20, false, false);
+        var bgbox                       : Dynamic= new Box(this, 20, 20, false, false);
         bgbox.setSize(Main.GAME_WIDTH - 40, Main.GAME_HEIGHT - 40);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -62,7 +62,7 @@ class PopupHighscores extends MenuPanel
         box.setSize(Main.GAME_WIDTH - 40, Main.GAME_HEIGHT - 40);
         box.activeAlpha = 0.4;
         
-        var titleDisplay : Text = new Text(box, 5, 8, songInfo.name, 20);
+        var titleDisplay                       : Dynamic= new Text(box, 5, 8, songInfo.name, 20);
         titleDisplay.width = box.width - 10;
         titleDisplay.align = Text.CENTER;
         
@@ -70,7 +70,7 @@ class PopupHighscores extends MenuPanel
                             page : page + 1
                         }));
         
-        var infoRanks : Dynamic = _gvars.activeUser.getLevelRank(songInfo);
+        var infoRanks                       : Dynamic= _gvars.activeUser.getLevelRank(songInfo);
         // Username
         myUsernameText = new Text(box, 25, 345, "#" + infoRanks.rank + ": " + _gvars.activeUser.name, 16, "#D9FF9E");
         myUsernameText.width = 350;
@@ -101,38 +101,38 @@ class PopupHighscores extends MenuPanel
     
     private function renderHighscores() : Void
     {
-        if (scorePane != null && box != null && box.contains(scorePane))
+        if (as3hx.Compat.truthy(scorePane != null && box != null && box.contains(scorePane)))
         {
             box.removeChild(scorePane);
             scorePane = null;
         }
         scorePane = new Sprite();
         scorePane.y = 50;
-        if (box != null)
+        if (as3hx.Compat.truthy(box != null))
         {
             box.addChild(scorePane);
         }
         
-        var textLine : Text;
-        var urank : Text;
-        var tY : Int = 0;
+        var textLine                       : Dynamic= null;
+        var urank                       : Dynamic= null;
+        var tY                       : Dynamic= 0;
         
-        if (throbber != null)
+        if (as3hx.Compat.truthy(throbber != null))
         {
-            if (box != null && box.contains(throbber))
+            if (as3hx.Compat.truthy(box != null && box.contains(throbber)))
             {
                 box.removeChild(throbber);
             }
             throbber.stop();
         }
         
-        if (page > maxPage)
+        if (as3hx.Compat.truthy(page > maxPage))
         {
             page = maxPage;
         }
         
-        var highscores : Dynamic = _gvars.getHighscores(songInfo.level);
-        if (highscores != null && (Reflect.field(highscores, Std.string((10 * page) + 1)) != null)) {
+        var highscores                       : Dynamic= _gvars.getHighscores(songInfo.level);
+        if (as3hx.Compat.truthy(highscores != null && (Reflect.field(highscores, Std.string((10 * page) + 1)) != null))) {
 textLine = new Text(scorePane, 25, tY, _lang.string("popup_highscores_username"), 16, "#C6F0FF");
             textLine.width = 350;
             
@@ -145,18 +145,18 @@ textLine = new Text(scorePane, 25, tY, _lang.string("popup_highscores_username")
             textLine.width = 180;
             tY += 30;
             
-            var lastRank : Int = 0;
-            var lastScore : Float = as3hx.Compat.FLOAT_MAX;
+            var lastRank                       : Dynamic= 0;
+            var lastScore                       : Dynamic= as3hx.Compat.FLOAT_MAX;
             for (vr in 1...10)
             {
-                var r : Int = as3hx.Compat.parseInt((10 * page) + vr);
-                if (Reflect.field(highscores, Std.string(r)) != null)
+                var r                       : Dynamic= as3hx.Compat.parseInt((10 * page) + vr);
+                if (as3hx.Compat.truthy(as3hx.Compat.field(highscores, r) != null))
                 {
-                    var username : String = Reflect.field(Reflect.field(highscores, Std.string(r)), "username");
-                    var score : Float = Reflect.field(Reflect.field(highscores, Std.string(r)), "score");
-                    var av : String = Reflect.field(Reflect.field(highscores, Std.string(r)), "av");
-                    var level : String = Std.string(Math.floor(Reflect.field(Reflect.field(highscores, Std.string(r)), "level")));
-                    var isMyPB : Bool = (!_gvars.activeUser.isGuest) && (_gvars.activeUser.name == username);
+                    var username                       : Dynamic= Reflect.field(as3hx.Compat.field(highscores, r), "username");
+                    var score                       : Dynamic= Reflect.field(as3hx.Compat.field(highscores, r), "score");
+                    var av                       : Dynamic= Reflect.field(as3hx.Compat.field(highscores, r), "av");
+                    var level                       : Dynamic= Std.string(Math.floor(Reflect.field(as3hx.Compat.field(highscores, r), "level")));
+                    var isMyPB                       : Dynamic= (!_gvars.activeUser.isGuest) && (_gvars.activeUser.name == username);
                     
                     // Username
                     textLine = new Text(scorePane, 25, tY, "<font color=\"#CCCCCC\">#" + r + ":</font> " + username + " <font size=\"13\" color=\"#CCCCCC\">[Lv " + level + "]</font>", 16);
@@ -183,16 +183,16 @@ textLine = new Text(scorePane, 25, tY, _lang.string("popup_highscores_username")
         }
         else
         {
-            if (throbber == null)
+            if (as3hx.Compat.truthy(throbber == null))
             {
                 throbber = new Throbber();
-                if (box != null)
+                if (as3hx.Compat.truthy(box != null))
                 {
                     throbber.x = box.width / 2 - 16;
                     throbber.y = box.height / 2 - 16;
                 }
             }
-            if (box != null)
+            if (as3hx.Compat.truthy(box != null))
             {
                 box.addChild(throbber);
             }
@@ -211,20 +211,20 @@ textLine = new Text(scorePane, 25, tY, _lang.string("popup_highscores_username")
         nextBtn.alpha = (page == maxPage) ? 0.5 : 1;
     }
     
-    private function highscoresLoaded(e : DataEvent) : Void
+    private function highscoresLoaded(e                       : Dynamic) : Void
     {
         _gvars.removeEventListener(GlobalVariables.HIGHSCORES_LOAD_COMPLETE, highscoresLoaded);
-        if (e.data.error == null)
+        if (as3hx.Compat.truthy(e.data.error == null))
         {
-            var newEntriesCount : Int = ObjectUtil.count(e.data);
+            var newEntriesCount                       : Dynamic= ObjectUtil.count(e.data);
             // No entries but no error, last page.
-            if (newEntriesCount == 0)
+            if (as3hx.Compat.truthy(newEntriesCount == 0))
             {
                 page--;
                 maxPage = page;
             }
             // Less then 10 entries, most likely the last page.
-            else if (newEntriesCount < 10)
+            else if (as3hx.Compat.truthy(newEntriesCount < 10))
             {
                 maxPage = page;
             }
@@ -234,7 +234,7 @@ textLine = new Text(scorePane, 25, tY, _lang.string("popup_highscores_username")
     
     private function refreshPersonalRanks() : Void
     {
-        var infoRanks : Dynamic = _gvars.activeUser.getLevelRank(songInfo);
+        var infoRanks                       : Dynamic= _gvars.activeUser.getLevelRank(songInfo);
         myUsernameText.text = "#" + infoRanks.rank + ": " + _gvars.activeUser.name;
         myScoreText.text = NumberUtil.numberFormat(infoRanks.rawscore);
         myAVText.text = infoRanks.results;
@@ -254,22 +254,22 @@ textLine = new Text(scorePane, 25, tY, _lang.string("popup_highscores_username")
         box = null;
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == prevBtn)
+        if (as3hx.Compat.truthy(e.target == prevBtn))
         {
-            if (page > 0)
+            if (as3hx.Compat.truthy(page > 0))
             {
                 page--;
                 renderHighscores();
             }
         }
-        if (e.target == nextBtn)
+        if (as3hx.Compat.truthy(e.target == nextBtn))
         {
             page++;
             renderHighscores();
         }
-        if (e.target == refreshBtn)
+        if (as3hx.Compat.truthy(e.target == refreshBtn))
         {
             _gvars.clearHighscores();
             _gvars.activeUser.loadLevelRanks();
@@ -278,7 +278,7 @@ textLine = new Text(scorePane, 25, tY, _lang.string("popup_highscores_username")
         }
         
         //- Close
-        if (e.target == closeBtn)
+        if (as3hx.Compat.truthy(e.target == closeBtn))
         {
             removePopup();
             return;

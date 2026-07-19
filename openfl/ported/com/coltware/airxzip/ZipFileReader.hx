@@ -21,27 +21,27 @@ import openfl.utils.*;
 class ZipFileReader extends EventDispatcher
 {
     
-    private var _file : File;  //	Zip????  
-    private var _stream : FileStream;
+    private var _file                            : Dynamic;  //	Zip????  
+    private var _stream                            : Dynamic;
     
-    private var _charset : String = "shift_jis";
+    private var _charset                            : Dynamic= "shift_jis";
     
     /*  ????? */
     
-    //public static var LOAD_ZIPFILE:String = "loadZipFile";
+    //public static var LOAD_ZIPFILE                           : Dynamic= "loadZipFile";
     
-    private var _unzipStack : Array<Dynamic>;
-    private var _unzipWorking : Bool = false;
-    private var _unzipNum : Int = 0;
+    private var _unzipStack                            : Dynamic;
+    private var _unzipWorking                            : Dynamic= false;
+    private var _unzipNum                            : Dynamic= 0;
     
-    private var _endRecord : ZipEndRecord;
-    private var _entries : Array<Dynamic>;
-    private var _totalEntries : Int = 0;
+    private var _endRecord                            : Dynamic;
+    private var _entries                            : Dynamic;
+    private var _totalEntries                            : Dynamic= 0;
     
-    private var _decryptors : Array<Dynamic>;
+    private var _decryptors                            : Dynamic;
     
     /* ???????????????? */
-    private var _password : ByteArray;
+    private var _password                            : Dynamic;
     
     /**
 		 *  dataAsync()??????????????????????????????
@@ -66,13 +66,13 @@ class ZipFileReader extends EventDispatcher
 		 *
 		 * ??:??????0x04034b50??????????
 		 */
-    public function check(file : File) : Bool
+    public function check(file                            : Dynamic) : Bool
     {
-        if (file.isDirectory)
+        if (as3hx.Compat.truthy(file.isDirectory))
         {
             return false;
         }
-        else if (file.isSymbolicLink)
+        else if (as3hx.Compat.truthy(file.isSymbolicLink))
         {
             return false;
         }
@@ -80,13 +80,13 @@ class ZipFileReader extends EventDispatcher
         {
             try
             {
-                var s : FileStream = new FileStream();
+                var s                            : Dynamic= new FileStream();
                 s.open(file, FileMode.READ);
                 s.endian = Endian.LITTLE_ENDIAN;
                 s.position = 0;
-                var i : Int = s.readInt();
+                var i                            : Dynamic= s.readInt();
                 s.close();
-                if (i == ZipHeader.HEADER_LOCAL_FILE)
+                if (as3hx.Compat.truthy(i == ZipHeader.HEADER_LOCAL_FILE))
                 {
                     return true;
                 }
@@ -103,7 +103,7 @@ class ZipFileReader extends EventDispatcher
 		 * ????????????
 		 *
 		 */
-    public function open(file : File) : Void
+    public function open(file                            : Dynamic) : Void
     {
         _file = file;
         _stream.open(_file, FileMode.READ);
@@ -111,13 +111,13 @@ class ZipFileReader extends EventDispatcher
         _stream.endian = Endian.LITTLE_ENDIAN;
         
         _stream.position = _stream.bytesAvailable - ZipEndRecord.LENGTH;
-        var pos : Int = 0;
-        var sig : Int = 0;
-        while (_stream.position > 0)
+        var pos                            : Dynamic= 0;
+        var sig                            : Dynamic= 0;
+        while (as3hx.Compat.truthy(_stream.position > 0))
         {
             pos = _stream.position;
             sig = _stream.readInt();
-            if (sig == ZipEndRecord.SIGNATURE)
+            if (as3hx.Compat.truthy(sig == ZipEndRecord.SIGNATURE))
             {
                 _endRecord = new ZipEndRecord();
                 _stream.position = pos;
@@ -135,7 +135,7 @@ class ZipFileReader extends EventDispatcher
     
     public function close() : Void
     {
-        if (_stream != null)
+        if (as3hx.Compat.truthy(_stream != null))
         {
             _stream.close();
         }
@@ -144,12 +144,12 @@ class ZipFileReader extends EventDispatcher
     /**
 		 *   Add decrypto instance
 		 */
-    public function addDecrypto(crypto : ICrypto) : Void
+    public function addDecrypto(crypto                            : Dynamic) : Void
     {
         this._decryptors.push(crypto);
     }
     
-    public function setPasswordBytes(bytes : ByteArray) : Void
+    public function setPasswordBytes(bytes                            : Dynamic) : Void
     {
         this._password = bytes;
         this._password.position = 0;
@@ -158,10 +158,10 @@ class ZipFileReader extends EventDispatcher
     /**
 		 *  ??????????????
 		 */
-    public function setPassword(password : String, charset : String = null) : Void
+    public function setPassword(password                            : Dynamic, charset                            : Dynamic= null) : Void
     {
-        var ba : ByteArray = new ByteArray();
-        if (charset == null)
+        var ba                            : Dynamic= new ByteArray();
+        if (as3hx.Compat.truthy(charset == null))
         {
             ba.writeUTFBytes(password);
         }
@@ -188,39 +188,39 @@ class ZipFileReader extends EventDispatcher
 		 *  ????ByteArray?????
 		 *
 		 */
-    public function unzip(entry : ZipEntry) : ByteArray
+    public function unzip(entry                            : Dynamic) : ByteArray
     {
-        var pos : Int = entry.getLocalHeaderOffset();
+        var pos                            : Dynamic= entry.getLocalHeaderOffset();
         
         _stream.position = pos;
-        var lzh : ZipHeader = new ZipHeader();
+        var lzh                            : Dynamic= new ZipHeader();
         lzh.readAuto(_stream);
         entry._headerLocal = lzh;
         
-        var bytes : ByteArray = new ByteArray();
-        var size : Int = entry.getCompressSize();
-        if (size > 0)
+        var bytes                            : Dynamic= new ByteArray();
+        var size                            : Dynamic= entry.getCompressSize();
+        if (as3hx.Compat.truthy(size > 0))
         {
             _stream.readBytes(bytes, 0, entry.getCompressSize());
         }
         
-        if (entry.isEncrypted())
+        if (as3hx.Compat.truthy(entry.isEncrypted()))
         {
-            if (this._password == null)
+            if (as3hx.Compat.truthy(this._password == null))
             {
                 throw new ZipError("password is NULL");
             }
             
-            var decrypt : ICrypto = null;
-            var i : Int = 0;
-            while (i < _decryptors.length && decrypt == null) {
-                var _decrypt : ICrypto = _decryptors[i];
-                if (_decrypt.checkDecrypt(entry)) {
+            var decrypt                            : Dynamic= null;
+            var i                            : Dynamic= 0;
+            while (as3hx.Compat.truthy(i < _decryptors.length && decrypt == null)) {
+                var _decrypt                            : Dynamic= _decryptors[i];
+                if (as3hx.Compat.truthy(_decrypt.checkDecrypt(entry))) {
                     decrypt = _decrypt;
                 }
                 i++;
             }
-            if (decrypt == null)
+            if (as3hx.Compat.truthy(decrypt == null))
             {
                 decrypt = new ZipCrypto();
             }
@@ -228,11 +228,11 @@ class ZipFileReader extends EventDispatcher
             bytes = decrypt.decrypt(bytes);
         }
         
-        var method : Int = entry.getCompressMethod();
-        if (method == ZipEntry.METHOD_NONE)
+        var method                            : Dynamic= entry.getCompressMethod();
+        if (as3hx.Compat.truthy(method == ZipEntry.METHOD_NONE))
         {
         }
-        else if (method == ZipEntry.METHOD_DEFLATE)
+        else if (as3hx.Compat.truthy(method == ZipEntry.METHOD_DEFLATE))
         {
             bytes.uncompress(CompressionAlgorithm.DEFLATE);
         }
@@ -247,17 +247,17 @@ class ZipFileReader extends EventDispatcher
 		 *  ????????????????
 		 *
 		 */
-    public function rawdata(entry : ZipEntry) : ByteArray
+    public function rawdata(entry                            : Dynamic) : ByteArray
     {
-        var pos : Int = entry.getLocalHeaderOffset();
+        var pos                            : Dynamic= entry.getLocalHeaderOffset();
         _stream.position = pos;
-        var lzh : ZipHeader = new ZipHeader();
+        var lzh                            : Dynamic= new ZipHeader();
         lzh.readAuto(_stream);
         entry._headerLocal = lzh;
         
-        var bytes : ByteArray = new ByteArray();
-        var size : Int = entry.getCompressSize();
-        if (size > 0)
+        var bytes                            : Dynamic= new ByteArray();
+        var size                            : Dynamic= entry.getCompressSize();
+        if (as3hx.Compat.truthy(size > 0))
         {
             _stream.readBytes(bytes, 0, entry.getCompressSize());
         }
@@ -271,53 +271,53 @@ class ZipFileReader extends EventDispatcher
 		 *	@eventType com.coltware.airxzip.ZipEvent.ZIP_DATA_UNCOMPRESS
 		 *
 		 */
-    public function unzipAsync(entry : ZipEntry) : Void
+    public function unzipAsync(entry                            : Dynamic) : Void
     {
         this._unzipStack.push(entry);
-        if (_unzipWorking == false)
+        if (as3hx.Compat.truthy(_unzipWorking == false))
         {
             this.execUnzip(1000);
         }
     }
     
-    private function unzipAsyncTimeout(entry : ZipEntry) : Void
+    private function unzipAsyncTimeout(entry                            : Dynamic) : Void
     {
-        var event : ZipEvent = new ZipEvent(ZipEvent.ZIP_DATA_UNCOMPRESS);
-        var pos : Int = entry.getLocalHeaderOffset();
+        var event                            : Dynamic= new ZipEvent(ZipEvent.ZIP_DATA_UNCOMPRESS);
+        var pos                            : Dynamic= entry.getLocalHeaderOffset();
         _stream.position = pos;
         _stream.position = pos;
-        var lzh : ZipHeader = new ZipHeader();
+        var lzh                            : Dynamic= new ZipHeader();
         lzh.readAuto(_stream);
         entry._headerLocal = lzh;
         
-        var bytes : ByteArray = new ByteArray();
-        var size : Int = entry.getCompressSize();
-        if (size > 0)
+        var bytes                            : Dynamic= new ByteArray();
+        var size                            : Dynamic= entry.getCompressSize();
+        if (as3hx.Compat.truthy(size > 0))
         {
             _stream.readBytes(bytes, 0, size);
         }
         
-        var err : ZipErrorEvent;
+        var err                            : Dynamic= null;
         
-        if (entry.isEncrypted())
+        if (as3hx.Compat.truthy(entry.isEncrypted()))
         {
-            if (this._password == null)
+            if (as3hx.Compat.truthy(this._password == null))
             {
                 err = new ZipErrorEvent(ZipErrorEvent.ZIP_PASSWORD_ERROR);
                 this.dispatchEvent(err);
                 return;
             }
             
-            var decrypt : ICrypto = null;
-            var i : Int = 0;
-            while (i < _decryptors.length && decrypt == null) {
-                var _decrypt : ICrypto = _decryptors[i];
-                if (_decrypt.checkDecrypt(entry)) {
+            var decrypt                            : Dynamic= null;
+            var i                            : Dynamic= 0;
+            while (as3hx.Compat.truthy(i < _decryptors.length && decrypt == null)) {
+                var _decrypt                            : Dynamic= _decryptors[i];
+                if (as3hx.Compat.truthy(_decrypt.checkDecrypt(entry))) {
                     decrypt = _decrypt;
                 }
                 i++;
             }
-            if (decrypt == null)
+            if (as3hx.Compat.truthy(decrypt == null))
             {
                 decrypt = new ZipCrypto();
             }
@@ -334,17 +334,17 @@ class ZipFileReader extends EventDispatcher
             }
         }
         
-        var method : Int = entry.getCompressMethod();
-        if (method == ZipEntry.METHOD_NONE)
+        var method                            : Dynamic= entry.getCompressMethod();
+        if (as3hx.Compat.truthy(method == ZipEntry.METHOD_NONE))
         {
         }
-        else if (method == ZipEntry.METHOD_DEFLATE)
+        else if (as3hx.Compat.truthy(method == ZipEntry.METHOD_DEFLATE))
         {
             event.__DOLLAR__method = CompressionAlgorithm.DEFLATE;
         }
         else
         {
-            var e : ZipErrorEvent = new ZipErrorEvent(ZipErrorEvent.ZIP_NO_SUCH_METHOD);
+            var e                            : Dynamic= new ZipErrorEvent(ZipErrorEvent.ZIP_NO_SUCH_METHOD);
             this.dispatchEvent(e);
             return;
         }
@@ -358,12 +358,12 @@ class ZipFileReader extends EventDispatcher
         execUnzip();
     }
     
-    private function execUnzip(delay : Int = 10) : Void
+    private function execUnzip(delay                            : Dynamic= 10) : Void
     {
-        if (_unzipStack.length > 0)
+        if (as3hx.Compat.truthy(_unzipStack.length > 0))
         {
             _unzipWorking = true;
-            var entry : ZipEntry = _unzipStack.shift();
+            var entry                            : Dynamic= _unzipStack.shift();
             as3hx.Compat.setTimeout(unzipAsyncTimeout, delay, [entry]);
         }
         else
@@ -371,58 +371,58 @@ class ZipFileReader extends EventDispatcher
         }
     }
     
-    private function ioError(e : Event) : Void
+    private function ioError(e                            : Dynamic) : Void
     {
         this.dispatchEvent(e);
     }
     
-    private function parseCentralHeaders() : Void
+    public function parseCentralHeaders() : Void
     {
-        var offset : Int = _endRecord.getOffset();
-        var size : Int = _endRecord.getSize();
+        var offset                            : Dynamic= _endRecord.getOffset();
+        var size                            : Dynamic= _endRecord.getSize();
         _stream.position = offset;
-        var bytes : ByteArray = new ByteArray();
+        var bytes                            : Dynamic= new ByteArray();
         bytes.endian = Endian.LITTLE_ENDIAN;
         _stream.readBytes(bytes, 0, size);
         bytes.position = 0;
         
-        var _tmpBytes : ByteArray = new ByteArray();
+        var _tmpBytes                            : Dynamic= new ByteArray();
         _tmpBytes.endian = Endian.LITTLE_ENDIAN;
         
-        while (bytes.bytesAvailable)
+        while (as3hx.Compat.truthy(bytes.bytesAvailable))
         {
-            var sig : Int = bytes.readInt();
-            var header : ZipHeader = new ZipHeader(sig);
+            var sig                            : Dynamic= bytes.readInt();
+            var header                            : Dynamic= new ZipHeader(sig);
             header.read(bytes, _tmpBytes);
-            var entry : ZipEntry = new ZipEntry(_stream);
+            var entry                            : Dynamic= new ZipEntry(_stream);
             entry.setHeader(header);
             _entries.push(entry);
         }
     }
     
-    private function readStream(e : Event) : Void
+    private function readStream(e                            : Dynamic) : Void
     //trace("byte available " + _stream.bytesAvailable + "/" + _file.size);
     {
         
-        var bytes : ByteArray = new ByteArray();
+        var bytes                            : Dynamic= new ByteArray();
         _stream.endian = Endian.LITTLE_ENDIAN;
         bytes.endian = Endian.LITTLE_ENDIAN;
-        while (_stream.bytesAvailable) {
-var sig : Int = _stream.readInt();
-            if (sig == ZipHeader.HEADER_LOCAL_FILE) {
-var header : ZipHeader = new ZipHeader(sig);
+        while (as3hx.Compat.truthy(_stream.bytesAvailable)) {
+var sig                            : Dynamic= _stream.readInt();
+            if (as3hx.Compat.truthy(sig == ZipHeader.HEADER_LOCAL_FILE)) {
+var header                            : Dynamic= new ZipHeader(sig);
                 header.read(_stream, bytes);
                 
-                var contentByteArray : ByteArray = new ByteArray();
-                if (header.getCompressSize() > 0)
+                var contentByteArray                            : Dynamic= new ByteArray();
+                if (as3hx.Compat.truthy(header.getCompressSize() > 0))
                 {
                     _stream.readBytes(contentByteArray, 0, header.getCompressSize());
                 }
-                var entry : ZipEntry = new ZipEntry(_stream);
+                var entry                            : Dynamic= new ZipEntry(_stream);
                 entry.setHeader(header);
             }
-            else if (sig == ZipHeader.HEADER_CENTRAL_DIR) {
-var centralHeader : ZipHeader = new ZipHeader(sig);
+            else if (as3hx.Compat.truthy(sig == ZipHeader.HEADER_CENTRAL_DIR)) {
+var centralHeader                            : Dynamic= new ZipHeader(sig);
                 centralHeader.read(_stream, bytes);
             }
             //trace("sig NG " + sig.toString(16));

@@ -3,20 +3,20 @@ package classes.mp;
 
 class MPSong
 {
-    public var id : Int;
-    public var level_id : String;
+    public var id                             : Dynamic;
+    public var level_id                             : Dynamic;
     
-    public var name : String;
-    public var author : String;
-    public var time : String;
-    public var note_count : Float;
-    public var difficulty : Float;
+    public var name                             : Dynamic;
+    public var author                             : Dynamic;
+    public var time                             : Dynamic;
+    public var note_count                             : Dynamic;
+    public var difficulty                             : Dynamic;
     
-    public var engine : Dynamic;
+    public var engine                             : Dynamic;
     
-    public var selected : Bool = false;
+    public var selected                             : Dynamic= false;
     
-    public function update(data : Dynamic) : Void
+    public function update(data                             : Dynamic) : Void
     {
         selected = data.selected;
         name = data.name;

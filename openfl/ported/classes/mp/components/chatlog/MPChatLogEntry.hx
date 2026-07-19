@@ -4,17 +4,17 @@ import openfl.display.Sprite;
 
 class MPChatLogEntry extends Sprite
 {
-    public var built : Bool = false;
+    public var built                             : Dynamic= false;
     
-    private var _width : Float = 200;
-    private var _height : Float = 30;
+    public var _width                             : Dynamic= 200;
+    public var _height                             : Dynamic= 30;
     
     public function new()
     {
         super();
     }
     
-    public function build(width : Float) : Void
+    public function build(width                             : Dynamic) : Void
     {
     }
     

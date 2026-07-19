@@ -8,7 +8,11 @@ class Clipboard {
 	public function new() {
 	}
 
-	public function setData(format:String, value:Dynamic):Void {
+	public function clear():Void {
+		data.clear();
+	}
+
+	public function setData(format:String, value:Dynamic, serializable:Bool = true):Void {
 		data.set(format, value);
 	}
 

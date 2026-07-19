@@ -17,20 +17,20 @@ import openfl.utils.*;
 	 */
 class ZipEvent extends Event
 {
-    public var entry(get, never) : ZipEntry;
-    public var data(get, never) : ByteArray;
+    public var entry(get, never)                            : Dynamic;
+    public var data(get, never)                            : Dynamic;
 
     
-    public static var ZIP_LOAD_DATA : String = "zipLoadData";
-    public static var ZIP_DATA_UNCOMPRESS : String = "zipDataUncompress";
-    public static var ZIP_DATA_COMPRESS : String = "zipDataCompress";
-    public static var ZIP_FILE_CREATED : String = "zipFileCreated";
+    public static var ZIP_LOAD_DATA                            : Dynamic= "zipLoadData";
+    public static var ZIP_DATA_UNCOMPRESS                            : Dynamic= "zipDataUncompress";
+    public static var ZIP_DATA_COMPRESS                            : Dynamic= "zipDataCompress";
+    public static var ZIP_FILE_CREATED                            : Dynamic= "zipFileCreated";
     
-    public var __DOLLAR__entry : ZipEntry;
-    public var __DOLLAR__data : ByteArray;
-    public var __DOLLAR__method : String;
+    public var __DOLLAR__entry                            : Dynamic;
+    public var __DOLLAR__data                            : Dynamic;
+    public var __DOLLAR__method                            : Dynamic;
     
-    public function new(type : String)
+    public function new(type                            : Dynamic)
     {
         super(type);
     }
@@ -42,7 +42,7 @@ class ZipEvent extends Event
     
     private function get_data() : ByteArray
     {
-        if (__DOLLAR__method != null)
+        if (as3hx.Compat.truthy(__DOLLAR__method != null))
         {
             __DOLLAR__data.uncompress(__DOLLAR__method);
         }

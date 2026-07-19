@@ -17,15 +17,15 @@ import openfl.utils.*;
 class ZipCRC32
 {
     
-    public static var CRYPTHEADLEN : Int = 12;
+    public static var CRYPTHEADLEN                            : Dynamic= 12;
     
-    private static var S_KEY1 : Int = 305419896;
-    private static var S_KEY2 : Int = 591751049;
-    private static var S_KEY3 : Int = 878082192;
+    private static var S_KEY1                            : Dynamic= 305419896;
+    private static var S_KEY2                            : Dynamic= 591751049;
+    private static var S_KEY3                            : Dynamic= 878082192;
     
-    private static var _crc32table : Array<Dynamic> = createTable();
+    private static var _crc32table                            : Dynamic= createTable();
     
-    private var _key : Array<Dynamic>;
+    private var _key                            : Dynamic;
     
     public function new()
     {
@@ -33,15 +33,16 @@ class ZipCRC32
     
     private static function createTable() : Array<Dynamic>
     {
-        var arr : Array<Dynamic> = new Array<Dynamic>(256);
-        var p : Int = 0xEDB88320;
-        var c : Int;
+        var arr                         : Dynamic= [];
+        as3hx.Compat.setArrayLength(arr, 256);
+        var p                            : Dynamic= 0xEDB88320;
+        var c                            : Dynamic= null;
         for (i in 0...256)
         {
             c = i;
             for (j in 0...8)
             {
-                if ((c & 1) != 0)
+                if (as3hx.Compat.truthy((c & 1) != 0))
                 {
                     c = as3hx.Compat.parseInt(p ^ as3hx.Compat.parseInt(c >>> 1));
                 }
@@ -55,10 +56,10 @@ class ZipCRC32
         return arr;
     }
     
-    public static function getByteArrayValue(data : ByteArray) : Int
+    public static function getByteArrayValue(data                            : Dynamic) : Int
     {
-        var c : Int = 0xffffffff;
-        var n : Int = 0;
+        var c                            : Dynamic= 0xffffffff;
+        var n                            : Dynamic= 0;
         for (i in 0...data.length)
         {
             n = as3hx.Compat.parseInt(c ^ data[i]) & 0xFF;
@@ -67,16 +68,16 @@ class ZipCRC32
         return as3hx.Compat.parseInt(c ^ 0xffffffff);
     }
     
-    public static function getCRC32(n1 : Int, n2 : Int) : Int
+    public static function getCRC32(n1                            : Dynamic, n2                            : Dynamic) : Int
     {
-        var _idx : Int = as3hx.Compat.parseInt(n1 ^ n2) & 0xFF;
-        var _val : Int = _crc32table[_idx] ^ as3hx.Compat.parseInt(n1 >>> 8);
+        var _idx                            : Dynamic= as3hx.Compat.parseInt(n1 ^ n2) & 0xFF;
+        var _val                            : Dynamic= _crc32table[_idx] ^ as3hx.Compat.parseInt(n1 >>> 8);
         return _val;
     }
     
-    public static function getStringValue(str : String) : Int
+    public static function getStringValue(str                            : Dynamic) : Int
     {
-        var ba : ByteArray = new ByteArray();
+        var ba                            : Dynamic= new ByteArray();
         ba.writeUTFBytes(str);
         return getByteArrayValue(ba);
     }

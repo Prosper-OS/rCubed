@@ -8,17 +8,17 @@ import openfl.events.MouseEvent;
 
 class MPUserListEntry extends Sprite
 {
-    private static var _lang : Language = Language.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    public static inline var ENTRY_WIDTH : Int = 219;
-    public static inline var ENTRY_HEIGHT : Int = 27;
+    public static inline var ENTRY_WIDTH                             : Dynamic= 219;
+    public static inline var ENTRY_HEIGHT                             : Dynamic= 27;
     
-    public var user : MPUser;
+    public var user                             : Dynamic;
     
-    private var title : Text;
+    private var title                             : Dynamic;
     
-    public var index : Int = 0;
-    public var isStale : Bool = false;
+    public var index                             : Dynamic= 0;
+    public var isStale                             : Dynamic= false;
     
     public function new()
     {
@@ -37,7 +37,7 @@ class MPUserListEntry extends Sprite
         draw(false);
     }
     
-    public function draw(hover : Bool) : Void
+    public function draw(hover                             : Dynamic) : Void
     {
         this.graphics.clear();
         this.graphics.lineStyle(1, 0xFFFFFF, 0.35);
@@ -50,7 +50,7 @@ class MPUserListEntry extends Sprite
         this.graphics.endFill();
     }
     
-    public function setData(item : MPUser) : Void
+    public function setData(item                             : Dynamic) : Void
     {
         user = item;
         title.text = user.userLabelHTML;
@@ -61,12 +61,12 @@ class MPUserListEntry extends Sprite
         user = null;
     }
     
-    private function e_onOver(event : MouseEvent) : Void
+    private function e_onOver(event                             : Dynamic) : Void
     {
         draw(true);
     }
     
-    private function e_onOut(event : MouseEvent) : Void
+    private function e_onOut(event                             : Dynamic) : Void
     {
         draw(false);
     }

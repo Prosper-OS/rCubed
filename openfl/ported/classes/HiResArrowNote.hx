@@ -8,9 +8,9 @@ import openfl.geom.Matrix;
 
 class HiResArrowNote extends Sprite
 {
-    private static inline var BASE_SIZE : Float = 64;
+    private static inline var BASE_SIZE                              : Dynamic= 64;
     
-    private static var PALETTES : Dynamic = {
+    private static var PALETTES                              : Dynamic= {
             blue : {
                 shadow : 0x09143f,
                 outline : 0x8b55ff,
@@ -94,7 +94,7 @@ class HiResArrowNote extends Sprite
             }
         };
     
-    public function new(colorName : String, noteWidth : Float = 64, noteHeight : Float = 64)
+    public function new(colorName                              : Dynamic, noteWidth                              : Dynamic= 64, noteHeight                              : Dynamic= 64)
     {
         super();
         mouseEnabled = false;
@@ -105,20 +105,20 @@ class HiResArrowNote extends Sprite
         draw(colorName, noteWidth, noteHeight);
     }
     
-    private function draw(colorName : String, noteWidth : Float, noteHeight : Float) : Void
+    private function draw(colorName                              : Dynamic, noteWidth                              : Dynamic, noteHeight                              : Dynamic) : Void
     {
-        var palette : Dynamic = getPalette(colorName);
-        var sx : Float = noteWidth / BASE_SIZE;
-        var sy : Float = noteHeight / BASE_SIZE;
-        var strokeScale : Float = Math.max(1, Math.min(sx, sy));
-        var body : Sprite = new Sprite();
-        var g : Graphics = body.graphics;
+        var palette                              : Dynamic= getPalette(colorName);
+        var sx                              : Dynamic= noteWidth / BASE_SIZE;
+        var sy                              : Dynamic= noteHeight / BASE_SIZE;
+        var strokeScale                              : Dynamic= Math.max(1, Math.min(sx, sy));
+        var body                              : Dynamic= new Sprite();
+        var g                              : Dynamic= body.graphics;
         
         g.lineStyle(5 * strokeScale, palette.shadow, 0.9, true);
         drawArrowPath(g, sx, sy);
         g.endFill();
         
-        var gradientMatrix : Matrix = new Matrix();
+        var gradientMatrix                              : Dynamic= new Matrix();
         gradientMatrix.createGradientBox(noteWidth, noteHeight, Math.PI / 2, 0, 0);
         
         g.lineStyle(2.5 * strokeScale, palette.outline, 1, true);
@@ -138,12 +138,12 @@ class HiResArrowNote extends Sprite
         RenderQuality.cacheDisplayObject(this);
     }
     
-    private static function getPalette(colorName : String) : Dynamic
+    private static function getPalette(colorName                              : Dynamic) : Dynamic
     {
         return (Reflect.field(PALETTES, colorName) != null) ? Reflect.field(PALETTES, colorName) : Reflect.field(PALETTES, "blue");
     }
     
-    private static function drawArrowPath(g : Graphics, sx : Float, sy : Float) : Void
+    private static function drawArrowPath(g                              : Dynamic, sx                              : Dynamic, sy                              : Dynamic) : Void
     {
         g.moveTo(26 * sx, 4 * sy);
         g.lineTo(38 * sx, 4 * sy);
@@ -161,7 +161,7 @@ class HiResArrowNote extends Sprite
         g.lineTo(26 * sx, 4 * sy);
     }
     
-    private static function drawCore(g : Graphics, palette : Dynamic, sx : Float, sy : Float, strokeScale : Float) : Void
+    private static function drawCore(g                              : Dynamic, palette                              : Dynamic, sx                              : Dynamic, sy                              : Dynamic, strokeScale                              : Dynamic) : Void
     {
         g.lineStyle(1.4 * strokeScale, palette.rim, 0.35, true);
         g.beginFill(palette.core, 0.36);

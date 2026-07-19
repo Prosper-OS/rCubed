@@ -17,20 +17,18 @@ import openfl.events.KeyboardEvent;
 
 class MPUserMessagesView extends MPView
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private var _width                             : Dynamic= 409;
+    private var _height                             : Dynamic= 388;
     
-    private var _width : Float = 409;
-    private var _height : Float = 388;
+    private var userName                             : Dynamic;
+    private var profile                             : Dynamic;
     
-    private var userName : Text;
-    private var profile : BoxIcon;
+    private var chat                             : Dynamic;
+    private var userlist                             : Dynamic;
     
-    private var chat : MPViewChatLogUser;
-    private var userlist : MPViewUserListPM;
+    private var _userProfilePrompt                             : Dynamic;
     
-    private var _userProfilePrompt : MPUserProfilePrompt;
-    
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         super(parent, xpos, ypos);
         
@@ -103,9 +101,9 @@ class MPUserMessagesView extends MPView
         this.graphics.lineTo(_width, 30);
     }
     
-    override public function onKeyInput(e : KeyboardEvent) : Void
+    override public function onKeyInput(e                             : Dynamic) : Void
     {
-        if (_userProfilePrompt != null)
+        if (as3hx.Compat.truthy(_userProfilePrompt != null))
         {
             _userProfilePrompt.onKeyInput(e);
             return;
@@ -114,29 +112,29 @@ class MPUserMessagesView extends MPView
         chat.onKeyInput(e);
     }
     
-    public function e_onMessage(e : MPUserEvent) : Void
+    public function e_onMessage(e                             : Dynamic) : Void
     {
         chat.update(e);
         userlist.update();
     }
     
-    private function e_onChatSelect(e : MPPMSelect) : Void
+    private function e_onChatSelect(e                             : Dynamic) : Void
     {
         chat.setHistory(e.chat);
         userName.text = chat.displayName;
         profile.visible = true;
     }
     
-    private function e_onProfileSelect(e : Event) : Void
+    private function e_onProfileSelect(e                             : Dynamic) : Void
     {
-        if (chat.user)
+        if (as3hx.Compat.truthy(chat.user))
         {
             _userProfilePrompt = new MPUserProfilePrompt(chat.user, null, this);
             _userProfilePrompt.addEventListener(Event.CLOSE, e_onProfileClose);
         }
     }
     
-    private function e_onProfileClose(e : Event) : Void
+    private function e_onProfileClose(e                             : Dynamic) : Void
     {
         _userProfilePrompt.removeEventListener(Event.CLOSE, e_onProfileClose);
         _userProfilePrompt = null;
@@ -144,7 +142,7 @@ class MPUserMessagesView extends MPView
     
     public function closePrompts() : Void
     {
-        if (_userProfilePrompt != null)
+        if (as3hx.Compat.truthy(_userProfilePrompt != null))
         {
             _userProfilePrompt.close();
             e_onProfileClose(null);

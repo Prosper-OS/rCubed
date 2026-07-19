@@ -3,22 +3,22 @@ package com.flashfla.utils;
 
 class ColorUtil
 {
-    public static function brightenColor(hexColor : Float, percent : Float) : Float
+    public static function brightenColor(hexColor                            : Dynamic, percent                            : Dynamic) : Float
     {
-        if (Math.isNaN(percent))
+        if (as3hx.Compat.truthy(Math.isNaN(percent)))
         {
             percent = 0;
         }
-        if (percent > 1)
+        if (as3hx.Compat.truthy(percent > 1))
         {
             percent = 1;
         }
-        if (percent < 0)
+        if (as3hx.Compat.truthy(percent < 0))
         {
             percent = 0;
         }
         
-        var rgb : Dynamic = hexToRgb(hexColor);
+        var rgb                            : Dynamic= hexToRgb(hexColor);
         
         rgb.r += (255 - rgb.r) * percent;
         rgb.b += (255 - rgb.b) * percent;
@@ -27,23 +27,23 @@ class ColorUtil
         return rgbToHex(Math.round(rgb.r), Math.round(rgb.g), Math.round(rgb.b));
     }
     
-    public static function darkenColor(hexColor : Float, percent : Float) : Float
+    public static function darkenColor(hexColor                            : Dynamic, percent                            : Dynamic) : Float
     {
-        if (Math.isNaN(percent))
+        if (as3hx.Compat.truthy(Math.isNaN(percent)))
         {
             percent = 0;
         }
-        if (percent > 1)
+        if (as3hx.Compat.truthy(percent > 1))
         {
             percent = 1;
         }
-        if (percent < 0)
+        if (as3hx.Compat.truthy(percent < 0))
         {
             percent = 0;
         }
         
-        var factor : Float = 1 - percent;
-        var rgb : Dynamic = hexToRgb(hexColor);
+        var factor                            : Dynamic= 1 - percent;
+        var rgb                            : Dynamic= hexToRgb(hexColor);
         
         rgb.r *= factor;
         rgb.b *= factor;
@@ -52,12 +52,12 @@ class ColorUtil
         return rgbToHex(Math.round(rgb.r), Math.round(rgb.g), Math.round(rgb.b));
     }
     
-    public static function rgbToHex(r : Float, g : Float, b : Float) : Float
+    public static function rgbToHex(r                            : Dynamic, g                            : Dynamic, b                            : Dynamic) : Float
     {
         return (r << 16 | g << 8 | b);
     }
     
-    public static function hexToRgb(hex : Float) : Dynamic
+    public static function hexToRgb(hex                            : Dynamic) : Dynamic
     {
         return {
             r : (as3hx.Compat.parseInt(hex) & 0xff0000) >> 16,
@@ -66,19 +66,19 @@ class ColorUtil
         };
     }
     
-    public static function brightness(hex : Float) : Float
+    public static function brightness(hex                            : Dynamic) : Float
     {
-        var max : Float = 0;
-        var rgb : Dynamic = hexToRgb(hex);
-        if (rgb.r > max)
+        var max                            : Dynamic= 0;
+        var rgb                            : Dynamic= hexToRgb(hex);
+        if (as3hx.Compat.truthy(rgb.r > max))
         {
             max = rgb.r;
         }
-        if (rgb.g > max)
+        if (as3hx.Compat.truthy(rgb.g > max))
         {
             max = rgb.g;
         }
-        if (rgb.b > max)
+        if (as3hx.Compat.truthy(rgb.b > max))
         {
             max = rgb.b;
         }

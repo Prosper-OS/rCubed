@@ -9,16 +9,16 @@ import openfl.events.MouseEvent;
 
 class HeartSelector extends Sprite
 {
-    public var checked(get, set) : Bool;
+    public var checked(get, set)                             : Dynamic;
 
-    private var outlineSprite : UIIcon;
-    private var fillSprite : UIIcon;
-    private var _checked : Bool = false;
+    private var outlineSprite                             : Dynamic;
+    private var fillSprite                             : Dynamic;
+    private var _checked                             : Dynamic= false;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, isActive : Bool = true)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, isActive                             : Dynamic= true)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -29,10 +29,10 @@ class HeartSelector extends Sprite
         init(isActive);
     }
     
-    private function init(isActive : Bool) : Void
+    private function init(isActive                             : Dynamic) : Void
     {
         this.mouseChildren = false;
-        if (isActive)
+        if (as3hx.Compat.truthy(isActive))
         {
             this.buttonMode = true;
             this.useHandCursor = true;
@@ -52,7 +52,7 @@ class HeartSelector extends Sprite
         this.graphics.endFill();
     }
     
-    private function e_mouseClick(e : MouseEvent) : Void
+    private function e_mouseClick(e                             : Dynamic) : Void
     {
         _checked = !_checked;
         updateSprites();
@@ -69,7 +69,7 @@ class HeartSelector extends Sprite
         return _checked;
     }
     
-    private function set_checked(val : Bool) : Bool
+    private function set_checked(val                             : Dynamic) : Bool
     {
         _checked = val;
         updateSprites();

@@ -4,11 +4,11 @@ import classes.mp.MPUser;
 
 class MPCUserBlock implements IMPCommand
 {
-    public var user : MPUser;
-    public var message : String;
-    public var type : Float;
+    public var user                             : Dynamic;
+    public var message                             : Dynamic;
+    public var type                             : Dynamic;
     
-    public function new(user : MPUser)
+    public function new(user                             : Dynamic)
     {
         this.user = user;
     }

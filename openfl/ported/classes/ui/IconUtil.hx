@@ -5,7 +5,7 @@ import openfl.display.Sprite;
 
 class IconUtil
 {
-    public static function getIcon(name : String) : Sprite
+    public static function getIcon(name                             : Dynamic) : Sprite
     {
         switch (name)
         {

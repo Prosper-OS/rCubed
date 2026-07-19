@@ -17,39 +17,39 @@ import openfl.text.*;
  */
 class SWFProfiler
 {
-    public static var currentFps(get, never) : Float;
-    public static var currentMem(get, never) : Float;
-    public static var averageFps(get, never) : Float;
-    private static var runningTime(get, never) : Float;
-    private static var intervalTime(get, never) : Float;
+    public static var currentFps(get, never)                            : Dynamic;
+    public static var currentMem(get, never)                            : Dynamic;
+    public static var averageFps(get, never)                            : Dynamic;
+    private static var runningTime(get, never)                            : Dynamic;
+    private static var intervalTime(get, never)                            : Dynamic;
 
-    private static var _lang : Language = Language.instance;
+    private static var _lang                            : Dynamic= Language.instance;
     
-    private static var itvTime : Int;
-    private static var initTime : Int;
-    private static var currentTime : Int;
-    private static var frameCount : Int;
-    private static var totalCount : Int;
+    private static var itvTime                            : Dynamic;
+    private static var initTime                            : Dynamic;
+    private static var currentTime                            : Dynamic;
+    private static var frameCount                            : Dynamic;
+    private static var totalCount                            : Dynamic;
     
-    public static var minFps : Float;
-    public static var maxFps : Float;
-    public static var minMem : Float;
-    public static var maxMem : Float;
-    public static var history : Int = 60;
-    public static var fpsList : Array<Dynamic> = [];
-    public static var memList : Array<Dynamic> = [];
+    public static var minFps                            : Dynamic;
+    public static var maxFps                            : Dynamic;
+    public static var minMem                            : Dynamic;
+    public static var maxMem                            : Dynamic;
+    public static var history                            : Dynamic= 60;
+    public static var fpsList                            : Dynamic= [];
+    public static var memList                            : Dynamic= [];
     
-    private static var displayed : Bool = false;
-    private static var started : Bool = false;
-    private static var inited : Bool = false;
-    private static var frame : Sprite;
-    private static var stage : Stage;
-    private static var content : ProfilerContent;
-    private static var ci : ContextMenuItem;
+    private static var displayed                            : Dynamic= false;
+    private static var started                            : Dynamic= false;
+    private static var inited                            : Dynamic= false;
+    private static var frame                            : Dynamic;
+    private static var stage                            : Dynamic;
+    private static var content                            : Dynamic;
+    private static var ci                            : Dynamic;
     
-    public static function init(swf : Stage, context : InteractiveObject) : Void
+    public static function init(swf                            : Dynamic, context                            : Dynamic) : Void
     {
-        if (inited)
+        if (as3hx.Compat.truthy(inited))
         {
             buildContextMenu(context);
             return;
@@ -72,10 +72,10 @@ class SWFProfiler
         start();
     }
     
-    private static function buildContextMenu(context : InteractiveObject) : Void
+    private static function buildContextMenu(context                            : Dynamic) : Void
     {
-        var str_show_profiler : String = _lang.stringSimple("show_profiler");
-        var str_hide_profiler : String = _lang.stringSimple("hide_profiler");
+        var str_show_profiler                            : Dynamic= _lang.stringSimple("show_profiler");
+        var str_hide_profiler                            : Dynamic= _lang.stringSimple("hide_profiler");
         
         ci = new ContextMenuItem((displayed) ? str_hide_profiler : str_show_profiler, true);
         addEvent(ci, ContextMenuEvent.MENU_ITEM_SELECT, onSelect);
@@ -84,7 +84,7 @@ class SWFProfiler
     
     public static function start() : Void
     {
-        if (started)
+        if (as3hx.Compat.truthy(started))
         {
             return;
         }
@@ -96,7 +96,7 @@ class SWFProfiler
     
     public static function stop() : Void
     {
-        if (!started)
+        if (as3hx.Compat.truthy(!started))
         {
             return;
         }
@@ -142,9 +142,9 @@ class SWFProfiler
     }
     
     
-    public static function onSelect(e : ContextMenuEvent = null) : Void
+    public static function onSelect(e                            : Dynamic= null) : Void
     {
-        if (!displayed)
+        if (as3hx.Compat.truthy(!displayed))
         {
             show();
         }
@@ -173,14 +173,14 @@ class SWFProfiler
         stage.removeChild(content);
     }
     
-    private static function resize(e : Event) : Void
+    private static function resize(e                            : Dynamic) : Void
     {
         content.update(runningTime, minFps, maxFps, minMem, maxMem, currentFps, currentMem, averageFps, fpsList, memList, history);
     }
     
-    private static function draw(e : Event) : Void
+    private static function draw(e                            : Dynamic) : Void
     {
-        if (!started)
+        if (as3hx.Compat.truthy(!started))
         {
             return;
         }
@@ -190,9 +190,9 @@ class SWFProfiler
         frameCount++;
         totalCount++;
         
-        if (intervalTime >= 1)
+        if (as3hx.Compat.truthy(intervalTime >= 1))
         {
-            if (displayed)
+            if (as3hx.Compat.truthy(displayed))
             {
                 updateDisplay();
             }
@@ -204,11 +204,11 @@ class SWFProfiler
             fpsList.unshift(currentFps);
             memList.unshift(currentMem);
             
-            if (fpsList.length > history)
+            if (as3hx.Compat.truthy(fpsList.length > history))
             {
                 fpsList.pop();
             }
-            if (memList.length > history)
+            if (as3hx.Compat.truthy(memList.length > history))
             {
                 memList.pop();
             }
@@ -233,12 +233,12 @@ class SWFProfiler
         maxMem = Math.max(currentMem, maxMem);
     }
     
-    private static function addEvent(item : EventDispatcher, type : String, listener : Dynamic) : Void
+    private static function addEvent(item                            : Dynamic, type                            : Dynamic, listener                            : Dynamic) : Void
     {
         item.addEventListener(type, listener, false, 0, true);
     }
     
-    private static function removeEvent(item : EventDispatcher, type : String, listener : Dynamic) : Void
+    private static function removeEvent(item                            : Dynamic, type                            : Dynamic, listener                            : Dynamic) : Void
     {
         item.removeEventListener(type, listener);
     }
@@ -252,16 +252,16 @@ class SWFProfiler
 
 class ProfilerContent extends Sprite
 {
-    private var _lang : Language = Language.instance;
+    private var _lang                            : Dynamic= Language.instance;
     
-    private var minFpsTxtBx : TextField;
-    private var maxFpsTxtBx : TextField;
-    private var minMemTxtBx : TextField;
-    private var maxMemTxtBx : TextField;
-    private var infoTxtBx : TextField;
-    private var box : Shape;
-    private var fps : Shape;
-    private var mb : Shape;
+    private var minFpsTxtBx                            : Dynamic;
+    private var maxFpsTxtBx                            : Dynamic;
+    private var minMemTxtBx                            : Dynamic;
+    private var maxMemTxtBx                            : Dynamic;
+    private var infoTxtBx                            : Dynamic;
+    private var box                            : Dynamic;
+    private var fps                            : Dynamic;
+    private var mb                            : Dynamic;
     
     @:allow(com.flashdynamix.utils)
     private function new()
@@ -279,7 +279,7 @@ class ProfilerContent extends Sprite
         mb.x = 65;
         mb.y = 90;
         
-        var tf : TextFormat = new TextFormat("_sans", 9, 0xAAAAAA);
+        var tf                            : Dynamic= new TextFormat("_sans", 9, 0xAAAAAA);
         
         infoTxtBx = new TextField();
         infoTxtBx.autoSize = TextFieldAutoSize.LEFT;
@@ -323,9 +323,9 @@ class ProfilerContent extends Sprite
         this.addEventListener(Event.REMOVED_FROM_STAGE, removed, false, 0, true);
     }
     
-    public function update(runningTime : Float, minFps : Float, maxFps : Float, minMem : Float, maxMem : Float, currentFps : Float, currentMem : Float, averageFps : Float, fpsList : Array<Dynamic>, memList : Array<Dynamic>, history : Int) : Void
+    public function update(runningTime                            : Dynamic, minFps                            : Dynamic, maxFps                            : Dynamic, minMem                            : Dynamic, maxMem                            : Dynamic, currentFps                            : Dynamic, currentMem                            : Dynamic, averageFps                            : Dynamic, fpsList                            : Dynamic, memList                            : Dynamic, history                            : Dynamic) : Void
     {
-        if (runningTime >= 1)
+        if (as3hx.Compat.truthy(runningTime >= 1))
         {
             minFpsTxtBx.text = as3hx.Compat.toFixed(minFps, 3) + " Fps";
             maxFpsTxtBx.text = as3hx.Compat.toFixed(maxFps, 3) + " Fps";
@@ -333,29 +333,29 @@ class ProfilerContent extends Sprite
             maxMemTxtBx.text = as3hx.Compat.toFixed(maxMem, 3) + " Mb";
         }
         
-        var str_current_fps : String = _lang.stringSimple("profiler_current_fps");
-        var str_average_fps : String = _lang.stringSimple("profiler_average_fps");
-        var str_memory_used : String = _lang.stringSimple("profiler_memory_used");
+        var str_current_fps                            : Dynamic= _lang.stringSimple("profiler_current_fps");
+        var str_average_fps                            : Dynamic= _lang.stringSimple("profiler_average_fps");
+        var str_memory_used                            : Dynamic= _lang.stringSimple("profiler_memory_used");
         
         infoTxtBx.text = str_current_fps + " " + as3hx.Compat.toFixed(currentFps, 3) + "   |   " + str_average_fps + " " + as3hx.Compat.toFixed(averageFps, 3) + "   |   " + str_memory_used + " " + as3hx.Compat.toFixed(currentMem, 3) + " Mb";
         infoTxtBx.x = stage.stageWidth - infoTxtBx.width - 20;
         
-        var vec : Graphics = fps.graphics;
+        var vec                            : Dynamic= fps.graphics;
         vec.clear();
         vec.lineStyle(1, 0x33FF00, 0.7);
         
-        var i : Int = 0;
-        var len : Int = fpsList.length;
-        var height : Int = 35;
-        var width : Int = as3hx.Compat.parseInt(stage.stageWidth - 80);
-        var inc : Float = width / (history - 1);
-        var rateRange : Float = maxFps - minFps;
-        var value : Float;
+        var i                            : Dynamic= 0;
+        var len                            : Dynamic= fpsList.length;
+        var height                            : Dynamic= 35;
+        var width                            : Dynamic= as3hx.Compat.parseInt(stage.stageWidth - 80);
+        var inc                            : Dynamic= width / (history - 1);
+        var rateRange                            : Dynamic= maxFps - minFps;
+        var value                            : Dynamic= null;
         
         for (i in 0...len)
         {
             value = (fpsList[i] - minFps) / rateRange;
-            if (i == 0)
+            if (as3hx.Compat.truthy(i == 0))
             {
                 vec.moveTo(0, -value * height);
             }
@@ -375,7 +375,7 @@ class ProfilerContent extends Sprite
         for (i in 0...len)
         {
             value = (memList[i] - minMem) / rateRange;
-            if (i == 0)
+            if (as3hx.Compat.truthy(i == 0))
             {
                 vec.moveTo(0, -value * height);
             }
@@ -386,20 +386,20 @@ class ProfilerContent extends Sprite
         }
     }
     
-    private function added(e : Event) : Void
+    private function added(e                            : Dynamic) : Void
     {
         resize();
         stage.addEventListener(Event.RESIZE, resize, false, 0, true);
     }
     
-    private function removed(e : Event) : Void
+    private function removed(e                            : Dynamic) : Void
     {
         stage.removeEventListener(Event.RESIZE, resize);
     }
     
-    private function resize(e : Event = null) : Void
+    private function resize(e                            : Dynamic= null) : Void
     {
-        var vec : Graphics = box.graphics;
+        var vec                            : Dynamic= box.graphics;
         vec.clear();
         
         vec.beginFill(0x000000, 0.5);

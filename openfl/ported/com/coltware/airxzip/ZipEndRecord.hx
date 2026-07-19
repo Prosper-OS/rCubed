@@ -18,25 +18,25 @@ import openfl.utils.*;
 class ZipEndRecord
 {
     
-    public static var LENGTH : Int = 22;
-    public static var SIGNATURE : Int = 0x06054b50;
+    public static var LENGTH                            : Dynamic= 22;
+    public static var SIGNATURE                            : Dynamic= 0x06054b50;
     
-    private var _signature : Int;
-    private var _numberDisk : Int;
-    private var _numberDiskStartCentralDir : Int;
-    private var _totalEntriesDisk : Int;
-    private var _totalEntries : Int;
-    private var _sizeCentralDir : Int;
-    private var _offsetCentralDir : Int;
-    private var _commentLength : Int;
-    private var _comment : ByteArray;
+    private var _signature                            : Dynamic;
+    private var _numberDisk                            : Dynamic;
+    private var _numberDiskStartCentralDir                            : Dynamic;
+    private var _totalEntriesDisk                            : Dynamic;
+    private var _totalEntries                            : Dynamic;
+    private var _sizeCentralDir                            : Dynamic;
+    private var _offsetCentralDir                            : Dynamic;
+    private var _commentLength                            : Dynamic;
+    private var _comment                            : Dynamic;
     
     
     public function new()
     {
     }
     
-    public function write(data : IDataOutput, fileNum : Int, offset : Int, centralDirSize : Int) : Void
+    public function write(data                            : Dynamic, fileNum                            : Dynamic, offset                            : Dynamic, centralDirSize                            : Dynamic) : Void
     {
         _signature = SIGNATURE;
         _numberDisk = 0;
@@ -59,9 +59,9 @@ class ZipEndRecord
         data.writeShort(_commentLength);
     }
     
-    public function read(data : IDataInput) : Void
+    public function read(data                            : Dynamic) : Void
     {
-        var bytes : ByteArray = new ByteArray();
+        var bytes                            : Dynamic= new ByteArray();
         bytes.endian = Endian.LITTLE_ENDIAN;
         data.readBytes(bytes, 0, LENGTH);
         
@@ -83,7 +83,7 @@ class ZipEndRecord
         bytes.position = 20;
         _commentLength = bytes.readUnsignedShort();
         
-        if (_commentLength > 0)
+        if (as3hx.Compat.truthy(_commentLength > 0))
         {
             data.readBytes(bytes, LENGTH, _commentLength);
         }

@@ -40,16 +40,16 @@ import openfl.text.TextFormat;
 
 class Label extends Component
 {
-    public var text(get, set) : String;
-    public var autoSize(get, set) : Bool;
-    public var html(get, set) : Bool;
-    public var textField(get, never) : TextField;
-    public var fontSize(never, set) : Int;
+    public var text(get, set)                            : Dynamic;
+    public var autoSize(get, set)                            : Dynamic;
+    public var html(get, set)                            : Dynamic;
+    public var textField(get, never)                            : Dynamic;
+    public var fontSize(never, set)                            : Dynamic;
 
-    private var _autoSize : Bool = true;
-    private var _text : String = "";
-    private var _html : Bool = false;
-    private var _tf : TextField;
+    public var _autoSize                            : Dynamic= true;
+    public var _text                            : Dynamic= "";
+    public var _html                            : Dynamic= false;
+    public var _tf                            : Dynamic;
     
     /**
      * Constructor
@@ -58,7 +58,7 @@ class Label extends Component
      * @param ypos The y position to place this component.
      * @param text The string to use as the initial text in this component.
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, text : String = "")
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, text                            : Dynamic= "")
     {
         this.text = text;
         super(parent, xpos, ypos);
@@ -67,7 +67,7 @@ class Label extends Component
     /**
      * Initializes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         mouseEnabled = false;
@@ -77,7 +77,7 @@ class Label extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         _height = 18;
         _tf = new TextField();
@@ -106,7 +106,7 @@ class Label extends Component
     override public function draw() : Void
     {
         super.draw();
-        if (_html)
+        if (as3hx.Compat.truthy(_html))
         {
             _tf.htmlText = _text;
         }
@@ -114,7 +114,7 @@ class Label extends Component
         {
             _tf.text = _text;
         }
-        if (_autoSize)
+        if (as3hx.Compat.truthy(_autoSize))
         {
             _tf.autoSize = TextFieldAutoSize.LEFT;
             _width = _tf.width;
@@ -139,10 +139,10 @@ class Label extends Component
     /**
      * Gets / sets the text of this Label.
      */
-    private function set_text(t : String) : String
+    private function set_text(t                            : Dynamic) : String
     {
         _text = t;
-        if (_text == null)
+        if (as3hx.Compat.truthy(_text == null))
         {
             _text = "";
         }
@@ -158,7 +158,7 @@ class Label extends Component
     /**
      * Gets / sets whether or not this Label will autosize.
      */
-    private function set_autoSize(b : Bool) : Bool
+    private function set_autoSize(b                            : Dynamic) : Bool
     {
         _autoSize = b;
         return b;
@@ -172,7 +172,7 @@ class Label extends Component
     /**
      * Gets / sets whether or not text will be rendered as HTML or plain text.
      */
-    private function set_html(b : Bool) : Bool
+    private function set_html(b                            : Dynamic) : Bool
     {
         _html = b;
         invalidate();
@@ -192,7 +192,7 @@ class Label extends Component
         return _tf;
     }
     
-    private function set_fontSize(val : Int) : Int
+    private function set_fontSize(val                            : Dynamic) : Int
     {
         _tf.defaultTextFormat = new TextFormat(Fonts.BASE_FONT_CJK, val, 0xFFFFFF);
         invalidate();

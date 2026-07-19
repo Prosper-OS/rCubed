@@ -6,11 +6,11 @@ import openfl.events.Event;
 class MessageReceivedEvent extends Event
 {
     
-    public static inline var MESSAGE_RECEIVED : String = "messageReceived";
+    public static inline var MESSAGE_RECEIVED                              : Dynamic= "messageReceived";
     
-    public var message : Message;
+    public var message                              : Dynamic;
     
-    public function new(type : String, message : Message, bubbles : Bool = false, cancelable : Bool = false)
+    public function new(type                              : Dynamic, message                              : Dynamic, bubbles                              : Dynamic= false, cancelable                              : Dynamic= false)
     {
         super(type, bubbles, cancelable);
         this.message = message;

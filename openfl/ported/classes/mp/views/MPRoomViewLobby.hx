@@ -15,19 +15,19 @@ import openfl.events.KeyboardEvent;
 
 class MPRoomViewLobby extends MPRoomView
 {
-    public var room : MPRoom;
+    public var room                             : Dynamic;
     
-    private var _width : Float = 409;
-    private var _height : Float = 388;
+    private var _width                             : Dynamic= 409;
+    private var _height                             : Dynamic= 388;
     
-    private var roomName : Text;
+    private var roomName                             : Dynamic;
     
-    private var chat : MPViewChatLogRoom;
-    private var userlist : MPViewUserListRoom;
+    private var chat                             : Dynamic;
+    private var userlist                             : Dynamic;
     
-    private var _userProfilePrompt : MPUserProfilePrompt;
+    private var _userProfilePrompt                             : Dynamic;
     
-    public function new(room : MPRoom, parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(room                             : Dynamic, parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         this.room = room;
         
@@ -77,9 +77,9 @@ class MPRoomViewLobby extends MPRoomView
         this.graphics.lineTo(_width, 30);
     }
     
-    override public function onKeyInput(e : KeyboardEvent) : Void
+    override public function onKeyInput(e                             : Dynamic) : Void
     {
-        if (_userProfilePrompt != null)
+        if (as3hx.Compat.truthy(_userProfilePrompt != null))
         {
             _userProfilePrompt.onKeyInput(e);
             return;
@@ -88,22 +88,22 @@ class MPRoomViewLobby extends MPRoomView
         chat.onKeyInput(e);
     }
     
-    public function onChatMessage(e : MPRoomEvent) : Void
+    public function onChatMessage(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             chat.onChatMessage(e);
         }
     }
     
-    override private function updateRoomButton() : Void
+    override public function updateRoomButton() : Void
     {
         this.roomButton.updateText(room.name, sprintf(_lang.string("mp_btn_user_count"), {
                             count : room.userCount
                         }));
     }
     
-    override private function set_width(value : Float) : Float
+    override private function set_width(value                             : Dynamic) : Float
     {
         _width = value;
         redraw();
@@ -115,7 +115,7 @@ class MPRoomViewLobby extends MPRoomView
         return _width;
     }
     
-    override private function set_height(value : Float) : Float
+    override private function set_height(value                             : Dynamic) : Float
     {
         _height = height;
         redraw();
@@ -127,34 +127,34 @@ class MPRoomViewLobby extends MPRoomView
         return _height;
     }
     
-    override private function e_roomMessage(e : MPRoomEvent) : Void
+    override public function e_roomMessage(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             onChatMessage(e);
         }
     }
     
-    override private function e_teamUpdate(e : MPRoomEvent) : Void
+    override public function e_teamUpdate(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
         }
     }
     
-    override private function e_userJoin(e : MPRoomEvent) : Void
+    override public function e_userJoin(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             updateRoomButton();
         }
     }
     
-    override private function e_userLeave(e : MPRoomEvent) : Void
+    override public function e_userLeave(e                             : Dynamic) : Void
     {
-        if (e.room == this.room)
+        if (as3hx.Compat.truthy(e.room == this.room))
         {
             userlist.update();
             updateRoomButton();
@@ -163,7 +163,7 @@ class MPRoomViewLobby extends MPRoomView
     
     override public function dispose() : Void
     {
-        if (_userProfilePrompt != null)
+        if (as3hx.Compat.truthy(_userProfilePrompt != null))
         {
             _userProfilePrompt.close();
             _userProfilePrompt = null;
@@ -172,13 +172,13 @@ class MPRoomViewLobby extends MPRoomView
         super.dispose();
     }
     
-    private function e_onUserSelect(e : MPUserEvent) : Void
+    private function e_onUserSelect(e                             : Dynamic) : Void
     {
         _userProfilePrompt = new MPUserProfilePrompt(e.user, this.room, this);
         _userProfilePrompt.addEventListener(Event.CLOSE, e_onProfileClose);
     }
     
-    private function e_onProfileClose(e : Event) : Void
+    private function e_onProfileClose(e                             : Dynamic) : Void
     {
         _userProfilePrompt.removeEventListener(Event.CLOSE, e_onProfileClose);
         _userProfilePrompt = null;

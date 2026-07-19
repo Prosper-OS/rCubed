@@ -28,32 +28,32 @@ import openfl.utils.Timer;
 
 class MenuMultiplayer extends MenuPanel
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _gvars                       : Dynamic= GlobalVariables.instance;
+    private static var _mp                       : Dynamic= Multiplayer.instance;
+    private static var _lang                       : Dynamic= Language.instance;
     
-    private var watchdog : Timer;
+    private var watchdog                       : Dynamic;
     
-    private var userMessages : MPUserMessagesView;
-    private var roomBrowser : MPServerBrowserView;
-    private var lobbyView : MPRoomView;
-    private var gameView : MPRoomView;
+    private var userMessages                       : Dynamic;
+    private var roomBrowser                       : Dynamic;
+    private var lobbyView                       : Dynamic;
+    private var gameView                       : Dynamic;
     
-    private var btnPrivateMessages : BoxButton;
-    private var btnServerBrowser : BoxButton;
-    private var btnLobbyView : MPMenuRoomButton;
-    private var btnGameView : MPMenuRoomButton;
-    private var btnConnect : BoxButton;
+    private var btnPrivateMessages                       : Dynamic;
+    private var btnServerBrowser                       : Dynamic;
+    private var btnLobbyView                       : Dynamic;
+    private var btnGameView                       : Dynamic;
+    private var btnConnect                       : Dynamic;
     
-    private var activeView : MPView;
+    private var activeView                       : Dynamic;
     
-    private var roomIndicator : IconLeft;
+    private var roomIndicator                       : Dynamic;
     
-    private var pmAlert : Sprite;
-    private var throbber : Throbber;
-    private var guestWarning : Text;
+    private var pmAlert                       : Dynamic;
+    private var throbber                       : Dynamic;
+    private var guestWarning                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
         
@@ -100,11 +100,11 @@ class MenuMultiplayer extends MenuPanel
         watchdog.addEventListener(TimerEvent.TIMER, e_watchdogTick);
         
         // Connect to MP
-        if (Flags.VALUES[Flags.MP_INITAL_LOAD] == null && !_gvars.playerUser.isGuest)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(Flags.VALUES, Flags.MP_INITAL_LOAD) == null && !_gvars.playerUser.isGuest))
         {
-            Flags.VALUES[Flags.MP_INITAL_LOAD] = true;
+            Reflect.setField(Flags.VALUES, Flags.MP_INITAL_LOAD, true);
             
-            if (!_mp.connected)
+            if (as3hx.Compat.truthy(!_mp.connected))
             {
                 e_mpToggle();
             }
@@ -113,7 +113,7 @@ class MenuMultiplayer extends MenuPanel
     
     override public function stageAdd() : Void
     {
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
             stage.addEventListener(KeyboardEvent.KEY_DOWN, e_onKeyDown);
             watchdog.start();
@@ -125,16 +125,16 @@ class MenuMultiplayer extends MenuPanel
     
     override public function stageRemove() : Void
     {
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
             stage.removeEventListener(KeyboardEvent.KEY_DOWN, e_onKeyDown);
             watchdog.stop();
         }
     }
     
-    private function e_onKeyDown(e : KeyboardEvent) : Void
+    private function e_onKeyDown(e                       : Dynamic) : Void
     {
-        if (activeView != null)
+        if (as3hx.Compat.truthy(activeView != null))
         {
             activeView.onKeyInput(e);
         }
@@ -142,9 +142,9 @@ class MenuMultiplayer extends MenuPanel
     
     ////////////////////////////////////////////////////////////////
     
-    private function e_watchdogTick(e : TimerEvent) : Void
+    private function e_watchdogTick(e                       : Dynamic) : Void
     {
-        if (!_mp.connected && btnLobbyView.visible)
+        if (as3hx.Compat.truthy(!_mp.connected && btnLobbyView.visible))
         {
             clearMPViews();
             setNavigation(false);
@@ -154,30 +154,30 @@ class MenuMultiplayer extends MenuPanel
         }
     }
     
-    private function e_onSelectPrivateMessages(e : Event) : Void
+    private function e_onSelectPrivateMessages(e                       : Dynamic) : Void
     {
         setActiveView(userMessages, btnPrivateMessages);
         pmAlert.visible = false;
     }
     
-    private function e_onSelectServerBrowser(e : Event) : Void
+    private function e_onSelectServerBrowser(e                       : Dynamic) : Void
     {
         setActiveView(roomBrowser, btnServerBrowser);
     }
     
-    private function e_onSelectLobby(e : Event) : Void
+    private function e_onSelectLobby(e                       : Dynamic) : Void
     {
         setActiveView(lobbyView, btnLobbyView);
     }
     
-    private function e_onSelectGame(e : Event) : Void
+    private function e_onSelectGame(e                       : Dynamic) : Void
     {
         setActiveView(gameView, btnGameView);
     }
     
-    private function e_mpToggle(event : Event = null) : Void
+    private function e_mpToggle(event                       : Dynamic= null) : Void
     {
-        if (!_mp.connected)
+        if (as3hx.Compat.truthy(!_mp.connected))
         {
             _mp.clearEvents();
             
@@ -209,12 +209,12 @@ class MenuMultiplayer extends MenuPanel
         }
     }
     
-    private function e_onSocketConnect(e : MPEvent) : Void
+    private function e_onSocketConnect(e                       : Dynamic) : Void
     {
         _mp.sendCommand(new MPCLogin(Multiplayer.SERVER_VERSION, _gvars.activeUser, Main.SWF_VERSION, Constant.AIR_VERSION));
     }
     
-    private function e_onSocketDisconnect(e : MPEvent) : Void
+    private function e_onSocketDisconnect(e                       : Dynamic) : Void
     {
         clearMPViews();
         setNavigation(false);
@@ -222,34 +222,34 @@ class MenuMultiplayer extends MenuPanel
         throbber.visible = false;
         throbber.stop();
         
-        if (e.command.type == "error")
+        if (as3hx.Compat.truthy(e.command.type == "error"))
         {
             Alert.add(_lang.string("mp_error") + " " + e.command.action);
         }
     }
     
-    private function e_onSysLoginOK(e : MPEvent) : Void
+    private function e_onSysLoginOK(e                       : Dynamic) : Void
     {
         _mp.updateLobby();
     }
     
-    private function e_onRoomJoinOK(e : MPRoomEvent) : Void
+    private function e_onRoomJoinOK(e                       : Dynamic) : Void
     {
-        if (e.room)
+        if (as3hx.Compat.truthy(e.room))
         {
             onRoomJoined(e.room);
         }
     }
     
-    private function e_onRoomCreateOK(e : MPRoomEvent) : Void
+    private function e_onRoomCreateOK(e                       : Dynamic) : Void
     {
-        if (e.room)
+        if (as3hx.Compat.truthy(e.room))
         {
             onRoomJoined(e.room);
         }
     }
     
-    private function onRoomJoined(room : MPRoom) : Void
+    private function onRoomJoined(room                       : Dynamic) : Void
     {
         var _sw0_ = (room.type);        
 
@@ -287,18 +287,18 @@ class MenuMultiplayer extends MenuPanel
         }
     }
     
-    private function e_onRoomLeaveOK(e : MPRoomEvent) : Void
+    private function e_onRoomLeaveOK(e                       : Dynamic) : Void
     {
-        if (_mp.GAME_ROOM == null)
+        if (as3hx.Compat.truthy(_mp.GAME_ROOM == null))
         {
             clearGameView();
         }
     }
     
     
-    private function e_onRoomDeleteOK(e : MPRoomEvent) : Void
+    private function e_onRoomDeleteOK(e                       : Dynamic) : Void
     {
-        if (_mp.GAME_ROOM == null)
+        if (as3hx.Compat.truthy(_mp.GAME_ROOM == null))
         {
             clearGameView();
         }
@@ -315,20 +315,20 @@ class MenuMultiplayer extends MenuPanel
     
     private function clearMPViews() : Void
     {
-        if (activeView != null)
+        if (as3hx.Compat.truthy(activeView != null))
         {
             activeView.onExit();
             activeView = null;
         }
         
-        if (lobbyView != null)
+        if (as3hx.Compat.truthy(lobbyView != null))
         {
             lobbyView.dispose();
             removeChild(lobbyView);
             lobbyView = null;
         }
         
-        if (gameView != null)
+        if (as3hx.Compat.truthy(gameView != null))
         {
             gameView.dispose();
             removeChild(gameView);
@@ -336,7 +336,7 @@ class MenuMultiplayer extends MenuPanel
             btnGameView.visible = false;
         }
         
-        if (userMessages != null)
+        if (as3hx.Compat.truthy(userMessages != null))
         {
             userMessages.removeEventListener(Event.CHANGE, e_onChatUpdate);
             userMessages.dispose();
@@ -344,7 +344,7 @@ class MenuMultiplayer extends MenuPanel
             userMessages = null;
         }
         
-        if (roomBrowser != null)
+        if (as3hx.Compat.truthy(roomBrowser != null))
         {
             roomBrowser.dispose();
             removeChild(roomBrowser);
@@ -356,12 +356,12 @@ class MenuMultiplayer extends MenuPanel
     
     private function clearGameView() : Void
     {
-        if (activeView == gameView)
+        if (as3hx.Compat.truthy(activeView == gameView))
         {
             setActiveView(lobbyView, btnLobbyView);
         }
         
-        if (gameView != null)
+        if (as3hx.Compat.truthy(gameView != null))
         {
             removeChild(gameView);
             gameView.dispose();
@@ -370,14 +370,14 @@ class MenuMultiplayer extends MenuPanel
         btnGameView.visible = false;
     }
     
-    private function setActiveView(active : MPView, btn : Sprite) : Void
+    private function setActiveView(active                       : Dynamic, btn                       : Dynamic) : Void
     {
-        if (active == null)
+        if (as3hx.Compat.truthy(active == null))
         {
             return;
         }
         
-        if (activeView != null)
+        if (as3hx.Compat.truthy(activeView != null))
         {
             activeView.visible = false;
             activeView.onExit();
@@ -389,7 +389,7 @@ class MenuMultiplayer extends MenuPanel
         roomIndicator.y = btn.y + btn.height / 2;
     }
     
-    private function e_onViewChange(e : MPViewEvent) : Void
+    private function e_onViewChange(e                       : Dynamic) : Void
     {
         var _sw1_ = (e.view);        
 
@@ -409,7 +409,7 @@ class MenuMultiplayer extends MenuPanel
         }
     }
     
-    private function setNavigation(state : Bool) : Void
+    private function setNavigation(state                       : Dynamic) : Void
     {
         btnPrivateMessages.visible = state;
         btnServerBrowser.visible = state;
@@ -429,7 +429,7 @@ class MenuMultiplayer extends MenuPanel
         throbber.stop();
     }
     
-    private function e_onChatUpdate(e : Event) : Void
+    private function e_onChatUpdate(e                       : Dynamic) : Void
     {
         pmAlert.visible = _mp.hasUnreadPM();
     }

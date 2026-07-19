@@ -26,21 +26,23 @@ import popups.replays.ReplayHistoryTabLocal;
 
 class ScoreHandler extends EventDispatcher
 {
-    public static var instance(get, never) : ScoreHandler;
+    private static var onComplete                  : Dynamic;
+    private static var onFailure                  : Dynamic;
+    public static var instance(get, never)                             : Dynamic;
 
     ///- Singleton Instance
-    private static var _instance : ScoreHandler = null;
+    private static var _instance                             : Dynamic= null;
     
     ///- Private Locals
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _avars : ArcGlobals = ArcGlobals.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                             : Dynamic= GlobalVariables.instance;
+    private var _avars                             : Dynamic= ArcGlobals.instance;
+    private var _lang                             : Dynamic= Language.instance;
     
     ///- Constructor
-    public function new(en : ScoreHandlerSingletonEnforcer)
+    public function new(en                             : Dynamic)
     {
         super();
-        if (en == null)
+        if (as3hx.Compat.truthy(en == null))
         {
             throw cast(("Multi-Instance Blocked"), Error);
         }
@@ -48,7 +50,7 @@ class ScoreHandler extends EventDispatcher
     
     private static function get_instance() : ScoreHandler
     {
-        if (_instance == null)
+        if (as3hx.Compat.truthy(_instance == null))
         {
             _instance = new ScoreHandler(new ScoreHandlerSingletonEnforcer());
         }
@@ -65,9 +67,9 @@ class ScoreHandler extends EventDispatcher
      * @param result PostVars
      * @return SHA1 Hash
      */
-    private function getSaveHash(result : Dynamic) : String
+    private function getSaveHash(result                             : Dynamic) : String
     {
-        var dataSerial : String = "";
+        var dataSerial                             : Dynamic= "";
         dataSerial += "amazing:" + result.amazing + ",";
         dataSerial += "perfect:" + result.perfect + ",";
         dataSerial += "good:" + result.good + ",";
@@ -95,9 +97,9 @@ class ScoreHandler extends EventDispatcher
      * @param check_alt_engine Check for Alt Engine. Also checks user isn't guest.
      * @return
      */
-    public function canSendScore(result : GameScoreResult, valid_score : Bool = true, valid_replay : Bool = true, check_replay : Bool = true, check_alt_engine : Bool = true) : Bool
+    public function canSendScore(result                             : Dynamic, valid_score                             : Dynamic= true, valid_replay                             : Dynamic= true, check_replay                             : Dynamic= true, check_alt_engine                             : Dynamic= true) : Bool
     {
-        var ret : Bool = false;
+        var ret                             : Dynamic= false;
         ret = (ret) ? ret : valid_score && !result.options.isScoreValid(true, false);
         ret = (ret) ? ret : valid_replay && !result.options.isScoreValid(false, true);
         ret = (ret) ? ret : check_replay && (result.replayData == null || result.replayData.length <= 0 || result.score <= 0 || (result.options.replay && result.options.replay.isEdited) || result.user.siteId != _gvars.playerUser.siteId);
@@ -116,9 +118,9 @@ class ScoreHandler extends EventDispatcher
      * @param check_alt_engine Check for Alt Engine. Also checks user isn't guest.
      * @return
      */
-    public function canUpdateScore(result : GameScoreResult, valid_score : Bool = true, valid_replay : Bool = true, check_replay : Bool = true, check_alt_engine : Bool = true) : Bool
+    public function canUpdateScore(result                             : Dynamic, valid_score                             : Dynamic= true, valid_replay                             : Dynamic= true, check_replay                             : Dynamic= true, check_alt_engine                             : Dynamic= true) : Bool
     {
-        var ret : Bool = false;
+        var ret                             : Dynamic= false;
         ret = (ret) ? ret : valid_score && !result.options.isScoreUpdated(true, false);
         ret = (ret) ? ret : valid_replay && !result.options.isScoreUpdated(false, true);
         ret = (ret) ? ret : check_replay && (result.replayData.length <= 0 || result.score <= 0 || (result.options.replay && result.options.replay.isEdited) || result.user.siteId != _gvars.playerUser.siteId);
@@ -129,9 +131,9 @@ class ScoreHandler extends EventDispatcher
     /**
      * Submits a score to the website for the given GameScoreResult.
      */
-    public function sendScore(gameResult : GameScoreResult) : Void
+    public function sendScore(gameResult                             : Dynamic) : Void
     {
-        if (gameResult.songInfo.engine)
+        if (as3hx.Compat.truthy(gameResult.songInfo.engine))
         {
             sendAltEngineScore(gameResult);
         }
@@ -141,25 +143,25 @@ class ScoreHandler extends EventDispatcher
         }
     }
     
-    public function sendCanonScore(gameResult : GameScoreResult) : Void
+    public function sendCanonScore(gameResult                             : Dynamic) : Void
     {
-        if (gameResult.songInfo.engine)
+        if (as3hx.Compat.truthy(gameResult.songInfo.engine))
         {
             return;
         }
         
-        if (!canSendScore(gameResult, true, true, false, false))
+        if (as3hx.Compat.truthy(!canSendScore(gameResult, true, true, false, false)))
         {
             Alert.add(_lang.string("game_result_error_enabled_mods"), 90, Alert.RED);
             return;
         }
         
         // Loader
-        var _loader : URLLoader = new URLLoader();
+        var _loader                             : Dynamic= new URLLoader();
         addLoaderListeners(_loader, onComplete, onFailure);
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.SONG_SAVE_URL));
-        var postData : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.SONG_SAVE_URL));
+        var postData                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(postData);
         
         // Post Game Data
@@ -190,14 +192,14 @@ class ScoreHandler extends EventDispatcher
         req.method = URLRequestMethod.POST;
         _loader.load(req);
         
-        var onComplete : Event->Void = function(e : Event) : Void
+        onComplete = function(e                             : Dynamic) : Void
         {
             Logger.info(instance, "Canon Data Loaded");
             removeLoaderListeners(_loader, onComplete, onFailure);
             
             // Parse Response
-            var siteDataString : String = e.target.data;
-            var data : Dynamic;
+            var siteDataString                             : Dynamic= e.target.data;
+            var data                             : Dynamic= null;
             try
             {
                 data = haxe.Json.parse(siteDataString);
@@ -219,32 +221,32 @@ class ScoreHandler extends EventDispatcher
             
             Logger.success(instance, "Score Save Result: " + data.result);
             
-            if (data.result == 0)
+            if (as3hx.Compat.truthy(data.result == 0))
             {
                 Alert.add(_lang.string("game_result_save_success"), 90, Alert.DARK_GREEN);
                 
                 // Server Message
-                if (data.gServerMessage != null)
+                if (as3hx.Compat.truthy(data.gServerMessage != null))
                 {
                     Alert.add(data.gServerMessage, 360);
                 }
                 
                 // Server Message Popup
-                if (data.gServerMessageFull != null)
+                if (as3hx.Compat.truthy(data.gServerMessageFull != null))
                 {
                     _gvars.gameMain.addPopupQueue(new PopupMessage(_gvars.gameMain, data.gServerMessageFull, (data.gServerMessageTitle) ? data.gServerMessageTitle : ""));
                 }
                 
                 // Token Unlock
-                if (data.token_unlocks != null)
+                if (as3hx.Compat.truthy(data.token_unlocks != null))
                 {
-                    for (token_item/* AS3HX WARNING could not determine type for var: token_item exp: EField(EIdent(data),token_unlocks) type: null */ in data.token_unlocks)
+                    for (token_item/* AS3HX WARNING could not determine type for var: token_item exp: EField(EIdent(data),token_unlocks) type: null */ in as3hx.Compat.iter(data.token_unlocks))
                     {
                         _gvars.gameMain.addPopupQueue(new PopupTokenUnlock(_gvars.gameMain, token_item.type, token_item.ID, token_item.text));
                         _gvars.unlockTokenById(token_item.type, token_item.ID);
                     }
                 }
-                else if (data.tUnlock != null)
+                else if (as3hx.Compat.truthy(data.tUnlock != null))
                 {
                     _gvars.gameMain.addPopupQueue(new PopupTokenUnlock(_gvars.gameMain, data.tType, data.tID, data.tText, data.tName, data.tMessage));
                     _gvars.unlockTokenById(data.tType, data.tID);
@@ -257,7 +259,7 @@ class ScoreHandler extends EventDispatcher
                 Playlist.instanceCanon.updateSongAccess();
                 
                 // Valid Legal Score
-                if (postData.update)
+                if (as3hx.Compat.truthy(postData.update))
                 {
                     _gvars.songResultRanks[gameResult.game_index] = {
                                 error : false,
@@ -267,7 +269,7 @@ class ScoreHandler extends EventDispatcher
                             };
                     
                     // Check Old vs New Rankings.
-                    if (data.new_ranking < data.old_ranking && data.old_ranking > 0)
+                    if (as3hx.Compat.truthy(data.new_ranking < data.old_ranking && data.old_ranking > 0))
                     {
                         Alert.add(sprintf(_lang.string("new_best_rank"), {
                                             old : data.old_ranking,
@@ -277,10 +279,10 @@ class ScoreHandler extends EventDispatcher
                     }
                     
                     // Check raw score vs level ranks and update.
-                    var songInfo : SongInfo = gameResult.songInfo;
+                    var songInfo                             : Dynamic= gameResult.songInfo;
                     
-                    var previousLevelRanks : Dynamic = _gvars.playerUser.level_ranks[songInfo.level];
-                    var newLevelRanks : Dynamic = {
+                    var previousLevelRanks                             : Dynamic= _gvars.playerUser.level_ranks[songInfo.level];
+                    var newLevelRanks                             : Dynamic= {
                         id : songInfo.level,
                         genre : songInfo.genre,
                         rank : data.new_ranking,
@@ -300,12 +302,12 @@ class ScoreHandler extends EventDispatcher
                     };
                     
                     // Update Level Ranks is missing or better.
-                    if (previousLevelRanks == null || gameResult.score > previousLevelRanks.score) {
-if (previousLevelRanks != null)
+                    if (as3hx.Compat.truthy(previousLevelRanks == null || gameResult.score > previousLevelRanks.score)) {
+if (as3hx.Compat.truthy(previousLevelRanks != null))
                         {
-                            Reflect.field(newLevelRanks, "plays") += Reflect.field(previousLevelRanks, "plays");
-                            Reflect.field(newLevelRanks, "aaas") += Reflect.field(previousLevelRanks, "aaas");
-                            Reflect.field(newLevelRanks, "fcs") += Reflect.field(previousLevelRanks, "fcs");
+                            Reflect.setField(newLevelRanks, "plays", as3hx.Compat.parseInt(Reflect.field(newLevelRanks, "plays")) + as3hx.Compat.parseInt(Reflect.field(previousLevelRanks, "plays")));
+                            Reflect.setField(newLevelRanks, "aaas", as3hx.Compat.parseInt(Reflect.field(newLevelRanks, "aaas")) + as3hx.Compat.parseInt(Reflect.field(previousLevelRanks, "aaas")));
+                            Reflect.setField(newLevelRanks, "fcs", as3hx.Compat.parseInt(Reflect.field(newLevelRanks, "fcs")) + as3hx.Compat.parseInt(Reflect.field(previousLevelRanks, "fcs")));
                         }
                         _gvars.playerUser.level_ranks[songInfo.level] = newLevelRanks;
                         
@@ -317,9 +319,9 @@ if (previousLevelRanks != null)
                     {
                         
                         {
-                            Reflect.field(previousLevelRanks, "plays") += Reflect.field(newLevelRanks, "plays");
-                            Reflect.field(previousLevelRanks, "aaas") += Reflect.field(newLevelRanks, "aaas");
-                            Reflect.field(previousLevelRanks, "fcs") += Reflect.field(newLevelRanks, "fcs");
+                            Reflect.setField(previousLevelRanks, "plays", as3hx.Compat.parseInt(Reflect.field(previousLevelRanks, "plays")) + as3hx.Compat.parseInt(Reflect.field(newLevelRanks, "plays")));
+                            Reflect.setField(previousLevelRanks, "aaas", as3hx.Compat.parseInt(Reflect.field(previousLevelRanks, "aaas")) + as3hx.Compat.parseInt(Reflect.field(newLevelRanks, "aaas")));
+                            Reflect.setField(previousLevelRanks, "fcs", as3hx.Compat.parseInt(Reflect.field(previousLevelRanks, "fcs")) + as3hx.Compat.parseInt(Reflect.field(newLevelRanks, "fcs")));
                         }
                     }
                     
@@ -340,7 +342,7 @@ if (previousLevelRanks != null)
                     instance.dispatchEvent(new ScoreHandlerEvent(ScoreHandlerEvent.FAILURE, gameResult, _lang.string("results_game_mods_enabled_1"), _lang.string("results_game_mods_enabled_2")));
                 }
             }
-            else if (data.ignore)
+            else if (as3hx.Compat.truthy(data.ignore))
             {
                 _gvars.songResultRanks[gameResult.game_index] = {
                             error : true,
@@ -362,7 +364,7 @@ if (previousLevelRanks != null)
             }
         }
         
-        var onFailure : ErrorEvent->Void = function(e : ErrorEvent = null) : Void
+        onFailure = function(e                             : Dynamic= null) : Void
         {
             Logger.error(instance, "Canon Score Save Failure: " + Logger.event_error(e));
             removeLoaderListeners(_loader, onComplete, onFailure);
@@ -387,17 +389,15 @@ if (previousLevelRanks != null)
      * be called directly and instead you shoulkd simple call `sendScore()`
      * which will call this is necessary.
      */
-    public function sendAltEngineScore(gameResult : GameScoreResult) : Void
+    public function sendAltEngineScore(gameResult                             : Dynamic) : Void
     {
-        if (!gameResult.songInfo.engine)
+        if (as3hx.Compat.truthy(!gameResult.songInfo.engine))
         {
             return;
         }
         
         // Update Local Alt Engine Levelranks
-        if (((gameResult.legacyLastRank = _avars.legacyLevelRanksGet(gameResult.songInfo)) || {
-                score : 0
-            }).score < gameResult.score)
+        if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(as3hx.Compat.field(as3hx.Compat.orValue(gameResult.legacyLastRank = _avars.legacyLevelRanksGet(gameResult.songInfo), { score : 0 }), "score")) < as3hx.Compat.parseFloat(gameResult.score)))
         {
             _avars.legacyLevelRanksSet(gameResult.songInfo, {
                         score : gameResult.score,
@@ -416,13 +416,13 @@ if (previousLevelRanks != null)
         }
         
         // Loader
-        var _loader : URLLoader = new URLLoader();
+        var _loader                             : Dynamic= new URLLoader();
         addLoaderListeners(_loader, onComplete, onFailure);
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.ALT_SONG_SAVE_URL));
-        var scoreSender : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.ALT_SONG_SAVE_URL));
+        var scoreSender                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(scoreSender);
-        var sd : Dynamic = {
+        var sd                             : Dynamic= {
             arrows : gameResult.song.chart.Notes.length,
             author : gameResult.songInfo.author,
             difficulty : gameResult.songInfo.difficulty,
@@ -435,7 +435,7 @@ if (previousLevelRanks != null)
         };
         
         // Post Game Data
-        var dataObject : Dynamic = { };
+        var dataObject                             : Dynamic= { };
         dataObject.engine = gameResult.songInfo.engine;
         dataObject.song_data = sd;
         dataObject.level = gameResult.level;
@@ -463,14 +463,14 @@ if (previousLevelRanks != null)
         req.method = URLRequestMethod.POST;
         _loader.load(req);
         
-        var onComplete : Event->Void = function(e : Event) : Void
+        onComplete = function(e                             : Dynamic) : Void
         {
             Logger.info(instance, "Alt Data Loaded");
             removeLoaderListeners(_loader, onComplete, onFailure);
             
             // Parse Response
-            var siteDataString : String = e.target.data;
-            var data : Dynamic;
+            var siteDataString                             : Dynamic= e.target.data;
+            var data                             : Dynamic= null;
             try
             {
                 data = haxe.Json.parse(siteDataString);
@@ -487,20 +487,20 @@ if (previousLevelRanks != null)
             
             Logger.success(instance, "Alt Score Save Result: " + data.result);
             
-            if (data.result == 0) {
-if (data.gServerMessage != null)
+            if (as3hx.Compat.truthy(data.result == 0)) {
+if (as3hx.Compat.truthy(data.gServerMessage != null))
                 {
                     Alert.add(data.gServerMessage, 360);
                 }
                 
                 // Server Message Popup
-                if (data.gServerMessageFull != null)
+                if (as3hx.Compat.truthy(data.gServerMessageFull != null))
                 {
                     _gvars.gameMain.addPopupQueue(new PopupMessage(_gvars.gameMain, data.gServerMessageFull, (data.gServerMessageTitle) ? data.gServerMessageTitle : ""));
                 }
                 
                 // Token Unlock
-                if (data.tUnlock != null)
+                if (as3hx.Compat.truthy(data.tUnlock != null))
                 {
                     _gvars.gameMain.addPopupQueue(new PopupTokenUnlock(_gvars.gameMain, data.tType, data.tID, data.tText, data.tName, data.tMessage));
                 }
@@ -510,7 +510,7 @@ if (data.gServerMessage != null)
             }
         }
         
-        var onFailure : ErrorEvent->Void = function(err : ErrorEvent = null) : Void
+        onFailure = function(err                             : Dynamic= null) : Void
         {
             Logger.error(instance, "Alt Score Save Failure: " + Logger.event_error(err));
             removeLoaderListeners(_loader, onComplete, onFailure);
@@ -526,18 +526,18 @@ if (data.gServerMessage != null)
      * This will also record the replay into a .txt file if
      * `Auto-Save Replays` is enabled in the settings screen.
      */
-    public function saveLocalReplay(result : GameScoreResult) : Void
+    public function saveLocalReplay(result                             : Dynamic) : Void
     {
-        if (!canSendScore(result, true, false, true, false))
+        if (as3hx.Compat.truthy(!canSendScore(result, true, false, true, false)))
         {
             return;
         }
         
-        var nR : Replay = new Replay(_gvars.gameIndex);
+        var nR                             : Dynamic= new Replay(_gvars.gameIndex);
         nR.user = _gvars.playerUser;
         nR.level = result.songInfo.level;
         nR.settings = result.options.settingsEncode();
-        if (result.songInfo.engine)
+        if (as3hx.Compat.truthy(result.songInfo.engine))
         {
             nR.settings.arc_engine = _avars.legacyEncode(result.songInfo);
         }
@@ -555,29 +555,29 @@ if (data.gServerMessage != null)
         _gvars.replayHistory.unshift(nR);
         
         // Display F2 Shortcut key only once per session.
-        if (Flags.VALUES[Flags.F2_REPLAYS] == null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(Flags.VALUES, Flags.F2_REPLAYS) == null))
         {
             Alert.add(_lang.string("replay_save_success"), 150);
-            Flags.VALUES[Flags.F2_REPLAYS] = true;
+            Reflect.setField(Flags.VALUES, Flags.F2_REPLAYS, true);
         }
         
         // Write Local txt Replay Encode
-        if (_gvars.air_autoSaveLocalReplays && result.replayBin != null)
+        if (as3hx.Compat.truthy(_gvars.air_autoSaveLocalReplays && result.replayBin != null))
         {
             try
             {
-                var path : String = AirContext.getReplayPath(result.song);
+                var path                             : Dynamic= AirContext.getReplayPath(result.song);
                 path += ((result.song.songInfo.level_id) ? result.song.songInfo.level_id : Std.string(result.song.id));
                 path += "_" + (Date.now().getTime());
                 path += "_" + (result.pa_string + "-" + result.max_combo);
                 path += ".txt";
                 
                 // Store Bin Encoded Replay
-                if (!AirContext.doesFileExist(path))
+                if (as3hx.Compat.truthy(!AirContext.doesFileExist(path)))
                 {
                     AirContext.writeTextFile(AirContext.getAppFile(path), nR.getEncode());
                     
-                    var cachePath : String = path.substr(Constant.REPLAY_PATH.length);
+                    var cachePath                             : Dynamic= path.substr(Constant.REPLAY_PATH.length);
                     _gvars.file_replay_cache.setValue(cachePath, result.replay_cache_object);
                     _gvars.file_replay_cache.save();
                     
@@ -594,15 +594,15 @@ if (data.gServerMessage != null)
     /**
      * Sends a post for the replay of selected GameScoreResult.
      */
-    public function saveServerReplay(gameResult : GameScoreResult) : Void
+    public function saveServerReplay(gameResult                             : Dynamic) : Void
     // Loader
     {
         
-        var _loader : URLLoader = new URLLoader();
+        var _loader                             : Dynamic= new URLLoader();
         addLoaderListeners(_loader, onComplete, onFailure);
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_SAVE_REPLAY_URL));
-        var scoreSender : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.USER_SAVE_REPLAY_URL));
+        var scoreSender                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(scoreSender);
         
         // Post Game Data
@@ -634,16 +634,16 @@ if (data.gServerMessage != null)
         // Saving Vars
         _loader.load(req);
         
-        var onComplete : Event->Void = function(e : Event) : Void
+        onComplete = function(e                             : Dynamic) : Void
         {
             removeLoaderListeners(_loader, onComplete, onFailure);
             
-            var data : Dynamic = haxe.Json.parse(e.target.data);
+            var data                             : Dynamic= haxe.Json.parse(e.target.data);
             
             Alert.add(_lang.string("replay_save_status_" + data.result), 90, (data.result == 0) ? Alert.GREEN : Alert.RED);
         }
         
-        var onFailure : Event->Void = function(e : Event = null) : Void
+        onFailure = function(e                             : Dynamic= null) : Void
         {
             removeLoaderListeners(_loader, onComplete, onFailure);
             Alert.add(_lang.string("error_server_connection_failure"), 120, Alert.RED);
@@ -655,7 +655,7 @@ if (data.gServerMessage != null)
      * @param completeHandler On Complete Handler
      * @param errorHandler On Error Handler
      */
-    private function addLoaderListeners(_loader : URLLoader, completeHandler : Dynamic, errorHandler : Dynamic) : Void
+    private function addLoaderListeners(_loader                             : Dynamic, completeHandler                             : Dynamic, errorHandler                             : Dynamic) : Void
     {
         _loader.addEventListener(Event.COMPLETE, completeHandler);
         _loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
@@ -667,7 +667,7 @@ if (data.gServerMessage != null)
      * @param completeHandler On Complete Handler
      * @param errorHandler On Error Handler
      */
-    private function removeLoaderListeners(_loader : URLLoader, completeHandler : Dynamic, errorHandler : Dynamic) : Void
+    private function removeLoaderListeners(_loader                             : Dynamic, completeHandler                             : Dynamic, errorHandler                             : Dynamic) : Void
     {
         _loader.removeEventListener(Event.COMPLETE, completeHandler);
         _loader.removeEventListener(IOErrorEvent.IO_ERROR, errorHandler);
@@ -678,7 +678,8 @@ if (data.gServerMessage != null)
 
 class ScoreHandlerSingletonEnforcer
 {
-
+    private static var onComplete                  : Dynamic;
+    private static var onFailure                  : Dynamic;
     public function new()
     {
     }

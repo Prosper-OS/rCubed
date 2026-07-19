@@ -29,39 +29,39 @@ import popups.PopupHighscores;
 
 class GameResultsMP extends MenuPanel
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _lang : Language = Language.instance;
-    private static var _score : ScoreHandler = ScoreHandler.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _gvars                       : Dynamic= GlobalVariables.instance;
+    private static var _lang                       : Dynamic= Language.instance;
+    private static var _score                       : Dynamic= ScoreHandler.instance;
+    private static var _mp                       : Dynamic= Multiplayer.instance;
     
     // Multiplayer
-    private var room : MPRoomFFR;
+    private var room                       : Dynamic;
     
     // Results
-    private var resultIndex : Int = 0;
-    private var result : GameScoreResult;
+    private var resultIndex                       : Dynamic= 0;
+    private var result                       : Dynamic;
     
-    private var songInfo : SongInfo;
-    private var matchResults : MPMatchResultsFFR;
+    private var songInfo                       : Dynamic;
+    private var matchResults                       : Dynamic;
     
-    private var background : GameResultBackground;
-    private var singleResult : GameResultSingleView;
-    private var overviewResult : GameResultFFRView;
+    private var background                       : Dynamic;
+    private var singleResult                       : Dynamic;
+    private var overviewResult                       : Dynamic;
     
     // Title Bar
-    private var navSaveReplay : BoxIcon;
-    private var navScreenShot : BoxIcon;
+    private var navSaveReplay                       : Dynamic;
+    private var navScreenShot                       : Dynamic;
     
     // Game Result
-    private var navBack : BoxButton;
+    private var navBack                       : Dynamic;
     
     // Menu Bar
-    private var navOptions : BoxButton;
-    private var navHighscores : BoxButton;
-    private var navMenu : BoxButton;
-    private var navEnableTimer : Timer;
+    private var navOptions                       : Dynamic;
+    private var navHighscores                       : Dynamic;
+    private var navMenu                       : Dynamic;
+    private var navEnableTimer                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
     }
@@ -71,11 +71,11 @@ class GameResultsMP extends MenuPanel
     {
         
         room = try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
-        if (room.lastMatchIndex == -1)
+        if (as3hx.Compat.truthy(room.lastMatchIndex == -1))
         {
             matchResults = room.lastMatch;
         }
-        else if (room.lastMatchIndex >= 0 && room.lastMatchIndex < room.lastMatchHistory.length)
+        else if (as3hx.Compat.truthy(room.lastMatchIndex >= 0 && room.lastMatchIndex < room.lastMatchHistory.length))
         {
             matchResults = room.lastMatchHistory[room.lastMatchIndex];
         }
@@ -99,13 +99,13 @@ class GameResultsMP extends MenuPanel
         addChild(background);
         
         // Background Noise
-        var noiseSource : BitmapData = new BitmapData(Main.GAME_WIDTH, Main.GAME_HEIGHT, false, 0x00000000);
+        var noiseSource                       : Dynamic= new BitmapData(Main.GAME_WIDTH, Main.GAME_HEIGHT, false, 0x00000000);
         noiseSource.perlinNoise(Main.GAME_WIDTH, Main.GAME_HEIGHT, 12, Math.round(haxe.Timer.stamp() * 1000), true, false, 7, true);
-        var noiseImage : Bitmap = new Bitmap(noiseSource);
+        var noiseImage                       : Dynamic= new Bitmap(noiseSource);
         noiseImage.alpha = 0.15;
         background.addChild(noiseImage);
         
-        if (matchResults != null)
+        if (as3hx.Compat.truthy(matchResults != null))
         {
             overviewResult = new GameResultFFRView(room, matchResults, e_onScoreClick);
             addChild(overviewResult);
@@ -121,8 +121,8 @@ class GameResultsMP extends MenuPanel
         addChild(singleResult);
         
         // Main Navigation Buttons
-        var buttonMenu : Sprite = new Sprite();
-        var buttonMenuItems : Array<Dynamic> = [];
+        var buttonMenu                       : Dynamic= new Sprite();
+        var buttonMenuItems                       : Dynamic= [];
         buttonMenu.x = 22;
         buttonMenu.y = 428;
         this.addChild(buttonMenu);
@@ -136,8 +136,8 @@ class GameResultsMP extends MenuPanel
         navMenu = new BoxButton(buttonMenu, 0, 0, 170, 40, _lang.string("game_results_menu_exit_menu"), 17, eventHandler);
         buttonMenuItems.push(navMenu);
         
-        var BUTTON_GAP : Int = 11;
-        var BUTTON_WIDTH : Int = as3hx.Compat.parseInt((735 - (Math.max(0, buttonMenuItems.length - 1) * BUTTON_GAP)) / buttonMenuItems.length);
+        var BUTTON_GAP                       : Dynamic= 11;
+        var BUTTON_WIDTH                       : Dynamic= as3hx.Compat.parseInt((735 - (Math.max(0, buttonMenuItems.length - 1) * BUTTON_GAP)) / buttonMenuItems.length);
         for (bx in 0...buttonMenuItems.length)
         {
             buttonMenuItems[bx].width = BUTTON_WIDTH;
@@ -168,10 +168,10 @@ class GameResultsMP extends MenuPanel
         stage.addEventListener(MouseEvent.MOUSE_MOVE, e_mouseMove);
         
         // Return to Multiplayer Menu
-        Flags.VALUES[Flags.MP_MENU_RETURN] = true;
+        Reflect.setField(Flags.VALUES, Flags.MP_MENU_RETURN, true);
         
         // Enable Menu after 1 second.
-        if (room.lastMatchIndex == -1)
+        if (as3hx.Compat.truthy(room.lastMatchIndex == -1))
         {
             navOptions.enabled = navMenu.enabled = navHighscores.enabled = false;
             navEnableTimer = new Timer(1000);
@@ -182,7 +182,7 @@ class GameResultsMP extends MenuPanel
     
     override public function stageRemove() : Void
     {
-        if (room.lastMatchIndex < 0)
+        if (as3hx.Compat.truthy(room.lastMatchIndex < 0))
         {
             _mp.sendCommand(new MPCFFRGameStateChange(room, "menu"));
         }
@@ -200,22 +200,22 @@ class GameResultsMP extends MenuPanel
         super.stageRemove();
     }
     
-    private function e_mouseMove(e : MouseEvent) : Void
+    private function e_mouseMove(e                       : Dynamic) : Void
     {
-        if (singleResult != null && singleResult.visible)
+        if (as3hx.Compat.truthy(singleResult != null && singleResult.visible))
         {
             singleResult.e_graphHover(e);
         }
     }
     
-    private function e_onScoreClick(index : Float) : Void
+    private function e_onScoreClick(index                       : Dynamic) : Void
     {
         displayGameResult(index);
     }
     
-    private function e_onScoreResult(e : ScoreHandlerEvent) : Void
+    private function e_onScoreResult(e                       : Dynamic) : Void
     {
-        if (singleResult != null && singleResult.visible)
+        if (as3hx.Compat.truthy(singleResult != null && singleResult.visible))
         {
             singleResult.onScoreResult(e);
         }
@@ -224,7 +224,7 @@ class GameResultsMP extends MenuPanel
         _gvars.gameMain.displayPopupQueue();
     }
     
-    private function e_navEnable(e : TimerEvent) : Void
+    private function e_navEnable(e                       : Dynamic) : Void
     {
         navOptions.enabled = navMenu.enabled = true;
         navHighscores.enabled = songInfo && !songInfo.engine;
@@ -234,14 +234,14 @@ class GameResultsMP extends MenuPanel
     // Results Display Logic
     //******************************************************************************************//
     
-    public function displayGameResult(gameIndex : Int) : Void
+    public function displayGameResult(gameIndex                       : Dynamic) : Void
     // Set Index
     {
         
         resultIndex = gameIndex;
         
         // Single Score - Skipped
-        if (gameIndex == -2)
+        if (as3hx.Compat.truthy(gameIndex == -2))
         {
             singleResult.visible = true;
             navBack.visible = false;
@@ -255,7 +255,7 @@ class GameResultsMP extends MenuPanel
             singleResult.update(result);
         }
         // Score Overview
-        else if (gameIndex == -1)
+        else if (as3hx.Compat.truthy(gameIndex == -1))
         {
             navSaveReplay.enabled = false;
             overviewResult.visible = true;
@@ -263,7 +263,7 @@ class GameResultsMP extends MenuPanel
             navBack.visible = false;
         }
         // Single Score
-        else if (resultIndex >= 0 && resultIndex < matchResults.users.length)
+        else if (as3hx.Compat.truthy(resultIndex >= 0 && resultIndex < matchResults.users.length))
         {
             overviewResult.visible = false;
             singleResult.visible = true;
@@ -290,75 +290,75 @@ class GameResultsMP extends MenuPanel
      * Handles all UI events, both mouse and keyboard.
      * @param e
      */
-    private function eventHandler(e : Dynamic = null) : Void
+    private function eventHandler(e                       : Dynamic= null) : Void
     {
-        var target : DisplayObject = e.target;
+        var target                       : Dynamic= e.target;
         
         // Don't do anything with popups open.
-        if (_gvars.gameMain.current_popup != null)
+        if (as3hx.Compat.truthy(_gvars.gameMain.current_popup != null))
         {
             return;
         }
         
         // Handle Key events and click in the same function
-        if (e.type == "keyDown")
+        if (as3hx.Compat.truthy(e.type == "keyDown"))
         {
             target = null;
-            var keyCode : Int = e.keyCode;
-            if ((keyCode == _gvars.playerUser.keyLeft || keyCode == Keyboard.LEFT) && navBack.visible)
+            var keyCode                       : Dynamic= e.keyCode;
+            if (as3hx.Compat.truthy((keyCode == _gvars.playerUser.keyLeft || keyCode == Keyboard.LEFT) && navBack.visible))
             {
                 target = navBack;
             }
-            else if (keyCode == _gvars.playerUser.keyQuit)
+            else if (as3hx.Compat.truthy(keyCode == _gvars.playerUser.keyQuit))
             {
                 target = navMenu;
                 stage.removeEventListener(KeyboardEvent.KEY_DOWN, eventHandler);
             }
         }
         
-        if (target == null)
+        if (as3hx.Compat.truthy(target == null))
         {
             return;
         }
         
         // Based on target
-        if (target == navSaveReplay)
+        if (as3hx.Compat.truthy(target == navSaveReplay))
         {
-            if (result.user.siteId == _gvars.activeUser.siteId)
+            if (as3hx.Compat.truthy(result.user.siteId == _gvars.activeUser.siteId))
             {
                 _score.saveServerReplay(result);
             }
         }
-        else if (target == navScreenShot)
+        else if (as3hx.Compat.truthy(target == navScreenShot))
         {
             navScreenShot.purgeHoverSprite();
-            if (e.ctrlKey)
+            if (as3hx.Compat.truthy(e.ctrlKey))
             {
                 _gvars.saveScreenshotToClipboard();
             }
             else
             {
-                var ext : String = "";
-                if (resultIndex >= 0)
+                var ext                       : Dynamic= "";
+                if (as3hx.Compat.truthy(resultIndex >= 0))
                 {
                     ext = result.screenshot_path;
                 }
                 _gvars.takeScreenShot(ext);
             }
         }
-        else if (target == navBack)
+        else if (as3hx.Compat.truthy(target == navBack))
         {
             displayGameResult(-1);
         }
-        else if (target == navOptions)
+        else if (as3hx.Compat.truthy(target == navOptions))
         {
             addPopup(Main.POPUP_OPTIONS);
         }
-        else if (target == navHighscores)
+        else if (as3hx.Compat.truthy(target == navHighscores))
         {
             addPopup(new PopupHighscores(this, songInfo));
         }
-        else if (target == navMenu)
+        else if (as3hx.Compat.truthy(target == navMenu))
         {
             switchTo(Main.GAME_MENU_PANEL);
         }

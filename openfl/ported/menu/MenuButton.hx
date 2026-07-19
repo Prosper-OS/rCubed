@@ -5,10 +5,10 @@ import openfl.display.DisplayObjectContainer;
 
 class MenuButton extends BoxButton
 {
-    public var panel : String;
-    public var index : String;
+    public var panel                       : Dynamic;
+    public var index                       : Dynamic;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, wid : Float = 0, message : String = "", isActive : Bool = false, listener : Dynamic = null)
+    public function new(parent                       : Dynamic= null, xpos                       : Dynamic= 0, wid                       : Dynamic= 0, message                       : Dynamic= "", isActive                       : Dynamic= false, listener                       : Dynamic= null)
     {
         super(parent, xpos, 0, wid, 28, message, 12, listener);
         super.active = isActive;

@@ -6,30 +6,30 @@ import menu.MenuPanel;
 
 class GameMenu extends MenuPanel
 {
-    public static inline var GAME_LOADING : String = "GameLoading";
-    public static inline var GAME_PLAY : String = "GamePlay";
-    public static inline var GAME_RESULTS : String = "GameResults";
-    public static inline var GAME_MP_WAIT : String = "GameMPWait";
-    public static inline var GAME_MP_RESULTS : String = "GameMPResults";
+    public static inline var GAME_LOADING                          : Dynamic= "GameLoading";
+    public static inline var GAME_PLAY                          : Dynamic= "GamePlay";
+    public static inline var GAME_RESULTS                          : Dynamic= "GameResults";
+    public static inline var GAME_MP_WAIT                          : Dynamic= "GameMPWait";
+    public static inline var GAME_MP_RESULTS                          : Dynamic= "GameMPResults";
     
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                          : Dynamic= GlobalVariables.instance;
+    private var _lang                          : Dynamic= Language.instance;
     
-    public var panel : MenuPanel;
+    public var panel                          : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                          : Dynamic)
     {
         super(myParent);
     }
     
     override public function init() : Bool
     {
-        if (Flags.VALUES[Flags.MP_MENU_RESULTS] != null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(Flags.VALUES, Flags.MP_MENU_RESULTS) != null))
         {
-            Flags.VALUES[Flags.MP_MENU_RESULTS] = false;
+            Reflect.setField(Flags.VALUES, Flags.MP_MENU_RESULTS, false);
             switchTo(GAME_MP_RESULTS);
         }
-        else if (_gvars.options.isEditor)
+        else if (as3hx.Compat.truthy(_gvars.options.isEditor))
         {
             switchTo(GAME_PLAY);
         }
@@ -45,7 +45,7 @@ class GameMenu extends MenuPanel
     
     override public function stageRemove() : Void
     {
-        if (panel != null && panel.stage)
+        if (as3hx.Compat.truthy(panel != null && panel.stage))
         {
             panel.stageRemove();
         }
@@ -55,10 +55,10 @@ class GameMenu extends MenuPanel
     
     override public function dispose() : Void
     {
-        if (panel != null)
+        if (as3hx.Compat.truthy(panel != null))
         {
             panel.dispose();
-            if (this.contains(panel))
+            if (as3hx.Compat.truthy(this.contains(panel)))
             {
                 this.removeChild(panel);
             }
@@ -67,16 +67,16 @@ class GameMenu extends MenuPanel
         super.dispose();
     }
     
-    override public function switchTo(_panel : String) : Bool
+    override public function switchTo(_panel                          : Dynamic) : Bool
     //- Check Parent Function first.
     {
         
-        if (super.switchTo(_panel))
+        if (as3hx.Compat.truthy(super.switchTo(_panel)))
         {
             _gvars.gameMain.bg.updateDisplay();
             _gvars.gameMain.ver.visible = true;
             
-            if (panel != null)
+            if (as3hx.Compat.truthy(panel != null))
             {
                 panel.stageRemove();
                 panel.parent.removeChild(panel);
@@ -87,10 +87,10 @@ class GameMenu extends MenuPanel
         }
         
         //- Do Current Panel
-        var isFound : Bool = false;
-        var initValid : Bool = false;
+        var isFound                          : Dynamic= false;
+        var initValid                          : Dynamic= false;
         
-        if (panel != null)
+        if (as3hx.Compat.truthy(panel != null))
         {
             panel.stageRemove();
             panel.parent.removeChild(panel);
@@ -128,13 +128,13 @@ class GameMenu extends MenuPanel
                 isFound = true;
         }
         this.addChild(panel);
-        if (!panel.hasInit)
+        if (as3hx.Compat.truthy(!panel.hasInit))
         {
             initValid = panel.init();
             panel.hasInit = true;
         }
         
-        if (initValid)
+        if (as3hx.Compat.truthy(initValid))
         {
             panel.stageAdd();
         }

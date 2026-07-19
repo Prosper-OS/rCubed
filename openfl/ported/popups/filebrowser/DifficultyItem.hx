@@ -6,19 +6,19 @@ import openfl.display.Sprite;
 
 class DifficultyItem extends Sprite
 {
-    private var DIFFICULTY_COLORS(default, never) : Array<Dynamic> = [0x349a2b, 0xecd433, 0xd58d10, 0xba3b22, 0x8d0e0e, 0x444444];
-    private var CHART_TYPE_COLORS(default, never) : Array<Dynamic> = [null, null, null, null, "ffffff", "00c7ff", "a0ffb9", "ffb600", "ffaaaa", "ac00e5", "000000"];
+    public var DIFFICULTY_COLORS(default, never)                       : Dynamic= [0x349a2b, 0xecd433, 0xd58d10, 0xba3b22, 0x8d0e0e, 0x444444];
+    public var CHART_TYPE_COLORS(default, never)                       : Dynamic= [null, null, null, null, "ffffff", "00c7ff", "a0ffb9", "ffb600", "ffaaaa", "ac00e5", "000000"];
     
-    public var chart : Dynamic;
-    public var chart_id : Int;
-    public var chart_type : Int;
-    public var chart_difficulty : String;
-    public var chart_difficulty_value : Float;
+    public var chart                       : Dynamic;
+    public var chart_id                       : Dynamic;
+    public var chart_type                       : Dynamic;
+    public var chart_difficulty                       : Dynamic;
+    public var chart_difficulty_value                       : Dynamic;
     
-    public var index : Int;
-    public var sorting_key : Float = 0;
+    public var index                       : Dynamic;
+    public var sorting_key                       : Dynamic= 0;
     
-    public function new(index : Int, chart : Dynamic)
+    public function new(index                       : Dynamic, chart                       : Dynamic)
     {
         super();
         this.buttonMode = true;
@@ -36,17 +36,17 @@ class DifficultyItem extends Sprite
         drawUI();
     }
     
-    private function drawUI() : Void
+    public function drawUI() : Void
     {
         addChild(new ChartDifficultyItem());
         
-        var diff : Text = new Text(this, -1, 0, Reflect.field(chart, "difficulty"));
+        var diff                       : Dynamic= new Text(this, -1, 0, Reflect.field(chart, "difficulty"));
         diff.setAreaParams(24, 25, "center");
         
-        var name : Text = new Text(this, 27, 0, Reflect.field(chart, "class"));
+        var name                       : Dynamic= new Text(this, 27, 0, Reflect.field(chart, "class"));
         name.setAreaParams(89, 25);
         
-        var type : Text = new Text(this, 105, 0, getChartType(Reflect.field(chart, "type")));
+        var type                       : Dynamic= new Text(this, 105, 0, getChartType(Reflect.field(chart, "type")));
         type.setAreaParams(30, 25, "right");
         
         this.graphics.lineStyle(0, 0, 0);
@@ -55,9 +55,9 @@ class DifficultyItem extends Sprite
         this.graphics.endFill();
     }
     
-    private function getChartType(type : Int) : String
+    public function getChartType(type                       : Dynamic) : String
     {
-        if (CHART_TYPE_COLORS[type] != null)
+        if (as3hx.Compat.truthy(CHART_TYPE_COLORS[type] != null))
         {
             return "<font color=\"#" + CHART_TYPE_COLORS[type] + "\">" + type + "K</font>";
         }
@@ -65,7 +65,7 @@ class DifficultyItem extends Sprite
         return "??";
     }
     
-    private function getChartColorIndex(type : String) : Int
+    public function getChartColorIndex(type                       : Dynamic) : Int
     {
         switch (type)
         {
@@ -85,9 +85,9 @@ class DifficultyItem extends Sprite
         return 0;
     }
     
-    private function updateSortingValue() : Void
+    public function updateSortingValue() : Void
     {
-        var val : Float = 1;
+        var val                       : Dynamic= 1;
         
         val += (chart_type - 4) * 10000;
         val += getChartColorIndex(chart_difficulty) * 10;

@@ -10,56 +10,56 @@ import menu.FileLoader;
 
 class MPMatchResultsFFR
 {
-    public var winnerText(get, never) : String;
-    public var wasTie(get, never) : Bool;
+    public var winnerText(get, never)                             : Dynamic;
+    public var wasTie(get, never)                             : Dynamic;
 
-    private static var _lang : Language = Language.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    public var room : MPRoomFFR;
+    public var room                             : Dynamic;
     
-    public var index : Int;
-    public var teamMode : Bool = false;
-    public var songData : MPSong = new MPSong();
-    public var songInfo : SongInfo = new SongInfo();
-    public var teams : Array<MPMatchResultsTeam> = [];
-    public var users : Array<MPMatchResultsUser> = [];
+    public var index                             : Dynamic;
+    public var teamMode                             : Dynamic= false;
+    public var songData                             : Dynamic= new MPSong();
+    public var songInfo                             : Dynamic= new SongInfo();
+    public var teams                             : Dynamic= [];
+    public var users                             : Dynamic= [];
     
-    private var _winnerText : String;
-    private var _wasTie : Bool = false;
+    private var _winnerText                             : Dynamic;
+    private var _wasTie                             : Dynamic= false;
     
-    public function new(room : MPRoomFFR, index : Int)
+    public function new(room                             : Dynamic, index                             : Dynamic)
     {
         this.room = room;
         this.index = index;
     }
     
-    public function update(info : Dynamic) : Void
+    public function update(info                             : Dynamic) : Void
     {
-        if (info.song != null)
+        if (as3hx.Compat.truthy(info.song != null))
         {
             songData.update(info.song);
             updateSongInfo();
         }
         
-        if (info.teamMode != null)
+        if (as3hx.Compat.truthy(info.teamMode != null))
         {
             teamMode = info.teamMode;
         }
         
-        if (info.teams != null)
+        if (as3hx.Compat.truthy(info.teams != null))
         {
             as3hx.Compat.setArrayLength(teams, 0);
             as3hx.Compat.setArrayLength(users, 0);
             
-            for (mp_team/* AS3HX WARNING could not determine type for var: mp_team exp: EField(EIdent(info),teams) type: null */ in info.teams)
+            for (mp_team/* AS3HX WARNING could not determine type for var: mp_team exp: EField(EIdent(info),teams) type: null */ in as3hx.Compat.iter(info.teams))
             {
-                var team : MPMatchResultsTeam = new MPMatchResultsTeam();
+                var team                             : Dynamic= new MPMatchResultsTeam();
                 team.update(mp_team);
                 teams.push(team);
                 
-                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(mp_team),users) type: null */ in mp_team.users)
+                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(mp_team),users) type: null */ in as3hx.Compat.iter(mp_team.users))
                 {
-                    var mpuser : MPMatchResultsUser = new MPMatchResultsUser();
+                    var mpuser                             : Dynamic= new MPMatchResultsUser();
                     mpuser.update(user);
                     mpuser.team = team;
                     mpuser.index = users.length;
@@ -67,7 +67,7 @@ class MPMatchResultsFFR
                     mpuser.score.songInfo = songInfo;
                     
                     // User Personal Result instead of server score.
-                    if (room.lastMatchScorePersonal && room.lastMatchScorePersonal.compare(mpuser.score))
+                    if (as3hx.Compat.truthy(room.lastMatchScorePersonal && room.lastMatchScorePersonal.compare(mpuser.score)))
                     {
                         mpuser.score = room.lastMatchScorePersonal;
                     }
@@ -80,11 +80,11 @@ class MPMatchResultsFFR
             _winnerText = _generateWinnerText();
         }
         
-        if (info.timestamp != null)
+        if (as3hx.Compat.truthy(info.timestamp != null))
         {
-            for (score_user in users)
+            for (score_user in as3hx.Compat.iter(users))
             {
-                score_user.score.end_time = TimeUtil.getFormattedDate(new Date(info.timestamp));
+                score_user.score.end_time = TimeUtil.getFormattedDate(Date.fromTime(as3hx.Compat.parseFloat(info.timestamp)));
             }
         }
     }
@@ -93,22 +93,22 @@ class MPMatchResultsFFR
     {
         songInfo = null;
         
-        if (songData == null)
+        if (as3hx.Compat.truthy(songData == null))
         {
             return;
         }
         
-        var loadedPlaylist : Playlist = Playlist.instance;
-        var isAltLoaded : Bool = loadedPlaylist.engine != null;
+        var loadedPlaylist                             : Dynamic= Playlist.instance;
+        var isAltLoaded                             : Dynamic= loadedPlaylist.engine != null;
         
         // Alt Engine
-        if (songData.engine)
+        if (as3hx.Compat.truthy(songData.engine))
         {
-            if (songData.engine.id == "fileloader")
+            if (as3hx.Compat.truthy(songData.engine.id == "fileloader"))
             {
-                if (songData.engine.cacheID != null)
+                if (as3hx.Compat.truthy(songData.engine.cacheID != null))
                 {
-                    var chartPath : String = FileLoader.cache.findKey(function(entry : Dynamic) : Dynamic
+                    var chartPath                             : Dynamic= FileLoader.cache.findKey(function(entry                             : Dynamic) : Dynamic
                             {
                                 return Reflect.field(entry, "id") == songData.engine.cacheID;
                             });
@@ -139,12 +139,12 @@ class MPMatchResultsFFR
         {
             
             {
-                var ffrSongsMatch : Array<SongInfo> = Playlist.instanceCanon.indexList.filter(function(item : SongInfo, index : Int, vec : Array<SongInfo>) : Bool
+                var ffrSongsMatch                             : Dynamic= Playlist.instanceCanon.indexList.filter(function(item                             : Dynamic, index                             : Dynamic, vec                             : Dynamic) : Bool
                         {
                             return item.level == songData.id;
                         });
                 
-                if (ffrSongsMatch.length == 1)
+                if (as3hx.Compat.truthy(ffrSongsMatch.length == 1))
                 {
                     songInfo = ffrSongsMatch[0];
                 }
@@ -152,7 +152,7 @@ class MPMatchResultsFFR
         }
         
         // Still no SongInfo, using songData backup.
-        if (songInfo == null)
+        if (as3hx.Compat.truthy(songInfo == null))
         {
             songInfo = new SongInfo();
             songInfo.engine = songData.engine;
@@ -181,20 +181,20 @@ class MPMatchResultsFFR
     
     private function _generateWinnerText() : String
     {
-        if ((teamMode && teams.length == 0) || (!teamMode && users.length == 0))
+        if (as3hx.Compat.truthy((teamMode && teams.length == 0) || (!teamMode && users.length == 0)))
         {
             return "Missingno????";
         }
         
         // Teams
-        if (teamMode)
+        if (as3hx.Compat.truthy(teamMode))
         {
-            var teamList : Array<MPMatchResultsTeam> = teams.filter(function(item : MPMatchResultsTeam, index : Int, vec : Array<MPMatchResultsTeam>) : Bool
+            var teamList                             : Dynamic= teams.filter(function(item                             : Dynamic, index                             : Dynamic, vec                             : Dynamic) : Bool
                     {
                         return item.position == 1;
                     });
             
-            if (teamList.length == teams.length && teams.length > 1)
+            if (as3hx.Compat.truthy(teamList.length == teams.length && teams.length > 1))
             {
                 _wasTie = true;
                 return _lang.string("mp_match_result_tie_team");
@@ -204,12 +204,12 @@ class MPMatchResultsFFR
         }
         
         // Users
-        var userList : Array<MPMatchResultsUser> = users.filter(function(item : MPMatchResultsUser, index : Int, vec : Array<MPMatchResultsUser>) : Bool
+        var userList                             : Dynamic= users.filter(function(item                             : Dynamic, index                             : Dynamic, vec                             : Dynamic) : Bool
                 {
                     return item.position == 1;
                 });
         
-        if (userList.length == users.length && users.length > 1)
+        if (as3hx.Compat.truthy(userList.length == users.length && users.length > 1))
         {
             _wasTie = true;
             return _lang.string("mp_match_result_tie_user");

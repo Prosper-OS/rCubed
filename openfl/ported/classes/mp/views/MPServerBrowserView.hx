@@ -55,34 +55,34 @@ import openfl.display.Stage;
 
 class MPServerBrowserView extends MPView
 {
-    private var _width : Float = 610;
-    private var _height : Float = 388;
+    private var _width                             : Dynamic= 610;
+    private var _height                             : Dynamic= 388;
     
-    private var pane : MPBrowserScrollpane;
+    private var pane                             : Dynamic;
     
-    private var scrollbarWidth(default, never) : Float = 15;
-    private var scrollbar : ScrollBar;
+    private var scrollbarWidth(default, never)                             : Dynamic= 15;
+    private var scrollbar                             : Dynamic;
     
-    private static var loadFirstTime : Bool = false;
-    private var refreshLockoutTimer : Timer;
-    private var refreshLockout : Bool = false;
-    private var thobber : Throbber;
+    private static var loadFirstTime                             : Dynamic= false;
+    private var refreshLockoutTimer                             : Dynamic;
+    private var refreshLockout                             : Dynamic= false;
+    private var thobber                             : Dynamic;
     
-    private var search_field : BoxText;
-    private var search_field_placeholder : Text;
-    private var _search_text : String = "";
+    private var search_field                             : Dynamic;
+    private var search_field_placeholder                             : Dynamic;
+    private var _search_text                             : Dynamic= "";
     
-    private var showPrivateCheck : BoxCheck;
+    private var showPrivateCheck                             : Dynamic;
     
-    private var btnCreateRoom : BoxButton;
-    private var btnJoinCode : BoxIcon;
-    private var btnRefreshRooms : BoxIcon;
+    private var btnCreateRoom                             : Dynamic;
+    private var btnJoinCode                             : Dynamic;
+    private var btnRefreshRooms                             : Dynamic;
     
-    private var _createRoomPrompt : RoomCreatePrompt;
-    private var _roomPasswordPrompt : RoomPasswordPrompt;
-    private var _joinViaCodePrompt : PromptInput;
+    private var _createRoomPrompt                             : Dynamic;
+    private var _roomPasswordPrompt                             : Dynamic;
+    private var _joinViaCodePrompt                             : Dynamic;
     
-    public function new(parent : DisplayObjectContainer, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                             : Dynamic, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         super(parent, xpos, ypos);
         
@@ -99,19 +99,19 @@ class MPServerBrowserView extends MPView
     {
         setBlocker(false);
         
-        if (_createRoomPrompt != null)
+        if (as3hx.Compat.truthy(_createRoomPrompt != null))
         {
             _createRoomPrompt.close();
             _createRoomPrompt = null;
         }
         
-        if (_roomPasswordPrompt != null)
+        if (as3hx.Compat.truthy(_roomPasswordPrompt != null))
         {
             _roomPasswordPrompt.close();
             _roomPasswordPrompt = null;
         }
         
-        if (_roomPasswordPrompt != null)
+        if (as3hx.Compat.truthy(_roomPasswordPrompt != null))
         {
             _roomPasswordPrompt.close();
             _roomPasswordPrompt = null;
@@ -198,10 +198,10 @@ class MPServerBrowserView extends MPView
     
     override public function onSelect() : Void
     {
-        if (!refreshLockout)
+        if (as3hx.Compat.truthy(!refreshLockout))
         {
             refreshRoomList();
-            if (!loadFirstTime)
+            if (as3hx.Compat.truthy(!loadFirstTime))
             {
                 pane.visible = false;
                 thobber.visible = true;
@@ -213,7 +213,7 @@ class MPServerBrowserView extends MPView
     
     private function refreshRoomList() : Void
     {
-        if (!refreshLockout)
+        if (as3hx.Compat.truthy(!refreshLockout))
         {
             refreshLockout = true;
             _mp.updateRoomList();
@@ -221,7 +221,7 @@ class MPServerBrowserView extends MPView
         }
     }
     
-    public function e_onRoomList(e : MPEvent) : Void
+    public function e_onRoomList(e                             : Dynamic) : Void
     {
         pane.visible = true;
         thobber.visible = false;
@@ -234,52 +234,52 @@ class MPServerBrowserView extends MPView
      * Moves the scroll pane based on the scroll delta direction.
      * @param e
      */
-    private function e_mouseWheelHandler(e : MouseEvent) : Void
+    private function e_mouseWheelHandler(e                             : Dynamic) : Void
     // Sanity
     {
         
-        if (!scrollbar.draggerVisibility)
+        if (as3hx.Compat.truthy(!scrollbar.draggerVisibility))
         {
             return;
         }
         
         // Scroll
-        var newScrollPosition : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var newScrollPosition                             : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(newScrollPosition);
         scrollbar.scrollTo(newScrollPosition);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                             : Dynamic) : Void
     {
         pane.scrollTo(e.target.scroll);
     }
     
-    private function e_lockoutFinish(e : TimerEvent) : Void
+    private function e_lockoutFinish(e                             : Dynamic) : Void
     {
         refreshLockout = false;
         refreshLockoutTimer.reset();
     }
     
-    public function e_roomEntryClick(e : MouseEvent) : Void
+    public function e_roomEntryClick(e                             : Dynamic) : Void
     {
-        var te : Dynamic = e.target;
-        if (Std.is(te, MPBrowserEntry))
+        var te                             : Dynamic= e.target;
+        if (as3hx.Compat.truthy(Std.is(te, MPBrowserEntry)))
         {
-            var entry : MPBrowserEntry = try cast(te, MPBrowserEntry) catch(e:Dynamic) null;
+            var entry                             : Dynamic= try cast(te, MPBrowserEntry) catch(e:Dynamic) null;
             
-            if (entry.room == _mp.GAME_ROOM)
+            if (as3hx.Compat.truthy(entry.room == _mp.GAME_ROOM))
             {
                 _mp.dispatchEvent(new MPViewEvent("menu_game"));
                 return;
             }
             
-            if (_mp.inGameRoom)
+            if (as3hx.Compat.truthy(_mp.inGameRoom))
             {
                 Alert.add(_lang.string("mp_error_multiple_room_restriction"), 120, Alert.RED);
                 return;
             }
             
-            if (entry.room.hasPassword && !_mp.currentUser.permissions.mod)
+            if (as3hx.Compat.truthy(entry.room.hasPassword && !_mp.currentUser.permissions.mod))
             {
                 _roomPasswordPrompt = new RoomPasswordPrompt(entry.room, stage, _lang.string("mp_room_join_password_title"), _lang.string("mp_room_join_password_join"), e_roomPasswordConfirm);
                 _roomPasswordPrompt.addEventListener(Event.CLOSE, e_roomPasswordPromptClose);
@@ -294,7 +294,7 @@ class MPServerBrowserView extends MPView
         }
     }
     
-    private function e_searchChange(e : Event) : Void
+    private function e_searchChange(e                             : Dynamic) : Void
     {
         _search_text = search_field.text.toLowerCase();
         search_field_placeholder.visible = (_search_text.length <= 0);
@@ -302,43 +302,43 @@ class MPServerBrowserView extends MPView
         updateList();
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                             : Dynamic) : Void
     {
-        if (e.target == showPrivateCheck)
+        if (as3hx.Compat.truthy(e.target == showPrivateCheck))
         {
             showPrivateCheck.checked = !showPrivateCheck.checked;
             updateList();
         }
-        else if (e.target == btnRefreshRooms)
+        else if (as3hx.Compat.truthy(e.target == btnRefreshRooms))
         {
             refreshRoomList();
         }
-        else if (e.target == btnCreateRoom)
+        else if (as3hx.Compat.truthy(e.target == btnCreateRoom))
         {
             _createRoomPrompt = new RoomCreatePrompt(this, stage);
             _createRoomPrompt.addEventListener(Event.CLOSE, e_onCreateClose);
         }
-        else if (e.target == btnJoinCode)
+        else if (as3hx.Compat.truthy(e.target == btnJoinCode))
         {
             _joinViaCodePrompt = new PromptInput(stage, _lang.string("mp_room_join_code_title"), _lang.string("mp_room_join_code_join"), e_joinCodeConfirm);
         }
     }
     
-    private function e_roomJoinOK(e : MPRoomEvent) : Void
+    private function e_roomJoinOK(e                             : Dynamic) : Void
     {
         setBlocker(false);
         _mp.removeEventListener(MPEvent.ROOM_JOIN_OK, e_roomJoinOK);
         _mp.removeEventListener(MPEvent.ROOM_JOIN_FAIL, e_roomJoinFail);
     }
     
-    private function e_roomJoinFail(e : MPEvent) : Void
+    private function e_roomJoinFail(e                             : Dynamic) : Void
     {
         setBlocker(false);
         _mp.removeEventListener(MPEvent.ROOM_JOIN_OK, e_roomJoinOK);
         _mp.removeEventListener(MPEvent.ROOM_JOIN_FAIL, e_roomJoinFail);
     }
     
-    private function e_roomPasswordConfirm(password : String) : Void
+    private function e_roomPasswordConfirm(password                             : Dynamic) : Void
     {
         setBlocker(true);
         _mp.addEventListener(MPEvent.ROOM_JOIN_OK, e_roomPasswordJoinOK);
@@ -346,13 +346,13 @@ class MPServerBrowserView extends MPView
         _mp.joinRoom(_roomPasswordPrompt.room, password);
     }
     
-    private function e_roomPasswordPromptClose(e : Event) : Void
+    private function e_roomPasswordPromptClose(e                             : Dynamic) : Void
     {
         _roomPasswordPrompt.removeEventListener(Event.CLOSE, e_roomPasswordPromptClose);
         _roomPasswordPrompt = null;
     }
     
-    private function e_roomPasswordJoinOK(e : MPRoomEvent) : Void
+    private function e_roomPasswordJoinOK(e                             : Dynamic) : Void
     {
         setBlocker(false);
         _roomPasswordPrompt = null;
@@ -360,14 +360,14 @@ class MPServerBrowserView extends MPView
         _mp.removeEventListener(MPEvent.ROOM_JOIN_FAIL, e_roomPasswordJoinFail);
     }
     
-    private function e_roomPasswordJoinFail(e : MPEvent) : Void
+    private function e_roomPasswordJoinFail(e                             : Dynamic) : Void
     {
         setBlocker(false);
         _mp.removeEventListener(MPEvent.ROOM_JOIN_OK, e_roomPasswordJoinOK);
         _mp.removeEventListener(MPEvent.ROOM_JOIN_FAIL, e_roomPasswordJoinFail);
     }
     
-    private function e_joinCodeConfirm(code : String) : Void
+    private function e_joinCodeConfirm(code                             : Dynamic) : Void
     {
         setBlocker(true);
         _mp.addEventListener(MPEvent.ROOM_JOIN_OK, e_roomJoinOK);
@@ -377,20 +377,20 @@ class MPServerBrowserView extends MPView
     
     private function updateList() : Void
     {
-        var render_list : Array<Dynamic> = [];
-        for (r/* AS3HX WARNING could not determine type for var: r exp: EField(EIdent(_mp),rooms) type: null */ in _mp.rooms)
+        var render_list                             : Dynamic= [];
+        for (r/* AS3HX WARNING could not determine type for var: r exp: EField(EIdent(_mp),rooms) type: null */ in as3hx.Compat.iter(_mp.rooms))
         {
-            if (!r.isGame || Multiplayer.VALID_GAME_TYPES.indexOf(r.type) == -1)
+            if (as3hx.Compat.truthy(!r.isGame || Multiplayer.VALID_GAME_TYPES.indexOf(r.type) == -1))
             {
                 continue;
             }
             
-            if (_search_text.length >= 1 && r.name.toLowerCase().indexOf(_search_text) == -1)
+            if (as3hx.Compat.truthy(_search_text.length >= 1 && r.name.toLowerCase().indexOf(_search_text) == -1))
             {
                 continue;
             }
             
-            if (!showPrivateCheck.checked && r.hasPassword)
+            if (as3hx.Compat.truthy(!showPrivateCheck.checked && r.hasPassword))
             {
                 continue;
             }
@@ -409,7 +409,7 @@ class MPServerBrowserView extends MPView
         scrollbar.draggerVisibility = pane.doScroll;
     }
     
-    private function e_onCreateClose(e : Event) : Void
+    private function e_onCreateClose(e                             : Dynamic) : Void
     {
         _createRoomPrompt.close();
         _createRoomPrompt = null;
@@ -420,33 +420,33 @@ class MPServerBrowserView extends MPView
 
 class RoomCreatePrompt extends Prompt
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _gvars                             : Dynamic= GlobalVariables.instance;
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
     
-    private var win : MPServerBrowserView;
+    private var win                             : Dynamic;
     
-    private var box : Sprite;
+    private var box                             : Dynamic;
     
-    private var roomName : BoxText;
-    private var roomPassword : BoxText;
-    private var showPassword : BoxIcon;
+    private var roomName                             : Dynamic;
+    private var roomPassword                             : Dynamic;
+    private var showPassword                             : Dynamic;
     
-    private var closeButton : BoxIcon;
-    private var confirmButton : BoxButton;
+    private var closeButton                             : Dynamic;
+    private var confirmButton                             : Dynamic;
     
-    private var teamModes : ComboBox;
+    private var teamModes                             : Dynamic;
     
-    private var maxPlayersText : Text;
-    private var maxPlayers : ComboBox;
+    private var maxPlayersText                             : Dynamic;
+    private var maxPlayers                             : Dynamic;
     
-    private var maxTeamsText : Text;
-    private var maxTeams : ComboBox;
-    private var maxPlayersPerTeamText : Text;
-    private var maxPlayersPerTeam : ComboBox;
+    private var maxTeamsText                             : Dynamic;
+    private var maxTeams                             : Dynamic;
+    private var maxPlayersPerTeamText                             : Dynamic;
+    private var maxPlayersPerTeam                             : Dynamic;
     
     @:allow(classes.mp.views)
-    private function new(win : MPServerBrowserView, stage : Stage)
+    private function new(win                             : Dynamic, stage                             : Dynamic)
     {
         super(stage, 460, 328);
         this.win = win;
@@ -518,12 +518,12 @@ class RoomCreatePrompt extends Prompt
         teamModes.addEventListener(Event.SELECT, e_onTeamModeChange);
     }
     
-    private function e_togglePassword(e : Event) : Void
+    private function e_togglePassword(e                             : Dynamic) : Void
     {
         roomPassword.displayAsPassword = !roomPassword.displayAsPassword;
     }
     
-    private function e_onTeamModeChange(e : Event) : Void
+    private function e_onTeamModeChange(e                             : Dynamic) : Void
     {
         updateTeamMode();
     }
@@ -546,13 +546,13 @@ class RoomCreatePrompt extends Prompt
         }
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                             : Dynamic) : Void
     {
-        if (e.target == closeButton)
+        if (as3hx.Compat.truthy(e.target == closeButton))
         {
             dispatchEvent(new Event(Event.CLOSE));
         }
-        else if (e.target == confirmButton)
+        else if (as3hx.Compat.truthy(e.target == confirmButton))
         {
             stage.focus = null;
             
@@ -561,18 +561,18 @@ class RoomCreatePrompt extends Prompt
             _mp.addEventListener(MPEvent.ROOM_CREATE_OK, e_onRoomCreate);
             _mp.addEventListener(MPEvent.ROOM_CREATE_FAIL, e_onRoomFail);
             
-            var cmd : MPCRoomCreate = new MPCRoomCreate();
+            var cmd                             : Dynamic= new MPCRoomCreate();
             cmd.name = roomName.text;
             cmd.password = roomPassword.text;
             cmd.type = "ffr";
             
             // FFA
-            if (teamModes.selectedItem.data == "ffa")
+            if (as3hx.Compat.truthy(teamModes.selectedItem.data == "ffa"))
             {
                 cmd.team_count = 1;
                 cmd.max_players = as3hx.Compat.parseFloat(maxPlayers.selectedItem);
             }
-            else if (teamModes.selectedItem.data == "team")
+            else if (as3hx.Compat.truthy(teamModes.selectedItem.data == "team"))
             {
                 cmd.team_count = as3hx.Compat.parseFloat(maxTeams.selectedItem);
                 cmd.max_players = as3hx.Compat.parseFloat(maxPlayersPerTeam.selectedItem);
@@ -582,7 +582,7 @@ class RoomCreatePrompt extends Prompt
         }
     }
     
-    private function e_onRoomCreate(e : MPRoomEvent) : Void
+    private function e_onRoomCreate(e                             : Dynamic) : Void
     {
         _mp.removeEventListener(MPEvent.ROOM_CREATE_OK, e_onRoomCreate);
         _mp.removeEventListener(MPEvent.ROOM_CREATE_FAIL, e_onRoomFail);
@@ -590,7 +590,7 @@ class RoomCreatePrompt extends Prompt
         dispatchEvent(new Event(Event.CLOSE));
     }
     
-    private function e_onRoomFail(e : MPEvent) : Void
+    private function e_onRoomFail(e                             : Dynamic) : Void
     {
         _mp.removeEventListener(MPEvent.ROOM_CREATE_OK, e_onRoomCreate);
         _mp.removeEventListener(MPEvent.ROOM_CREATE_FAIL, e_onRoomFail);
@@ -600,10 +600,10 @@ class RoomCreatePrompt extends Prompt
 
 class RoomPasswordPrompt extends PromptInput
 {
-    public var room : MPRoom;
+    public var room                             : Dynamic;
     
     @:allow(classes.mp.views)
-    private function new(room : MPRoom, parent : DisplayObjectContainer = null, promptTitle : String = "", buttonText : String = "", promptFunc : Dynamic = null)
+    private function new(room                             : Dynamic, parent                             : Dynamic= null, promptTitle                             : Dynamic= "", buttonText                             : Dynamic= "", promptFunc                             : Dynamic= null)
     {
         this.room = room;
         super(parent, promptTitle, buttonText, promptFunc, true);

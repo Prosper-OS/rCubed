@@ -9,141 +9,141 @@ import openfl.utils.Dictionary;
 
 class MPRoom
 {
-    public var playerCount(get, never) : Float;
-    public var playerCountMax(get, never) : Float;
+    public var playerCount(get, never)                             : Dynamic;
+    public var playerCountMax(get, never)                             : Dynamic;
 
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    public var _mp                             : Dynamic= Multiplayer.instance;
     
-    public var isStale : Bool = false;
+    public var isStale                             : Dynamic= false;
     
-    public var uid : Int;
-    public var name : String = "Default Room Name";
-    public var persist : Bool = false;
-    public var type : String = "lobby";
-    public var joinCode : String = "--------";
+    public var uid                             : Dynamic;
+    public var name                             : Dynamic= "Default Room Name";
+    public var persist                             : Dynamic= false;
+    public var type                             : Dynamic= "lobby";
+    public var joinCode                             : Dynamic= "--------";
     
-    public var hasPassword : Bool = false;
-    public var password : String;
+    public var hasPassword                             : Dynamic= false;
+    public var password                             : Dynamic;
     
-    public var owner : MPUser;
-    public var ownerName : String = "";
+    public var owner                             : Dynamic;
+    public var ownerName                             : Dynamic= "";
     
-    public var isGame : Bool = false;
-    public var maxPlayers : Int = 2;
+    public var isGame                             : Dynamic= false;
+    public var maxPlayers                             : Dynamic= 2;
     
-    public var users : Array<MPUser> = [];
-    public var userCount : Int = 0;
-    public var spectatorCount : Int = 0;
+    public var users                             : Dynamic= [];
+    public var userCount                             : Dynamic= 0;
+    public var spectatorCount                             : Dynamic= 0;
     
-    public var skillMin : Float = -1;
-    public var skillMax : Float = -1;
+    public var skillMin                             : Dynamic= -1;
+    public var skillMax                             : Dynamic= -1;
     
-    public var variables : Dynamic = { };
-    public var teamCount : Float = 0;
-    public var teams : Array<MPTeam> = [];
-    public var teams_map : Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>(true);
+    public var variables                             : Dynamic= { };
+    public var teamCount                             : Dynamic= 0;
+    public var teams                             : Dynamic= [];
+    public var teams_map                             : Dynamic= new Dictionary<Dynamic, Dynamic>(true);
     
-    public var teamSpectator : MPTeam;
+    public var teamSpectator                             : Dynamic;
     
     public function new()
     {
     }
     
-    public function update(data : Dynamic) : Void
+    public function update(data                             : Dynamic) : Void
     {
         this.isStale = false;
         
         // Room List
-        if (data.uid != null)
+        if (as3hx.Compat.truthy(data.uid != null))
         {
             this.uid = data.uid;
         }
         
-        if (data.name != null)
+        if (as3hx.Compat.truthy(data.name != null))
         {
             this.name = data.name;
         }
         
-        if (data.persist != null)
+        if (as3hx.Compat.truthy(data.persist != null))
         {
             this.persist = data.persist;
         }
         
-        if (data.ownerName != null)
+        if (as3hx.Compat.truthy(data.ownerName != null))
         {
             this.ownerName = data.ownerName;
         }
         
-        if (data.hasPassword != null)
+        if (as3hx.Compat.truthy(data.hasPassword != null))
         {
             this.hasPassword = data.hasPassword;
         }
         
-        if (data.password != null)
+        if (as3hx.Compat.truthy(data.password != null))
         {
             this.password = data.password;
         }
         
-        if (data.joinCode != null)
+        if (as3hx.Compat.truthy(data.joinCode != null))
         {
             this.joinCode = data.joinCode;
         }
         
-        if (data.type != null)
+        if (as3hx.Compat.truthy(data.type != null))
         {
             this.type = data.type;
         }
         
-        if (data.isGame != null)
+        if (as3hx.Compat.truthy(data.isGame != null))
         {
             this.isGame = data.isGame;
         }
         
-        if (data.maxPlayers != null)
+        if (as3hx.Compat.truthy(data.maxPlayers != null))
         {
             this.maxPlayers = data.maxPlayers;
         }
         
-        if (data.teamCount != null)
+        if (as3hx.Compat.truthy(data.teamCount != null))
         {
             this.teamCount = data.teamCount;
         }
         
-        if (data.userCount != null)
+        if (as3hx.Compat.truthy(data.userCount != null))
         {
             this.userCount = data.userCount;
         }
         
-        if (data.spectatorCount != null)
+        if (as3hx.Compat.truthy(data.spectatorCount != null))
         {
             this.spectatorCount = data.spectatorCount;
         }
         
-        if (data.skillMin != null)
+        if (as3hx.Compat.truthy(data.skillMin != null))
         {
             this.skillMin = data.skillMin;
         }
         
-        if (data.skillMax != null)
+        if (as3hx.Compat.truthy(data.skillMax != null))
         {
             this.skillMax = data.skillMax;
         }
         
-        if (data.vars != null)
+        if (as3hx.Compat.truthy(data.vars != null))
         {
             this.variables = data.vars;
         }
         
         // Room Data
-        if (data.users != null)
+        if (as3hx.Compat.truthy(data.users != null))
         {
             this.users.length = 0;
             
-            for (temp_user/* AS3HX WARNING could not determine type for var: temp_user exp: EField(EIdent(data),users) type: null */ in data.users)
+            for (temp_user/* AS3HX WARNING could not determine type for var: temp_user exp: EField(EIdent(data),users) type: null */ in as3hx.Compat.iter(data.users))
             {
-                var mp_user : MPUser = _mp.getUser(temp_user.uid);
+                var mp_user                             : Dynamic= _mp.getUser(temp_user.uid);
                 
-                if (mp_user == null)
+                if (as3hx.Compat.truthy(mp_user == null))
                 {
                     mp_user = new MPUser();
                     mp_user.update(temp_user);
@@ -156,13 +156,13 @@ class MPRoom
             this.userCount = this.users.length;
         }
         
-        if (data.owner != null)
+        if (as3hx.Compat.truthy(data.owner != null))
         {
-            if (data.owner > 0)
+            if (as3hx.Compat.truthy(data.owner > 0))
             {
-                var owner_user : MPUser = _mp.getUser(data.owner);
+                var owner_user                             : Dynamic= _mp.getUser(data.owner);
                 
-                if (owner_user != null)
+                if (as3hx.Compat.truthy(owner_user != null))
                 {
                     owner = owner_user;
                 }
@@ -173,25 +173,25 @@ class MPRoom
             }
         }
         
-        if (data.teams != null)
+        if (as3hx.Compat.truthy(data.teams != null))
         {
             _teamBatchUpdate(data.teams);
         }
         
-        if (data.teamSpectator != null)
+        if (as3hx.Compat.truthy(data.teamSpectator != null))
         {
             this.teamSpectator = teams_map[data.teamSpectator];
             this.spectatorCount = teamSpectator.users.length;
         }
     }
     
-    private function _teamBatchUpdate(temp_teams : Array<Dynamic>) : Void
+    private function _teamBatchUpdate(temp_teams                             : Dynamic) : Void
     {
-        var i : Int;
+        var i                             : Dynamic= null;
         
         // Mark all Rooms as Stale
         i = as3hx.Compat.parseInt(teams.length - 1);
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             teams[i].isStale = true;
             i--;
@@ -199,7 +199,7 @@ class MPRoom
         
         // Add / Update Existing Rooms
         i = as3hx.Compat.parseInt(temp_teams.length - 1);
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             _teamUpdateDirect(temp_teams[i]);
             i--;
@@ -207,9 +207,9 @@ class MPRoom
         
         // Delete Stale Teams
         i = as3hx.Compat.parseInt(teams.length - 1);
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            if (teams[i].isStale)
+            if (as3hx.Compat.truthy(teams[i].isStale))
             {
                 Reflect.deleteField(teams_map, Std.string(null));
                 teams.splice(i, 1);
@@ -222,12 +222,12 @@ class MPRoom
         _teamSort();
     }
     
-    private function _teamUpdateDirect(team : Dynamic) : Void
+    private function _teamUpdateDirect(team                             : Dynamic) : Void
     {
-        var temp_team : MPTeam = teams_map[team.uid];
+        var temp_team                             : Dynamic= teams_map[team.uid];
         
         // Existing
-        if (temp_team != null)
+        if (as3hx.Compat.truthy(temp_team != null))
         {
             temp_team.update(team);
         }
@@ -254,9 +254,9 @@ class MPRoom
      * uid are unique and can't be the same.
      * Used in `_roomSort`.
      */
-    public static function sort(a : MPRoom, b : MPRoom) : Int
+    public static function sort(a                             : Dynamic, b                             : Dynamic) : Int
     {
-        if (a.uid > b.uid)
+        if (as3hx.Compat.truthy(a.uid > b.uid))
         {
             return 1;
         }
@@ -272,20 +272,20 @@ class MPRoom
     {
     }
     
-    public function getUser(uid : Int) : MPUser
+    public function getUser(uid                             : Dynamic) : MPUser
     {
         return _mp.getUser(uid);
     }
     
     private function get_playerCount() : Float
     {
-        var cnt : Float = 0;
-        var i : Float = teams.length - 1;
-        while (i >= 0)
+        var cnt                             : Dynamic= 0;
+        var i                             : Dynamic= teams.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            if (!Reflect.field(teams, Std.string(i)).spectator)
+            if (as3hx.Compat.truthy(!as3hx.Compat.field(teams, i).spectator))
             {
-                cnt += Reflect.field(teams, Std.string(i)).users.length;
+                cnt += as3hx.Compat.field(teams, i).users.length;
             }
             i--;
         }
@@ -314,7 +314,7 @@ class MPRoom
         this.users.length = 0;
         
         // Clear Teams
-        for (team in teams)
+        for (team in as3hx.Compat.iter(teams))
         {
             team.clear();
             Reflect.deleteField(teams_map, Std.string(null));
@@ -323,41 +323,41 @@ class MPRoom
         this.teamSpectator = null;
     }
     
-    public function userJoin(user : MPUser) : Void
+    public function userJoin(user                             : Dynamic) : Void
     {
-        var idx : Int = this.users.indexOf(user);
-        if (idx == -1)
+        var idx                             : Dynamic= this.users.indexOf(user);
+        if (as3hx.Compat.truthy(idx == -1))
         {
             this.users.push(user);
             this.userCount = this.users.length;
         }
     }
     
-    public function userJoinTeam(user : MPUser, teamUID : Int, vars : Dynamic = null) : Void
+    public function userJoinTeam(user                             : Dynamic, teamUID                             : Dynamic, vars                             : Dynamic= null) : Void
     {
-        var team : MPTeam = teams_map[teamUID];
-        if (team != null)
+        var team                             : Dynamic= teams_map[teamUID];
+        if (as3hx.Compat.truthy(team != null))
         {
             team.addUser(user);
             
-            if (team == teamSpectator)
+            if (as3hx.Compat.truthy(team == teamSpectator))
             {
                 this.spectatorCount = teamSpectator.users.length;
             }
         }
     }
     
-    public function userLeave(user : MPUser) : Void
+    public function userLeave(user                             : Dynamic) : Void
     {
-        var idx : Int = this.users.indexOf(user);
-        if (idx != -1)
+        var idx                             : Dynamic= this.users.indexOf(user);
+        if (as3hx.Compat.truthy(idx != -1))
         {
-            for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(this),teams) type: null */ in this.teams)
+            for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(this),teams) type: null */ in as3hx.Compat.iter(this.teams))
             {
-                if (team.contains(user))
+                if (as3hx.Compat.truthy(team.contains(user)))
                 {
                     team.removeUser(user);
-                    if (team == teamSpectator)
+                    if (as3hx.Compat.truthy(team == teamSpectator))
                     {
                         this.spectatorCount = teamSpectator.users.length;
                     }
@@ -369,42 +369,42 @@ class MPRoom
         }
     }
     
-    public function userLeaveTeam(user : MPUser, teamUID : Int) : Void
+    public function userLeaveTeam(user                             : Dynamic, teamUID                             : Dynamic) : Void
     {
-        var team : MPTeam = teams_map[teamUID];
-        if (team != null)
+        var team                             : Dynamic= teams_map[teamUID];
+        if (as3hx.Compat.truthy(team != null))
         {
             team.removeUser(user);
             
-            if (team == teamSpectator)
+            if (as3hx.Compat.truthy(team == teamSpectator))
             {
                 this.spectatorCount = teamSpectator.users.length;
             }
         }
     }
     
-    public function userTeamCaptain(user : MPUser, teamUID : Int) : Void
+    public function userTeamCaptain(user                             : Dynamic, teamUID                             : Dynamic) : Void
     {
-        var team : MPTeam = teams_map[teamUID];
-        if (team != null)
+        var team                             : Dynamic= teams_map[teamUID];
+        if (as3hx.Compat.truthy(team != null))
         {
             team.setCaptain(user);
         }
     }
     
-    public function modeCommand(cmd : MPSocketDataText, user : MPUser) : Void
+    public function modeCommand(cmd                             : Dynamic, user                             : Dynamic) : Void
     {
     }
     
-    public function modeRawCommand(cmd : MPSocketDataRaw, user : MPUser) : Void
+    public function modeRawCommand(cmd                             : Dynamic, user                             : Dynamic) : Void
     {
     }
     
     ///////////////////////////////////////////////////////////////////////
     
-    public function isPlayer(user : MPUser) : Bool
+    public function isPlayer(user                             : Dynamic) : Bool
     {
-        if (user == null || teams.length == 1 || Lambda.indexOf(users, user) == -1)
+        if (as3hx.Compat.truthy(user == null || teams.length == 1 || Lambda.indexOf(users, user) == -1))
         {
             return false;
         }
@@ -412,12 +412,12 @@ class MPRoom
         return !teamSpectator.contains(user);
     }
     
-    public function isPlayerReady(user : MPUser) : Bool
+    public function isPlayerReady(user                             : Dynamic) : Bool
     {
         return false;
     }
     
-    public function canUserPlaySong(user : MPUser) : Bool
+    public function canUserPlaySong(user                             : Dynamic) : Bool
     {
         return true;
     }

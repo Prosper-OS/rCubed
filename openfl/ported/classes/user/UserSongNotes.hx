@@ -7,7 +7,7 @@ import r3.air.filesystem.File;
 
 class UserSongNotes
 {
-    public static var sql_data : Dynamic = getTemplate();
+    public static var sql_data                            : Dynamic= getTemplate();
     
     /**
      * Get default JSON template as a new object.
@@ -27,37 +27,37 @@ class UserSongNotes
      * Load a parsed JSON object into the song details.
      * @param obj Source Object
      */
-    public static function loadFromObject(obj : Dynamic) : Void
+    public static function loadFromObject(obj                            : Dynamic) : Void
     {
-        if (obj == null)
+        if (as3hx.Compat.truthy(obj == null))
         {
             sql_data = getTemplate();
             return;
         }
         
-        var parsed_data : Dynamic = getTemplate();
+        var parsed_data                            : Dynamic= getTemplate();
         
         // DB Info
-        if (obj.db_info != null)
+        if (as3hx.Compat.truthy(obj.db_info != null))
         {
-            for (info_key in Reflect.fields(obj.db_info))
+            for (info_key in as3hx.Compat.iter(Reflect.fields(obj.db_info)))
             {
                 parsed_data.db_info[info_key] = obj.db_info[info_key];
             }
         }
         
         // Song Details
-        if (obj.song_details != null)
+        if (as3hx.Compat.truthy(obj.song_details != null))
         {
-            for (engine_id in Reflect.fields(obj.song_details))
+            for (engine_id in as3hx.Compat.iter(Reflect.fields(obj.song_details)))
             {
-                parsed_data.song_details[engine_id] = { };
-                var engine : Dynamic = obj.song_details[engine_id];
-                for (level_id in Reflect.fields(engine))
+                Reflect.setField(parsed_data.song_details, Std.string(engine_id), { });
+                var engine                            : Dynamic= obj.song_details[engine_id];
+                for (level_id in as3hx.Compat.iter(Reflect.fields(engine)))
                 {
-                    if (Reflect.field(engine, level_id) != null && ObjectUtil.count(Reflect.field(engine, level_id)) > 0)
+                    if (as3hx.Compat.truthy(Reflect.field(engine, level_id) != null && ObjectUtil.count(Reflect.field(engine, level_id)) > 0))
                     {
-                        parsed_data.song_details[engine_id][level_id] = new UserSongData(engine_id, level_id, Reflect.field(engine, level_id));
+                        Reflect.setField(as3hx.Compat.field(parsed_data.song_details, engine_id), Std.string(level_id), new UserSongData(engine_id, level_id, as3hx.Compat.field(engine, level_id)));
                     }
                 }
             }
@@ -66,9 +66,9 @@ class UserSongNotes
         sql_data = parsed_data;
     }
     
-    public static function getSongUserInfo(songInfo : SongInfo) : UserSongData
+    public static function getSongUserInfo(songInfo                            : Dynamic) : UserSongData
     {
-        if (songInfo.engine != null)
+        if (as3hx.Compat.truthy(songInfo.engine != null))
         {
             return getSongDetails(songInfo.engine.id, songInfo.level_id);
         }
@@ -82,14 +82,14 @@ class UserSongNotes
      * @param level_id
      * @return
      */
-    public static function getSongDetails(engine_id : String, level_id : String) : UserSongData
+    public static function getSongDetails(engine_id                            : Dynamic, level_id                            : Dynamic) : UserSongData
     {
-        if (sql_data.song_details[engine_id] == null || sql_data.song_details[engine_id][level_id] == null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(sql_data.song_details, engine_id) == null || as3hx.Compat.field(as3hx.Compat.field(sql_data.song_details, engine_id), level_id) == null))
         {
             return null;
         }
         
-        return (try cast(sql_data.song_details[engine_id][level_id], UserSongData) catch(e:Dynamic) null);
+        return (try cast(as3hx.Compat.field(as3hx.Compat.field(sql_data.song_details, engine_id), level_id), UserSongData) catch(e:Dynamic) null);
     }
     
     /**
@@ -99,29 +99,29 @@ class UserSongNotes
      * @param level_id
      * @return
      */
-    public static function getSongDetailsSafe(engine_id : String, level_id : String) : UserSongData
+    public static function getSongDetailsSafe(engine_id                            : Dynamic, level_id                            : Dynamic) : UserSongData
     {
-        if (sql_data.song_details[engine_id] == null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(sql_data.song_details, engine_id) == null))
         {
-            sql_data.song_details[engine_id] = { };
+            Reflect.setField(sql_data.song_details, Std.string(engine_id), { });
         }
         
-        if (sql_data.song_details[engine_id][level_id] == null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(as3hx.Compat.field(sql_data.song_details, engine_id), level_id) == null))
         {
-            sql_data.song_details[engine_id][level_id] = new UserSongData(engine_id, level_id, null);
+            Reflect.setField(as3hx.Compat.field(sql_data.song_details, engine_id), Std.string(level_id), new UserSongData(engine_id, level_id, null));
         }
         
-        return (try cast(sql_data.song_details[engine_id][level_id], UserSongData) catch(e:Dynamic) null);
+        return (try cast(as3hx.Compat.field(as3hx.Compat.field(sql_data.song_details, engine_id), level_id), UserSongData) catch(e:Dynamic) null);
     }
     
     /**
      * Writes the Song Details DB into a JSON file.
      * @param db_file
      */
-    public static function writeFile(db_file : File) : Void
+    public static function writeFile(db_file                            : Dynamic) : Void
     {
-        var my_data : Dynamic = sql_data;
-        AirContext.writeTextFile(db_file, haxe.Json.stringify(sql_data, null, 2));
+        var my_data                            : Dynamic= sql_data;
+        AirContext.writeTextFile(db_file, haxe.Json.stringify(sql_data, null, "  "));
     }
 
     public function new()

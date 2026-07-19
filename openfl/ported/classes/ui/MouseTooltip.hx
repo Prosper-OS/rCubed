@@ -7,12 +7,12 @@ import openfl.text.TextField;
 
 class MouseTooltip extends Sprite
 {
-    public var message(get, set) : String;
+    public var message(get, set)                             : Dynamic;
 
-    private var msg : TextField;
-    private var maxWidth : Int = 250;
+    private var msg                             : Dynamic;
+    private var maxWidth                             : Dynamic= 250;
     
-    public function new(string : String = "", maxWidth : Int = 250)
+    public function new(string                             : Dynamic= "", maxWidth                             : Dynamic= 250)
     {
         super();
         this.mouseEnabled = false;
@@ -29,20 +29,20 @@ class MouseTooltip extends Sprite
         
         this.maxWidth = maxWidth;
         
-        if (string != "")
+        if (as3hx.Compat.truthy(string != ""))
         {
             message = string;
         }
     }
     
-    private function set_message(value : String) : String
+    private function set_message(value                             : Dynamic) : String
     {
-        if (value != msg.htmlText)
+        if (as3hx.Compat.truthy(value != msg.htmlText))
         {
             msg.wordWrap = false;
             msg.multiline = false;
             msg.htmlText = value;
-            if (msg.width > maxWidth)
+            if (as3hx.Compat.truthy(msg.width > maxWidth))
             {
                 msg.wordWrap = true;
                 msg.multiline = true;
@@ -51,7 +51,7 @@ class MouseTooltip extends Sprite
             
             this.graphics.clear();
             
-            if (msg.textWidth > 0)
+            if (as3hx.Compat.truthy(msg.textWidth > 0))
             {
                 this.graphics.lineStyle(1, 0xffffff, 0.75);
                 this.graphics.beginFill(GameBackgroundColor.BG_DARK, 0.95);

@@ -4,10 +4,10 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRGameStateChange implements IMPCommand
 {
-    public var room : MPRoomFFR;
-    public var state : String;
+    public var room                             : Dynamic;
+    public var state                             : Dynamic;
     
-    public function new(room : MPRoomFFR, state : String)
+    public function new(room                             : Dynamic, state                             : Dynamic)
     {
         this.room = room;
         this.state = state;

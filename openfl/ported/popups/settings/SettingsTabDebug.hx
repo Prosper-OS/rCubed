@@ -4,7 +4,7 @@ package popups.settings;
 class SettingsTabDebug extends SettingsTabBase
 {
     
-    public function new(settingsWindow : SettingsWindow)
+    public function new(settingsWindow                       : Dynamic)
     {
         super(settingsWindow);
     }

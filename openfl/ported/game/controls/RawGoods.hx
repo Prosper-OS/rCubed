@@ -14,17 +14,18 @@ import game.GameOptions;
 
 class RawGoods extends GameControl
 {
-    public var alignment(never, set) : String;
+    private static var e_changeHandler                    : Dynamic;
+    public var alignment(never, set)                       : Dynamic;
 
-    private var options : GameOptions;
-    private var colors : Float;
-    private var field : TextField;
-    public var lastText : String;
+    private var options                       : Dynamic;
+    private var colors                       : Dynamic;
+    private var field                       : Dynamic;
+    public var lastText                       : Dynamic;
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -49,19 +50,19 @@ class RawGoods extends GameControl
         lastText = field.text;
     }
     
-    public function update(raw_goods : Float) : Void
+    public function update(raw_goods                       : Dynamic) : Void
     {
         field.text = Std.string(NumberUtil.numberFormat(raw_goods, 1, true));
         lastText = field.text;
     }
     
-    public function updateFromPA(good : Int, average : Int, miss : Int, boo : Int) : Void
+    public function updateFromPA(good                       : Dynamic, average                       : Dynamic, miss                       : Dynamic, boo                       : Dynamic) : Void
     {
         field.text = Std.string(NumberUtil.numberFormat(good + (average * 1.8) + (miss * 2.4) + (boo * 0.2), 1, true));
         lastText = field.text;
     }
     
-    private function set_alignment(value : String) : String
+    private function set_alignment(value                       : Dynamic) : String
     {
         field.htmlText = "";
         field.autoSize = TextFieldAutoSize.NONE;
@@ -74,45 +75,45 @@ class RawGoods extends GameControl
     
     override public function getEditorInterface() : GameControlEditor
     {
-        var self : RawGoods = this;
+        var self                       : Dynamic= this;
         
-        var out : GameControlEditor = super.getEditorInterface();
+        var out                       : Dynamic= super.getEditorInterface();
         
         new Text(out, 10, out.cy, _lang.string("editor_component_alignment"));
         out.cy += 24;
         
-        var checkAlignLeft : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
+        var checkAlignLeft                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
         checkAlignLeft.checked = (field.autoSize == "left");
         new Text(out, 30, out.cy, _lang.string("editor_component_left"));
         out.cy += 22;
         
-        var checkAlignCenter : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
+        var checkAlignCenter                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
         checkAlignCenter.checked = (field.autoSize == "center");
         new Text(out, 30, out.cy, _lang.string("editor_component_center"));
         out.cy += 22;
         
-        var checkAlignRight : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
+        var checkAlignRight                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
         checkAlignRight.checked = (field.autoSize == "right");
         new Text(out, 30, out.cy, _lang.string("editor_component_right"));
         out.cy += 22;
         
-        var e_changeHandler : Event->Void = function(e : Event) : Void
+        e_changeHandler = function(e                       : Dynamic) : Void
         {
-            if (e.target == checkAlignLeft)
+            if (as3hx.Compat.truthy(e.target == checkAlignLeft))
             {
                 checkAlignLeft.checked = true;
                 checkAlignCenter.checked = checkAlignRight.checked = false;
                 Reflect.setField(editorLayout, "alignment", "left");
                 self.alignment = Reflect.field(editorLayout, "alignment");
             }
-            if (e.target == checkAlignCenter)
+            if (as3hx.Compat.truthy(e.target == checkAlignCenter))
             {
                 checkAlignCenter.checked = true;
                 checkAlignLeft.checked = checkAlignRight.checked = false;
                 Reflect.setField(editorLayout, "alignment", "center");
                 self.alignment = Reflect.field(editorLayout, "alignment");
             }
-            if (e.target == checkAlignRight)
+            if (as3hx.Compat.truthy(e.target == checkAlignRight))
             {
                 checkAlignRight.checked = true;
                 checkAlignLeft.checked = checkAlignCenter.checked = false;

@@ -4,18 +4,18 @@ import openfl.utils.IDataOutput;
 
 class GamePlaybackEvent
 {
-    public var id : Int;
-    public var index : Int;
-    public var timestamp : Int;
+    public var id                       : Dynamic;
+    public var index                       : Dynamic;
+    public var timestamp                       : Dynamic;
     
-    public function new(id : Int, index : Int, timestamp : Int)
+    public function new(id                       : Dynamic, index                       : Dynamic, timestamp                       : Dynamic)
     {
         this.id = id;
         this.index = index;
         this.timestamp = timestamp;
     }
     
-    public function writeData(output : IDataOutput) : Void
+    public function writeData(output                       : Dynamic) : Void
     {
     }
 }

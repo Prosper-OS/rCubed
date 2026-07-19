@@ -11,16 +11,16 @@ import openfl.filters.DropShadowFilter;
 
 class Prompt extends Sprite
 {
-    public var uiLock(never, set) : Bool;
-    public var content(get, never) : Sprite;
+    public var uiLock(never, set)                             : Dynamic;
+    public var content(get, never)                             : Dynamic;
 
-    private var _width : Float;
-    private var _height : Float;
-    private var _content : Sprite;
-    private var _dropshadow : Sprite;
-    private var _lock : UILockWait;
+    public var _width                             : Dynamic;
+    public var _height                             : Dynamic;
+    public var _content                             : Dynamic;
+    public var _dropshadow                             : Dynamic;
+    public var _lock                             : Dynamic;
     
-    public function new(parent : DisplayObjectContainer, width : Float = 200, height : Float = 200)
+    public function new(parent                             : Dynamic, width                             : Dynamic= 200, height                             : Dynamic= 200)
     {
         super();
         _width = width;
@@ -29,7 +29,7 @@ class Prompt extends Sprite
         parent.addChild(this);
         
         // Background
-        var bmp : Bitmap = SpriteUtil.getBitmapSprite(parent.stage);
+        var bmp                             : Dynamic= SpriteUtil.getBitmapSprite(parent.stage);
         this.graphics.beginBitmapFill(bmp.bitmapData);
         this.graphics.drawRect((Main.GAME_WIDTH - _width) / 2, (Main.GAME_HEIGHT - _height) / 2, _width, _height);
         this.graphics.endFill();
@@ -65,13 +65,13 @@ class Prompt extends Sprite
         super.addChildAt(_dropshadow, 0);
     }
     
-    private function set_uiLock(val : Bool) : Bool
+    private function set_uiLock(val                             : Dynamic) : Bool
     {
-        if (val && _lock == null)
+        if (as3hx.Compat.truthy(val && _lock == null))
         {
             _lock = new UILockWait(stage);
         }
-        else if (!val && _lock != null)
+        else if (as3hx.Compat.truthy(!val && _lock != null))
         {
             _lock.remove();
             _lock = null;
@@ -79,12 +79,12 @@ class Prompt extends Sprite
         return val;
     }
     
-    override public function addChild(child : DisplayObject) : DisplayObject
+    override public function addChild(child                             : Dynamic) : DisplayObject
     {
         return _content.addChild(child);
     }
     
-    override public function removeChild(child : DisplayObject) : DisplayObject
+    override public function removeChild(child                             : Dynamic) : DisplayObject
     {
         return _content.removeChild(child);
     }
@@ -106,11 +106,11 @@ class Prompt extends Sprite
     
     public function close() : Void
     {
-        if (parent != null && parent.contains(this))
+        if (as3hx.Compat.truthy(parent != null && parent.contains(this)))
         {
             parent.removeChild(this);
             
-            if (_lock != null)
+            if (as3hx.Compat.truthy(_lock != null))
             {
                 _lock.remove();
                 _lock = null;

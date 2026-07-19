@@ -44,28 +44,28 @@ import com.bit101.components.Slider;
 
 class ScrollBar extends Component
 {
-    public var autoHide(get, set) : Bool;
-    public var value(get, set) : Float;
-    public var minimum(get, set) : Float;
-    public var maximum(get, set) : Float;
-    public var lineSize(get, set) : Int;
-    public var pageSize(get, set) : Int;
+    public var autoHide(get, set)                            : Dynamic;
+    public var value(get, set)                            : Dynamic;
+    public var minimum(get, set)                            : Dynamic;
+    public var maximum(get, set)                            : Dynamic;
+    public var lineSize(get, set)                            : Dynamic;
+    public var pageSize(get, set)                            : Dynamic;
 
-    private var DELAY_TIME(default, never) : Int = 500;
-    private var REPEAT_TIME(default, never) : Int = 100;
-    private var UP(default, never) : String = "up";
-    private var DOWN(default, never) : String = "down";
+    public var DELAY_TIME(default, never)                            : Dynamic= 500;
+    public var REPEAT_TIME(default, never)                            : Dynamic= 100;
+    public var UP(default, never)                            : Dynamic= "up";
+    public var DOWN(default, never)                            : Dynamic= "down";
     
-    private var _autoHide : Bool = false;
-    private var _upButton : PushButton;
-    private var _downButton : PushButton;
-    private var _scrollSlider : ScrollSlider;
-    private var _orientation : String;
-    private var _lineSize : Int = 1;
-    private var _delayTimer : Timer;
-    private var _repeatTimer : Timer;
-    private var _direction : String;
-    private var _shouldRepeat : Bool = false;
+    public var _autoHide                            : Dynamic= false;
+    public var _upButton                            : Dynamic;
+    public var _downButton                            : Dynamic;
+    public var _scrollSlider                            : Dynamic;
+    public var _orientation                            : Dynamic;
+    public var _lineSize                            : Dynamic= 1;
+    public var _delayTimer                            : Dynamic;
+    public var _repeatTimer                            : Dynamic;
+    public var _direction                            : Dynamic;
+    public var _shouldRepeat                            : Dynamic= false;
     
     /**
      * Constructor
@@ -75,11 +75,11 @@ class ScrollBar extends Component
      * @param ypos The y position to place this component.
      * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
      */
-    public function new(orientation : String, parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, defaultHandler : Dynamic = null)
+    public function new(orientation                            : Dynamic, parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, defaultHandler                            : Dynamic= null)
     {
         _orientation = orientation;
         super(parent, xpos, ypos);
-        if (defaultHandler != null)
+        if (as3hx.Compat.truthy(defaultHandler != null))
         {
             addEventListener(Event.CHANGE, defaultHandler);
         }
@@ -88,22 +88,22 @@ class ScrollBar extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         _scrollSlider = new ScrollSlider(_orientation, this, 0, 10, onChange);
         _upButton = new PushButton(this, 0, 0, "");
         _upButton.addEventListener(MouseEvent.MOUSE_DOWN, onUpClick);
         _upButton.setSize(10, 10);
-        var upArrow : Shape = new Shape();
+        var upArrow                            : Dynamic= new Shape();
         _upButton.addChild(upArrow);
         
         _downButton = new PushButton(this, 0, 0, "");
         _downButton.addEventListener(MouseEvent.MOUSE_DOWN, onDownClick);
         _downButton.setSize(10, 10);
-        var downArrow : Shape = new Shape();
+        var downArrow                            : Dynamic= new Shape();
         _downButton.addChild(downArrow);
         
-        if (_orientation == Slider.VERTICAL)
+        if (as3hx.Compat.truthy(_orientation == Slider.VERTICAL))
         {
             upArrow.graphics.beginFill(0xFFFFFF, 0.5);
             upArrow.graphics.moveTo(5, 3);
@@ -136,10 +136,10 @@ class ScrollBar extends Component
     /**
      * Initializes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
-        if (_orientation == Slider.HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == Slider.HORIZONTAL))
         {
             setSize(100, 10);
         }
@@ -165,7 +165,7 @@ class ScrollBar extends Component
      * @param max The maximum value of the slider.
      * @param value The value of the slider.
      */
-    public function setSliderParams(min : Float, max : Float, value : Float) : Void
+    public function setSliderParams(min                            : Dynamic, max                            : Dynamic, value                            : Dynamic) : Void
     {
         _scrollSlider.setSliderParams(min, max, value);
     }
@@ -173,7 +173,7 @@ class ScrollBar extends Component
     /**
      * Sets the percentage of the size of the thumb button.
      */
-    public function setThumbPercent(value : Float) : Void
+    public function setThumbPercent(value                            : Dynamic) : Void
     {
         _scrollSlider.setThumbPercent(value);
     }
@@ -184,7 +184,7 @@ class ScrollBar extends Component
     override public function draw() : Void
     {
         super.draw();
-        if (_orientation == Slider.VERTICAL)
+        if (as3hx.Compat.truthy(_orientation == Slider.VERTICAL))
         {
             _scrollSlider.x = 0;
             _scrollSlider.y = 10;
@@ -203,7 +203,7 @@ class ScrollBar extends Component
             _downButton.y = 0;
         }
         _scrollSlider.draw();
-        if (_autoHide)
+        if (as3hx.Compat.truthy(_autoHide))
         {
             visible = _scrollSlider.thumbPercent < 1.0;
         }
@@ -224,7 +224,7 @@ class ScrollBar extends Component
     /**
      * Sets / gets whether the scrollbar will auto hide when there is nothing to scroll.
      */
-    private function set_autoHide(value : Bool) : Bool
+    private function set_autoHide(value                            : Dynamic) : Bool
     {
         _autoHide = value;
         invalidate();
@@ -239,7 +239,7 @@ class ScrollBar extends Component
     /**
      * Sets / gets the current value of this scroll bar.
      */
-    private function set_value(v : Float) : Float
+    private function set_value(v                            : Dynamic) : Float
     {
         _scrollSlider.value = v;
         return v;
@@ -253,7 +253,7 @@ class ScrollBar extends Component
     /**
      * Sets / gets the minimum value of this scroll bar.
      */
-    private function set_minimum(v : Float) : Float
+    private function set_minimum(v                            : Dynamic) : Float
     {
         _scrollSlider.minimum = v;
         return v;
@@ -267,7 +267,7 @@ class ScrollBar extends Component
     /**
      * Sets / gets the maximum value of this scroll bar.
      */
-    private function set_maximum(v : Float) : Float
+    private function set_maximum(v                            : Dynamic) : Float
     {
         _scrollSlider.maximum = v;
         return v;
@@ -281,7 +281,7 @@ class ScrollBar extends Component
     /**
      * Sets / gets the amount the value will change when up or down buttons are pressed.
      */
-    private function set_lineSize(value : Int) : Int
+    private function set_lineSize(value                            : Dynamic) : Int
     {
         _lineSize = value;
         return value;
@@ -295,7 +295,7 @@ class ScrollBar extends Component
     /**
      * Sets / gets the amount the value will change when the back is clicked.
      */
-    private function set_pageSize(value : Int) : Int
+    private function set_pageSize(value                            : Dynamic) : Int
     {
         _scrollSlider.pageSize = value;
         invalidate();
@@ -316,7 +316,7 @@ class ScrollBar extends Component
     // event handlers
     ///////////////////////////////////
     
-    private function onUpClick(event : MouseEvent) : Void
+    public function onUpClick(event                            : Dynamic) : Void
     {
         goUp();
         _shouldRepeat = true;
@@ -325,13 +325,13 @@ class ScrollBar extends Component
         stage.addEventListener(MouseEvent.MOUSE_UP, onMouseGoUp);
     }
     
-    private function goUp() : Void
+    public function goUp() : Void
     {
         _scrollSlider.value -= _lineSize;
         dispatchEvent(new Event(Event.CHANGE));
     }
     
-    private function onDownClick(event : MouseEvent) : Void
+    public function onDownClick(event                            : Dynamic) : Void
     {
         goDown();
         _shouldRepeat = true;
@@ -340,35 +340,35 @@ class ScrollBar extends Component
         stage.addEventListener(MouseEvent.MOUSE_UP, onMouseGoUp);
     }
     
-    private function goDown() : Void
+    public function goDown() : Void
     {
         _scrollSlider.value += _lineSize;
         dispatchEvent(new Event(Event.CHANGE));
     }
     
-    private function onMouseGoUp(event : MouseEvent) : Void
+    public function onMouseGoUp(event                            : Dynamic) : Void
     {
         _delayTimer.stop();
         _repeatTimer.stop();
         _shouldRepeat = false;
     }
     
-    private function onChange(event : Event) : Void
+    public function onChange(event                            : Dynamic) : Void
     {
         dispatchEvent(event);
     }
     
-    private function onDelayComplete(event : TimerEvent) : Void
+    public function onDelayComplete(event                            : Dynamic) : Void
     {
-        if (_shouldRepeat)
+        if (as3hx.Compat.truthy(_shouldRepeat))
         {
             _repeatTimer.start();
         }
     }
     
-    private function onRepeat(event : TimerEvent) : Void
+    public function onRepeat(event                            : Dynamic) : Void
     {
-        if (_direction == UP)
+        if (as3hx.Compat.truthy(_direction == UP))
         {
             goUp();
         }
@@ -388,11 +388,11 @@ class ScrollBar extends Component
  */
 class ScrollSlider extends Slider
 {
-    public var pageSize(get, set) : Int;
-    public var thumbPercent(get, never) : Float;
+    public var pageSize(get, set)                            : Dynamic;
+    public var thumbPercent(get, never)                            : Dynamic;
 
-    private var _thumbPercent : Float = 1.0;
-    private var _pageSize : Int = 1;
+    public var _thumbPercent                            : Dynamic= 1.0;
+    public var _pageSize                            : Dynamic= 1;
     
     /**
      * Constructor
@@ -402,10 +402,10 @@ class ScrollSlider extends Slider
      * @param ypos The y position to place this component.
      * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
      */
-    public function new(orientation : String, parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, defaultHandler : Dynamic = null)
+    public function new(orientation                            : Dynamic, parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, defaultHandler                            : Dynamic= null)
     {
         super(orientation, parent, xpos, ypos);
-        if (defaultHandler != null)
+        if (as3hx.Compat.truthy(defaultHandler != null))
         {
             addEventListener(Event.CHANGE, defaultHandler);
         }
@@ -414,7 +414,7 @@ class ScrollSlider extends Slider
     /**
      * Initializes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         setSliderParams(1, 1, 0);
@@ -424,11 +424,11 @@ class ScrollSlider extends Slider
     /**
      * Draws the handle of the slider.
      */
-    override private function drawHandle() : Void
+    override public function drawHandle() : Void
     {
-        var size : Float;
+        var size                            : Dynamic= null;
         _handle.graphics.clear();
-        if (_orientation == HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == Slider.HORIZONTAL))
         {
             size = Math.round(_width * _thumbPercent);
             size = Math.max(_height, size);
@@ -455,10 +455,10 @@ class ScrollSlider extends Slider
     /**
      * Adjusts position of handle when value, maximum or minimum have changed.
      */
-    override private function positionHandle() : Void
+    override public function positionHandle() : Void
     {
-        var range : Float;
-        if (_orientation == HORIZONTAL)
+        var range                            : Dynamic= null;
+        if (as3hx.Compat.truthy(_orientation == Slider.HORIZONTAL))
         {
             range = width - _handle.width;
             _handle.x = (_value - _min) / (_max - _min) * range;
@@ -479,7 +479,7 @@ class ScrollSlider extends Slider
     /**
      * Sets the percentage of the size of the thumb button.
      */
-    public function setThumbPercent(value : Float) : Void
+    public function setThumbPercent(value                            : Dynamic) : Void
     {
         _thumbPercent = Math.min(value, 1.0);
         invalidate();
@@ -497,13 +497,13 @@ class ScrollSlider extends Slider
      * Handler called when user clicks the background of the slider, causing the handle to move to that point. Only active if backClick is true.
      * @param event The MouseEvent passed by the system.
      */
-    override private function onBackClick(event : MouseEvent) : Void
+    override public function onBackClick(event                            : Dynamic) : Void
     {
-        if (_orientation == HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == Slider.HORIZONTAL))
         {
-            if (mouseX < _handle.x)
+            if (as3hx.Compat.truthy(mouseX < _handle.x))
             {
-                if (_max > _min)
+                if (as3hx.Compat.truthy(_max > _min))
                 {
                     _value -= _pageSize;
                 }
@@ -515,7 +515,7 @@ class ScrollSlider extends Slider
             }
             else
             {
-                if (_max > _min)
+                if (as3hx.Compat.truthy(_max > _min))
                 {
                     _value += _pageSize;
                 }
@@ -529,9 +529,9 @@ class ScrollSlider extends Slider
         }
         else
         {
-            if (mouseY < _handle.y)
+            if (as3hx.Compat.truthy(mouseY < _handle.y))
             {
-                if (_max > _min)
+                if (as3hx.Compat.truthy(_max > _min))
                 {
                     _value -= _pageSize;
                 }
@@ -543,7 +543,7 @@ class ScrollSlider extends Slider
             }
             else
             {
-                if (_max > _min)
+                if (as3hx.Compat.truthy(_max > _min))
                 {
                     _value += _pageSize;
                 }
@@ -562,11 +562,11 @@ class ScrollSlider extends Slider
      * Internal mouseDown handler. Starts dragging the handle.
      * @param event The MouseEvent passed by the system.
      */
-    override private function onDrag(event : MouseEvent) : Void
+    override public function onDrag(event                            : Dynamic) : Void
     {
         stage.addEventListener(MouseEvent.MOUSE_UP, onDrop);
         stage.addEventListener(MouseEvent.MOUSE_MOVE, onSlide);
-        if (_orientation == HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == Slider.HORIZONTAL))
         {
             _handle.startDrag(false, new Rectangle(0, 0, _width - _handle.width, 0));
         }
@@ -580,12 +580,12 @@ class ScrollSlider extends Slider
      * Internal mouseMove handler for when the handle is being moved.
      * @param event The MouseEvent passed by the system.
      */
-    override private function onSlide(event : MouseEvent) : Void
+    override public function onSlide(event                            : Dynamic) : Void
     {
-        var oldValue : Float = _value;
-        if (_orientation == HORIZONTAL)
+        var oldValue                            : Dynamic= _value;
+        if (as3hx.Compat.truthy(_orientation == Slider.HORIZONTAL))
         {
-            if (_width == _handle.width)
+            if (as3hx.Compat.truthy(_width == _handle.width))
             {
                 _value = _min;
             }
@@ -594,7 +594,7 @@ class ScrollSlider extends Slider
                 _value = _handle.x / (_width - _handle.width) * (_max - _min) + _min;
             }
         }
-        else if (_height == _handle.height)
+        else if (as3hx.Compat.truthy(_height == _handle.height))
         {
             _value = _min;
         }
@@ -602,7 +602,7 @@ class ScrollSlider extends Slider
         {
             _value = _handle.y / (_height - _handle.height) * (_max - _min) + _min;
         }
-        if (_value != oldValue)
+        if (as3hx.Compat.truthy(_value != oldValue))
         {
             dispatchEvent(new Event(Event.CHANGE));
         }
@@ -619,7 +619,7 @@ class ScrollSlider extends Slider
     /**
      * Sets / gets the amount the value will change when the back is clicked.
      */
-    private function set_pageSize(value : Int) : Int
+    private function set_pageSize(value                            : Dynamic) : Int
     {
         _pageSize = value;
         invalidate();

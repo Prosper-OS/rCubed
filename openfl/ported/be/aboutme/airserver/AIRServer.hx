@@ -20,7 +20,7 @@ import openfl.events.EventDispatcher;
  * <p>Simply create an instance of this class, add endpoints & start the server. Events are
  * triggered when users connect, send messages and disconnect from the server</p>
  *
- * <p><code>var airServer:AIRServer = new AIRServer();</code></p>
+ * <p><code>var airServer                             : Dynamic= new AIRServer();</code></p>
  * <p><code>airServer.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory()));</code></p>
  * <p><code>airServer.addEndPoint(new SocketEndPoint(1235, new WebSocketClientHandlerFactory()));</code></p>
  * <p><code>airServer.addEventListener(MessageReceivedEvent.MESSAGE_RECEIVED, messageReceivedHandler);</code></p>
@@ -30,21 +30,21 @@ import openfl.events.EventDispatcher;
  */
 class AIRServer extends EventDispatcher
 {
-    public var clients(get, never) : Array<Client>;
+    public var clients(get, never)                              : Dynamic;
 
-    private static var GUID_CLIENT : Int = 0;
+    private static var GUID_CLIENT                              : Dynamic= 0;
     
-    private var started : Bool;
+    private var started                              : Dynamic;
     
-    private var endPoints : Array<IEndPoint>;
-    private var _clients : Array<Client>;
+    private var endPoints                              : Dynamic;
+    private var _clients                              : Dynamic;
     
     private function get_clients() : Array<Client>
     {
         return _clients.copy();
     }
     
-    private var clientsMap : Dynamic;
+    private var clientsMap                              : Dynamic;
     
     public function new()
     {
@@ -61,9 +61,9 @@ class AIRServer extends EventDispatcher
      * <p><code>airServer.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory())
      * );</code></p>
      */
-    public function addEndPoint(endPointToAdd : IEndPoint) : Void
+    public function addEndPoint(endPointToAdd                              : Dynamic) : Void
     {
-        if (Lambda.indexOf(endPoints, endPointToAdd) == -1)
+        if (as3hx.Compat.truthy(Lambda.indexOf(endPoints, endPointToAdd) == -1))
         {
             endPoints.push(endPointToAdd);
         }
@@ -75,14 +75,14 @@ class AIRServer extends EventDispatcher
      */
     public function start() : Bool
     {
-        var startedEndpoints : Int = 0;
+        var startedEndpoints                              : Dynamic= 0;
         
         //open all endpoints
-        for (endPoint in endPoints) {
+        for (endPoint in as3hx.Compat.iter(endPoints)) {
 endPoint.addEventListener(EndPointEvent.CLIENT_HANDLER_ADDED, clientHandlerAddedHandler, false, 0, true);
             
             //open it
-            if (endPoint.open())
+            if (as3hx.Compat.truthy(endPoint.open()))
             {
                 startedEndpoints++;
             }
@@ -100,7 +100,7 @@ endPoint.addEventListener(EndPointEvent.CLIENT_HANDLER_ADDED, clientHandlerAdded
     //close all endpoints
     {
         
-        for (endPoint in endPoints) {
+        for (endPoint in as3hx.Compat.iter(endPoints)) {
 endPoint.close();
             
             //remove event listeners from the endpoint
@@ -112,17 +112,17 @@ endPoint.close();
     /**
      * Send a message to all the connected clients.
      */
-    public function sendMessageToAllClients(message : Message) : Void
+    public function sendMessageToAllClients(message                              : Dynamic) : Void
     {
-        for (client in _clients)
+        for (client in as3hx.Compat.iter(_clients))
         {
             client.sendMessage(message);
         }
     }
     
-    private function clientHandlerAddedHandler(event : EndPointEvent) : Void
+    private function clientHandlerAddedHandler(event                              : Dynamic) : Void
     {
-        var client : Client = new Client(GUID_CLIENT++, event.clientHandler);
+        var client                              : Dynamic= new Client(GUID_CLIENT++, event.clientHandler);
         _clients.push(client);
         Reflect.setField(clientsMap, Std.string(client.id), client);
         
@@ -131,16 +131,16 @@ endPoint.close();
         client.addEventListener(Event.CLOSE, clientCloseHandler, false, 0, true);
         
         //dispatch added event
-        var e : AIRServerEvent = new AIRServerEvent(AIRServerEvent.CLIENT_ADDED);
+        var e                              : Dynamic= new AIRServerEvent(AIRServerEvent.CLIENT_ADDED);
         e.client = client;
         dispatchEvent(e);
     }
     
-    private function clientCloseHandler(event : Event) : Void
+    private function clientCloseHandler(event                              : Dynamic) : Void
     {
-        var client : Client = try cast(event.target, Client) catch(e:Dynamic) null;
-        var index : Int = Lambda.indexOf(_clients, client);
-        if (index > -1)
+        var client                              : Dynamic= try cast(event.target, Client) catch(e:Dynamic) null;
+        var index                              : Dynamic= Lambda.indexOf(_clients, client);
+        if (as3hx.Compat.truthy(index > -1))
         {
             _clients.splice(index, 1);
         }
@@ -152,7 +152,7 @@ endPoint.close();
         client.removeEventListener(Event.CLOSE, clientCloseHandler);
         
         //dispatch removed event
-        var e : AIRServerEvent = new AIRServerEvent(AIRServerEvent.CLIENT_REMOVED);
+        var e                              : Dynamic= new AIRServerEvent(AIRServerEvent.CLIENT_REMOVED);
         e.client = client;
         dispatchEvent(e);
     }
@@ -160,9 +160,9 @@ endPoint.close();
     /**
      * Get a client, specified by it's client id
      */
-    public function getClientById(clientId : Int) : Client
+    public function getClientById(clientId                              : Dynamic) : Client
     {
-        return Reflect.field(clientsMap, Std.string(clientId));
+        return as3hx.Compat.field(clientsMap, clientId);
     }
     
     /**
@@ -170,11 +170,11 @@ endPoint.close();
      * @param type Type of endpoint
      * @return port number
      */
-    public function getPortNumber(type : String) : Int
+    public function getPortNumber(type                              : Dynamic) : Int
     {
-        for (endPoint in endPoints)
+        for (endPoint in as3hx.Compat.iter(endPoints))
         {
-            if (endPoint.type() == type)
+            if (as3hx.Compat.truthy(endPoint.type() == type))
             {
                 return endPoint.currentPort();
             }
@@ -183,7 +183,7 @@ endPoint.close();
         return 0;
     }
     
-    private function messageReceivedHandler(event : MessageReceivedEvent) : Void
+    private function messageReceivedHandler(event                              : Dynamic) : Void
     {
         dispatchEvent(event.clone());
     }

@@ -3,16 +3,16 @@ package classes.mp.commands;
 
 class MPCRoomCreate implements IMPCommand
 {
-    public var name : String;
-    public var password : String;
-    public var type : String;
+    public var name                             : Dynamic;
+    public var password                             : Dynamic;
+    public var type                             : Dynamic;
     
-    public var max_players : Float;
-    public var team_count : Float;
+    public var max_players                             : Dynamic;
+    public var team_count                             : Dynamic;
     
     public function toJSON() : String
     {
-        var data : Dynamic = {
+        var data                             : Dynamic= {
             type : type,
             name : name,
             password : password,

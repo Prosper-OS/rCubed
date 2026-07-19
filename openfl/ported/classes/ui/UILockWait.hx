@@ -10,12 +10,12 @@ import openfl.utils.Timer;
 
 class UILockWait extends Sprite
 {
-    private var icon : Throbber;
-    private var timer : Timer;
-    private var callback : Dynamic;
-    private var closeBtn : BoxButton;
+    private var icon                            : Dynamic;
+    private var timer                            : Dynamic;
+    private var callback                            : Dynamic;
+    private var closeBtn                            : Dynamic;
     
-    public function new(parent : DisplayObjectContainer, useTimer : Bool = false, closeFunction : Dynamic = null)
+    public function new(parent                            : Dynamic, useTimer                            : Dynamic= false, closeFunction                            : Dynamic= null)
     {
         super();
         this.graphics.beginFill(0x000000, 0.5);
@@ -36,7 +36,7 @@ class UILockWait extends Sprite
         
         parent.addChild(this);
         
-        if (useTimer)
+        if (as3hx.Compat.truthy(useTimer))
         {
             timer = new Timer(10000, 1);
             timer.addEventListener(TimerEvent.TIMER_COMPLETE, e_timerComplete);
@@ -47,16 +47,16 @@ class UILockWait extends Sprite
         }
     }
     
-    private function e_timerComplete(e : TimerEvent) : Void
+    private function e_timerComplete(e                            : Dynamic) : Void
     {
         closeBtn.visible = true;
     }
     
-    private function e_closeButton(e : Event) : Void
+    private function e_closeButton(e                            : Dynamic) : Void
     {
         remove();
         
-        if (callback != null)
+        if (as3hx.Compat.truthy(callback != null))
         {
             callback();
         }
@@ -66,7 +66,7 @@ class UILockWait extends Sprite
     {
         icon.stop();
         
-        if (parent != null && parent.contains(this))
+        if (as3hx.Compat.truthy(parent != null && parent.contains(this)))
         {
             parent.removeChild(this);
         }

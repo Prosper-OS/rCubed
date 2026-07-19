@@ -6,37 +6,37 @@ import openfl.utils.ByteArray;
 
 class MPSocketDataRaw
 {
-    public var type : Float;
-    public var action : Float;
-    public var data : ByteArray;
+    public var type                             : Dynamic;
+    public var action                             : Dynamic;
+    public var data                             : Dynamic;
     
-    public function new(type : Float, action : Float, data : ByteArray = null)
+    public function new(type                             : Dynamic, action                             : Dynamic, data                             : Dynamic= null)
     {
         this.type = type;
         this.action = action;
         this.data = data;
     }
     
-    public static function parse(message : WebSocketMessage) : MPSocketDataRaw
+    public static function parse(message                             : Dynamic) : MPSocketDataRaw
     {
         try
         {
-            if (message == null)
+            if (as3hx.Compat.truthy(message == null))
             {
                 return null;
             }
             
             // Binary Command
-            if (message.type == WebSocketMessage.TYPE_BINARY)
+            if (as3hx.Compat.truthy(message.type == WebSocketMessage.TYPE_BINARY))
             {
-                if (message.binaryData == null || message.binaryData.length == 0)
+                if (as3hx.Compat.truthy(message.binaryData == null || message.binaryData.length == 0))
                 {
                     return null;
                 }
                 
-                var data : ByteArray = message.binaryData;
-                var type : Float = data.readUnsignedByte();
-                var action : Float = data.readUnsignedByte();
+                var data                             : Dynamic= message.binaryData;
+                var type                             : Dynamic= data.readUnsignedByte();
+                var action                             : Dynamic= data.readUnsignedByte();
                 
                 data.position = 0;
                 

@@ -11,10 +11,10 @@ import openfl.events.MouseEvent;
 
 class SettingsTabVisuals extends SettingsTabBase
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var gameUIArray : Array<Dynamic> = ["GAME_TOP_BAR", 
+    private var gameUIArray                       : Dynamic= ["GAME_TOP_BAR", 
         "GAME_BOTTOM_BAR", 
         "JUDGE", 
         "HEALTH", 
@@ -34,20 +34,20 @@ class SettingsTabVisuals extends SettingsTabBase
         "JUDGE_ANIMATIONS"
     ];
     
-    private var gameMPUIArray : Array<Dynamic> = ["MULTIPLAYER_SCORES"];
+    private var gameMPUIArray                       : Dynamic= ["MULTIPLAYER_SCORES"];
     
-    private var gameOtherArray : Array<Dynamic> = ["GENRE_FLAG", 
+    private var gameOtherArray                       : Dynamic= ["GENRE_FLAG", 
         "SONG_FLAG", 
         "SONG_NOTE"
     ];
     
-    private var optionDisplays : Array<Dynamic>;
+    private var optionDisplays                       : Dynamic;
     
-    private var optionAccuracyBarFadeFactor : BoxSlider;
-    private var textAccuracyBarFadeFactor : Text;
+    private var optionAccuracyBarFadeFactor                       : Dynamic;
+    private var textAccuracyBarFadeFactor                       : Dynamic;
     
-    private var optionHypeMode : ComboBox;
-    private var hypeModeOptions : Array<Dynamic> = [{
+    private var optionHypeMode                       : Dynamic;
+    private var hypeModeOptions                       : Dynamic= [{
             label : "Full",
             data : "full"
         }, {
@@ -58,20 +58,20 @@ class SettingsTabVisuals extends SettingsTabBase
             data : "off"
         }];
     
-    private var optionReceptorSpeed : BoxSlider;
-    private var textReceptorSpeed : Text;
+    private var optionReceptorSpeed                       : Dynamic;
+    private var textReceptorSpeed                       : Dynamic;
     
-    private var optionJudgeSpeed : BoxSlider;
-    private var textJudgeSpeed : Text;
+    private var optionJudgeSpeed                       : Dynamic;
+    private var textJudgeSpeed                       : Dynamic;
     
-    private var optionJudgeScale : BoxSlider;
-    private var textJudgeScale : Text;
+    private var optionJudgeScale                       : Dynamic;
+    private var textJudgeScale                       : Dynamic;
     
-    private var legacySongsCheck : BoxCheck;
-    private var explicitSongsCheck : BoxCheck;
-    private var unrankedSongsCheck : BoxCheck;
+    private var legacySongsCheck                       : Dynamic;
+    private var explicitSongsCheck                       : Dynamic;
+    private var unrankedSongsCheck                       : Dynamic;
     
-    public function new(settingsWindow : SettingsWindow)
+    public function new(settingsWindow                       : Dynamic)
     {
         super(settingsWindow);
     }
@@ -87,9 +87,9 @@ class SettingsTabVisuals extends SettingsTabBase
         container.graphics.moveTo(295, 15);
         container.graphics.lineTo(295, 555);
         
-        var i : Int;
-        var xOff : Int = 15;
-        var yOff : Int = 15;
+        var i                       : Dynamic= null;
+        var xOff                       : Dynamic= 15;
+        var yOff                       : Dynamic= 15;
         
         /// Col 1
         //- Display
@@ -100,7 +100,7 @@ class SettingsTabVisuals extends SettingsTabBase
         
         for (i in 0...gameUIArray.length)
         {
-            if (gameUIArray[i] == "----")
+            if (as3hx.Compat.truthy(gameUIArray[i] == "----"))
             {
                 yOff += drawSeperator(container, xOff, 266, yOff, 0, 1);
                 continue;
@@ -108,22 +108,22 @@ class SettingsTabVisuals extends SettingsTabBase
             
             new Text(container, xOff + 23, yOff, _lang.string("options_" + gameUIArray[i].toLowerCase()));
             
-            var gameDisplayCheck : BoxCheck = new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
+            var gameDisplayCheck                       : Dynamic= new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
             gameDisplayCheck.display = gameUIArray[i];
             optionDisplays.push(gameDisplayCheck);
             yOff += 19;
             
-            if (gameUIArray[i] == "ACCURACY_BAR")
+            if (as3hx.Compat.truthy(gameUIArray[i] == "ACCURACY_BAR"))
             {
                 yOff = drawAccuracyBarFadeFactor(xOff, yOff, container);
             }
             
-            if (gameUIArray[i] == "RECEPTOR_ANIMATIONS")
+            if (as3hx.Compat.truthy(gameUIArray[i] == "RECEPTOR_ANIMATIONS"))
             {
                 yOff = drawReceptorSpeed(xOff, yOff, container);
             }
             
-            if (gameUIArray[i] == "JUDGE_ANIMATIONS")
+            if (as3hx.Compat.truthy(gameUIArray[i] == "JUDGE_ANIMATIONS"))
             {
                 yOff = drawJudgeSpeed(xOff, yOff, container);
                 yOff = drawJudgeScale(xOff, yOff, container);
@@ -153,7 +153,7 @@ class SettingsTabVisuals extends SettingsTabBase
         
         for (i in 0...gameMPUIArray.length)
         {
-            if (gameMPUIArray[i] == "----")
+            if (as3hx.Compat.truthy(gameMPUIArray[i] == "----"))
             {
                 yOff += drawSeperator(container, xOff, 266, yOff, 0, 1);
                 continue;
@@ -161,7 +161,7 @@ class SettingsTabVisuals extends SettingsTabBase
             
             new Text(container, xOff + 23, yOff, _lang.string("options_" + gameMPUIArray[i].toLowerCase()));
             
-            var gameMPDisplayCheck : BoxCheck = new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
+            var gameMPDisplayCheck                       : Dynamic= new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
             gameMPDisplayCheck.display = gameMPUIArray[i];
             optionDisplays.push(gameMPDisplayCheck);
             yOff += 19;
@@ -174,7 +174,7 @@ class SettingsTabVisuals extends SettingsTabBase
         
         for (i in 0...gameOtherArray.length)
         {
-            if (gameOtherArray[i] == "----")
+            if (as3hx.Compat.truthy(gameOtherArray[i] == "----"))
             {
                 yOff += drawSeperator(container, xOff, 266, yOff, 0, 1);
                 continue;
@@ -182,7 +182,7 @@ class SettingsTabVisuals extends SettingsTabBase
             
             new Text(container, xOff + 23, yOff, _lang.string("options_" + gameOtherArray[i].toLowerCase()));
             
-            var optionModCheck : BoxCheck = new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
+            var optionModCheck                       : Dynamic= new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
             optionModCheck.display = gameOtherArray[i];
             optionDisplays.push(optionModCheck);
             yOff += 19;
@@ -207,7 +207,7 @@ class SettingsTabVisuals extends SettingsTabBase
     }
     
     
-    private function drawAccuracyBarFadeFactor(xOff : Int, yOff : Int, container : ScrollPaneContent) : Int
+    private function drawAccuracyBarFadeFactor(xOff                       : Dynamic, yOff                       : Dynamic, container                       : Dynamic) : Int
     {
         new Text(container, xOff + 23, yOff, _lang.string("options_accuracy_bar_fade_factor"));
         yOff += 22;
@@ -221,7 +221,7 @@ class SettingsTabVisuals extends SettingsTabBase
         return as3hx.Compat.parseInt(yOff + 4);
     }
     
-    private function drawReceptorSpeed(xOff : Int, yOff : Int, container : ScrollPaneContent) : Int
+    private function drawReceptorSpeed(xOff                       : Dynamic, yOff                       : Dynamic, container                       : Dynamic) : Int
     {
         new Text(container, xOff + 23, yOff, _lang.string("options_receptor_speed"));
         yOff += 22;
@@ -235,7 +235,7 @@ class SettingsTabVisuals extends SettingsTabBase
         return as3hx.Compat.parseInt(yOff + 4);
     }
     
-    private function drawJudgeSpeed(xOff : Int, yOff : Int, container : ScrollPaneContent) : Int
+    private function drawJudgeSpeed(xOff                       : Dynamic, yOff                       : Dynamic, container                       : Dynamic) : Int
     {
         new Text(container, xOff + 23, yOff, _lang.string("options_judge_speed"));
         yOff += 22;
@@ -250,7 +250,7 @@ class SettingsTabVisuals extends SettingsTabBase
         return as3hx.Compat.parseInt(yOff + 4);
     }
     
-    private function drawJudgeScale(xOff : Int, yOff : Int, container : ScrollPaneContent) : Int
+    private function drawJudgeScale(xOff                       : Dynamic, yOff                       : Dynamic, container                       : Dynamic) : Int
     {
         new Text(container, xOff + 23, yOff, _lang.string("options_judge_scale"));
         yOff += 22;
@@ -267,22 +267,22 @@ class SettingsTabVisuals extends SettingsTabBase
     
     override public function setValues() : Void
     {
-        for (item in optionDisplays)
+        for (item in as3hx.Compat.iter(optionDisplays))
         {
-            item.checked = (_gvars.activeUser["DISPLAY_" + item.display]);
+            item.checked = (as3hx.Compat.field(_gvars.activeUser, "DISPLAY_" + item.display));
         }
         
         optionAccuracyBarFadeFactor.slideValue = _gvars.activeUser.accuracyBarFadeFactor;
-        textAccuracyBarFadeFactor.text = (_gvars.activeUser.accuracyBarFadeFactor * 100).toFixed(0) + "%";
+        textAccuracyBarFadeFactor.text = as3hx.Compat.toFixed(_gvars.activeUser.accuracyBarFadeFactor * 100, 0) + "%";
         
         optionReceptorSpeed.slideValue = _gvars.activeUser.receptorSpeed;
-        textReceptorSpeed.text = _gvars.activeUser.receptorSpeed.toFixed(2) + "x";
+        textReceptorSpeed.text = as3hx.Compat.toFixed(_gvars.activeUser.receptorSpeed, 2) + "x";
         
         optionJudgeSpeed.slideValue = _gvars.activeUser.judgeSpeed;
-        textJudgeSpeed.text = _gvars.activeUser.judgeSpeed.toFixed(2) + "x";
+        textJudgeSpeed.text = as3hx.Compat.toFixed(_gvars.activeUser.judgeSpeed, 2) + "x";
         
         optionJudgeScale.slideValue = _gvars.activeUser.judgeScale;
-        textJudgeScale.text = _gvars.activeUser.judgeScale.toFixed(2) + "x";
+        textJudgeScale.text = as3hx.Compat.toFixed(_gvars.activeUser.judgeScale, 2) + "x";
         
         optionHypeMode.selectedItemByData = _gvars.activeUser.visualHypeMode;
         
@@ -291,29 +291,29 @@ class SettingsTabVisuals extends SettingsTabBase
         unrankedSongsCheck.checked = _gvars.activeUser.DISPLAY_UNRANKED_SONGS;
     }
     
-    override public function clickHandler(e : MouseEvent) : Void
+    override public function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target.exists("display"))
+        if (as3hx.Compat.truthy(e.target.exists("display")))
         {
-            _gvars.activeUser["DISPLAY_" + e.target.display] = !_gvars.activeUser["DISPLAY_" + e.target.display];
+            Reflect.setField(_gvars.activeUser, "DISPLAY_" + e.target.display, !as3hx.Compat.field(_gvars.activeUser, "DISPLAY_" + e.target.display));
             e.target.checked = !e.target.checked;
-            if (e.target.display == "GENRE_FLAG" || e.target.display == "SONG_FLAG" || e.target.display == "SONG_NOTE")
+            if (as3hx.Compat.truthy(e.target.display == "GENRE_FLAG" || e.target.display == "SONG_FLAG" || e.target.display == "SONG_NOTE"))
             {
                 _gvars.gameMain.activePanel.draw();
             }
         }
         // Songs Flags
-        else if (e.target == legacySongsCheck)
+        else if (as3hx.Compat.truthy(e.target == legacySongsCheck))
         {
             e.target.checked = !e.target.checked;
             _gvars.activeUser.DISPLAY_LEGACY_SONGS = !_gvars.activeUser.DISPLAY_LEGACY_SONGS;
         }
-        else if (e.target == explicitSongsCheck)
+        else if (as3hx.Compat.truthy(e.target == explicitSongsCheck))
         {
             e.target.checked = !e.target.checked;
             _gvars.activeUser.DISPLAY_EXPLICIT_SONGS = !_gvars.activeUser.DISPLAY_EXPLICIT_SONGS;
         }
-        else if (e.target == unrankedSongsCheck)
+        else if (as3hx.Compat.truthy(e.target == unrankedSongsCheck))
         {
             e.target.checked = !e.target.checked;
             _gvars.activeUser.DISPLAY_UNRANKED_SONGS = !_gvars.activeUser.DISPLAY_UNRANKED_SONGS;
@@ -322,9 +322,9 @@ class SettingsTabVisuals extends SettingsTabBase
         parent.checkValidMods();
     }
     
-    private function hypeModeSelect(e : Event) : Void
+    private function hypeModeSelect(e                       : Dynamic) : Void
     {
-        if (optionHypeMode.selectedItem && optionHypeMode.selectedItem.exists("data"))
+        if (as3hx.Compat.truthy(optionHypeMode.selectedItem && optionHypeMode.selectedItem.exists("data")))
         {
             _gvars.activeUser.visualHypeMode = optionHypeMode.selectedItem.data;
         }
@@ -332,42 +332,42 @@ class SettingsTabVisuals extends SettingsTabBase
         parent.checkValidMods();
     }
     
-    override public function changeHandler(e : Event) : Void
+    override public function changeHandler(e                       : Dynamic) : Void
     {
-        if (e.target == optionAccuracyBarFadeFactor)
+        if (as3hx.Compat.truthy(e.target == optionAccuracyBarFadeFactor))
         {
             _gvars.activeUser.accuracyBarFadeFactor = Math.round(optionAccuracyBarFadeFactor.slideValue * 100) / 100;
-            textAccuracyBarFadeFactor.text = (_gvars.activeUser.accuracyBarFadeFactor * 100).toFixed(0) + "%";
+            textAccuracyBarFadeFactor.text = as3hx.Compat.toFixed(_gvars.activeUser.accuracyBarFadeFactor * 100, 0) + "%";
         }
         
-        if (e.target == optionJudgeSpeed)
+        if (as3hx.Compat.truthy(e.target == optionJudgeSpeed))
         {
             _gvars.activeUser.judgeSpeed = (Math.round((optionJudgeSpeed.slideValue * 100) / 5) * 5) / 100;  // Snap to 0.05 intervals.  
-            textJudgeSpeed.text = _gvars.activeUser.judgeSpeed.toFixed(2) + "x";
+            textJudgeSpeed.text = as3hx.Compat.toFixed(_gvars.activeUser.judgeSpeed, 2) + "x";
         }
         
-        if (e.target == optionJudgeScale)
+        if (as3hx.Compat.truthy(e.target == optionJudgeScale))
         {
             _gvars.activeUser.judgeScale = (Math.round((optionJudgeScale.slideValue * 100) / 5) * 5) / 100;  // Snap to 0.05 intervals.  
-            textJudgeScale.text = _gvars.activeUser.judgeScale.toFixed(2) + "x";
+            textJudgeScale.text = as3hx.Compat.toFixed(_gvars.activeUser.judgeScale, 2) + "x";
         }
         
-        if (e.target == optionReceptorSpeed)
+        if (as3hx.Compat.truthy(e.target == optionReceptorSpeed))
         {
             _gvars.activeUser.receptorSpeed = (Math.round((optionReceptorSpeed.slideValue * 100) / 5) * 5) / 100;  // Snap to 0.05 intervals.  
-            textReceptorSpeed.text = _gvars.activeUser.receptorSpeed.toFixed(2) + "x";
+            textReceptorSpeed.text = as3hx.Compat.toFixed(_gvars.activeUser.receptorSpeed, 2) + "x";
         }
         
         parent.checkValidMods();
     }
     
-    private function e_legacyEngineMouseOver(e : Event) : Void
+    private function e_legacyEngineMouseOver(e                       : Dynamic) : Void
     {
         legacySongsCheck.addEventListener(MouseEvent.MOUSE_OUT, e_legacyEngineMouseOut);
         displayToolTip(legacySongsCheck.x, legacySongsCheck.y + 22, _lang.string("popup_legacy_songs"), "left");
     }
     
-    private function e_legacyEngineMouseOut(e : Event) : Void
+    private function e_legacyEngineMouseOut(e                       : Dynamic) : Void
     {
         legacySongsCheck.removeEventListener(MouseEvent.MOUSE_OUT, e_legacyEngineMouseOut);
         hideTooltip();

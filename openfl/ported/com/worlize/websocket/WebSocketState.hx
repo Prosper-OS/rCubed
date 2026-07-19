@@ -19,10 +19,10 @@ package com.worlize.websocket;
 
 @:final class WebSocketState
 {
-    public static inline var CONNECTING : Int = 0;
-    public static inline var OPEN : Int = 1;
-    public static inline var CLOSED : Int = 2;
-    public static inline var INIT : Int = 3;
+    public static inline var CONNECTING                          : Dynamic= 0;
+    public static inline var OPEN                          : Dynamic= 1;
+    public static inline var CLOSED                          : Dynamic= 2;
+    public static inline var INIT                          : Dynamic= 3;
 
     public function new()
     {

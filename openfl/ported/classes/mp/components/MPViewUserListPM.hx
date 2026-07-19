@@ -26,28 +26,28 @@ import openfl.geom.Rectangle;
 
 class MPViewUserListPM extends Sprite
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var _width : Float = 200;
-    private var _height : Float = 388;
+    private var _width                             : Dynamic= 200;
+    private var _height                             : Dynamic= 388;
     
-    private var pane : ScrollPane;
+    private var pane                             : Dynamic;
     
-    private var scrollbarWidth(default, never) : Float = 15;
-    private var scrollbar : ScrollBar;
-    private var scrollbarBG : Sprite;
+    private var scrollbarWidth(default, never)                             : Dynamic= 15;
+    private var scrollbar                             : Dynamic;
+    private var scrollbarBG                             : Dynamic;
     
-    private var labelHeight(default, never) : Float = 27;
-    private var userLabels : Array<MPViewUserListPMUserLabel> = [];
+    private var labelHeight(default, never)                             : Dynamic= 27;
+    private var userLabels                             : Dynamic= [];
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         super();
         this.x = xpos;
         this.y = ypos;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -115,12 +115,12 @@ class MPViewUserListPM extends Sprite
     
     public function update() : Void
     {
-        var my : Float = 0;
+        var my                             : Dynamic= 0;
         
-        var MPViewUserListPMUserLabel : MPViewUserListPMUserLabel;
-        var chat : MPUserChatHistory;
+        var MPViewUserListPMUserLabel                             : Dynamic= null;
+        var chat                             : Dynamic= null;
         
-        for (chat/* AS3HX WARNING could not determine type for var: chat exp: EField(EIdent(_mp),pms) type: null */ in _mp.pms)
+        for (chat/* AS3HX WARNING could not determine type for var: chat exp: EField(EIdent(_mp),pms) type: null */ in as3hx.Compat.iter(_mp.pms))
         {
             MPViewUserListPMUserLabel = getUserLabel(chat);
             MPViewUserListPMUserLabel.y = my;
@@ -131,10 +131,10 @@ class MPViewUserListPM extends Sprite
         pane.update();
         
         // Check for Change in Scrollbar appearence, recalculate widths if needed.
-        var oldScrollbarVisible : Bool = scrollbar.visible;
+        var oldScrollbarVisible                             : Dynamic= scrollbar.visible;
         scrollbarBG.visible = scrollbar.visible = (pane.content.height > pane.height - 5);
         
-        if (oldScrollbarVisible != scrollbar.visible)
+        if (as3hx.Compat.truthy(oldScrollbarVisible != scrollbar.visible))
         {
             userLabels.forEach(_setSize);
         }
@@ -145,28 +145,28 @@ class MPViewUserListPM extends Sprite
         userLabels.forEach(_setUnread);
     }
     
-    private function _setSize(item : MPViewUserListPMUserLabel, index : Int = 0, vector : Array<Dynamic> = null) : Void
+    private function _setSize(item                             : Dynamic, index                             : Dynamic= 0, vector                             : Dynamic= null) : Void
     {
         item.setSize(_width - ((scrollbar.visible) ? scrollbarWidth + 1 : 0), labelHeight);
     }
     
-    private function _setUnread(item : MPViewUserListPMUserLabel, index : Int = 0, vector : Array<Dynamic> = null) : Void
+    private function _setUnread(item                             : Dynamic, index                             : Dynamic= 0, vector                             : Dynamic= null) : Void
     {
         item.update();
     }
     
-    private function _markUnactive(item : MPViewUserListPMUserLabel, index : Int = 0, vector : Array<Dynamic> = null) : Void
+    private function _markUnactive(item                             : Dynamic, index                             : Dynamic= 0, vector                             : Dynamic= null) : Void
     {
         item.setActive(false);
     }
     
-    private function e_onUserClick(e : MouseEvent) : Void
+    private function e_onUserClick(e                             : Dynamic) : Void
     {
-        if (Std.is(e.target, MPViewUserListPMUserLabel))
+        if (as3hx.Compat.truthy(Std.is(e.target, MPViewUserListPMUserLabel)))
         {
             userLabels.forEach(_markUnactive);
             
-            var label : MPViewUserListPMUserLabel = try cast(e.target, MPViewUserListPMUserLabel) catch(e:Dynamic) null;
+            var label                             : Dynamic= try cast(e.target, MPViewUserListPMUserLabel) catch(e:Dynamic) null;
             label.chat.newMessage = false;
             label.setActive(true);
             label.update();
@@ -175,21 +175,21 @@ class MPViewUserListPM extends Sprite
         }
     }
     
-    private function e_scrollMouseWheel(e : MouseEvent) : Void
+    private function e_scrollMouseWheel(e                             : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
         
-        var dist : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var dist                             : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(dist);
         scrollbar.scrollTo(dist);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                             : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
@@ -197,7 +197,7 @@ class MPViewUserListPM extends Sprite
         pane.scrollTo(e.target.scroll);
     }
     
-    override private function set_width(value : Float) : Float
+    override private function set_width(value                             : Dynamic) : Float
     {
         _width = value;
         redraw();
@@ -209,7 +209,7 @@ class MPViewUserListPM extends Sprite
         return _width;
     }
     
-    override private function set_height(value : Float) : Float
+    override private function set_height(value                             : Dynamic) : Float
     {
         _height = height;
         redraw();
@@ -223,17 +223,17 @@ class MPViewUserListPM extends Sprite
     
     // //////
     // Object Pool
-    private function getUserLabel(chat : MPUserChatHistory) : MPViewUserListPMUserLabel
+    private function getUserLabel(chat                             : Dynamic) : MPViewUserListPMUserLabel
     {
-        for (label in userLabels)
+        for (label in as3hx.Compat.iter(userLabels))
         {
-            if (chat == label.chat)
+            if (as3hx.Compat.truthy(chat == label.chat))
             {
                 return label;
             }
         }
         
-        var newLabel : MPViewUserListPMUserLabel = new MPViewUserListPMUserLabel(chat);
+        var newLabel                             : Dynamic= new MPViewUserListPMUserLabel(chat);
         pane.content.addChild(newLabel);
         userLabels.push(newLabel);
         _setSize(newLabel);
@@ -246,24 +246,24 @@ class MPViewUserListPM extends Sprite
 
 class MPViewUserListPMUserLabel extends Sprite
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    public var _mp                             : Dynamic= Multiplayer.instance;
+    public var _lang                             : Dynamic= Language.instance;
     
-    private var _width : Float = 184;
-    private var _height : Float = 27;
+    public var _width                             : Dynamic= 184;
+    public var _height                             : Dynamic= 27;
     
-    public var chat : MPUserChatHistory;
-    public var user : MPUser;
-    public var messageDot : Sprite;
-    private var chevron : IconRight;
+    public var chat                             : Dynamic;
+    public var user                             : Dynamic;
+    public var messageDot                             : Dynamic;
+    private var chevron                             : Dynamic;
     
-    private var nameText : Text;
+    public var nameText                             : Dynamic;
     
-    private var active : Bool = false;
-    private var hover : Bool = false;
+    private var active                             : Dynamic= false;
+    private var hover                             : Dynamic= false;
     
     @:allow(classes.mp.components)
-    private function new(chat : MPUserChatHistory)
+    private function new(chat                             : Dynamic)
     {
         super();
         this.chat = chat;
@@ -276,7 +276,7 @@ class MPViewUserListPMUserLabel extends Sprite
         draw();
     }
     
-    private function build() : Void
+    public function build() : Void
     {
         nameText = new Text(this, 5, 0, user.userLabelHTML, 11, "#FFFFFF");
         nameText.setAreaParams(_width - 11, _height);
@@ -300,7 +300,7 @@ class MPViewUserListPMUserLabel extends Sprite
         this.addEventListener(MouseEvent.ROLL_OUT, e_hideHover);
     }
     
-    private function draw() : Void
+    public function draw() : Void
     {
         this.graphics.clear();
         this.graphics.lineStyle(1, 0xFFFFFF, 0.35);
@@ -313,14 +313,14 @@ class MPViewUserListPMUserLabel extends Sprite
         this.graphics.endFill();
     }
     
-    public function setSize(w : Float, h : Float) : Void
+    public function setSize(w                             : Dynamic, h                             : Dynamic) : Void
     {
         _width = w;
         _height = h;
         resize();
     }
     
-    private function resize() : Void
+    public function resize() : Void
     {
         draw();
         scrollRect = new Rectangle(0, 0, _width + 1, _height + 1);
@@ -334,9 +334,9 @@ class MPViewUserListPMUserLabel extends Sprite
         messageDot.visible = chat.newMessage;
     }
     
-    public function setActive(newState : Bool) : Void
+    public function setActive(newState                             : Dynamic) : Void
     {
-        if (this.active != newState)
+        if (as3hx.Compat.truthy(this.active != newState))
         {
             TweenLite.to(nameText, 0.25, {
                         x : ((newState) ? 15 : 5)
@@ -347,13 +347,13 @@ class MPViewUserListPMUserLabel extends Sprite
         }
     }
     
-    private function e_showHover(e : MouseEvent) : Void
+    private function e_showHover(e                             : Dynamic) : Void
     {
         hover = true;
         draw();
     }
     
-    private function e_hideHover(e : MouseEvent) : Void
+    private function e_hideHover(e                             : Dynamic) : Void
     {
         hover = false;
         draw();

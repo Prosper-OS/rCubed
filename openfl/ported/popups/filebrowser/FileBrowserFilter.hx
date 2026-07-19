@@ -3,8 +3,8 @@ package popups.filebrowser;
 
 class FileBrowserFilter
 {
-    public var type : String = "any";
-    public var term : String = "";
+    public var type                       : Dynamic= "any";
+    public var term                       : Dynamic= "";
 
     public function new()
     {

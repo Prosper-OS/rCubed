@@ -10,42 +10,42 @@ import openfl.utils.ByteArray;
 
 class GameScoreResult
 {
-    public var is_aaa(get, never) : Bool;
-    public var is_fc(get, never) : Bool;
-    public var raw_goods(get, never) : Float;
-    public var accuracy_frames(get, never) : Float;
-    public var accuracy_deviation_frames(get, never) : Float;
-    public var replayBin(get, never) : ByteArray;
-    public var replay_bin_encoded(get, never) : String;
-    public var score_total(get, set) : Float;
-    public var pa_string(get, never) : String;
-    public var screenshot_path(get, never) : String;
-    public var replay_cache_object(get, never) : Dynamic;
+    public var is_aaa(get, never)                       : Dynamic;
+    public var is_fc(get, never)                       : Dynamic;
+    public var raw_goods(get, never)                       : Dynamic;
+    public var accuracy_frames(get, never)                       : Dynamic;
+    public var accuracy_deviation_frames(get, never)                       : Dynamic;
+    public var replayBin(get, never)                       : Dynamic;
+    public var replay_bin_encoded(get, never)                       : Dynamic;
+    public var score_total(get, set)                       : Dynamic;
+    public var pa_string(get, never)                       : Dynamic;
+    public var screenshot_path(get, never)                       : Dynamic;
+    public var replay_cache_object(get, never)                       : Dynamic;
 
-    public var game_index : Int;
-    public var level : Int;
-    public var song : Song;
-    public var songInfo : SongInfo;
-    public var note_count : Int;
+    public var game_index                       : Dynamic;
+    public var level                       : Dynamic;
+    public var song                       : Dynamic;
+    public var songInfo                       : Dynamic;
+    public var note_count                       : Dynamic;
     
-    public var is_preview : Bool = false;
+    public var is_preview                       : Dynamic= false;
     
-    public var legacyLastRank : Dynamic;
+    public var legacyLastRank                       : Dynamic;
     
-    public var user : User;
-    public var options : GameOptions;
+    public var user                       : Dynamic;
+    public var options                       : Dynamic;
     
-    public var amazing : Int = 0;
-    public var perfect : Int = 0;
-    public var good : Int = 0;
-    public var average : Int = 0;
-    public var boo : Int = 0;
-    public var miss : Int = 0;
-    public var combo : Int = 0;
-    public var max_combo : Int = 0;
-    public var score : Int = 0;
+    public var amazing                       : Dynamic= 0;
+    public var perfect                       : Dynamic= 0;
+    public var good                       : Dynamic= 0;
+    public var average                       : Dynamic= 0;
+    public var boo                       : Dynamic= 0;
+    public var miss                       : Dynamic= 0;
+    public var combo                       : Dynamic= 0;
+    public var max_combo                       : Dynamic= 0;
+    public var score                       : Dynamic= 0;
     
-    private var _score_total : Float = Math.NaN;
+    private var _score_total                       : Dynamic= null;
     
     private function get_is_aaa() : Bool
     {
@@ -62,15 +62,15 @@ class GameScoreResult
         return good + (average * 1.8) + (miss * 2.4) + (boo * 0.2);
     }
     
-    public var credits : Int = 0;
+    public var credits                       : Dynamic= 0;
     
-    public var restarts : Int;
-    public var restart_stats : Dynamic;
-    public var last_note : Int;
+    public var restarts                       : Dynamic;
+    public var restart_stats                       : Dynamic;
+    public var last_note                       : Dynamic;
     
     // Accuracy
-    public var accuracy : Float;
-    public var accuracy_deviation : Float;
+    public var accuracy                       : Dynamic;
+    public var accuracy_deviation                       : Dynamic;
     
     private function get_accuracy_frames() : Float
     {
@@ -83,19 +83,19 @@ class GameScoreResult
     }
     
     // Replay v3
-    public var replayData : Array<Dynamic>;  // Probably array of ReplayNote  
-    public var replay_hit : Array<Dynamic>;
+    public var replayData                       : Dynamic;  // Probably array of ReplayNote  
+    public var replay_hit                       : Dynamic;
     
     // Binary Replays (aka Replay v4)
-    public var replay_bin_notes : Array<ReplayBinFrame>;
-    public var replay_bin_boos : Array<ReplayBinFrame>;
-    private var _replay_bin : ByteArray;
+    public var replay_bin_notes                       : Dynamic;
+    public var replay_bin_boos                       : Dynamic;
+    private var _replay_bin                       : Dynamic;
     
     private function get_replayBin() : ByteArray
     {
-        if (_replay_bin == null)
+        if (as3hx.Compat.truthy(_replay_bin == null))
         {
-            var judgementsEncode : String = haxe.Json.stringify({
+            var judgementsEncode                       : Dynamic= haxe.Json.stringify({
                         amazing : amazing,
                         perfect : perfect,
                         good : good,
@@ -112,7 +112,7 @@ class GameScoreResult
     
     private function get_replay_bin_encoded() : String
     {
-        if (replayBin == null || replayBin.length == 0)
+        if (as3hx.Compat.truthy(replayBin == null || replayBin.length == 0))
         {
             return null;
         }
@@ -120,24 +120,24 @@ class GameScoreResult
         return ReplayPack.MAGIC + "|" + Base64.encode(replayBin);
     }
     
-    public var start_time : String;
-    public var start_hash : String;
-    public var end_time : String;
+    public var start_time                       : Dynamic;
+    public var start_hash                       : Dynamic;
+    public var end_time                       : Dynamic;
     
     /** Ratio of Song Completion: 0 -> 1 */
-    public var song_progress : Float;
+    public var song_progress                       : Dynamic;
     
     // Judge Settings
-    public var MIN_TIME : Int = 0;
-    public var MAX_TIME : Int = 0;
-    public var GAP_TIME : Int = 0;
-    public var judge : Array<Dynamic>;
+    public var MIN_TIME                       : Dynamic= 0;
+    public var MAX_TIME                       : Dynamic= 0;
+    public var GAP_TIME                       : Dynamic= 0;
+    public var judge                       : Dynamic;
     
     /**
      * Updates variables that need to be calculated after others are set.
      * @param _gvars GlobalVariables reference.
      */
-    public function update(_gvars : GlobalVariables) : Void
+    public function update(_gvars                       : Dynamic) : Void
     {
         this.credits = Math.max(0, Math.min(Math.floor(score_total / _gvars.SCORE_PER_CREDIT), _gvars.MAX_CREDITS));
         updateJudge();
@@ -152,7 +152,7 @@ class GameScoreResult
     {
         
         judge = Constant.JUDGE_WINDOW;
-        if (options.judgeWindow)
+        if (as3hx.Compat.truthy(options.judgeWindow))
         {
             judge = options.judgeWindow;
         }
@@ -160,13 +160,13 @@ class GameScoreResult
         // Get Judge Window Size
         for (jn in 0...judge.length)
         {
-            var jni : Dynamic = judge[jn];
-            if (jni.t < MIN_TIME)
+            var jni                       : Dynamic= judge[jn];
+            if (as3hx.Compat.truthy(jni.t < MIN_TIME))
             {
                 MIN_TIME = jni.t;
             }
             
-            if (jni.t > MAX_TIME)
+            if (as3hx.Compat.truthy(jni.t > MAX_TIME))
             {
                 MAX_TIME = jni.t;
             }
@@ -180,13 +180,13 @@ class GameScoreResult
      * @param time Judge Time
      * @return Judge Region
      */
-    public function getJudgeRegion(time : Int) : Dynamic
+    public function getJudgeRegion(time                       : Dynamic) : Dynamic
     {
-        var lastJudge : Dynamic;
+        var lastJudge                       : Dynamic= null;
         
-        for (j in judge)
+        for (j in as3hx.Compat.iter(judge))
         {
-            if (time > j.t)
+            if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(time) > as3hx.Compat.parseFloat(j.t)))
             {
                 lastJudge = j;
             }
@@ -201,7 +201,7 @@ class GameScoreResult
      */
     private function get_score_total() : Float
     {
-        if (!Math.isNaN(_score_total))
+        if (as3hx.Compat.truthy(!Math.isNaN(_score_total)))
         {
             return _score_total;
         }
@@ -209,7 +209,7 @@ class GameScoreResult
         return Math.max(0, ((amazing + perfect) * 500) + (good * 250) + (average * 50) + (max_combo * 1000) - (miss * 300) - (boo * 15) + score);
     }
     
-    private function set_score_total(val : Float) : Float
+    private function set_score_total(val                       : Dynamic) : Float
     {
         _score_total = val;
         return val;
@@ -231,7 +231,7 @@ class GameScoreResult
      */
     private function get_screenshot_path() : String
     {
-        var rateString : String = (options.songRate != 1) ? " (" + options.songRate + "x Rate)" : "";
+        var rateString                       : Dynamic= (options.songRate != 1) ? " (" + options.songRate + "x Rate)" : "";
         
         return "R^3 - " + songInfo.name + rateString + " - " + score + " - " + pa_string;
     }
@@ -242,14 +242,14 @@ class GameScoreResult
      */
     private function get_replay_cache_object() : Dynamic
     {
-        var out : Dynamic = {
+        var out                       : Dynamic= {
             name : songInfo.name,
             rate : options.songRate,
             score : score,
             judge : [(amazing + perfect), good, average, miss, boo, max_combo]
         };
         
-        if (songInfo.engine != null)
+        if (as3hx.Compat.truthy(songInfo.engine != null))
         {
             Reflect.setField(out, "engine", songInfo.engine.id);
         }
@@ -257,7 +257,7 @@ class GameScoreResult
         return out;
     }
     
-    public function compare(i : GameScoreResult) : Bool
+    public function compare(i                       : Dynamic) : Bool
     {
         return this.user.siteId == i.user.siteId && this.amazing == i.amazing && this.perfect == i.perfect && this.good == i.good && this.average == i.average && this.miss == i.miss && this.boo == i.boo;
     }

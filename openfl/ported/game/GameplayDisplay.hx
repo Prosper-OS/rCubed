@@ -101,81 +101,83 @@ import game.GameplayDisplay;
 
 class GameplayDisplay extends MenuPanel
 {
-    public static inline var GAME_WAIT : Int = 0;
-    public static inline var GAME_PLAY : Int = 1;
-    public static inline var GAME_END : Int = 2;
-    public static inline var GAME_RESTART : Int = 3;
-    public static inline var GAME_PAUSE : Int = 4;
-    public static inline var GAME_DISPOSE : Int = 5;
+    private static var dragEnd                  : Dynamic;
+    private static var dragStart                  : Dynamic;
+    public static inline var GAME_WAIT                       : Dynamic= 0;
+    public static inline var GAME_PLAY                       : Dynamic= 1;
+    public static inline var GAME_END                       : Dynamic= 2;
+    public static inline var GAME_RESTART                       : Dynamic= 3;
+    public static inline var GAME_PAUSE                       : Dynamic= 4;
+    public static inline var GAME_DISPOSE                       : Dynamic= 5;
     
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _mp : Multiplayer = Multiplayer.instance;
-    private var _avars : ArcGlobals = ArcGlobals.instance;
-    private var _noteskins : Noteskins = Noteskins.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _mp                       : Dynamic= Multiplayer.instance;
+    private var _avars                       : Dynamic= ArcGlobals.instance;
+    private var _noteskins                       : Dynamic= Noteskins.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var _loader : URLLoader;
-    public var _keyDown : Dynamic;
+    private var _loader                       : Dynamic;
+    public var _keyDown                       : Dynamic;
     
-    public var song : Song;
-    public var options : GameOptions;
-    public var layoutManager : GameLayoutManager;
+    public var song                       : Dynamic;
+    public var options                       : Dynamic;
+    public var layoutManager                       : Dynamic;
     
-    public var reverseMod : Bool;
+    public var reverseMod                       : Dynamic;
     
-    public var editorMenu : EditorMenu;
-    public var editorSpriteMenus : Array<Dynamic>;
+    public var editorMenu                       : Dynamic;
+    public var editorSpriteMenus                       : Dynamic;
     
-    public var bgTopBar : BarTop;
-    public var bgBottomBar : BarBottom;
+    public var bgTopBar                       : Dynamic;
+    public var bgBottomBar                       : Dynamic;
     
-    public var uiNoteField : NoteBox;
-    public var uiProgressDisplay : ProgressBarGame;
-    public var uiProgressDisplayText : TextStatic;
-    public var uiScore : Score;
-    public var uiAccuracyBar : AccuracyBar;
-    public var uiPAWindow : PAWindow;
-    public var uiCombo : Combo;
-    public var uiComboHype : ComboHypeOverlay;
-    public var uiComboStatic : TextStatic;
-    public var uiLifebar : LifeBar;
-    public var uiJudge : Judge;
-    public var uiRawGoods : RawGoods;
-    public var uiRawGoodsStatic : TextStatic;
-    public var uiNoteCount : ComboTotal;
-    public var uiNoteCountStatic : TextStatic;
-    public var uiScreenCut : ScreenCut;
-    public var uiSongBackground : MovieClip;
+    public var uiNoteField                       : Dynamic;
+    public var uiProgressDisplay                       : Dynamic;
+    public var uiProgressDisplayText                       : Dynamic;
+    public var uiScore                       : Dynamic;
+    public var uiAccuracyBar                       : Dynamic;
+    public var uiPAWindow                       : Dynamic;
+    public var uiCombo                       : Dynamic;
+    public var uiComboHype                       : Dynamic;
+    public var uiComboStatic                       : Dynamic;
+    public var uiLifebar                       : Dynamic;
+    public var uiJudge                       : Dynamic;
+    public var uiRawGoods                       : Dynamic;
+    public var uiRawGoodsStatic                       : Dynamic;
+    public var uiNoteCount                       : Dynamic;
+    public var uiNoteCountStatic                       : Dynamic;
+    public var uiScreenCut                       : Dynamic;
+    public var uiSongBackground                       : Dynamic;
     
-    public var accuracy : Average;
-    public var songOffset : RollingAverage;
-    public var frameRate : RollingAverage;
+    public var accuracy                       : Dynamic;
+    public var songOffset                       : Dynamic;
+    public var frameRate                       : Dynamic;
     
-    public var absoluteStart : Int = 0;
-    public var absolutePosition : Int = 0;
-    public var songPausePosition : Int = 0;
-    public var songDelay : Int = 0;
-    public var songDelayStarted : Bool = false;
-    public var judgeSettings : Array<JudgeNode>;
+    public var absoluteStart                       : Dynamic= 0;
+    public var absolutePosition                       : Dynamic= 0;
+    public var songPausePosition                       : Dynamic= 0;
+    public var songDelay                       : Dynamic= 0;
+    public var songDelayStarted                       : Dynamic= false;
+    public var judgeSettings                       : Dynamic;
     
-    public var GAME_FRAME : Int = 0;
-    public var GAME_TIME : Int = 0;
+    public var GAME_FRAME                       : Dynamic= 0;
+    public var GAME_TIME                       : Dynamic= 0;
     
-    public var GLOBAL_OFFSET_MS : Int = 0;
-    public var GLOBAL_OFFSET_FRAMES : Int = 0;
-    public var JUDGE_OFFSET_MS : Int = 0;
-    public var JUDGE_OFFSET_FRAMES : Int;
+    public var GLOBAL_OFFSET_MS                       : Dynamic= 0;
+    public var GLOBAL_OFFSET_FRAMES                       : Dynamic= 0;
+    public var JUDGE_OFFSET_MS                       : Dynamic= 0;
+    public var JUDGE_OFFSET_FRAMES                       : Dynamic;
     
-    public var quitDoubleTap : Int = -1;
+    public var quitDoubleTap                       : Dynamic= -1;
     
-    public var gameLastNoteFrame : Float;
-    public var gameFirstNoteFrame : Float;
+    public var gameLastNoteFrame                       : Dynamic;
+    public var gameFirstNoteFrame                       : Dynamic;
     
-    public var gameLife : Int;
-    public var gameScore : Int;
-    public var gameRawGoods : Float;
-    public var gameReplay : Array<Dynamic>;
-    public var autoplayCount : Int;
+    public var gameLife                       : Dynamic;
+    public var gameScore                       : Dynamic;
+    public var gameRawGoods                       : Dynamic;
+    public var gameReplay                       : Dynamic;
+    public var autoplayCount                       : Dynamic;
     
     /** Contains a list of scores or other flags used in replay_hit.
      * The value is either:
@@ -187,72 +189,72 @@ class GameplayDisplay extends MenuPanel
      * [-5]   Missed Note After End Game
      * [-10]  End of Replay Hit Tag
      */
-    public var gameReplayHit : Array<Dynamic>;
+    public var gameReplayHit                       : Dynamic;
     
-    public var binReplayNotes : Array<ReplayBinFrame>;
-    public var binReplayBoos : Array<ReplayBinFrame>;
+    public var binReplayNotes                       : Dynamic;
+    public var binReplayBoos                       : Dynamic;
     
-    public var gameHistory : Array<GamePlaybackEvent>;
+    public var gameHistory                       : Dynamic;
     
-    public var replayPressCount : Float = 0;
+    public var replayPressCount                       : Dynamic= 0;
     
-    public var hitAmazing : Int;
-    public var hitPerfect : Int;
-    public var hitGood : Int;
-    public var hitAverage : Int;
-    public var hitMiss : Int;
-    public var hitBoo : Int;
-    public var hitCombo : Int;
-    public var hitMaxCombo : Int;
+    public var hitAmazing                       : Dynamic;
+    public var hitPerfect                       : Dynamic;
+    public var hitGood                       : Dynamic;
+    public var hitAverage                       : Dynamic;
+    public var hitMiss                       : Dynamic;
+    public var hitBoo                       : Dynamic;
+    public var hitCombo                       : Dynamic;
+    public var hitMaxCombo                       : Dynamic;
     
-    public var noteBoxOffset : Point = new Point();
-    public var noteBoxPositionDefault : Dynamic;
-    private var _laneGuideRect : Rectangle = new Rectangle();
-    private var _laneGuideEdges : Array<Float> = new Array<Float>();
-    private var _laneGuideValid : Bool = false;
-    private var _laneGuideLastDisplayState : String = "";
-    private var _laneGuideLastStageWidth : Int = -1;
-    private var _laneGuideLastStageHeight : Int = -1;
-    private var _laneGuideLastFieldX : Float = 0;
-    private var _laneGuideLastFieldY : Float = 0;
-    private var _laneGuideLastFieldScaleX : Float = 0;
-    private var _laneGuideLastFieldScaleY : Float = 0;
-    private var _laneGuideLastFieldRotation : Float = 0;
-    private var _laneGuideLastReceptorMinX : Float = 0;
-    private var _laneGuideLastReceptorMaxX : Float = 0;
-    private var _laneGuideLastReceptorMinY : Float = 0;
-    private var _laneGuideLastReceptorMaxY : Float = 0;
-    private var _chordImpactFrame : Int = -2147483648;
-    private var _chordImpactCount : Int = 1;
-    private var _lastVisualImpactFrame : Int = -2147483648;
-    private var _accuracyGuideBaseX : Float = 0;
-    private var _accuracyGuideBaseY : Float = 0;
+    public var noteBoxOffset                       : Dynamic= new Point();
+    public var noteBoxPositionDefault                       : Dynamic;
+    private var _laneGuideRect                       : Dynamic= new Rectangle();
+    private var _laneGuideEdges                       : Dynamic= new Array<Float>();
+    private var _laneGuideValid                       : Dynamic= false;
+    private var _laneGuideLastDisplayState                       : Dynamic= "";
+    private var _laneGuideLastStageWidth                       : Dynamic= -1;
+    private var _laneGuideLastStageHeight                       : Dynamic= -1;
+    private var _laneGuideLastFieldX                       : Dynamic= 0;
+    private var _laneGuideLastFieldY                       : Dynamic= 0;
+    private var _laneGuideLastFieldScaleX                       : Dynamic= 0;
+    private var _laneGuideLastFieldScaleY                       : Dynamic= 0;
+    private var _laneGuideLastFieldRotation                       : Dynamic= 0;
+    private var _laneGuideLastReceptorMinX                       : Dynamic= 0;
+    private var _laneGuideLastReceptorMaxX                       : Dynamic= 0;
+    private var _laneGuideLastReceptorMinY                       : Dynamic= 0;
+    private var _laneGuideLastReceptorMaxY                       : Dynamic= 0;
+    private var _chordImpactFrame                       : Dynamic= -2147483648;
+    private var _chordImpactCount                       : Dynamic= 1;
+    private var _lastVisualImpactFrame                       : Dynamic= -2147483648;
+    private var _accuracyGuideBaseX                       : Dynamic= 0;
+    private var _accuracyGuideBaseY                       : Dynamic= 0;
     
-    public var GAME_STATE : Int = GAME_WAIT;
+    public var GAME_STATE                       : Dynamic= GAME_WAIT;
     
-    public var SOCKET_SONG_MESSAGE : Dynamic = { };
-    public var SOCKET_SCORE_MESSAGE : Dynamic = { };
+    public var SOCKET_SONG_MESSAGE                       : Dynamic= { };
+    public var SOCKET_SCORE_MESSAGE                       : Dynamic= { };
     
     // Anti-GPU Rampdown Hack
-    public var GPU_PIXEL_BMD : BitmapData;
-    public var GPU_PIXEL_BITMAP : Bitmap;
+    public var GPU_PIXEL_BMD                       : Dynamic;
+    public var GPU_PIXEL_BITMAP                       : Dynamic;
     
     // Multiplayer
-    public var isMultiplayer : Bool = false;
-    public var isMultiplayerSpectator : Bool = false;
-    public var scoreHistory : Array<GamePlaybackEvent>;
-    public var scoreHistoryLastCount : Float;
-    public var scoreHistoryBuffer : ByteArray;
-    public var spectatorHistory : Array<GamePlaybackEvent>;
-    public var spectatorHistoryLastCount : Float;
-    public var spectatorPlayerVars : MPFFRState;
-    public var mpUpdateTimer : Timer;
-    public var mpSpectatorTimer : Timer;
-    public var mpRawBuffer : ByteArray;
-    public var mpFFRRoom : MPRoomFFR;
-    public var mpuiFFRScores : MPFFRScoreCompare;
+    public var isMultiplayer                       : Dynamic= false;
+    public var isMultiplayerSpectator                       : Dynamic= false;
+    public var scoreHistory                       : Dynamic;
+    public var scoreHistoryLastCount                       : Dynamic;
+    public var scoreHistoryBuffer                       : Dynamic;
+    public var spectatorHistory                       : Dynamic;
+    public var spectatorHistoryLastCount                       : Dynamic;
+    public var spectatorPlayerVars                       : Dynamic;
+    public var mpUpdateTimer                       : Dynamic;
+    public var mpSpectatorTimer                       : Dynamic;
+    public var mpRawBuffer                       : Dynamic;
+    public var mpFFRRoom                       : Dynamic;
+    public var mpuiFFRScores                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
     }
@@ -263,7 +265,7 @@ class GameplayDisplay extends MenuPanel
         song = options.song;
         song.handleDirty(options);
         
-        if (!options.isEditor && song.chart.Notes.length == 0)
+        if (as3hx.Compat.truthy(!options.isEditor && song.chart.Notes.length == 0))
         {
             Alert.add(_lang.string("error_chart_has_no_notes"), 120, Alert.RED);
             switchTo(Main.GAME_MENU_PANEL);
@@ -272,26 +274,26 @@ class GameplayDisplay extends MenuPanel
         
         layoutManager = new GameLayoutManager(this, options);
         
-        if (options.isEditor && options.isMultiplayer)
+        if (as3hx.Compat.truthy(options.isEditor && options.isMultiplayer))
         {
             mpFFRRoom = new MPRoomFFR();
             
-            var fakeMatch : MPMatchFFR = new MPMatchFFR(mpFFRRoom);
+            var fakeMatch                       : Dynamic= new MPMatchFFR(mpFFRRoom);
             mpFFRRoom.activeMatch = fakeMatch;
             
-            var fakeTeam : MPMatchFFRTeam = new MPMatchFFRTeam();
+            var fakeTeam                       : Dynamic= new MPMatchFFRTeam();
             fakeMatch.teams.push(fakeTeam);
             
-            var fakeNames : Array<Dynamic> = ["Velocity", "Synthlight", "xXOpkillerXx", "goldstinger"];
+            var fakeNames                       : Dynamic= ["Velocity", "Synthlight", "xXOpkillerXx", "goldstinger"];
             
             for (i in 1...fakeNames.length + 1)
             {
-                var fakeMPPlayer : MPUser = new MPUser();
+                var fakeMPPlayer                       : Dynamic= new MPUser();
                 fakeMPPlayer.update({
                             name : fakeNames[i - 1]
                         });
                 
-                var fakePlayer : MPMatchFFRUser = new MPMatchFFRUser(mpFFRRoom, fakeMPPlayer);
+                var fakePlayer                       : Dynamic= new MPMatchFFRUser(mpFFRRoom, fakeMPPlayer);
                 fakePlayer.playing = (i != fakeNames.length - 1);
                 fakePlayer.alive = (i != fakeNames.length);
                 fakePlayer.raw_score = Math.floor(50000 / i);
@@ -306,65 +308,65 @@ class GameplayDisplay extends MenuPanel
         }
         
         // --- Per Song Options
-        var perSongOptions : UserSongData = UserSongNotes.getSongUserInfo(song.songInfo);
-        if (perSongOptions != null && !options.isEditor && !options.replay)
+        var perSongOptions                       : Dynamic= UserSongNotes.getSongUserInfo(song.songInfo);
+        if (as3hx.Compat.truthy(perSongOptions != null && !options.isEditor && !options.replay))
         {
             options.fill();  // Reset  
             
             // Custom Offsets
-            if (perSongOptions.set_custom_offsets)
+            if (as3hx.Compat.truthy(perSongOptions.set_custom_offsets))
             {
                 options.offsetJudge = perSongOptions.offset_judge;
                 options.offsetGlobal = perSongOptions.offset_music;
             }
             
             // Invert Mirror Mod
-            if (perSongOptions.set_mirror_invert)
+            if (as3hx.Compat.truthy(perSongOptions.set_mirror_invert))
             {
-                if (options.modEnabled("mirror"))
+                if (as3hx.Compat.truthy(options.modEnabled("mirror")))
                 {
                     options.mods.removeAt(options.mods.indexOf("mirror"));
                 }
                 else
                 {
                     options.mods.push("mirror");
-                    options.modCache["mirror"] = true;
+                    Reflect.setField(options.modCache, "mirror", true);
                 }
             }
         }
         // --- End Per Song Settings
         
         // --- Update RG values for Personal Best or AAA Equiv autofail/tracking if active
-        if (options.isScoreUpdated() && (options.personalBestMode || options.personalBestTracker || options.autofail[7] != 0))
+        if (as3hx.Compat.truthy(options.isScoreUpdated() && (options.personalBestMode || options.personalBestTracker || options.autofail[7] != 0)))
         {
-            var infoRanks : Dynamic = _gvars.playerUser.getLevelRank(song.songInfo);
-            var rawScoreMax : Float = song.songInfo.score_raw;
+            var infoRanks                       : Dynamic= _gvars.playerUser.getLevelRank(song.songInfo);
+            var rawScoreMax                       : Dynamic= song.songInfo.score_raw;
             
-            if (rawScoreMax == 0)
+            if (as3hx.Compat.truthy(rawScoreMax == 0))
             {
                 rawScoreMax = song.chart.Notes.length * 50;
             }  // Alt engine hack as they often don't have a note count or raw max saved...  
             
-            if (infoRanks != null) {
+            if (as3hx.Compat.truthy(infoRanks != null)) {
 {
-                    var rawDifference : Float = rawScoreMax - infoRanks.rawscore;
+                    var rawDifference                       : Dynamic= rawScoreMax - infoRanks.rawscore;
                     
-                    if (options.personalBestMode)
+                    if (as3hx.Compat.truthy(options.personalBestMode))
                     {
                         options.autofail[6] = rawDifference / 25;
                     }
                     
-                    if (options.personalBestTracker)
+                    if (as3hx.Compat.truthy(options.personalBestTracker))
                     {
                         options.rawGoodTracker = rawDifference / 25;
                     }
                 }
             }
             
-            if (options.autofail[7] != 0 && song.songInfo.engine == null) {
+            if (as3hx.Compat.truthy(options.autofail[7] != 0 && song.songInfo.engine == null)) {
 {
                     // first check if the song can even meet that equiv, if not then set the autofail at non-AAA
-                    if (song.songInfo.difficulty <= options.autofail[7])
+                    if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(song.songInfo.difficulty) <= as3hx.Compat.parseFloat(options.autofail[7])))
                     {
                         options.autofail[6] = 0.2;
                     }
@@ -372,7 +374,7 @@ class GameplayDisplay extends MenuPanel
                     else
                     {
                         
-                        var calculatedRawGoods : Float = SkillRating.getRawGoodsFromEquiv(song.songInfo, options.autofail[7]);
+                        var calculatedRawGoods                       : Dynamic= SkillRating.getRawGoodsFromEquiv(song.songInfo, options.autofail[7]);
                         
                         // now set the autofail to that value
                         options.autofail[6] = calculatedRawGoods;
@@ -383,32 +385,32 @@ class GameplayDisplay extends MenuPanel
         // --- End Personal Best tracking
         
         // --- Multiplayer
-        if (!options.isEditor && !options.replay && options.isMultiplayer)
+        if (as3hx.Compat.truthy(!options.isEditor && !options.replay && options.isMultiplayer))
         {
             _mp.addEventListener(MPEvent.SOCKET_DISCONNECT, e_destroyMultiplayer);
             _mp.addEventListener(MPEvent.SOCKET_ERROR, e_destroyMultiplayer);
             _mp.addEventListener(MPEvent.ROOM_LEAVE_OK, e_destroyMultiplayer);
             _mp.addEventListener(MPEvent.ROOM_DELETE_OK, e_destroyMultiplayer);
             
-            if (Std.is(_mp.GAME_ROOM, MPRoomFFR))
+            if (as3hx.Compat.truthy(Std.is(_mp.GAME_ROOM, MPRoomFFR)))
             {
                 mpFFRRoom = try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
                 mpFFRRoom.lastMatchIndex = -1;
                 _mp.addEventListener(MPEvent.FFR_SCORE_UPDATE, e_mpFFRScoreUpdate);
                 
-                if (options.isSpectator && options.spectatorUser != null)
+                if (as3hx.Compat.truthy(options.isSpectator && options.spectatorUser != null))
                 {
                     isMultiplayerSpectator = true;
                     spectatorPlayerVars = mpFFRRoom.getPlayerVariables(options.spectatorUser);
                     _mp.addEventListener(MPEvent.FFR_GET_PLAYBACK, e_mpFFRPlaybackUpdate);
                 }
-                else if (mpFFRRoom.getPlayerState(_mp.currentUser) == "loading")
+                else if (as3hx.Compat.truthy(mpFFRRoom.getPlayerState(_mp.currentUser) == "loading"))
                 {
                     isMultiplayer = true;
                     
                     mpFFRRoom.mods.apply(options, song);
                     
-                    var noteskinData : String = (options.noteskin == 0) ? _noteskins.lastCustomNoteskin : null;
+                    var noteskinData                       : Dynamic= (options.noteskin == 0) ? _noteskins.lastCustomNoteskin : null;
                     _mp.sendCommand(new MPCFFRSongStart(mpFFRRoom, options.settingsEncode(), options.layout, noteskinData));
                 }
             }
@@ -419,12 +421,12 @@ class GameplayDisplay extends MenuPanel
     
     override public function stageAdd() : Void
     {
-        if (_gvars.menuMusic)
+        if (as3hx.Compat.truthy(_gvars.menuMusic))
         {
             _gvars.menuMusic.stop();
         }
         
-        if (MenuSongSelection.previewMusic)
+        if (as3hx.Compat.truthy(MenuSongSelection.previewMusic))
         {
             MenuSongSelection.previewMusic.stop();
         }
@@ -435,7 +437,7 @@ class GameplayDisplay extends MenuPanel
         initMultiplayer();
         
         // Preload next Song
-        if (_gvars.songQueue.length > 0)
+        if (as3hx.Compat.truthy(_gvars.songQueue.length > 0))
         {
             _gvars.getSongFile(_gvars.songQueue[0]);
         }
@@ -446,12 +448,12 @@ class GameplayDisplay extends MenuPanel
         stage.focus = this.stage;
         stage.frameRate = options.frameRate;
         
-        if (!options.isEditor && !options.replay && !isMultiplayerSpectator)
+        if (as3hx.Compat.truthy(!options.isEditor && !options.replay && !isMultiplayerSpectator))
         {
             Mouse.hide();
         }
         
-        if (song.songInfo && song.songInfo.name)
+        if (as3hx.Compat.truthy(song.songInfo && song.songInfo.name))
         {
             Main.window.title = Constant.AIR_WINDOW_TITLE + " - " + StringUtil.stripHtml(song.songInfo.name);
         }
@@ -510,7 +512,7 @@ class GameplayDisplay extends MenuPanel
                 };
         
         // Set Defaults for Editor Mode
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             Reflect.setField(Reflect.field(SOCKET_SONG_MESSAGE, "song"), "name", "Editor Mode");
             Reflect.setField(Reflect.field(SOCKET_SONG_MESSAGE, "song"), "author", "rCubed Engine");
@@ -525,7 +527,7 @@ class GameplayDisplay extends MenuPanel
         initPlayerVars();
         
         // Add onEnterFrame Listeners
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             options.isAutoplay = true;
             interfaceSetupEditor();
@@ -541,7 +543,7 @@ class GameplayDisplay extends MenuPanel
             stage.addEventListener(KeyboardEvent.KEY_UP, e_onKeyUp, true, as3hx.Compat.INT_MAX - 10, true);
         }
         
-        if (!isMultiplayerSpectator)
+        if (as3hx.Compat.truthy(!isMultiplayerSpectator))
         {
             GAME_STATE = GAME_PLAY;
             initSongStart();
@@ -556,7 +558,7 @@ class GameplayDisplay extends MenuPanel
         
         stage.frameRate = 60;
         
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             _gvars.activeUser.screencutPosition = options.screencutPosition;
             stage.removeEventListener(Event.ENTER_FRAME, e_onFrameEditor);
@@ -579,13 +581,13 @@ class GameplayDisplay extends MenuPanel
         Mouse.show();
     }
     
-    public function e_destroyMultiplayer(e : MPEvent = null) : Void
+    public function e_destroyMultiplayer(e                       : Dynamic= null) : Void
     {
-        var wasSpectator : Bool = isMultiplayerSpectator;
+        var wasSpectator                       : Dynamic= isMultiplayerSpectator;
         
         destroyMultiplayer();
         
-        if (wasSpectator && (GAME_STATE == GAME_WAIT || GAME_STATE == GAME_PLAY))
+        if (as3hx.Compat.truthy(wasSpectator && (GAME_STATE == GAME_WAIT || GAME_STATE == GAME_PLAY)))
         {
             GAME_STATE = GAME_END;
         }
@@ -593,52 +595,52 @@ class GameplayDisplay extends MenuPanel
     
     public function destroyMultiplayer() : Void
     {
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             return;
         }
         
-        if (isMultiplayer || isMultiplayerSpectator)
+        if (as3hx.Compat.truthy(isMultiplayer || isMultiplayerSpectator))
         {
             _mp.removeEventListener(MPEvent.SOCKET_DISCONNECT, e_destroyMultiplayer);
             _mp.removeEventListener(MPEvent.SOCKET_ERROR, e_destroyMultiplayer);
             _mp.removeEventListener(MPEvent.ROOM_LEAVE_OK, e_destroyMultiplayer);
             _mp.removeEventListener(MPEvent.ROOM_DELETE_OK, e_destroyMultiplayer);
-            Flags.VALUES[Flags.MP_MENU_RETURN] = true;
+            Reflect.setField(Flags.VALUES, Flags.MP_MENU_RETURN, true);
         }
         
-        if (scoreHistory != null)
+        if (as3hx.Compat.truthy(scoreHistory != null))
         {
             scoreHistory = null;
             scoreHistoryLastCount = 0;
         }
         
-        if (spectatorHistory != null)
+        if (as3hx.Compat.truthy(spectatorHistory != null))
         {
             spectatorHistory = null;
             spectatorHistoryLastCount = 0;
         }
         
-        if (mpRawBuffer != null)
+        if (as3hx.Compat.truthy(mpRawBuffer != null))
         {
             mpRawBuffer = null;
         }
         
-        if (mpUpdateTimer != null)
+        if (as3hx.Compat.truthy(mpUpdateTimer != null))
         {
             mpUpdateTimer.stop();
             mpUpdateTimer.removeEventListener(TimerEvent.TIMER, e_onMPTimerTick);
             mpUpdateTimer = null;
         }
         
-        if (mpSpectatorTimer != null)
+        if (as3hx.Compat.truthy(mpSpectatorTimer != null))
         {
             mpSpectatorTimer.stop();
             mpSpectatorTimer.removeEventListener(TimerEvent.TIMER, e_onSpectatorTimerTick);
             mpSpectatorTimer = null;
         }
         
-        if (mpFFRRoom != null)
+        if (as3hx.Compat.truthy(mpFFRRoom != null))
         {
             _mp.removeEventListener(MPEvent.FFR_SCORE_UPDATE, e_mpFFRScoreUpdate);
             _mp.removeEventListener(MPEvent.FFR_GET_PLAYBACK, e_mpFFRPlaybackUpdate);
@@ -662,14 +664,14 @@ class GameplayDisplay extends MenuPanel
     // Bound Isolation Note Mod
     {
         
-        if (options.isolationOffset >= song.chart.Notes.length)
+        if (as3hx.Compat.truthy(options.isolationOffset >= song.chart.Notes.length))
         {
             options.isolationOffset = song.chart.Notes.length - 1;
         }
         
         // Song
         song.updateMusicOffset();
-        if (song.background && !options.modEnabled("nobackground"))
+        if (as3hx.Compat.truthy(song.background && !options.modEnabled("nobackground")))
         {
             uiSongBackground = try cast(song.background, MovieClip) catch(e:Dynamic) null;
             uiSongBackground.x = 115;
@@ -684,7 +686,7 @@ class GameplayDisplay extends MenuPanel
     // Force no Judge on SongPreviews
     {
         
-        if (options.replay && options.replay.isPreview)
+        if (as3hx.Compat.truthy(options.replay && options.replay.isPreview))
         {
             options.offsetJudge = 0;
             options.offsetGlobal = 0;
@@ -705,18 +707,18 @@ class GameplayDisplay extends MenuPanel
         songOffset = new RollingAverage(1, _avars.configMusicOffset);
     }
     
-    public function initSongStart(postStart : Bool = true) : Void
+    public function initSongStart(postStart                       : Dynamic= true) : Void
     // Post Start Time
     {
         
-        if (postStart && !_gvars.activeUser.isGuest && !options.replay && !options.isEditor && !options.isSpectator && song.songInfo.engine == null)
+        if (as3hx.Compat.truthy(postStart && !_gvars.activeUser.isGuest && !options.replay && !options.isEditor && !options.isSpectator && song.songInfo.engine == null))
         {
             Logger.debug(this, "Posting Start of level " + song.id);
             _loader = new URLLoader();
             addLoaderListeners();
             
-            var req : URLRequest = new URLRequest(URLs.resolve(URLs.SONG_START_URL));
-            var requestVars : URLVariables = new URLVariables();
+            var req                       : Dynamic= new URLRequest(URLs.resolve(URLs.SONG_START_URL));
+            var requestVars                       : Dynamic= new URLVariables();
             Constant.addDefaultRequestVariables(requestVars);
             requestVars.session = _gvars.userSession;
             requestVars.id = song.id;
@@ -730,17 +732,17 @@ class GameplayDisplay extends MenuPanel
         absoluteStart = Math.round(haxe.Timer.stamp() * 1000);
         
         // Handle Early Charts - Pad Charts till atleast 2 seconds before first note.
-        if (song != null && song.totalNotes > 0 && options.isolationOffset == 0)
+        if (as3hx.Compat.truthy(song != null && song.totalNotes > 0 && options.isolationOffset == 0))
         {
-            var firstNote : Note = song.getNote(0);
-            if (firstNote.time < 2)
+            var firstNote                       : Dynamic= song.getNote(0);
+            if (as3hx.Compat.truthy(firstNote.time < 2))
             {
                 absoluteStart += as3hx.Compat.parseInt((2 - firstNote.time) * 1000);
             }
         }
         
         // Websocket
-        if (_gvars.air_useWebsockets)
+        if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
         {
             Reflect.setField(SOCKET_SCORE_MESSAGE, "amazing", hitAmazing);
             Reflect.setField(SOCKET_SCORE_MESSAGE, "perfect", hitPerfect);
@@ -790,14 +792,14 @@ class GameplayDisplay extends MenuPanel
         gameHistory = [];
         
         // Prefill Replay
-        var i : Int = as3hx.Compat.parseInt(song.totalNotes - 1);
-        while (i >= 0)
+        var i                       : Dynamic= as3hx.Compat.parseInt(song.totalNotes - 1);
+        while (as3hx.Compat.truthy(i >= 0))
         {
             binReplayNotes[i] = new ReplayBinFrame(Math.NaN, song.getNote(i).direction, i);
             i--;
         }
         
-        if (song != null && song.totalNotes > 0)
+        if (as3hx.Compat.truthy(song != null && song.totalNotes > 0))
         {
             gameLastNoteFrame = song.getNote(song.totalNotes - 1).frame + Math.ceil(song.songInfo.time_end * 30);
             gameFirstNoteFrame = song.getNote(0).frame;
@@ -814,7 +816,7 @@ class GameplayDisplay extends MenuPanel
         
         songDelayStarted = false;
         
-        if (options.isAutoplay)
+        if (as3hx.Compat.truthy(options.isAutoplay))
         {
             autoplayCount++;
         }
@@ -822,17 +824,17 @@ class GameplayDisplay extends MenuPanel
         // Update UI
         updateFieldVars();
         
-        if (uiNoteCount.visible)
+        if (as3hx.Compat.truthy(uiNoteCount.visible))
         {
             uiNoteCount.update(song.totalNotes);
         }
         
-        if (uiLifebar.visible)
+        if (as3hx.Compat.truthy(uiLifebar.visible))
         {
             uiLifebar.health = gameLife;
         }
         
-        if (uiProgressDisplayText.visible)
+        if (as3hx.Compat.truthy(uiProgressDisplayText.visible))
         {
             uiProgressDisplayText.update(TimeUtil.convertToHMSS(Math.ceil(gameLastNoteFrame / 30)));
         }
@@ -840,12 +842,12 @@ class GameplayDisplay extends MenuPanel
     
     public function initMultiplayer() : Void
     {
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             return;
         }
         
-        if (isMultiplayer || isMultiplayerSpectator)
+        if (as3hx.Compat.truthy(isMultiplayer || isMultiplayerSpectator))
         {
             spectatorHistory = [];
             spectatorHistoryLastCount = 0;
@@ -854,14 +856,14 @@ class GameplayDisplay extends MenuPanel
             mpRawBuffer = new ByteArray();
         }
         
-        if (isMultiplayer)
+        if (as3hx.Compat.truthy(isMultiplayer))
         {
             mpUpdateTimer = new Timer(200);
             mpUpdateTimer.addEventListener(TimerEvent.TIMER, e_onMPTimerTick);
             mpUpdateTimer.start();
         }
         
-        if (isMultiplayerSpectator)
+        if (as3hx.Compat.truthy(isMultiplayerSpectator))
         {
             mpSpectatorTimer = new Timer(1000);
             mpSpectatorTimer.addEventListener(TimerEvent.TIMER, e_onSpectatorTimerTick);
@@ -869,19 +871,19 @@ class GameplayDisplay extends MenuPanel
         }
     }
     
-    public function siteLoadComplete(e : Event) : Void
+    public function siteLoadComplete(e                       : Dynamic) : Void
     {
         removeLoaderListeners();
-        var data : URLVariables = e.target.data;
+        var data                       : Dynamic= e.target.data;
         Logger.success(this, "Post Start Load Success = " + data.result);
-        if (data.result == "success")
+        if (as3hx.Compat.truthy(data.result == "success"))
         {
             _gvars.songStartTime = data.current_date;
             _gvars.songStartHash = data.current_time;
         }
     }
     
-    public function siteLoadError(err : ErrorEvent = null) : Void
+    public function siteLoadError(err                       : Dynamic= null) : Void
     {
         Logger.error(this, "Post Start Load Failure: " + Logger.event_error(err));
         removeLoaderListeners();
@@ -896,9 +898,9 @@ class GameplayDisplay extends MenuPanel
      *
        \*#########################################################################################*/
     
-    public function e_onWindowFocus(e : Event) : Void
+    public function e_onWindowFocus(e                       : Dynamic) : Void
     {
-        if (e.type == Event.ACTIVATE)
+        if (as3hx.Compat.truthy(e.type == Event.ACTIVATE))
         {
             gameHistory.push(new GamePlaybackFocusChange(gameHistory.length, GAME_TIME, true));
         }
@@ -908,31 +910,31 @@ class GameplayDisplay extends MenuPanel
         }
     }
     
-    public function e_onFrame(e : Event) : Void
+    public function e_onFrame(e                       : Dynamic) : Void
     // UI Updates
     {
         
         uiJudge.updateJudge(e);
-        var didUpdatePlay : Bool = false;
+        var didUpdatePlay                       : Dynamic= false;
         
         // Gameplay Logic
         switch (GAME_STATE)
         {
             case GAME_PLAY:
-                var lastAbsolutePosition : Int = absolutePosition;
+                var lastAbsolutePosition                       : Dynamic= absolutePosition;
                 absolutePosition = as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - absoluteStart);
                 
-                if (!songDelayStarted)
+                if (as3hx.Compat.truthy(!songDelayStarted))
                 {
-                    if (absolutePosition >= songDelay)
+                    if (as3hx.Compat.truthy(absolutePosition >= songDelay))
                     {
                         songDelayStarted = true;
                         song.start();
                     }
                 }
                 
-                var songPosition : Int = as3hx.Compat.parseInt(song.getPosition() + songDelay);
-                if (song.musicIsPlaying && songPosition > 100)
+                var songPosition                       : Dynamic= as3hx.Compat.parseInt(song.getPosition() + songDelay);
+                if (as3hx.Compat.truthy(song.musicIsPlaying && songPosition > 100))
                 {
                     songOffset.addValue(songPosition - absolutePosition);
                 }
@@ -941,25 +943,25 @@ class GameplayDisplay extends MenuPanel
                 
                 GAME_TIME = Math.round(absolutePosition + songOffset.value);
                 
-                var targetProgress : Int = Math.round(GAME_TIME * 30 / 1000 - 0.5);
-                var threshold : Int = Math.round(1 / (frameRate.value / 60));
-                if (threshold < 1)
+                var targetProgress                       : Dynamic= Math.round(GAME_TIME * 30 / 1000 - 0.5);
+                var threshold                       : Dynamic= Math.round(1 / (frameRate.value / 60));
+                if (as3hx.Compat.truthy(threshold < 1))
                 {
                     threshold = 1;
                 }
-                if (options.replay)
+                if (as3hx.Compat.truthy(options.replay))
                 {
                     threshold = 0x7fffffff;
                 }
                 
                 //Logger.debug("GP", "lAP: " + lastAbsolutePosition + " | aP: " + absolutePosition + " | sDS: " + songDelayStarted + " | sD: " + songDelay + " | sOv: " + songOffset.value + " | sGP: " + song.getPosition() + " | sP: " + songPosition + " | gP: " + GAME_TIME + " | tP: " + targetProgress + " | t: " + threshold);
                 
-                while (GAME_FRAME < targetProgress && threshold-- > 0)
+                while (as3hx.Compat.truthy(GAME_FRAME < targetProgress && threshold-- > 0))
                 {
                     logicTick();
                 }
                 
-                if (reverseMod)
+                if (as3hx.Compat.truthy(reverseMod))
                 {
                     stopClips(uiSongBackground, 2 + song.musicStartFrames - GLOBAL_OFFSET_FRAMES + GAME_FRAME * options.songRate);
                 }
@@ -973,12 +975,12 @@ class GameplayDisplay extends MenuPanel
                 
                 uiNoteField.update(GAME_TIME);
                 updateLaneGuideEffects();
-                if (uiAccuracyBar != null)
+                if (as3hx.Compat.truthy(uiAccuracyBar != null))
                 {
                     uiAccuracyBar.tick();
                 }
                 
-                if (uiProgressDisplay.visible)
+                if (as3hx.Compat.truthy(uiProgressDisplay.visible))
                 {
                     uiProgressDisplay.update(GAME_FRAME / gameLastNoteFrame, false);
                 }
@@ -992,11 +994,11 @@ class GameplayDisplay extends MenuPanel
                 restartGame();
         }
         
-        if (uiComboHype != null)
+        if (as3hx.Compat.truthy(uiComboHype != null))
         {
             uiComboHype.setJudgeBounds((uiJudge != null) ? uiJudge.getTextBounds(this) : null);
             uiComboHype.tick(GAME_FRAME);
-            if (didUpdatePlay)
+            if (as3hx.Compat.truthy(didUpdatePlay))
             {
                 applyFieldVisualOffset(uiComboHype.shakeX, uiComboHype.shakeY);
             }
@@ -1005,10 +1007,10 @@ class GameplayDisplay extends MenuPanel
         e.stopImmediatePropagation();
     }
     
-    public function e_onKeyUp(e : KeyboardEvent) : Void
+    public function e_onKeyUp(e                       : Dynamic) : Void
     {
-        var keyCode : Int = e.keyCode;
-        var pressTime : Int = as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - absoluteStart + songOffset.value);
+        var keyCode                       : Dynamic= e.keyCode;
+        var pressTime                       : Dynamic= as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - absoluteStart + songOffset.value);
         
         //gameHistory.push(new GameKeyUpEvent(gameHistory.length, pressTime, keyCode));
         
@@ -1018,15 +1020,15 @@ class GameplayDisplay extends MenuPanel
         e.stopImmediatePropagation();
     }
     
-    public function e_onKeyDown(e : KeyboardEvent) : Void
+    public function e_onKeyDown(e                       : Dynamic) : Void
     {
-        var keyCode : Int = e.keyCode;
-        var pressTime : Int = as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - absoluteStart + songOffset.value);
+        var keyCode                       : Dynamic= e.keyCode;
+        var pressTime                       : Dynamic= as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - absoluteStart + songOffset.value);
         
         //gameHistory.push(new GameKeyDownEvent(gameHistory.length, pressTime, keyCode));
         
         // Don't allow key presses unless the key is up.
-        if (Reflect.field(_keyDown, Std.string(keyCode)) != null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(_keyDown, keyCode) != null))
         {
             return;
         }
@@ -1035,31 +1037,21 @@ class GameplayDisplay extends MenuPanel
         Reflect.setField(_keyDown, Std.string(keyCode), true);
         
         // Handle judgement of key presses.
-        if (gameLife > 0)
+        if (as3hx.Compat.truthy(gameLife > 0))
         {
-            if (!options.replay)
+            if (as3hx.Compat.truthy(!options.replay))
             {
-                var dir : String = null;
-                switch (keyCode)
-                {
-                    case _gvars.activeUser.keyLeft:
-                        dir = "L";
-                    
-                    case _gvars.activeUser.keyRight:
-                        dir = "R";
-                    
-                    case _gvars.activeUser.keyUp:
-                        dir = "U";
-                    
-                    case _gvars.activeUser.keyDown:
-                        dir = "D";
-                }
+                var dir                       : Dynamic= null;
+                if (keyCode == _gvars.activeUser.keyLeft) { dir = "L"; }
+                else if (keyCode == _gvars.activeUser.keyRight) { dir = "R"; }
+                else if (keyCode == _gvars.activeUser.keyUp) { dir = "U"; }
+                else if (keyCode == _gvars.activeUser.keyDown) { dir = "D"; }
                 
-                if (dir != null)
+                if (as3hx.Compat.truthy(dir != null))
                 {
                     judgeScorePosition(dir, pressTime);
                     
-                    if (isMultiplayer)
+                    if (as3hx.Compat.truthy(isMultiplayer))
                     {
                         spectatorHistory.push(new GamePlaybackSpectatorHit(spectatorHistory.length, pressTime, dir));
                     }
@@ -1068,16 +1060,16 @@ class GameplayDisplay extends MenuPanel
         }
         
         // Game Restart
-        if (keyCode == _gvars.playerUser.keyRestart && !options.isMultiplayer)
+        if (as3hx.Compat.truthy(keyCode == _gvars.playerUser.keyRestart && !options.isMultiplayer))
         {
             GAME_STATE = GAME_RESTART;
         }
         // Quit
-        else if (keyCode == _gvars.playerUser.keyQuit)
+        else if (as3hx.Compat.truthy(keyCode == _gvars.playerUser.keyQuit))
         {
-            if (_gvars.songQueue.length > 0)
+            if (as3hx.Compat.truthy(_gvars.songQueue.length > 0))
             {
-                if (quitDoubleTap > 0)
+                if (as3hx.Compat.truthy(quitDoubleTap > 0))
                 {
                     _gvars.songQueue.length = 0;
                     GAME_STATE = GAME_END;
@@ -1093,12 +1085,12 @@ class GameplayDisplay extends MenuPanel
             }
         }
         // Pause
-        else if (keyCode == 19 && (false || _gvars.playerUser.isAdmin || _gvars.playerUser.isDeveloper || options.replay))
+        else if (as3hx.Compat.truthy(keyCode == 19 && (false || _gvars.playerUser.isAdmin || _gvars.playerUser.isDeveloper || options.replay)))
         {
             togglePause();
         }
         // Auto-Play
-        else if (keyCode == Keyboard.F8)
+        else if (as3hx.Compat.truthy(keyCode == Keyboard.F8))
         {
             options.isAutoplay = !options.isAutoplay;
             autoplayCount++;
@@ -1108,10 +1100,10 @@ class GameplayDisplay extends MenuPanel
         e.stopImmediatePropagation();
     }
     
-    public function e_progressMouseClick(e : MouseEvent) : Void
+    public function e_progressMouseClick(e                       : Dynamic) : Void
     {
-        var seek : Int = as3hx.Compat.parseInt((e.localX / uiProgressDisplay.barWidth) * gameLastNoteFrame);
-        if (seek < GAME_FRAME)
+        var seek                       : Dynamic= as3hx.Compat.parseInt((e.localX / uiProgressDisplay.barWidth) * gameLastNoteFrame);
+        if (as3hx.Compat.truthy(seek < GAME_FRAME))
         {
             restartGame();
         }
@@ -1120,7 +1112,7 @@ class GameplayDisplay extends MenuPanel
         songOffset.reset(seek * 1000 / 30);
         song.start(seek * 1000 / 30);
         
-        while (GAME_FRAME < seek)
+        while (as3hx.Compat.truthy(GAME_FRAME < seek))
         {
             logicTick();
         }
@@ -1128,21 +1120,21 @@ class GameplayDisplay extends MenuPanel
         songDelayStarted = true;
     }
     
-    public function e_onFrameEditor(e : Event) : Void
+    public function e_onFrameEditor(e                       : Dynamic) : Void
     {
-        if (!(Std.is(stage.focus, TextField)))
+        if (as3hx.Compat.truthy(!(Std.is(stage.focus, TextField))))
         {
             stage.focus = null;
         }
         
         // State 0 = Gameplay
-        if (GAME_STATE == GAME_PLAY)
+        if (as3hx.Compat.truthy(GAME_STATE == GAME_PLAY))
         {
             GAME_TIME = as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - absoluteStart);
-            var targetProgress : Int = Math.round(GAME_TIME * 30 / 1000);
+            var targetProgress                       : Dynamic= Math.round(GAME_TIME * 30 / 1000);
             
             // Update Notes
-            while (GAME_FRAME < targetProgress)
+            while (as3hx.Compat.truthy(GAME_FRAME < targetProgress))
             {
                 logicTick();
             }
@@ -1150,26 +1142,26 @@ class GameplayDisplay extends MenuPanel
             uiNoteField.update(GAME_TIME);
         }
         // State 1 = End Game
-        else if (GAME_STATE == GAME_END)
+        else if (as3hx.Compat.truthy(GAME_STATE == GAME_END))
         {
             endGame();
             return;
         }
     }
     
-    public function e_onKeyDownEditor(e : KeyboardEvent) : Void
+    public function e_onKeyDownEditor(e                       : Dynamic) : Void
     {
-        if (uiNoteField == null)
+        if (as3hx.Compat.truthy(uiNoteField == null))
         {
             return;
         }
         
-        var keyCode : Int = e.keyCode;
-        var dir : String = "";
+        var keyCode                       : Dynamic= e.keyCode;
+        var dir                       : Dynamic= "";
         
-        if (keyCode == Keyboard.ESCAPE)
+        if (as3hx.Compat.truthy(keyCode == Keyboard.ESCAPE))
         {
-            if (contains(editorMenu))
+            if (as3hx.Compat.truthy(contains(editorMenu)))
             {
                 removeChild(editorMenu);
             }
@@ -1181,24 +1173,14 @@ class GameplayDisplay extends MenuPanel
             return;
         }
         
-        switch (keyCode)
-        {
-            case _gvars.playerUser.keyLeft:
-                dir = "L";
-            
-            case _gvars.playerUser.keyRight:
-                dir = "R";
-            
-            case _gvars.playerUser.keyUp:
-                dir = "U";
-            
-            case _gvars.playerUser.keyDown:
-                dir = "D";
-        }
+        if (keyCode == _gvars.playerUser.keyLeft) { dir = "L"; }
+        else if (keyCode == _gvars.playerUser.keyRight) { dir = "R"; }
+        else if (keyCode == _gvars.playerUser.keyUp) { dir = "U"; }
+        else if (keyCode == _gvars.playerUser.keyDown) { dir = "D"; }
         
-        if (dir != "")
+        if (as3hx.Compat.truthy(dir != ""))
         {
-            var frameahead : Int = as3hx.Compat.parseInt((uiNoteField.readahead / (1000 / 30)) + 1);
+            var frameahead                       : Dynamic= as3hx.Compat.parseInt((uiNoteField.readahead / (1000 / 30)) + 1);
             uiNoteField.spawnArrow(new Note(dir, (GAME_FRAME + frameahead) / 30, "red", GAME_FRAME + frameahead), (GAME_FRAME + JUDGE_OFFSET_FRAMES + 5) / 30 * 1000);
         }
     }
@@ -1211,19 +1193,19 @@ class GameplayDisplay extends MenuPanel
      *	\____/\__,_|_| |_| |_|\___| \/    \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
      *
        \*#########################################################################################*/
-    public function e_onMPTimerTick(e : Event = null) : Void
+    public function e_onMPTimerTick(e                       : Dynamic= null) : Void
     {
-        if (mpFFRRoom == null)
+        if (as3hx.Compat.truthy(mpFFRRoom == null))
         {
             return;
         }
         
         //_mp.sendCommand(new MPCFFRSongProgress(mpFFRRoom, GAME_TIME));
         
-        var i : Int;
+        var i                       : Dynamic= null;
         
         // Score Updates
-        if (scoreHistoryLastCount != scoreHistory.length) {
+        if (as3hx.Compat.truthy(scoreHistoryLastCount != scoreHistory.length)) {
 mpRawBuffer.length = 0;
             mpRawBuffer.writeByte(MPEvent.RAW_TYPE_MODE);
             mpRawBuffer.writeByte(MPEvent.FFR_RAW_SCORE_HISTORY_APPEND);
@@ -1239,7 +1221,7 @@ mpRawBuffer.length = 0;
         }
         
         // Spectator Playback
-        if (spectatorHistoryLastCount != spectatorHistory.length)
+        if (as3hx.Compat.truthy(spectatorHistoryLastCount != spectatorHistory.length))
         {
             mpRawBuffer.length = 0;
             mpRawBuffer.writeByte(MPEvent.RAW_TYPE_MODE);
@@ -1256,9 +1238,9 @@ mpRawBuffer.length = 0;
         }
     }
     
-    public function e_onSpectatorTimerTick(e : Event) : Void
+    public function e_onSpectatorTimerTick(e                       : Dynamic) : Void
     {
-        if (mpFFRRoom == null)
+        if (as3hx.Compat.truthy(mpFFRRoom == null))
         {
             return;
         }
@@ -1266,48 +1248,48 @@ mpRawBuffer.length = 0;
         _mp.sendCommand(new MPCFFRPlaybackRequest(mpFFRRoom, options.spectatorUser, spectatorHistoryLastCount));
     }
     
-    public function e_mpFFRScoreUpdate(e : MPRoomEvent) : Void
+    public function e_mpFFRScoreUpdate(e                       : Dynamic) : Void
     {
-        if (mpFFRRoom != e.room)
+        if (as3hx.Compat.truthy(mpFFRRoom != e.room))
         {
             return;
         }
         
-        if (mpuiFFRScores != null)
+        if (as3hx.Compat.truthy(mpuiFFRScores != null))
         {
             mpuiFFRScores.update();
         }
     }
     
-    public function e_mpFFRPlaybackUpdate(e : MPRoomRawEvent) : Void
+    public function e_mpFFRPlaybackUpdate(e                       : Dynamic) : Void
     {
-        if (mpFFRRoom != e.room || options.spectatorUser != e.user)
+        if (as3hx.Compat.truthy(mpFFRRoom != e.room || options.spectatorUser != e.user))
         {
             return;
         }
         
-        var cmd : MPSocketDataRaw = e.command;
+        var cmd                       : Dynamic= e.command;
         
         GamePlaybackReader.parse(cmd.data, 18, spectatorHistory);  // Header is 1 + 1 + 4 + 4 + 4 + 4 Bytes  
         
         cmd.data.position = 10;
-        var start_index : Int = cmd.data.readUnsignedInt();
-        var end_index : Int = cmd.data.readUnsignedInt();
+        var start_index                       : Dynamic= cmd.data.readUnsignedInt();
+        var end_index                       : Dynamic= cmd.data.readUnsignedInt();
         
         spectatorHistoryLastCount = end_index;
         
-        if (GAME_STATE == GAME_WAIT && spectatorHistory.length > 0)
+        if (as3hx.Compat.truthy(GAME_STATE == GAME_WAIT && spectatorHistory.length > 0))
         {
             GAME_STATE = GAME_PLAY;
             
             //  Skip Ahead
-            var lastTimestamp : Int = 0;  //Math.max(0, spectatorHistory[spectatorHistory.length - 1].timestamp - 5000);  
-            var lastFrame : Int = as3hx.Compat.parseInt(lastTimestamp / 1000 * 30);
+            var lastTimestamp                       : Dynamic= 0;  //Math.max(0, spectatorHistory[spectatorHistory.length - 1].timestamp - 5000);  
+            var lastFrame                       : Dynamic= as3hx.Compat.parseInt(lastTimestamp / 1000 * 30);
             
             absoluteStart = as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - lastTimestamp);
             song.start(lastTimestamp);
             
-            while (GAME_FRAME < lastFrame)
+            while (as3hx.Compat.truthy(GAME_FRAME < lastFrame))
             {
                 logicTick();
             }
@@ -1321,9 +1303,9 @@ mpRawBuffer.length = 0;
         GAME_FRAME++;
         
         // Anti-GPU Rampdown Trick
-        if (GAME_FRAME % 15 == 0)
+        if (as3hx.Compat.truthy(GAME_FRAME % 15 == 0))
         {
-            if ((GAME_FRAME & 1) == 0)
+            if (as3hx.Compat.truthy((GAME_FRAME & 1) == 0))
             {
                 GPU_PIXEL_BMD.setPixel(0, 0, 0x010101);
             }
@@ -1333,38 +1315,39 @@ mpRawBuffer.length = 0;
             }
         }
         
-        if (quitDoubleTap > 0)
+        if (as3hx.Compat.truthy(quitDoubleTap > 0))
         {
             quitDoubleTap--;
         }
         
-        if (GAME_FRAME >= gameLastNoteFrame + 20 || quitDoubleTap == 0)
+        if (as3hx.Compat.truthy(GAME_FRAME >= gameLastNoteFrame + 20 || quitDoubleTap == 0))
         {
             GAME_STATE = GAME_END;
             return;
         }
         
         // Timer Text
-        if (GAME_FRAME % 30 == 0 && uiProgressDisplayText.visible)
+        if (as3hx.Compat.truthy(GAME_FRAME % 30 == 0 && uiProgressDisplayText.visible))
         {
             uiProgressDisplayText.update(TimeUtil.convertToHMSS(Math.ceil((gameLastNoteFrame - GAME_FRAME) / 30)));
         }
         
         // Note Spawning
-        var nextNote : Note = uiNoteField.nextNote;
-        while (nextNote && nextNote.frame <= GAME_FRAME + JUDGE_OFFSET_FRAMES + 5)
+        var nextNote                       : Dynamic= uiNoteField.nextNote;
+        while (as3hx.Compat.truthy(nextNote && nextNote.frame <= GAME_FRAME + JUDGE_OFFSET_FRAMES + 5))
         {
             uiNoteField.spawnArrow(nextNote, (GAME_FRAME + JUDGE_OFFSET_FRAMES + 5) / 30 * 1000);
             nextNote = uiNoteField.nextNote;
         }
         
         // Missed Notes
-        var notes : Array<GameNote> = uiNoteField.notes;
-        for (n in 0...notes.length)
+        var notes                       : Dynamic= uiNoteField.notes;
+        var n                     : Dynamic= 0;
+        while (as3hx.Compat.truthy(n < notes.length))
         {
-            var curNote : GameNote = notes[n];
+            var curNote                       : Dynamic= notes[n];
             
-            if (GAME_FRAME - curNote.FRAME + JUDGE_OFFSET_FRAMES >= 6)
+            if (as3hx.Compat.truthy(GAME_FRAME - curNote.FRAME + JUDGE_OFFSET_FRAMES >= 6))
             {
                 commitJudge(curNote.DIR, GAME_FRAME, -10, curNote.POSITION + 200, curNote.FRAME);
                 uiNoteField.removeNote(curNote.ID);
@@ -1374,20 +1357,21 @@ mpRawBuffer.length = 0;
             {
                 break;
             }
+            n++;
         }
         
         // Auto Play
-        if (options.isAutoplay)
+        if (as3hx.Compat.truthy(options.isAutoplay))
         {
             tickAutoplay();
         }
         // Replays
-        else if (options.replay && !options.replay.isPreview)
+        else if (as3hx.Compat.truthy(options.replay && !options.replay.isPreview))
         {
             tickReplays();
         }
         // Multiplayer Spectator
-        else if (isMultiplayerSpectator)
+        else if (as3hx.Compat.truthy(isMultiplayerSpectator))
         {
             tickSpectator();
         }
@@ -1395,17 +1379,18 @@ mpRawBuffer.length = 0;
     
     public function tickAutoplay() : Void
     {
-        var notes : Array<GameNote> = uiNoteField.notes;
-        for (n in 0...notes.length)
+        var notes                       : Dynamic= uiNoteField.notes;
+        var n                     : Dynamic= 0;
+        while (as3hx.Compat.truthy(n < notes.length))
         {
-            var curNote : GameNote = notes[n];
+            var curNote                       : Dynamic= notes[n];
             
-            if (GAME_FRAME - curNote.FRAME + JUDGE_OFFSET_FRAMES >= 0)
+            if (as3hx.Compat.truthy(GAME_FRAME - curNote.FRAME + JUDGE_OFFSET_FRAMES >= 0))
             {
-                var isDec : Bool = (Math.floor(curNote.ID / 32) & 1) == 1;
-                var offset : Int = as3hx.Compat.parseInt(((isDec) ? 32 - (curNote.ID % 32) : (curNote.ID % 32)) - 16);
+                var isDec                       : Dynamic= (Math.floor(curNote.ID / 32) & 1) == 1;
+                var offset                       : Dynamic= as3hx.Compat.parseInt(((isDec) ? 32 - (curNote.ID % 32) : (curNote.ID % 32)) - 16);
                 
-                if (options.isEditor)
+                if (as3hx.Compat.truthy(options.isEditor))
                 {
                     commitJudge(curNote.DIR, curNote.FRAME + JUDGE_OFFSET_FRAMES, 50, curNote.POSITION, curNote.FRAME);
                     uiNoteField.removeNote(curNote.ID);
@@ -1415,7 +1400,7 @@ mpRawBuffer.length = 0;
                     judgeScorePosition(curNote.DIR, curNote.POSITION - JUDGE_OFFSET_MS + offset);
                 }
                 
-                if (isMultiplayer)
+                if (as3hx.Compat.truthy(isMultiplayer))
                 {
                     spectatorHistory.push(new GamePlaybackSpectatorHit(spectatorHistory.length, curNote.POSITION - JUDGE_OFFSET_MS + offset, curNote.DIR));
                 }
@@ -1426,29 +1411,30 @@ mpRawBuffer.length = 0;
     
     public function tickReplays() : Void
     {
-        var notes : Array<GameNote> = uiNoteField.notes;
-        var newPress : ReplayNote = options.replay.getPress(replayPressCount);
+        var notes                       : Dynamic= uiNoteField.notes;
+        var newPress                       : Dynamic= options.replay.getPress(replayPressCount);
         
-        if (options.replay.needsBeatboxGeneration)
+        if (as3hx.Compat.truthy(options.replay.needsBeatboxGeneration))
         {
-            var oldPosition : Int = GAME_TIME;
+            var oldPosition                       : Dynamic= GAME_TIME;
             GAME_TIME = as3hx.Compat.parseInt((GAME_FRAME + 0.5) * 1000 / 30);
-            var cutOffReplayNote : Int = options.replay.generationReplayNotes.length;
-            var readAheadTime : Float = (1 / frameRate.value) * 1000;
+            var cutOffReplayNote                       : Dynamic= options.replay.generationReplayNotes.length;
+            var readAheadTime                       : Dynamic= (1 / frameRate.value) * 1000;
             
             // Note Hits
-            for (n in 0...notes.length)
+            var n                     : Dynamic= 0;
+            while (as3hx.Compat.truthy(n < notes.length))
             {
-                var curNote : GameNote = notes[n];
+                var curNote                       : Dynamic= notes[n];
                 
                 // Missed Note
-                if (curNote.ID >= cutOffReplayNote || (options.replay.generationReplayNotes[curNote.ID] == null || Math.isNaN(options.replay.generationReplayNotes[curNote.ID].time)))
+                if (as3hx.Compat.truthy(curNote.ID >= cutOffReplayNote || (options.replay.generationReplayNotes[curNote.ID] == null || Math.isNaN(options.replay.generationReplayNotes[curNote.ID].time))))
                 {
                     continue;
                 }
                 
-                var diffValue : Int = as3hx.Compat.parseInt(options.replay.generationReplayNotes[curNote.ID].time + curNote.POSITION);
-                if ((GAME_TIME + readAheadTime >= diffValue) || GAME_TIME >= diffValue)
+                var diffValue                       : Dynamic= as3hx.Compat.parseInt(options.replay.generationReplayNotes[curNote.ID].time + curNote.POSITION);
+                if (as3hx.Compat.truthy((GAME_TIME + readAheadTime >= diffValue) || GAME_TIME >= diffValue))
                 {
                     judgeScorePosition(curNote.DIR, diffValue);
                     n--;
@@ -1456,9 +1442,9 @@ mpRawBuffer.length = 0;
             }
             
             // Boo Handling
-            while (newPress != null && GAME_TIME >= newPress.time)
+            while (as3hx.Compat.truthy(newPress != null && GAME_TIME >= newPress.time))
             {
-                if (newPress.frame == -2)
+                if (as3hx.Compat.truthy(newPress.frame == -2))
                 {
                     commitJudge(newPress.direction, GAME_FRAME, -5, newPress.time);
                     binReplayBoos[binReplayBoos.length] = new ReplayBinFrame(newPress.time, newPress.direction, binReplayBoos.length);
@@ -1471,7 +1457,7 @@ mpRawBuffer.length = 0;
         }
         else
         {
-            while (newPress != null && newPress.frame == GAME_FRAME)
+            while (as3hx.Compat.truthy(newPress != null && newPress.frame == GAME_FRAME))
             {
                 judgeScore(newPress.direction, newPress.frame);
                 
@@ -1483,33 +1469,33 @@ mpRawBuffer.length = 0;
     
     public function tickSpectator() : Void
     {
-        if (spectatorHistory.length <= 0 || replayPressCount >= spectatorHistory.length)
+        if (as3hx.Compat.truthy(spectatorHistory.length <= 0 || replayPressCount >= spectatorHistory.length))
         {
             return;
         }
         
-        var oldPosition : Int = GAME_TIME;
+        var oldPosition                       : Dynamic= GAME_TIME;
         
         GAME_TIME = as3hx.Compat.parseInt((GAME_FRAME + 0.5) * 1000 / 30);
         
-        var hit : GamePlaybackEvent = Reflect.field(spectatorHistory, Std.string(replayPressCount));
+        var hit                       : Dynamic= as3hx.Compat.field(spectatorHistory, replayPressCount);
         
-        while (replayPressCount < spectatorHistory.length)
+        while (as3hx.Compat.truthy(replayPressCount < spectatorHistory.length))
         {
-            hit = Reflect.field(spectatorHistory, Std.string(replayPressCount));
+            hit = as3hx.Compat.field(spectatorHistory, replayPressCount);
             
-            if (hit.timestamp > GAME_TIME)
+            if (as3hx.Compat.truthy(hit.timestamp > GAME_TIME))
             {
                 break;
             }
             
             // Skip Non-hits
-            if (hit.id == GamePlaybackSpectatorHit.ID)
+            if (as3hx.Compat.truthy(hit.id == GamePlaybackSpectatorHit.ID))
             {
                 judgeScorePosition((try cast(hit, GamePlaybackSpectatorHit) catch(e:Dynamic) null).direction, hit.timestamp);
                 replayPressCount++;
             }
-            else if (hit.id == GamePlaybackSpectatorEnd.ID)
+            else if (as3hx.Compat.truthy(hit.id == GamePlaybackSpectatorEnd.ID))
             {
                 GAME_STATE = GAME_END;
                 break;
@@ -1525,24 +1511,24 @@ mpRawBuffer.length = 0;
     
     public function togglePause() : Void
     {
-        if (GAME_STATE == GAME_PLAY)
+        if (as3hx.Compat.truthy(GAME_STATE == GAME_PLAY))
         {
             GAME_STATE = GAME_PAUSE;
             songPausePosition = Math.round(haxe.Timer.stamp() * 1000);
             song.pause();
             
-            if (_gvars.air_useWebsockets)
+            if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
             {
                 _gvars.websocketSend("SONG_PAUSE", SOCKET_SONG_MESSAGE);
             }
         }
-        else if (GAME_STATE == GAME_PAUSE)
+        else if (as3hx.Compat.truthy(GAME_STATE == GAME_PAUSE))
         {
             GAME_STATE = GAME_PLAY;
             absoluteStart += as3hx.Compat.parseInt(Math.round(haxe.Timer.stamp() * 1000) - songPausePosition);
             song.resume();
             
-            if (_gvars.air_useWebsockets)
+            if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
             {
                 _gvars.websocketSend("SONG_RESUME", SOCKET_SONG_MESSAGE);
             }
@@ -1551,13 +1537,13 @@ mpRawBuffer.length = 0;
     
     public function endGame() : Void
     {
-        if (GAME_STATE == GAME_DISPOSE || song == null)
+        if (as3hx.Compat.truthy(GAME_STATE == GAME_DISPOSE || song == null))
         {
             return;
         }
         
         // Save Editor
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             layoutManager.save();
             _gvars.activeUser.saveLocal();
@@ -1568,10 +1554,10 @@ mpRawBuffer.length = 0;
         song.stop();
         
         // Play through to the end of a replay
-        if (options.replay)
+        if (as3hx.Compat.truthy(options.replay))
         {
             GAME_STATE = GAME_PLAY;
-            while (gameLife > 0 && GAME_STATE == GAME_PLAY)
+            while (as3hx.Compat.truthy(gameLife > 0 && GAME_STATE == GAME_PLAY))
             {
                 logicTick();
             }
@@ -1579,29 +1565,29 @@ mpRawBuffer.length = 0;
         }
         
         // Multiplayer
-        var wasMultiplayer : Bool = isMultiplayer;
-        if (isMultiplayer)
+        var wasMultiplayer                       : Dynamic= isMultiplayer;
+        if (as3hx.Compat.truthy(isMultiplayer))
         {
             spectatorHistory.push(new GamePlaybackSpectatorEnd(spectatorHistory.length, Math.round(haxe.Timer.stamp() * 1000) - absoluteStart + songOffset.value));
             e_onMPTimerTick();
         }
-        else if (isMultiplayer || isMultiplayerSpectator)
+        else if (as3hx.Compat.truthy(isMultiplayer || isMultiplayerSpectator))
         {
             e_destroyMultiplayer();
         }
         
         // Save results for display
-        if (!options.isEditor && !options.isSpectator)
+        if (as3hx.Compat.truthy(!options.isEditor && !options.isSpectator))
         {
-            if (autoplayCount > 0)
+            if (as3hx.Compat.truthy(autoplayCount > 0))
             {
                 options.isAutoplay = true;
             }
             
             // Fill missing notes from replay.
-            if (gameReplayHit.length > 0)
+            if (as3hx.Compat.truthy(gameReplayHit.length > 0))
             {
-                while (gameReplayHit.length < song.totalNotes)
+                while (as3hx.Compat.truthy(gameReplayHit.length < song.totalNotes))
                 {
                     gameReplayHit.push(-5);
                 }
@@ -1609,9 +1595,9 @@ mpRawBuffer.length = 0;
             gameReplayHit.push(-10);
             gameReplay.sort(ReplayNote.sortFunction);
             
-            var noteCount : Int = as3hx.Compat.parseInt(hitAmazing + hitPerfect + hitGood + hitAverage + hitMiss);
+            var noteCount                       : Dynamic= as3hx.Compat.parseInt(hitAmazing + hitPerfect + hitGood + hitAverage + hitMiss);
             
-            var newGameResults : GameScoreResult = new GameScoreResult();
+            var newGameResults                       : Dynamic= new GameScoreResult();
             newGameResults.game_index = _gvars.gameIndex++;
             newGameResults.level = song.id;
             newGameResults.song = song;
@@ -1639,11 +1625,11 @@ mpRawBuffer.length = 0;
             newGameResults.restarts = (options.replay) ? 0 : _gvars.songRestarts;
             newGameResults.start_time = _gvars.songStartTime;
             newGameResults.start_hash = _gvars.songStartHash;
-            newGameResults.end_time = (options.replay) ? TimeUtil.getFormattedDate(new Date(options.replay.timestamp * 1000)) : TimeUtil.getCurrentDate();
+            newGameResults.end_time = (options.replay) ? TimeUtil.getFormattedDate(Date.fromTime(as3hx.Compat.parseFloat(options.replay.timestamp) * 1000)) : TimeUtil.getCurrentDate();
             newGameResults.song_progress = (GAME_FRAME / gameLastNoteFrame);
             
             // Set Note Counts for Preview Songs
-            if (options.replay && options.replay.isPreview)
+            if (as3hx.Compat.truthy(options.replay && options.replay.isPreview))
             {
                 newGameResults.is_preview = true;
                 newGameResults.score = song.totalNotes * 50;
@@ -1655,7 +1641,7 @@ mpRawBuffer.length = 0;
             _gvars.songResults.push(newGameResults);
         }
         
-        if (!options.replay && !options.isEditor && !options.isSpectator)
+        if (as3hx.Compat.truthy(!options.replay && !options.isEditor && !options.isSpectator))
         {
             _gvars.sessionStats.addFromStats(_gvars.songStats);
             _gvars.songStats.reset();
@@ -1663,7 +1649,7 @@ mpRawBuffer.length = 0;
             _avars.configMusicOffset = (_avars.configMusicOffset * 0.85) + songOffset.value * 0.15;
             
             // Cap between 5 seconds for sanity.
-            if (Math.abs(_avars.configMusicOffset) >= 5000)
+            if (as3hx.Compat.truthy(Math.abs(_avars.configMusicOffset) >= 5000))
             {
                 _avars.configMusicOffset = Math.max(-5000, Math.min(5000, _avars.configMusicOffset));
             }
@@ -1672,7 +1658,7 @@ mpRawBuffer.length = 0;
         }
         
         // Websocket
-        if (_gvars.air_useWebsockets)
+        if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
         {
             Reflect.setField(SOCKET_SCORE_MESSAGE, "amazing", hitAmazing);
             Reflect.setField(SOCKET_SCORE_MESSAGE, "perfect", hitPerfect);
@@ -1691,7 +1677,7 @@ mpRawBuffer.length = 0;
         // Cleanup
         initPlayerVars();
         
-        if (song != null)
+        if (as3hx.Compat.truthy(song != null))
         {
             song.stop();
             song = null;
@@ -1702,11 +1688,11 @@ mpRawBuffer.length = 0;
         GAME_STATE = GAME_DISPOSE;
         
         // Go to results
-        if (options.isEditor || options.isSpectator)
+        if (as3hx.Compat.truthy(options.isEditor || options.isSpectator))
         {
             switchTo(Main.GAME_MENU_PANEL);
         }
-        else if (wasMultiplayer)
+        else if (as3hx.Compat.truthy(wasMultiplayer))
         {
             switchTo(GameMenu.GAME_MP_WAIT);
         }
@@ -1729,7 +1715,7 @@ mpRawBuffer.length = 0;
         noteBoxOffset.y = 0;
         
         // Track
-        var tempGT : Float = ((hitAmazing + hitPerfect) * 500) + (hitGood * 250) + (hitAverage * 50) + (hitCombo * 1000) - (hitMiss * 300) - (hitBoo * 15) + gameScore;
+        var tempGT                       : Dynamic= ((hitAmazing + hitPerfect) * 500) + (hitGood * 250) + (hitAverage * 50) + (hitCombo * 1000) - (hitMiss * 300) - (hitBoo * 15) + gameScore;
         _gvars.songStats.amazing += hitAmazing;
         _gvars.songStats.perfect += hitPerfect;
         _gvars.songStats.good += hitGood;
@@ -1752,7 +1738,7 @@ mpRawBuffer.length = 0;
         _gvars.songRestarts++;
         
         // Websocket
-        if (_gvars.air_useWebsockets)
+        if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
         {
             Reflect.setField(SOCKET_SCORE_MESSAGE, "restarts", _gvars.songRestarts);
             _gvars.websocketSend("NOTE_JUDGE", SOCKET_SCORE_MESSAGE);
@@ -1760,14 +1746,14 @@ mpRawBuffer.length = 0;
         }
     }
     
-    public function stopClips(clip : MovieClip, frame : Int) : Void
+    public function stopClips(clip                       : Dynamic, frame                       : Dynamic) : Void
     {
-        if (clip == null)
+        if (as3hx.Compat.truthy(clip == null))
         {
             return;
         }
         
-        if (frame < 2)
+        if (as3hx.Compat.truthy(frame < 2))
         {
             frame = 2;
         }
@@ -1850,8 +1836,8 @@ mpRawBuffer.length = 0;
         setChildIndex(uiComboHype, getChildIndex(uiNoteField));
         
         uiProgressDisplay = new ProgressBarGame(this, 161, 9, 458, 20, 4, 0x545454, 0.1);
-        uiProgressDisplay.visible = options.displaySongProgress || options.replay;
-        if (options.replay)
+        uiProgressDisplay.visible = as3hx.Compat.orValue(options.displaySongProgress, options.replay);
+        if (as3hx.Compat.truthy(options.replay))
         {
             uiProgressDisplay.addEventListener(MouseEvent.CLICK, e_progressMouseClick);
         }
@@ -1860,7 +1846,7 @@ mpRawBuffer.length = 0;
         uiProgressDisplayText.visible = options.displaySongProgressText;
         
         uiJudge = new Judge(options, this);
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             uiJudge.showJudge(100, true);
         }
@@ -1868,7 +1854,7 @@ mpRawBuffer.length = 0;
         uiLifebar = new LifeBar(this);
         uiLifebar.visible = options.displayHealth;
         
-        if (isMultiplayer || isMultiplayerSpectator || (options.isEditor && options.isMultiplayer))
+        if (as3hx.Compat.truthy(isMultiplayer || isMultiplayerSpectator || (options.isEditor && options.isMultiplayer)))
         {
             mpuiFFRScores = new MPFFRScoreCompare(options, this, mpFFRRoom);
             mpuiFFRScores.visible = options.displayMultiplayerScores;
@@ -1877,60 +1863,60 @@ mpRawBuffer.length = 0;
     
     public function interfaceDestroy() : Void
     {
-        if (uiSongBackground != null)
+        if (as3hx.Compat.truthy(uiSongBackground != null))
         {
             this.removeChild(uiSongBackground);
             uiSongBackground = null;
         }
         
-        if (GPU_PIXEL_BITMAP != null)
+        if (as3hx.Compat.truthy(GPU_PIXEL_BITMAP != null))
         {
             this.removeChild(GPU_PIXEL_BITMAP);
             GPU_PIXEL_BITMAP = null;
             GPU_PIXEL_BMD = null;
         }
-        if (uiProgressDisplay != null)
+        if (as3hx.Compat.truthy(uiProgressDisplay != null))
         {
             this.removeChild(uiProgressDisplay);
             uiProgressDisplay = null;
         }
-        if (uiLifebar != null)
+        if (as3hx.Compat.truthy(uiLifebar != null))
         {
             this.removeChild(uiLifebar);
             uiLifebar = null;
         }
-        if (uiJudge != null)
+        if (as3hx.Compat.truthy(uiJudge != null))
         {
             this.removeChild(uiJudge);
             uiJudge = null;
         }
-        if (uiComboHype != null)
+        if (as3hx.Compat.truthy(uiComboHype != null))
         {
             this.removeChild(uiComboHype);
             uiComboHype = null;
         }
-        if (bgTopBar != null)
+        if (as3hx.Compat.truthy(bgTopBar != null))
         {
             this.removeChild(bgTopBar);
             bgTopBar = null;
         }
-        if (bgBottomBar != null)
+        if (as3hx.Compat.truthy(bgBottomBar != null))
         {
             this.removeChild(bgBottomBar);
             bgBottomBar = null;
         }
-        if (uiNoteField != null)
+        if (as3hx.Compat.truthy(uiNoteField != null))
         {
             uiNoteField.reset();
             this.removeChild(uiNoteField);
             uiNoteField = null;
         }
-        if (uiAccuracyBar != null)
+        if (as3hx.Compat.truthy(uiAccuracyBar != null))
         {
             this.removeChild(uiAccuracyBar);
             uiAccuracyBar = null;
         }
-        if (uiScreenCut != null)
+        if (as3hx.Compat.truthy(uiScreenCut != null))
         {
             this.removeChild(uiScreenCut);
             uiScreenCut = null;
@@ -1966,27 +1952,27 @@ mpRawBuffer.length = 0;
         updateLaneGuideEffects(true);
     }
     
-    private function updateLaneGuideEffects(force : Bool = false) : Void
+    private function updateLaneGuideEffects(force                       : Dynamic= false) : Void
     {
-        if (uiNoteField == null)
+        if (as3hx.Compat.truthy(uiNoteField == null))
         {
             return;
         }
         
-        if (!force && !needsLaneGuideUpdate())
+        if (as3hx.Compat.truthy(!force && !needsLaneGuideUpdate()))
         {
             return;
         }
         
-        var rect : Rectangle = uiNoteField.getLaneGuideRect(this, _laneGuideRect);
-        if (uiAccuracyBar != null)
+        var rect                       : Dynamic= uiNoteField.getLaneGuideRect(this, _laneGuideRect);
+        if (as3hx.Compat.truthy(uiAccuracyBar != null))
         {
-            if (Math.abs(uiAccuracyBar.width - rect.width) > 0.5)
+            if (as3hx.Compat.truthy(Math.abs(uiAccuracyBar.width - rect.width) > 0.5))
             {
                 uiAccuracyBar.width = rect.width;
             }
             
-            if (Math.abs(uiAccuracyBar.height - rect.height) > 0.5)
+            if (as3hx.Compat.truthy(Math.abs(uiAccuracyBar.height - rect.height) > 0.5))
             {
                 uiAccuracyBar.height = rect.height;
             }
@@ -1998,7 +1984,7 @@ mpRawBuffer.length = 0;
             uiAccuracyBar.rotation = 0;
         }
         
-        if (uiComboHype != null)
+        if (as3hx.Compat.truthy(uiComboHype != null))
         {
             uiNoteField.getLaneGuideEdges(this, _laneGuideEdges);
             uiComboHype.setLaneBounds(rect.x, rect.y, rect.width, rect.height);
@@ -2011,28 +1997,28 @@ mpRawBuffer.length = 0;
     
     private function needsLaneGuideUpdate() : Bool
     {
-        if (!_laneGuideValid)
+        if (as3hx.Compat.truthy(!_laneGuideValid))
         {
             return true;
         }
         
-        if (options != null && (options.modEnabled("wave") || options.modEnabled("tap_pulse") || options.modEnabled("drunk") || options.modEnabled("dizzy")))
+        if (as3hx.Compat.truthy(options != null && (options.modEnabled("wave") || options.modEnabled("tap_pulse") || options.modEnabled("drunk") || options.modEnabled("dizzy"))))
         {
             return true;
         }
         
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
-            if (stage.displayState != _laneGuideLastDisplayState || stage.stageWidth != _laneGuideLastStageWidth || stage.stageHeight != _laneGuideLastStageHeight)
+            if (as3hx.Compat.truthy(stage.displayState != _laneGuideLastDisplayState || stage.stageWidth != _laneGuideLastStageWidth || stage.stageHeight != _laneGuideLastStageHeight))
             {
                 return true;
             }
         }
         
-        var receptorMinX : Float = Math.min(Math.min(Math.min(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x), uiNoteField.upReceptor.x), uiNoteField.rightReceptor.x);
-        var receptorMaxX : Float = Math.max(Math.max(Math.max(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x), uiNoteField.upReceptor.x), uiNoteField.rightReceptor.x);
-        var receptorMinY : Float = Math.min(Math.min(Math.min(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y), uiNoteField.upReceptor.y), uiNoteField.rightReceptor.y);
-        var receptorMaxY : Float = Math.max(Math.max(Math.max(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y), uiNoteField.upReceptor.y), uiNoteField.rightReceptor.y);
+        var receptorMinX                       : Dynamic= Math.min(Math.min(Math.min(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x), uiNoteField.upReceptor.x), uiNoteField.rightReceptor.x);
+        var receptorMaxX                       : Dynamic= Math.max(Math.max(Math.max(uiNoteField.leftReceptor.x, uiNoteField.downReceptor.x), uiNoteField.upReceptor.x), uiNoteField.rightReceptor.x);
+        var receptorMinY                       : Dynamic= Math.min(Math.min(Math.min(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y), uiNoteField.upReceptor.y), uiNoteField.rightReceptor.y);
+        var receptorMaxY                       : Dynamic= Math.max(Math.max(Math.max(uiNoteField.leftReceptor.y, uiNoteField.downReceptor.y), uiNoteField.upReceptor.y), uiNoteField.rightReceptor.y);
         if (Math.abs(receptorMinX - _laneGuideLastReceptorMinX) > 0.25 ||
             Math.abs(receptorMaxX - _laneGuideLastReceptorMaxX) > 0.25 ||
             Math.abs(receptorMinY - _laneGuideLastReceptorMinY) > 0.25 ||
@@ -2050,9 +2036,9 @@ mpRawBuffer.length = 0;
     
     private function rememberLaneGuideState() : Void
     {
-        _laneGuideLastDisplayState = (stage) ? stage.displayState : "";
-        _laneGuideLastStageWidth = (stage) ? stage.stageWidth : 0;
-        _laneGuideLastStageHeight = (stage) ? stage.stageHeight : 0;
+        _laneGuideLastDisplayState = (stage != null) ? stage.displayState : "";
+        _laneGuideLastStageWidth = (stage != null) ? stage.stageWidth : 0;
+        _laneGuideLastStageHeight = (stage != null) ? stage.stageHeight : 0;
         _laneGuideLastFieldX = uiNoteField.x;
         _laneGuideLastFieldY = uiNoteField.y;
         _laneGuideLastFieldScaleX = uiNoteField.scaleX;
@@ -2066,12 +2052,12 @@ mpRawBuffer.length = 0;
     
     private function updateTapPulseOffset() : Void
     {
-        if (uiNoteField == null)
+        if (as3hx.Compat.truthy(uiNoteField == null))
         {
             return;
         }
         
-        if (options.modEnabled("tap_pulse"))
+        if (as3hx.Compat.truthy(options.modEnabled("tap_pulse")))
         {
             noteBoxOffset.x = Math.max(Math.min((Math.abs(noteBoxOffset.x) < 0.5) ? 0 : (noteBoxOffset.x * 0.992), uiNoteField.positionOffsetMax.max_x), uiNoteField.positionOffsetMax.min_x);
             noteBoxOffset.y = Math.max(Math.min((Math.abs(noteBoxOffset.y) < 0.5) ? 0 : (noteBoxOffset.y * 0.992), uiNoteField.positionOffsetMax.max_y), uiNoteField.positionOffsetMax.min_y);
@@ -2083,21 +2069,21 @@ mpRawBuffer.length = 0;
         }
     }
     
-    private function applyFieldVisualOffset(shakeX : Float, shakeY : Float) : Void
+    private function applyFieldVisualOffset(shakeX                       : Dynamic, shakeY                       : Dynamic) : Void
     {
-        if (uiNoteField != null && noteBoxPositionDefault != null)
+        if (as3hx.Compat.truthy(uiNoteField != null && noteBoxPositionDefault != null))
         {
             uiNoteField.x = noteBoxPositionDefault.x + noteBoxOffset.x + shakeX;
             uiNoteField.y = noteBoxPositionDefault.y + noteBoxOffset.y + shakeY;
         }
         
-        if (uiAccuracyBar != null)
+        if (as3hx.Compat.truthy(uiAccuracyBar != null))
         {
             uiAccuracyBar.x = _accuracyGuideBaseX + shakeX;
             uiAccuracyBar.y = _accuracyGuideBaseY + shakeY;
         }
         
-        if (uiComboHype != null)
+        if (as3hx.Compat.truthy(uiComboHype != null))
         {
             uiComboHype.x = shakeX;
             uiComboHype.y = shakeY;
@@ -2126,10 +2112,10 @@ mpRawBuffer.length = 0;
         
         interfaceEditor(mpuiFFRScores, GameLayoutManager.LAYOUT_MP_FFR_SCORE);
         
-        var helpFormat : TextFormat = new TextFormat(Fonts.BASE_FONT_CJK);
+        var helpFormat                       : Dynamic= new TextFormat(Fonts.BASE_FONT_CJK);
         helpFormat.align = "center";
         
-        var editorShortcut : TextField = new TextField();
+        var editorShortcut                       : Dynamic= new TextField();
         editorShortcut.x = 10;
         editorShortcut.width = Main.GAME_WIDTH - 20;
         editorShortcut.selectable = false;
@@ -2154,9 +2140,9 @@ mpRawBuffer.length = 0;
         updateFieldVars();
     }
     
-    public function interfaceEditor(sprite : Sprite, key : String) : Void
+    public function interfaceEditor(sprite                       : Dynamic, key                       : Dynamic) : Void
     {
-        if (sprite == null)
+        if (as3hx.Compat.truthy(sprite == null))
         {
             return;
         }
@@ -2165,31 +2151,31 @@ mpRawBuffer.length = 0;
         sprite.buttonMode = true;
         sprite.useHandCursor = true;
         
-        var layout : Dynamic = layoutManager.interfaceLayout(key, false);
+        var layout                       : Dynamic= layoutManager.interfaceLayout(key, false);
         
         // Advanced Editor (for Supporting)
-        if (Std.is(sprite, GameControl))
+        if (as3hx.Compat.truthy(Std.is(sprite, GameControl)))
         {
-            var __DOLLAR__cast : GameControl = try cast(sprite, GameControl) catch(e:Dynamic) null;
+            var __DOLLAR__cast                       : Dynamic= try cast(sprite, GameControl) catch(e:Dynamic) null;
             __DOLLAR__cast.editorLayout = layout;
             //cast.drawDebugBounds();
             
-            sprite.addEventListener(MouseEvent.CLICK, function(e : MouseEvent) : Void
+            sprite.addEventListener(MouseEvent.CLICK, function(e                       : Dynamic) : Void
                     {
-                        if (e.ctrlKey)
+                        if (as3hx.Compat.truthy(e.ctrlKey))
                         {
-                            var editMenu : GameControlEditor;
-                            for (spriteMenu in editorSpriteMenus)
+                            var editMenu                       : Dynamic= null;
+                            for (spriteMenu in as3hx.Compat.iter(editorSpriteMenus))
                             {
-                                if (Reflect.field(spriteMenu, Std.string(0)) == sprite)
+                                if (as3hx.Compat.truthy(as3hx.Compat.field(spriteMenu, 0) == sprite))
                                 {
-                                    editMenu = Reflect.field(spriteMenu, Std.string(1));
+                                    editMenu = as3hx.Compat.field(spriteMenu, 1);
                                     break;
                                 }
                             }
                             
                             // Reuse Menu
-                            if (editMenu != null)
+                            if (as3hx.Compat.truthy(editMenu != null))
                             {
                                 editMenu.position();
                             }
@@ -2201,11 +2187,11 @@ mpRawBuffer.length = 0;
                                     editMenu = __DOLLAR__cast.getEditorInterface();
                                     editMenu.finalize();
                                     editorSpriteMenus.push([__DOLLAR__cast, editMenu]);
-                                    editMenu.addEventListener(Event.CLOSE, function(e : Event) : Void
+                                    editMenu.addEventListener(Event.CLOSE, function(e                       : Dynamic) : Void
                                             {
                                                 for (i in 0...editorSpriteMenus.length)
                                                 {
-                                                    if (editorSpriteMenus[i][0] == sprite)
+                                                    if (as3hx.Compat.truthy(editorSpriteMenus[i][0] == sprite))
                                                     {
                                                         editorSpriteMenus.splice(i, 1);
                                                         break;
@@ -2221,16 +2207,16 @@ mpRawBuffer.length = 0;
         }
         
         // UI Dragging
-        function dragStart(e : MouseEvent) : Void
+        dragStart = function(e                       : Dynamic) : Void
         {
-            if (!e.ctrlKey)
+            if (as3hx.Compat.truthy(!e.ctrlKey))
             {
                 stage.addEventListener(MouseEvent.MOUSE_UP, dragEnd);
                 sprite.startDrag(false);
             }
         };
         
-        var dragEnd : MouseEvent->Void = function(e : MouseEvent) : Void
+        dragEnd = function(e                       : Dynamic) : Void
         {
             stage.removeEventListener(MouseEvent.MOUSE_UP, dragEnd);
             sprite.stopDrag();
@@ -2252,9 +2238,9 @@ mpRawBuffer.length = 0;
      *							  |_|            |___/
        \*#########################################################################################*/
     
-    public function buildJudgeNodes(src : Array<Dynamic>) : Array<JudgeNode>
+    public function buildJudgeNodes(src                       : Dynamic) : Array<JudgeNode>
     {
-        var out : Array<JudgeNode> = new Array<JudgeNode>();
+        var out                       : Dynamic= new Array<JudgeNode>();
         for (i in 0...src.length)
         {
             out[i] = new JudgeNode(src[i].t, src[i].s, src[i].f);
@@ -2268,96 +2254,100 @@ mpRawBuffer.length = 0;
      * @param position Time in MS.
      * @return
      */
-    public function judgeScorePosition(dir : String, position : Int) : Bool
+    public function judgeScorePosition(dir                       : Dynamic, position                       : Dynamic) : Bool
     {
-        if (position < 0)
+        if (as3hx.Compat.truthy(position < 0))
         {
             position = 0;
         }
         
-        var positionJudged : Int = as3hx.Compat.parseInt(position + JUDGE_OFFSET_MS);
+        var positionJudged                       : Dynamic= as3hx.Compat.parseInt(position + JUDGE_OFFSET_MS);
         
-        var score : Int = 0;
-        var frame : Int = 0;
-        var booConflict : Bool = false;
-        for (note/* AS3HX WARNING could not determine type for var: note exp: EField(EIdent(uiNoteField),notes) type: null */ in uiNoteField.notes)
+        var score                     : Dynamic= 0;
+        var frame                     : Dynamic= 0;
+        var booConflict                     : Dynamic= false;
+        var note                     : Dynamic= null;
+        var rawAccuracy                     : Dynamic= 0;
+        var judgeAccuracy                     : Dynamic= 0;
+        for (noteCandidate in as3hx.Compat.iter(uiNoteField.notes))
         {
-            if (note.DIR != dir)
+            note = noteCandidate;
+            if (as3hx.Compat.truthy(note.DIR != dir))
             {
                 continue;
             }
             
-            var rawAccuracy : Float = note.POSITION - position;
-            var judgeAccuracy : Float = positionJudged - note.POSITION;
-            var lastJudge : JudgeNode = null;
-            for (j in judgeSettings)
+            rawAccuracy = note.POSITION - position;
+            judgeAccuracy = positionJudged - note.POSITION;
+            var lastJudge                       : Dynamic= null;
+            for (j in as3hx.Compat.iter(judgeSettings))
             {
-                if (judgeAccuracy > j.time)
+                if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(judgeAccuracy) > as3hx.Compat.parseFloat(j.time)))
                 {
                     lastJudge = j;
                 }
             }
             score = (lastJudge != null) ? lastJudge.score : 0;
             
-            if (score != 0)
+            if (as3hx.Compat.truthy(score != 0))
             {
                 frame = lastJudge.frame;
             }
             
-            if (!_avars.configJudge && score == 0)
+            if (as3hx.Compat.truthy(!_avars.configJudge && score == 0))
             {
-                var pdiff : Int = as3hx.Compat.parseInt(GAME_FRAME - note.FRAME + JUDGE_OFFSET_FRAMES);
-                if (pdiff >= -3 && pdiff <= 3)
+                var pdiff                       : Dynamic= as3hx.Compat.parseInt(GAME_FRAME - note.FRAME + JUDGE_OFFSET_FRAMES);
+                if (as3hx.Compat.truthy(pdiff >= -3 && pdiff <= 3))
                 {
                     booConflict = true;
                 }
             }
             
-            if (score > 0)
+            if (as3hx.Compat.truthy(score > 0))
             {
                 break;
             }
-            else if (judgeAccuracy <= judgeSettings[0].time)
+            else if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(judgeAccuracy) <= as3hx.Compat.parseFloat(judgeSettings[0].time)))
             {
                 break;
             }
         }
         
-        if (score != 0)
+        if (as3hx.Compat.truthy(score != 0))
         {
             commitJudge(dir, frame + note.FRAME - JUDGE_OFFSET_FRAMES, score, position, note.FRAME);
             uiNoteField.removeNote(note.ID);
             accuracy.addValue(rawAccuracy);
             binReplayNotes[note.ID].time = judgeAccuracy;
             
-            if (uiAccuracyBar.visible)
+            if (as3hx.Compat.truthy(uiAccuracyBar.visible))
             {
                 uiAccuracyBar.onScoreSignal(score, judgeAccuracy);
             }
         }
         else
         {
-            var booFrame : Int = GAME_FRAME;
-            if (booConflict)
+            var booFrame                       : Dynamic= GAME_FRAME;
+            if (as3hx.Compat.truthy(booConflict))
             {
-                var noteIndex : Int = 0;
-                note = ((noteIndex < uiNoteField.notes.length - 1) ? uiNoteField.notes[noteIndex++] : uiNoteField.spawnNextNote());
-                while (note)
+                var noteIndex                       : Dynamic= 0;
+                note = ((as3hx.Compat.parseInt(noteIndex) < as3hx.Compat.parseInt(uiNoteField.notes.length - 1)) ? uiNoteField.notes[as3hx.Compat.parseInt(noteIndex++)] : uiNoteField.spawnNextNote());
+                while (as3hx.Compat.truthy(note))
                 {
-                    if (booFrame + JUDGE_OFFSET_FRAMES < note.FRAME - 3)
+                    if (as3hx.Compat.truthy(booFrame + JUDGE_OFFSET_FRAMES < note.FRAME - 3))
                     {
                         break;
                     }
-                    if (note.DIR == dir)
+                    if (as3hx.Compat.truthy(note.DIR == dir))
                     {
                         booFrame = as3hx.Compat.parseInt(note.FRAME + 4 - JUDGE_OFFSET_FRAMES);
                     }
                     
-                    note = ((noteIndex < uiNoteField.notes.length - 1) ? uiNoteField.notes[noteIndex++] : uiNoteField.spawnNextNote());
+                    note = ((as3hx.Compat.parseInt(noteIndex) < as3hx.Compat.parseInt(uiNoteField.notes.length - 1)) ? uiNoteField.notes[as3hx.Compat.parseInt(noteIndex++)] : uiNoteField.spawnNextNote());
                 }
             }
             
-            if (booFrame >= gameFirstNoteFrame)
+            if (as3hx.Compat.truthy(booFrame >= gameFirstNoteFrame))
             {
                 binReplayBoos[binReplayBoos.length] = new ReplayBinFrame(position, dir, binReplayBoos.length);
             }
@@ -2365,21 +2355,21 @@ mpRawBuffer.length = 0;
             commitJudge(dir, booFrame, -5, position);
         }
         
-        if (options.modEnabled("tap_pulse"))
+        if (as3hx.Compat.truthy(options.modEnabled("tap_pulse")))
         {
-            if (dir == "L")
+            if (as3hx.Compat.truthy(dir == "L"))
             {
                 noteBoxOffset.x -= Math.abs(options.receptorSpacing * 0.20);
             }
-            if (dir == "R")
+            if (as3hx.Compat.truthy(dir == "R"))
             {
                 noteBoxOffset.x += Math.abs(options.receptorSpacing * 0.20);
             }
-            if (dir == "U")
+            if (as3hx.Compat.truthy(dir == "U"))
             {
                 noteBoxOffset.y -= Math.abs(options.receptorSpacing * 0.15);
             }
-            if (dir == "D")
+            if (as3hx.Compat.truthy(dir == "D"))
             {
                 noteBoxOffset.y += Math.abs(options.receptorSpacing * 0.15);
             }
@@ -2388,17 +2378,20 @@ mpRawBuffer.length = 0;
         return score > 0;
     }
     
-    public function judgeScore(dir : String, frame : Int) : Bool
+    public function judgeScore(dir                       : Dynamic, frame                       : Dynamic) : Bool
     {
-        var score : Int = 0;
-        for (note/* AS3HX WARNING could not determine type for var: note exp: EField(EIdent(uiNoteField),notes) type: null */ in uiNoteField.notes)
+        var score                     : Dynamic= 0;
+        var note                     : Dynamic= null;
+        var diff                     : Dynamic= 0;
+        for (noteCandidate in as3hx.Compat.iter(uiNoteField.notes))
         {
-            if (note.DIR != dir)
+            note = noteCandidate;
+            if (as3hx.Compat.truthy(note.DIR != dir))
             {
                 continue;
             }
             
-            var diff : Int = as3hx.Compat.parseInt(frame + JUDGE_OFFSET_FRAMES - note.FRAME);
+            diff = as3hx.Compat.parseInt(frame + JUDGE_OFFSET_FRAMES - note.FRAME);
             switch (diff)
             {
                 case -3:
@@ -2417,43 +2410,43 @@ mpRawBuffer.length = 0;
                     score = 0;
             }
             
-            if (score > 0)
+            if (as3hx.Compat.truthy(score > 0))
             {
                 break;
             }
-            else if (diff < -3)
+            else if (as3hx.Compat.truthy(diff < -3))
             {
                 break;
             }
         }
         
-        if (options.modEnabled("tap_pulse"))
+        if (as3hx.Compat.truthy(options.modEnabled("tap_pulse")))
         {
-            if (dir == "L")
+            if (as3hx.Compat.truthy(dir == "L"))
             {
                 noteBoxOffset.x -= Math.abs(options.receptorSpacing * 0.20);
             }
-            if (dir == "R")
+            if (as3hx.Compat.truthy(dir == "R"))
             {
                 noteBoxOffset.x += Math.abs(options.receptorSpacing * 0.20);
             }
-            if (dir == "U")
+            if (as3hx.Compat.truthy(dir == "U"))
             {
                 noteBoxOffset.y -= Math.abs(options.receptorSpacing * 0.15);
             }
-            if (dir == "D")
+            if (as3hx.Compat.truthy(dir == "D"))
             {
                 noteBoxOffset.y += Math.abs(options.receptorSpacing * 0.15);
             }
         }
         
-        if (score != 0)
+        if (as3hx.Compat.truthy(score != 0))
         {
             commitJudge(dir, frame, score, note.POSITION, note.FRAME);
             uiNoteField.removeNote(note.ID);
             accuracy.addValue((note.FRAME - frame) * 1000 / 30);
             
-            if (uiAccuracyBar.visible)
+            if (as3hx.Compat.truthy(uiAccuracyBar.visible))
             {
                 uiAccuracyBar.onScoreSignal(score, diff * 33.3333 - 1);
             }
@@ -2466,42 +2459,42 @@ mpRawBuffer.length = 0;
         return cast(score, Bool);
     }
     
-    private function getChordImpactCount(noteFrame : Int) : Int
+    private function getChordImpactCount(noteFrame                       : Dynamic) : Int
     {
-        if (noteFrame < 0 || uiNoteField == null || !uiNoteField.notes)
+        if (as3hx.Compat.truthy(noteFrame < 0 || uiNoteField == null || !uiNoteField.notes))
         {
             return 1;
         }
         
-        if (_chordImpactFrame == noteFrame)
+        if (as3hx.Compat.truthy(_chordImpactFrame == noteFrame))
         {
             return _chordImpactCount;
         }
         
-        var count : Int = 0;
-        var notes : Array<GameNote> = uiNoteField.notes;
-        for (note in notes)
+        var count                       : Dynamic= 0;
+        var notes                       : Dynamic= uiNoteField.notes;
+        for (note in as3hx.Compat.iter(notes))
         {
-            if (note.FRAME == noteFrame)
+            if (as3hx.Compat.truthy(note.FRAME == noteFrame))
             {
                 count++;
-                if (count >= 4)
+                if (as3hx.Compat.truthy(count >= 4))
                 {
                     break;
                 }
             }
-            else if (count > 0 && note.FRAME > noteFrame)
+            else if (as3hx.Compat.truthy(count > 0 && as3hx.Compat.parseFloat(note.FRAME) > as3hx.Compat.parseFloat(noteFrame)))
             {
                 break;
             }
         }
         
         _chordImpactFrame = noteFrame;
-        if (count <= 1)
+        if (as3hx.Compat.truthy(count <= 1))
         {
             _chordImpactCount = 1;
         }
-        else if (count >= 4)
+        else if (as3hx.Compat.truthy(count >= 4))
         {
             _chordImpactCount = 4;
         }
@@ -2513,20 +2506,20 @@ mpRawBuffer.length = 0;
         return _chordImpactCount;
     }
     
-    private function getVisualImpactCount(noteFrame : Int, score : Int) : Int
+    private function getVisualImpactCount(noteFrame                       : Dynamic, score                       : Dynamic) : Int
     {
-        if (score <= 0)
+        if (as3hx.Compat.truthy(score <= 0))
         {
             return 1;
         }
         
-        var impactCount : Int = getChordImpactCount(noteFrame);
-        if (impactCount <= 1)
+        var impactCount                       : Dynamic= getChordImpactCount(noteFrame);
+        if (as3hx.Compat.truthy(impactCount <= 1))
         {
             return 1;
         }
         
-        if (_lastVisualImpactFrame == noteFrame)
+        if (as3hx.Compat.truthy(_lastVisualImpactFrame == noteFrame))
         {
             return 1;
         }
@@ -2535,11 +2528,11 @@ mpRawBuffer.length = 0;
         return impactCount;
     }
     
-    public function commitJudge(dir : String, frame : Int, score : Int, position : Int, noteFrame : Int = -1) : Void
+    public function commitJudge(dir                       : Dynamic, frame                       : Dynamic, score                       : Dynamic, position                       : Dynamic, noteFrame                       : Dynamic= -1) : Void
     {
-        var health : Int = 0;
-        var jscore : Int = score;
-        var visualImpactCount : Int = getVisualImpactCount(noteFrame, score);
+        var health                       : Dynamic= 0;
+        var jscore                       : Dynamic= score;
+        var visualImpactCount                       : Dynamic= getVisualImpactCount(noteFrame, score);
         uiNoteField.receptorFeedback(dir, score);
         switch (score)
         {
@@ -2548,7 +2541,7 @@ mpRawBuffer.length = 0;
                 hitCombo++;
                 gameScore += 50;
                 health = 1;
-                if (options.displayAmazing)
+                if (as3hx.Compat.truthy(options.displayAmazing))
                 {
                     checkAutofail(options.autofail[0], hitAmazing);
                 }
@@ -2582,7 +2575,7 @@ mpRawBuffer.length = 0;
                 checkAutofail(options.autofail[3], hitAverage);
                 checkAutofail(options.autofail[6], gameRawGoods);
             case -5:
-                if (frame < gameFirstNoteFrame)
+                if (as3hx.Compat.truthy(frame < gameFirstNoteFrame))
                 {
                     return;
                 }
@@ -2602,7 +2595,7 @@ mpRawBuffer.length = 0;
                 checkAutofail(options.autofail[6], gameRawGoods);
         }
         
-        if (options.isAutoplay && !options.isEditor)
+        if (as3hx.Compat.truthy(options.isAutoplay && !options.isEditor))
         {
             gameScore = 0;
             hitAmazing = 0;
@@ -2611,38 +2604,38 @@ mpRawBuffer.length = 0;
             hitAverage = 0;
         }
         
-        if (options.displayJudge && !options.isEditor)
+        if (as3hx.Compat.truthy(options.displayJudge && !options.isEditor))
         {
             uiJudge.showJudge(jscore);
         }
         
         updateHealth((health > 0) ? _gvars.HEALTH_JUDGE_ADD : _gvars.HEALTH_JUDGE_REMOVE);
         
-        if (hitCombo > hitMaxCombo)
+        if (as3hx.Compat.truthy(hitCombo > hitMaxCombo))
         {
             hitMaxCombo = hitCombo;
         }
         
-        if (uiComboHype != null)
+        if (as3hx.Compat.truthy(uiComboHype != null))
         {
             uiComboHype.onJudge(hitCombo, score, dir, visualImpactCount);
         }
         
-        if (score == -10)
+        if (as3hx.Compat.truthy(score == -10))
         {
             gameReplayHit.push(0);
         }
-        else if (score == -5)
+        else if (as3hx.Compat.truthy(score == -5))
         {
             score = 0;
         }
         
-        if (score > 0)
+        if (as3hx.Compat.truthy(score > 0))
         {
             gameReplayHit.push(score);
         }
         
-        if (score >= 0)
+        if (as3hx.Compat.truthy(score >= 0))
         {
             gameReplay.push(new ReplayNote(dir, frame, Math.round(Math.round(haxe.Timer.stamp() * 1000) - absoluteStart + songOffset.value), score));
         }
@@ -2650,9 +2643,9 @@ mpRawBuffer.length = 0;
         updateFieldVars();
         
         // Multiplayer
-        if (isMultiplayer)
+        if (as3hx.Compat.truthy(isMultiplayer))
         {
-            var scoreEvent : GamePlaybackScoreState = new GamePlaybackScoreState(scoreHistory.length, position);
+            var scoreEvent                       : Dynamic= new GamePlaybackScoreState(scoreHistory.length, position);
             scoreEvent.raw_score = gameScore;
             scoreEvent.amazing = hitAmazing;
             scoreEvent.perfect = hitPerfect;
@@ -2666,7 +2659,7 @@ mpRawBuffer.length = 0;
         }
         
         // Websocket
-        if (_gvars.air_useWebsockets)
+        if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
         {
             Reflect.setField(SOCKET_SCORE_MESSAGE, "amazing", hitAmazing);
             Reflect.setField(SOCKET_SCORE_MESSAGE, "perfect", hitPerfect);
@@ -2682,11 +2675,11 @@ mpRawBuffer.length = 0;
         }
     }
     
-    public function checkAutofail(autofail : Float, hit : Float) : Void
+    public function checkAutofail(autofail                       : Dynamic, hit                       : Dynamic) : Void
     {
-        if (autofail > 0 && hit >= autofail)
+        if (as3hx.Compat.truthy(autofail > 0 && hit >= autofail))
         {
-            if (options.autofail_restart)
+            if (as3hx.Compat.truthy(options.autofail_restart))
             {
                 GAME_STATE = GAME_RESTART;
             }
@@ -2706,20 +2699,20 @@ mpRawBuffer.length = 0;
      *									  |_|
        \*#########################################################################################*/
     
-    public function updateHealth(val : Int) : Void
+    public function updateHealth(val                       : Dynamic) : Void
     {
         gameLife += val;
         
-        if (gameLife <= 0)
+        if (as3hx.Compat.truthy(gameLife <= 0))
         {
             GAME_STATE = GAME_END;
         }
-        else if (gameLife > 100)
+        else if (as3hx.Compat.truthy(gameLife > 100))
         {
             gameLife = 100;
         }
         
-        if (uiLifebar.visible)
+        if (as3hx.Compat.truthy(uiLifebar.visible))
         {
             uiLifebar.health = gameLife;
         }
@@ -2727,22 +2720,22 @@ mpRawBuffer.length = 0;
     
     public function updateFieldVars() : Void
     {
-        if (uiPAWindow.visible)
+        if (as3hx.Compat.truthy(uiPAWindow.visible))
         {
             uiPAWindow.update(hitAmazing, hitPerfect, hitGood, hitAverage, hitMiss, hitBoo);
         }
         
-        if (uiScore.visible)
+        if (as3hx.Compat.truthy(uiScore.visible))
         {
             uiScore.update(gameScore);
         }
         
-        if (uiCombo.visible)
+        if (as3hx.Compat.truthy(uiCombo.visible))
         {
             uiCombo.update(hitCombo, hitAmazing, hitPerfect, hitGood, hitAverage, hitMiss, hitBoo, gameRawGoods);
         }
         
-        if (uiRawGoods.visible)
+        if (as3hx.Compat.truthy(uiRawGoods.visible))
         {
             uiRawGoods.update(gameRawGoods);
         }
@@ -2767,12 +2760,14 @@ mpRawBuffer.length = 0;
 
 class JudgeNode
 {
-    public var time : Float;
-    public var frame : Float;
-    public var score : Float;
+    private static var dragEnd                  : Dynamic;
+    private static var dragStart                  : Dynamic;
+    public var time                       : Dynamic;
+    public var frame                       : Dynamic;
+    public var score                       : Dynamic;
     
     @:allow(game)
-    private function new(time : Float, score : Float, frame : Float = -1)
+    private function new(time                       : Dynamic, score                       : Dynamic, frame                       : Dynamic= -1)
     {
         this.time = time;
         this.score = score;
@@ -2782,37 +2777,39 @@ class JudgeNode
 
 class EditorMenu extends Sprite
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private static var dragEnd                  : Dynamic;
+    private static var dragStart                  : Dynamic;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var _width : Float = 230;
-    private var _height : Float = 0;
+    private var _width                       : Dynamic= 230;
+    private var _height                       : Dynamic= 0;
     
-    public var gameplay : GameplayDisplay;
+    public var gameplay                       : Dynamic;
     
-    public var title : Text;
+    public var title                       : Dynamic;
     
-    public var closeButton : UIIcon;
+    public var closeButton                       : Dynamic;
     
-    public var btnExitEditor : BoxButton;
-    public var btnResetEditor : BoxButton;
+    public var btnExitEditor                       : Dynamic;
+    public var btnResetEditor                       : Dynamic;
     
-    public var btnLayoutImport : BoxButton;
-    public var btnLayoutExport : BoxButton;
+    public var btnLayoutImport                       : Dynamic;
+    public var btnLayoutExport                       : Dynamic;
     
-    public var btnLayoutSingle : BoxButton;
-    public var btnLayoutMultiplayer : BoxButton;
-    public var btnLayoutSideScroll : BoxButton;
+    public var btnLayoutSingle                       : Dynamic;
+    public var btnLayoutMultiplayer                       : Dynamic;
+    public var btnLayoutSideScroll                       : Dynamic;
     
     @:allow(game)
-    private function new(gameplay : GameplayDisplay)
+    private function new(gameplay                       : Dynamic)
     {
         super();
         this.gameplay = gameplay;
         
         this.graphics.lineStyle(1, 0xFFFFFF, 0.35);
         
-        var gamemode : String = (gameplay.options.isMultiplayer) ? "mp" : "sp";
+        var gamemode                       : Dynamic= (gameplay.options.isMultiplayer) ? "mp" : "sp";
         
         title = new Text(this, 10, 8, _lang.string("editor_menu_" + gamemode));
         title.setAreaParams(_width - 32, 16);
@@ -2825,7 +2822,7 @@ class EditorMenu extends Sprite
         closeButton.buttonMode = true;
         closeButton.addEventListener(MouseEvent.CLICK, e_editorClose);
         
-        var cy : Float = 0;
+        var cy                       : Dynamic= 0;
         
         btnExitEditor = new BoxButton(this, 15, cy += 40, _width - 30, 30, _lang.string("editor_exit_editor"), 12, e_exitEditorMode);
         btnResetEditor = new BoxButton(this, 15, cy += 40, _width - 30, 30, _lang.string("editor_reset_layout"), 12, e_resetLayout);
@@ -2867,38 +2864,38 @@ class EditorMenu extends Sprite
         this.y = (Main.GAME_HEIGHT - _height) / 2;
     }
     
-    private function e_editorClose(e : MouseEvent) : Void
+    private function e_editorClose(e                       : Dynamic) : Void
     {
         gameplay.removeChild(this);
     }
     
-    private function e_exitEditorMode(e : MouseEvent) : Void
+    private function e_exitEditorMode(e                       : Dynamic) : Void
     {
         gameplay.removeChild(this);
         
         gameplay.GAME_STATE = GameplayDisplay.GAME_END;
     }
     
-    private function e_resetLayout(e : MouseEvent) : Void
+    private function e_resetLayout(e                       : Dynamic) : Void
     {
-        var layout : Dynamic = gameplay.options.layout;
+        var layout                       : Dynamic= gameplay.options.layout;
         
         clearLayout(layout);
         
         gameplay.interfaceSetup();
     }
     
-    private function e_layoutImport(e : MouseEvent) : Void
+    private function e_layoutImport(e                       : Dynamic) : Void
     {
         new PromptInput(gameplay, _lang.string("editor_layout_import_title"), _lang.string("editor_layout_import_save"), e_importFilter);
     }
     
-    private function e_importFilter(json : String) : Void
+    private function e_importFilter(json                       : Dynamic) : Void
     {
         try
         {
-            var item : Dynamic = haxe.Json.parse(json);
-            var layout : Dynamic = gameplay.options.layout;
+            var item                       : Dynamic= haxe.Json.parse(json);
+            var layout                       : Dynamic= gameplay.options.layout;
             
             clearLayout(layout);
             copyTo(layout, item);
@@ -2910,17 +2907,17 @@ class EditorMenu extends Sprite
         }
     }
     
-    private function e_layoutExport(code : String) : Void
+    private function e_layoutExport(code                       : Dynamic) : Void
     // Clone Layout
     {
         
-        var exportLayout : Dynamic = { };
+        var exportLayout                       : Dynamic= { };
         copyTo(exportLayout, gameplay.options.layout);
         gameplay.layoutManager.cleanLayout(exportLayout);
         
-        var layoutString : String = haxe.Json.stringify(exportLayout);
-        var success : Bool = SystemUtil.setClipboard(layoutString);
-        if (success)
+        var layoutString                       : Dynamic= haxe.Json.stringify(exportLayout);
+        var success                       : Dynamic= SystemUtil.setClipboard(layoutString);
+        if (as3hx.Compat.truthy(success))
         {
             Alert.add(_lang.string("clipboard_success"), 120, Alert.GREEN);
         }
@@ -2930,9 +2927,9 @@ class EditorMenu extends Sprite
         }
     }
     
-    private function e_setLayoutSidescroll(e : MouseEvent) : Void
+    private function e_setLayoutSidescroll(e                       : Dynamic) : Void
     {
-        var layout : Dynamic = gameplay.options.layout;
+        var layout                       : Dynamic= gameplay.options.layout;
         
         clearLayout(layout);
         
@@ -2986,60 +2983,60 @@ class EditorMenu extends Sprite
         gameplay.interfaceSetup();
     }
     
-    private function e_setLayoutSingle(e : MouseEvent) : Void
+    private function e_setLayoutSingle(e                       : Dynamic) : Void
     {
-        var layout : Dynamic = gameplay.options.layout;
+        var layout                       : Dynamic= gameplay.options.layout;
         
         clearLayout(layout);
-        copyTo(layout, _gvars.playerUser.gameLayout["sp"]);
+        copyTo(layout, Reflect.field(_gvars.playerUser.gameLayout, "sp"));
         
         gameplay.interfaceSetup();
     }
     
-    private function e_setLayoutMulti(e : MouseEvent) : Void
+    private function e_setLayoutMulti(e                       : Dynamic) : Void
     {
-        var layout : Dynamic = gameplay.options.layout;
+        var layout                       : Dynamic= gameplay.options.layout;
         
         clearLayout(layout);
-        copyTo(layout, _gvars.playerUser.gameLayout["mp"]);
+        copyTo(layout, Reflect.field(_gvars.playerUser.gameLayout, "mp"));
         
         gameplay.interfaceSetup();
     }
     
-    private function copyTo(layout : Dynamic, source_layout : Dynamic) : Void
+    private function copyTo(layout                       : Dynamic, source_layout                       : Dynamic) : Void
     {
-        if (source_layout == null)
+        if (as3hx.Compat.truthy(source_layout == null))
         {
             return;
         }
         
-        for (comp in Reflect.fields(source_layout))
+        for (comp in as3hx.Compat.iter(Reflect.fields(source_layout)))
         {
-            if (Reflect.field(layout, comp) == null)
+            if (as3hx.Compat.truthy(Reflect.field(layout, comp) == null))
             {
                 Reflect.setField(layout, comp, { });
             }
             
-            var values : Dynamic = Reflect.field(source_layout, comp);
-            for (value in Reflect.fields(values))
+            var values                       : Dynamic= Reflect.field(source_layout, comp);
+            for (value in as3hx.Compat.iter(Reflect.fields(values)))
             {
                 Reflect.setField(Reflect.field(layout, comp), value, Reflect.field(values, value));
             }
         }
     }
     
-    private function clearLayout(layout : Dynamic) : Void
+    private function clearLayout(layout                       : Dynamic) : Void
     {
-        if (layout == null)
+        if (as3hx.Compat.truthy(layout == null))
         {
             return;
         }
         
-        for (key in Reflect.fields(layout))
+        for (key in as3hx.Compat.iter(Reflect.fields(layout)))
         {
-            var comp : Dynamic = Reflect.field(layout, key);
+            var comp                       : Dynamic= Reflect.field(layout, key);
             
-            for (param in Reflect.fields(comp))
+            for (param in as3hx.Compat.iter(Reflect.fields(comp)))
             {
                 Reflect.deleteField(comp, param);
             }

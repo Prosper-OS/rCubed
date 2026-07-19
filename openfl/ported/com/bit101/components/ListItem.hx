@@ -34,13 +34,13 @@ import openfl.events.MouseEvent;
 
 class ListItem extends Component
 {
-    public var data(get, set) : Dynamic;
-    public var selected(get, set) : Bool;
+    public var data(get, set)                            : Dynamic;
+    public var selected(get, set)                            : Dynamic;
 
-    private var _data : Dynamic;
-    private var _label : Label;
-    private var _selected : Bool;
-    private var _mouseOver : Bool = false;
+    public var _data                            : Dynamic;
+    public var _label                            : Dynamic;
+    public var _selected                            : Dynamic;
+    public var _mouseOver                            : Dynamic= false;
     
     /**
      * Constructor
@@ -49,7 +49,7 @@ class ListItem extends Component
      * @param ypos The y position to place this component.
      * @param data The string to display as a label or object with a label property.
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, data : Dynamic = null)
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, data                            : Dynamic= null)
     {
         _data = data;
         buttonMode = true;
@@ -59,7 +59,7 @@ class ListItem extends Component
     /**
      * Initilizes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
@@ -69,7 +69,7 @@ class ListItem extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         super.addChildren();
         _label = new Label(this, 5, 0);
@@ -89,15 +89,15 @@ class ListItem extends Component
         super.draw();
         graphics.clear();
         
-        if (_selected && _mouseOver)
+        if (as3hx.Compat.truthy(_selected && _mouseOver))
         {
             graphics.beginFill(0xFFFFFF, 0.45);
         }
-        else if (_selected)
+        else if (as3hx.Compat.truthy(_selected))
         {
             graphics.beginFill(0xFFFFFF, 0.35);
         }
-        else if (_mouseOver)
+        else if (as3hx.Compat.truthy(_mouseOver))
         {
             graphics.beginFill(0xFFFFFF, 0.25);
         }
@@ -108,16 +108,16 @@ class ListItem extends Component
         graphics.drawRect(0, 0, width, height);
         graphics.endFill();
         
-        if (_data == null)
+        if (as3hx.Compat.truthy(_data == null))
         {
             return;
         }
         
-        if (Std.is(_data, String))
+        if (as3hx.Compat.truthy(Std.is(_data, String)))
         {
             _label.text = Std.string(_data);
         }
-        else if (_data.exists("label") && Std.is(_data.label, String))
+        else if (as3hx.Compat.truthy(_data.exists("label") && Std.is(_data.label, String)))
         {
             _label.text = _data.label;
         }
@@ -137,7 +137,7 @@ class ListItem extends Component
     /**
      * Called when the user rolls the mouse over the item. Changes the background color.
      */
-    private function onMouseOver(event : MouseEvent) : Void
+    public function onMouseOver(event                            : Dynamic) : Void
     {
         addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
         _mouseOver = true;
@@ -147,7 +147,7 @@ class ListItem extends Component
     /**
      * Called when the user rolls the mouse off the item. Changes the background color.
      */
-    private function onMouseOut(event : MouseEvent) : Void
+    public function onMouseOut(event                            : Dynamic) : Void
     {
         removeEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
         _mouseOver = false;
@@ -163,7 +163,7 @@ class ListItem extends Component
     /**
      * Sets/gets the string that appears in this item.
      */
-    private function set_data(value : Dynamic) : Dynamic
+    private function set_data(value                            : Dynamic) : Dynamic
     {
         _data = value;
         invalidate();
@@ -178,7 +178,7 @@ class ListItem extends Component
     /**
      * Sets/gets whether or not this item is selected.
      */
-    private function set_selected(value : Bool) : Bool
+    private function set_selected(value                            : Dynamic) : Bool
     {
         _selected = value;
         invalidate();

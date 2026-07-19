@@ -11,18 +11,18 @@ import game.GameOptions;
 
 class SettingsTabBase
 {
-    public var name(get, never) : String;
+    public var name(get, never)                       : Dynamic;
 
-    private static var DEFAULT_OPTIONS : GameOptions = new GameOptions();
+    public static var DEFAULT_OPTIONS                       : Dynamic= new GameOptions();
     
-    private var parent : SettingsWindow;
-    public var container : ScrollPaneContent;
-    private var hover_message : MouseTooltip;
+    public var parent                       : Dynamic;
+    public var container                       : Dynamic;
+    private var hover_message                       : Dynamic;
     
-    private var judgeTitles : Array<Dynamic> = ["amazing", "perfect", "good", "average", "miss", "boo"];
-    private var receptorRotations : Array<Dynamic> = [1, 0, 2, -1];
+    public var judgeTitles                       : Dynamic= ["amazing", "perfect", "good", "average", "miss", "boo"];
+    public var receptorRotations                       : Dynamic= [1, 0, 2, -1];
     
-    public function new(settingWindow : SettingsWindow)
+    public function new(settingWindow                       : Dynamic)
     {
         this.parent = settingWindow;
     }
@@ -40,10 +40,10 @@ class SettingsTabBase
     {
         hideTooltip();
         
-        var index : Int = as3hx.Compat.parseInt(container.numChildren - 1);
-        while (index >= 0)
+        var index                       : Dynamic= as3hx.Compat.parseInt(container.numChildren - 1);
+        while (as3hx.Compat.truthy(index >= 0))
         {
-            var olditem : DisplayObject = container.getChildAt(index);
+            var olditem                       : Dynamic= container.getChildAt(index);
             olditem.removeEventListener(MouseEvent.CLICK, clickHandler);
             olditem.removeEventListener(Event.CHANGE, changeHandler);
             index--;
@@ -54,15 +54,15 @@ class SettingsTabBase
     {
     }
     
-    public function clickHandler(e : MouseEvent) : Void
+    public function clickHandler(e                       : Dynamic) : Void
     {
     }
     
-    public function changeHandler(e : Event) : Void
+    public function changeHandler(e                       : Dynamic) : Void
     {
     }
     
-    public function drawSeperator(container : ScrollPaneContent, x : Int, w : Int, y : Int, a : Int = 0, b : Int = 0) : Int
+    public function drawSeperator(container                       : Dynamic, x                       : Dynamic, w                       : Dynamic, y                       : Dynamic, a                       : Dynamic= 0, b                       : Dynamic= 0) : Int
     {
         container.graphics.lineStyle(1, 0xFFFFFF, 0.35);
         container.graphics.moveTo(x, y + 10 + a);
@@ -70,27 +70,27 @@ class SettingsTabBase
         return as3hx.Compat.parseInt(20 + a + b);
     }
     
-    private function setTextMaxWidth(maxWidth : Float) : Void
+    public function setTextMaxWidth(maxWidth                       : Dynamic) : Void
     {
         for (i in 0...container.numChildren)
         {
-            var chd : Dynamic = container.getChildAt(i);
-            if (Std.is(chd, Text))
+            var chd                       : Dynamic= container.getChildAt(i);
+            if (as3hx.Compat.truthy(Std.is(chd, Text)))
             {
                 chd.width = maxWidth;
             }
         }
     }
     
-    public function displayToolTip(tx : Float, ty : Float, text : String, align : String = "left") : Void
+    public function displayToolTip(tx                       : Dynamic, ty                       : Dynamic, text                       : Dynamic, align                       : Dynamic= "left") : Void
     {
-        if (hover_message == null)
+        if (as3hx.Compat.truthy(hover_message == null))
         {
             hover_message = new MouseTooltip();
         }
         hover_message.message = text;
         
-        var messagePoint : Point = parent.globalToLocal(parent.pane.content.localToGlobal(new Point(tx, ty)));
+        var messagePoint                       : Dynamic= parent.globalToLocal(parent.pane.content.localToGlobal(new Point(tx, ty)));
         
         switch (align)
         {
@@ -108,7 +108,7 @@ class SettingsTabBase
     
     public function hideTooltip() : Void
     {
-        if (hover_message != null && parent.contains(hover_message))
+        if (as3hx.Compat.truthy(hover_message != null && parent.contains(hover_message)))
         {
             parent.removeChild(hover_message);
         }

@@ -4,19 +4,19 @@ import classes.mp.room.MPRoom;
 
 class MPCFFRScoreUpdate implements IMPCommand
 {
-    public var room : MPRoom;
+    public var room                             : Dynamic;
     
-    public var raw_score : Int;
-    public var amazing : Int;
-    public var perfect : Int;
-    public var good : Int;
-    public var average : Int;
-    public var miss : Int;
-    public var boo : Int;
-    public var combo : Int;
-    public var max_combo : Int;
+    public var raw_score                             : Dynamic;
+    public var amazing                             : Dynamic;
+    public var perfect                             : Dynamic;
+    public var good                             : Dynamic;
+    public var average                             : Dynamic;
+    public var miss                             : Dynamic;
+    public var boo                             : Dynamic;
+    public var combo                             : Dynamic;
+    public var max_combo                             : Dynamic;
     
-    public function new(room : MPRoom, raw_score : Int, amazing : Int, perfect : Int, good : Int, average : Int, miss : Int, boo : Int, combo : Int, max_combo : Int)
+    public function new(room                             : Dynamic, raw_score                             : Dynamic, amazing                             : Dynamic, perfect                             : Dynamic, good                             : Dynamic, average                             : Dynamic, miss                             : Dynamic, boo                             : Dynamic, combo                             : Dynamic, max_combo                             : Dynamic)
     {
         this.room = room;
         

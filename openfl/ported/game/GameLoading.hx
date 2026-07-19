@@ -17,22 +17,22 @@ import menu.MenuPanel;
 
 class GameLoading extends MenuPanel
 {
-    private var _textFormat : TextFormat = new TextFormat(Fonts.BASE_FONT_CJK, 16, 0xFFFFFF, true);
+    private var _textFormat                          : Dynamic= new TextFormat(Fonts.BASE_FONT_CJK, 16, 0xFFFFFF, true);
     
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _playlist : Playlist = Playlist.instance;
+    private var _gvars                          : Dynamic= GlobalVariables.instance;
+    private var _lang                          : Dynamic= Language.instance;
+    private var _playlist                          : Dynamic= Playlist.instance;
     
-    private var preloader : ProgressBar;
-    private var namedisplay : TextField;
-    private var blackOverlay : Sprite;
-    private var loadTimer : Int = 0;
-    private var cancelLoadButton : BoxButton;
+    private var preloader                          : Dynamic;
+    private var namedisplay                          : Dynamic;
+    private var blackOverlay                          : Dynamic;
+    private var loadTimer                          : Dynamic= 0;
+    private var cancelLoadButton                          : Dynamic;
     
-    private var song : Song;
-    private var songName : String = "";
+    private var song                          : Dynamic;
+    private var songName                          : Dynamic= "";
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                          : Dynamic)
     {
         super(myParent);
     }
@@ -41,13 +41,13 @@ class GameLoading extends MenuPanel
     {
         _gvars.songRestarts = 0;
         //- Set Active Song
-        if (_gvars.options.song)
+        if (as3hx.Compat.truthy(_gvars.options.song))
         {
             song = _gvars.options.song;
         }
-        else if (_gvars.songQueue.length > 0)
+        else if (as3hx.Compat.truthy(_gvars.songQueue.length > 0))
         {
-            var songInfo : SongInfo = _gvars.songQueue[0];
+            var songInfo                          : Dynamic= _gvars.songQueue[0];
             _gvars.songQueue.shift();
             
             song = _gvars.getSongFile(songInfo);
@@ -63,7 +63,7 @@ class GameLoading extends MenuPanel
             }
         }
         
-        if (song != null && song.isLoaded)
+        if (as3hx.Compat.truthy(song != null && song.isLoaded))
         {
             switchTo(GameMenu.GAME_PLAY);
             return false;
@@ -98,28 +98,28 @@ class GameLoading extends MenuPanel
     {
         this.removeEventListener(Event.ENTER_FRAME, updatePreloader);
         
-        if (cancelLoadButton != null)
+        if (as3hx.Compat.truthy(cancelLoadButton != null))
         {
             cancelLoadButton.dispose();
         }
         
-        if (preloader != null)
+        if (as3hx.Compat.truthy(preloader != null))
         {
             preloader.removeEventListener(Event.REMOVED_FROM_STAGE, preloaderRemoved);
         }
     }
     
     ///- PreloaderHandlers
-    private function updatePreloader(e : Event) : Void
+    private function updatePreloader(e                          : Dynamic) : Void
     {
         loadTimer++;
         
         namedisplay.htmlText = "";
-        if (song.songInfo.name)
+        if (as3hx.Compat.truthy(song.songInfo.name))
         {
             namedisplay.htmlText += song.songInfo.name + " - " + song.progress + "%  --- ";
             
-            if (song.bytesTotal > 0)
+            if (as3hx.Compat.truthy(song.bytesTotal > 0))
             {
                 namedisplay.htmlText += "(" + NumberUtil.bytesToString(song.bytesLoaded) + " / " + NumberUtil.bytesToString(song.bytesTotal) + ")";
             }
@@ -128,7 +128,7 @@ class GameLoading extends MenuPanel
                 namedisplay.htmlText += "Connecting...";
             }
             
-            if (song.loadFail)
+            if (as3hx.Compat.truthy(song.loadFail))
             {
                 namedisplay.htmlText += " --- <font color=\"#FFC4C4\">[Loading Failed]</font>";
             }
@@ -140,21 +140,21 @@ class GameLoading extends MenuPanel
         
         preloader.update(song.progress / 100);
         
-        if ((loadTimer >= 60 || song.loadFail) && cancelLoadButton == null)
+        if (as3hx.Compat.truthy((loadTimer >= 60 || song.loadFail) && cancelLoadButton == null))
         {
             cancelLoadButton = new BoxButton(this, Main.GAME_WIDTH - 85, preloader.y - 35, 75, 25, "Cancel", 12, e_cancelClick);
         }
         
-        if (song.loadFail) {
+        if (as3hx.Compat.truthy(song.loadFail)) {
 _gvars.removeSongFile(song);
-            if (cancelLoadButton != null)
+            if (as3hx.Compat.truthy(cancelLoadButton != null))
             {
                 cancelLoadButton.text = "Return";
             }
             removeEventListener(Event.ENTER_FRAME, updatePreloader);
         }
         
-        if (preloader.isComplete && song.isLoaded)
+        if (as3hx.Compat.truthy(preloader.isComplete && song.isLoaded))
         {
             removePopup();
             this.removeEventListener(Event.ENTER_FRAME, updatePreloader);
@@ -172,7 +172,7 @@ _gvars.removeSongFile(song);
         }
     }
     
-    private function e_cancelClick(e : Event) : Void
+    private function e_cancelClick(e                          : Dynamic) : Void
     {
         _gvars.removeSongFile(song);
         
@@ -180,7 +180,7 @@ _gvars.removeSongFile(song);
         switchTo(Main.GAME_MENU_PANEL);
     }
     
-    private function preloaderRemoved(e : Event = null) : Void
+    private function preloaderRemoved(e                          : Dynamic= null) : Void
     {
         preloader.removeEventListener(Event.REMOVED_FROM_STAGE, preloaderRemoved);
         switchTo(GameMenu.GAME_PLAY);

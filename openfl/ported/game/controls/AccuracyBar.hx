@@ -8,28 +8,28 @@ import game.GameOptions;
 
 class AccuracyBar extends GameControl
 {
-    private static inline var PERSPECTIVE_TOP : Float = 0.70;
-    private static inline var PERSPECTIVE_BOTTOM : Float = 1.00;
+    private static inline var PERSPECTIVE_TOP                       : Dynamic= 0.70;
+    private static inline var PERSPECTIVE_BOTTOM                       : Dynamic= 1.00;
     
-    private var options : GameOptions;
+    private var options                       : Dynamic;
     
-    private var bound_lower : Int = -117;
-    private var bound_upper : Int = 117;
-    private var bound_range : Int = 234;
+    private var bound_lower                       : Dynamic= -117;
+    private var bound_upper                       : Dynamic= 117;
+    private var bound_range                       : Dynamic= 234;
     
-    private var _width : Float = 200;
-    private var _height : Float = 16;
+    private var _width                       : Dynamic= 200;
+    private var _height                       : Dynamic= 16;
     
-    private var _colors : Array<Dynamic>;
-    private var _flashLayer : Sprite;
-    private var _flashPool : Array<Dynamic> = [];
-    private var _activeFlashes : Array<Sprite> = [];
-    private var _flashAge : Array<Int> = [];
+    private var _colors                       : Dynamic;
+    private var _flashLayer                       : Dynamic;
+    private var _flashPool                       : Dynamic= [];
+    private var _activeFlashes                       : Dynamic= [];
+    private var _flashAge                       : Dynamic= [];
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -53,13 +53,13 @@ class AccuracyBar extends GameControl
         draw();
     }
     
-    public function onScoreSignal(_score : Int, _judgeMS : Int) : Void
+    public function onScoreSignal(_score                       : Dynamic, _judgeMS                       : Dynamic) : Void
     {
-        var color : Int = (_colors[_score] != null) ? _colors[_score] : 0xFFFFFF;
-        var xPos : Float = (_judgeMS / bound_range * (_width - 6));
+        var color                       : Dynamic= (_colors[_score] != null) ? _colors[_score] : 0xFFFFFF;
+        var xPos                       : Dynamic= (_judgeMS / bound_range * (_width - 6));
         xPos = Math.max(-(_width / 2), Math.min(_width / 2, xPos));
         
-        var flash : Sprite = buildAccuracyFlash(color, xPos);
+        var flash                       : Dynamic= buildAccuracyFlash(color, xPos);
         flash.scaleX = 0.06;
         flash.alpha = 0.95;
         _flashLayer.addChild(flash);
@@ -70,23 +70,23 @@ class AccuracyBar extends GameControl
     
     public function tick() : Void
     {
-        var i : Int = as3hx.Compat.parseInt(_activeFlashes.length - 1);
-        while (i >= 0)
+        var i                       : Dynamic= as3hx.Compat.parseInt(_activeFlashes.length - 1);
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var flash : Sprite = _activeFlashes[i];
-            var age : Int = as3hx.Compat.parseInt(_flashAge[i] + 1);
+            var flash                       : Dynamic= _activeFlashes[i];
+            var age                       : Dynamic= as3hx.Compat.parseInt(_flashAge[i] + 1);
             _flashAge[i] = age;
             
-            if (age <= 3)
+            if (as3hx.Compat.truthy(age <= 3))
             {
-                var expand : Float = age / 3;
+                var expand                       : Dynamic= age / 3;
                 flash.scaleX = 0.06 + (0.94 * expand);
                 flash.alpha = 0.95 + (0.05 * expand);
             }
             else
             {
-                var fade : Float = (age - 3) / 10;
-                if (fade >= 1)
+                var fade                       : Dynamic= (age - 3) / 10;
+                if (as3hx.Compat.truthy(fade >= 1))
                 {
                     releaseActiveFlash(i);
                     {i--;continue;
@@ -102,7 +102,7 @@ class AccuracyBar extends GameControl
     
     public function onResetSignal() : Void
     {
-        while (_flashLayer != null && _flashLayer.numChildren > 0)
+        while (as3hx.Compat.truthy(_flashLayer != null && _flashLayer.numChildren > 0))
         {
             releaseAccuracyFlash(try cast(_flashLayer.getChildAt(0), Sprite) catch(e:Dynamic) null);
         }
@@ -118,8 +118,8 @@ class AccuracyBar extends GameControl
     // Get Judge Window
     {
         
-        var judge : Array<Dynamic> = Constant.JUDGE_WINDOW;
-        if (options.judgeWindow)
+        var judge                       : Dynamic= Constant.JUDGE_WINDOW;
+        if (as3hx.Compat.truthy(options.judgeWindow))
         {
             judge = options.judgeWindow;
         }
@@ -127,13 +127,13 @@ class AccuracyBar extends GameControl
         // Get Judge Window Size
         for (jn in 0...judge.length)
         {
-            var jni : Dynamic = judge[jn];
-            if (jni.t < bound_lower)
+            var jni                       : Dynamic= judge[jn];
+            if (as3hx.Compat.truthy(jni.t < bound_lower))
             {
                 bound_lower = jni.t;
             }
             
-            if (jni.t > bound_upper)
+            if (as3hx.Compat.truthy(jni.t > bound_upper))
             {
                 bound_upper = jni.t;
             }
@@ -157,25 +157,25 @@ class AccuracyBar extends GameControl
         
         drawJudgeRegions();
         
-        if (_flashLayer.parent != this)
+        if (as3hx.Compat.truthy(_flashLayer.parent != this))
         {
             addChild(_flashLayer);
         }
     }
     
-    private function buildAccuracyFlash(color : Int, xPos : Float) : Sprite
+    private function buildAccuracyFlash(color                       : Dynamic, xPos                       : Dynamic) : Sprite
     {
-        var flash : Sprite = (_flashPool.length > 0) ? _flashPool.pop() : new Sprite();
+        var flash                       : Dynamic= (_flashPool.length > 0) ? _flashPool.pop() : new Sprite();
         flash.mouseEnabled = false;
         flash.mouseChildren = false;
         flash.blendMode = BlendMode.ADD;
         flash.visible = true;
         flash.graphics.clear();
         
-        var g : Graphics = flash.graphics;
-        var widthHalf : Float = _width / 2;
-        var heightHalf : Float = _height / 2;
-        var coreHeight : Float = _height;
+        var g                       : Dynamic= flash.graphics;
+        var widthHalf                       : Dynamic= _width / 2;
+        var heightHalf                       : Dynamic= _height / 2;
+        var coreHeight                       : Dynamic= _height;
         
         g.beginFill(color, 0.07);
         drawPerspectiveQuad(g, -widthHalf, _width, -heightHalf, _height);
@@ -200,13 +200,13 @@ class AccuracyBar extends GameControl
         return flash;
     }
     
-    private function releaseActiveFlash(index : Int) : Void
+    private function releaseActiveFlash(index                       : Dynamic) : Void
     {
-        var flash : Sprite = _activeFlashes[index];
+        var flash                       : Dynamic= _activeFlashes[index];
         releaseAccuracyFlash(flash);
         
-        var last : Int = as3hx.Compat.parseInt(_activeFlashes.length - 1);
-        if (index != last)
+        var last                       : Dynamic= as3hx.Compat.parseInt(_activeFlashes.length - 1);
+        if (as3hx.Compat.truthy(index != last))
         {
             _activeFlashes[index] = _activeFlashes[last];
             _flashAge[index] = _flashAge[last];
@@ -216,14 +216,14 @@ class AccuracyBar extends GameControl
         as3hx.Compat.setArrayLength(_flashAge, last);
     }
     
-    private function releaseAccuracyFlash(flash : Sprite) : Void
+    private function releaseAccuracyFlash(flash                       : Dynamic) : Void
     {
-        if (flash == null)
+        if (as3hx.Compat.truthy(flash == null))
         {
             return;
         }
         
-        if (flash.parent != null)
+        if (as3hx.Compat.truthy(flash.parent != null))
         {
             flash.parent.removeChild(flash);
         }
@@ -232,7 +232,7 @@ class AccuracyBar extends GameControl
         flash.alpha = 1;
         flash.scaleX = flash.scaleY = 1;
         
-        if (_flashPool.length < 24)
+        if (as3hx.Compat.truthy(_flashPool.length < 24))
         {
             _flashPool.push(flash);
         }
@@ -242,29 +242,29 @@ class AccuracyBar extends GameControl
     // Get Judge Window
     {
         
-        var judge : Array<Dynamic> = Constant.JUDGE_WINDOW;
-        if (options.judgeWindow)
+        var judge                       : Dynamic= Constant.JUDGE_WINDOW;
+        if (as3hx.Compat.truthy(options.judgeWindow))
         {
             judge = options.judgeWindow;
         }
         
         this.graphics.lineStyle(1, 0xFFFFFF, 0.075);
         
-        for (jn in 1...judge.length - 1)
+        for (jn in 1...as3hx.Compat.parseInt(judge.length - 1))
         {
-            var dX : Float = _width * ((Reflect.field(judge[jn], "t") - bound_lower) / bound_range);
-            var baseX : Float = -(_width / 2) + dX;
+            var dX                       : Dynamic= _width * ((Reflect.field(judge[jn], "t") - bound_lower) / bound_range);
+            var baseX                       : Dynamic= -(_width / 2) + dX;
             this.graphics.moveTo(perspectiveX(baseX, -(_height / 2) + 1), -(_height / 2) + 1);
             this.graphics.lineTo(perspectiveX(baseX, (_height / 2) - 1), (_height / 2) - 1);
         }
     }
     
-    private function drawPerspectiveQuad(g : Graphics, xPos : Float, widthValue : Float, yPos : Float, heightValue : Float) : Void
+    private function drawPerspectiveQuad(g                       : Dynamic, xPos                       : Dynamic, widthValue                       : Dynamic, yPos                       : Dynamic, heightValue                       : Dynamic) : Void
     {
-        var yTop : Float = yPos;
-        var yBottom : Float = yPos + heightValue;
-        var left : Float = xPos;
-        var right : Float = xPos + widthValue;
+        var yTop                       : Dynamic= yPos;
+        var yBottom                       : Dynamic= yPos + heightValue;
+        var left                       : Dynamic= xPos;
+        var right                       : Dynamic= xPos + widthValue;
         
         g.moveTo(perspectiveX(left, yTop), yTop);
         g.lineTo(perspectiveX(right, yTop), yTop);
@@ -273,21 +273,21 @@ class AccuracyBar extends GameControl
         g.lineTo(perspectiveX(left, yTop), yTop);
     }
     
-    private function perspectiveX(xPos : Float, yPos : Float) : Float
+    private function perspectiveX(xPos                       : Dynamic, yPos                       : Dynamic) : Float
     {
-        var depth : Float = (yPos + (_height / 2)) / Math.max(1, _height);
-        var scale : Float = PERSPECTIVE_TOP + ((PERSPECTIVE_BOTTOM - PERSPECTIVE_TOP) * depth);
+        var depth                       : Dynamic= (yPos + (_height / 2)) / Math.max(1, _height);
+        var scale                       : Dynamic= PERSPECTIVE_TOP + ((PERSPECTIVE_BOTTOM - PERSPECTIVE_TOP) * depth);
         return xPos * scale;
     }
     
-    override private function set_width(val : Float) : Float
+    override private function set_width(val                       : Dynamic) : Float
     {
         _width = Math.max(1, val);
         draw();
         return val;
     }
     
-    override private function set_height(val : Float) : Float
+    override private function set_height(val                       : Dynamic) : Float
     {
         _height = Math.max(1, val);
         draw();
@@ -311,7 +311,7 @@ class AccuracyBar extends GameControl
     
     override private function get_editorFlags() : Int
     {
-        return as3hx.Compat.parseInt(FLAG_POSITION | FLAG_SIZE | FLAG_ROTATE | FLAG_OPACITY);
+        return as3hx.Compat.parseInt(GameControl.FLAG_POSITION | GameControl.FLAG_SIZE | GameControl.FLAG_ROTATE | GameControl.FLAG_OPACITY);
     }
 }
 

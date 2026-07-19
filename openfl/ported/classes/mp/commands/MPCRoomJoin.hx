@@ -4,10 +4,10 @@ import classes.mp.room.MPRoom;
 
 class MPCRoomJoin implements IMPCommand
 {
-    public var room : MPRoom;
-    public var password : String;
+    public var room                             : Dynamic;
+    public var password                             : Dynamic;
     
-    public function new(room : MPRoom, password : String = null)
+    public function new(room                             : Dynamic, password                             : Dynamic= null)
     {
         this.room = room;
         this.password = password;
@@ -15,11 +15,11 @@ class MPCRoomJoin implements IMPCommand
     
     public function toJSON() : String
     {
-        var data : Dynamic = {
+        var data                             : Dynamic= {
             uid : room.uid
         };
         
-        if (password != null && password.length > 0)
+        if (as3hx.Compat.truthy(password != null && password.length > 0))
         {
             Reflect.setField(data, "password", password);
         }

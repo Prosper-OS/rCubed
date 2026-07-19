@@ -8,13 +8,13 @@ import openfl.events.MouseEvent;
 
 class SettingsTabModifiers extends SettingsTabBase
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var optionGameMods : Array<Dynamic>;
-    private var optionVisualGameMods : Array<Dynamic>;
+    private var optionGameMods                       : Dynamic;
+    private var optionVisualGameMods                       : Dynamic;
     
-    public function new(settingsWindow : SettingsWindow)
+    public function new(settingsWindow                       : Dynamic)
     {
         super(settingsWindow);
     }
@@ -30,9 +30,9 @@ class SettingsTabModifiers extends SettingsTabBase
         container.graphics.moveTo(295, 15);
         container.graphics.lineTo(295, 405);
         
-        var i : Int;
-        var xOff : Int = 15;
-        var yOff : Int = 15;
+        var i                       : Dynamic= null;
+        var xOff                       : Dynamic= 15;
+        var yOff                       : Dynamic= 15;
         
         /// Col 1
         //- Mods
@@ -41,10 +41,10 @@ class SettingsTabModifiers extends SettingsTabBase
         new Text(container, xOff, yOff, _lang.string("options_game_mods"), 14);
         yOff += 25;
         
-        var modsData : Array<Dynamic> = _gvars.GAME_MODS;
+        var modsData                       : Dynamic= _gvars.GAME_MODS;
         for (i in 0...modsData.length)
         {
-            if (modsData[i] == "----")
+            if (as3hx.Compat.truthy(modsData[i] == "----"))
             {
                 yOff += drawSeperator(container, xOff, 266, yOff, 2, 3);
                 continue;
@@ -52,7 +52,7 @@ class SettingsTabModifiers extends SettingsTabBase
             
             new Text(container, xOff + 23, yOff, _lang.string("options_mod_" + modsData[i]));
             
-            var optionModCheck : BoxCheck = new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
+            var optionModCheck                       : Dynamic= new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
             optionModCheck.mod = modsData[i];
             optionGameMods.push(optionModCheck);
             yOff += 20;
@@ -68,10 +68,10 @@ class SettingsTabModifiers extends SettingsTabBase
         new Text(container, xOff, yOff, _lang.string("options_visual_mods"), 14);
         yOff += 25;
         
-        var modsVisualData : Array<Dynamic> = _gvars.VISUAL_MODS;
+        var modsVisualData                       : Dynamic= _gvars.VISUAL_MODS;
         for (i in 0...modsVisualData.length)
         {
-            if (modsVisualData[i] == "----")
+            if (as3hx.Compat.truthy(modsVisualData[i] == "----"))
             {
                 yOff += drawSeperator(container, xOff, 266, yOff, 2, 3);
                 continue;
@@ -79,7 +79,7 @@ class SettingsTabModifiers extends SettingsTabBase
             
             new Text(container, xOff + 23, yOff, _lang.string("options_mod_" + modsVisualData[i]));
             
-            var optionVisualModCheck : BoxCheck = new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
+            var optionVisualModCheck                       : Dynamic= new BoxCheck(container, xOff + 3, yOff + 3, clickHandler);
             optionVisualModCheck.visual_mod = modsVisualData[i];
             optionVisualGameMods.push(optionVisualModCheck);
             yOff += 20;
@@ -88,30 +88,30 @@ class SettingsTabModifiers extends SettingsTabBase
     
     override public function setValues() : Void
     {
-        var item : Dynamic;
+        var item                       : Dynamic= null;
         
         // Set Game Mods
-        for (item in optionGameMods)
+        for (item in as3hx.Compat.iter(optionGameMods))
         {
             item.checked = (_gvars.activeUser.activeMods.indexOf(item.mod) != -1);
         }
         
         // Set Visual Game Mods
-        for (item in optionVisualGameMods)
+        for (item in as3hx.Compat.iter(optionVisualGameMods))
         {
             item.checked = (_gvars.activeUser.activeVisualMods.indexOf(item.visual_mod) != -1);
         }
     }
     
-    override public function clickHandler(e : MouseEvent) : Void
+    override public function clickHandler(e                       : Dynamic) : Void
     //- Visual Mods
     {
         
-        if (e.target.exists("visual_mod"))
+        if (as3hx.Compat.truthy(e.target.exists("visual_mod")))
         {
             e.target.checked = !e.target.checked;
-            var visual_mod : String = e.target.visual_mod;
-            if (_gvars.activeUser.activeVisualMods.indexOf(visual_mod) != -1)
+            var visual_mod                       : Dynamic= e.target.visual_mod;
+            if (as3hx.Compat.truthy(_gvars.activeUser.activeVisualMods.indexOf(visual_mod) != -1))
             {
                 ArrayUtil.removeValue(visual_mod, _gvars.activeUser.activeVisualMods);
             }
@@ -121,11 +121,11 @@ class SettingsTabModifiers extends SettingsTabBase
             }
         }
         //- Mods
-        else if (e.target.exists("mod"))
+        else if (as3hx.Compat.truthy(e.target.exists("mod")))
         {
             e.target.checked = !e.target.checked;
-            var mod : String = e.target.mod;
-            if (_gvars.activeUser.activeMods.indexOf(mod) != -1)
+            var mod                       : Dynamic= e.target.mod;
+            if (as3hx.Compat.truthy(_gvars.activeUser.activeMods.indexOf(mod) != -1))
             {
                 ArrayUtil.removeValue(mod, _gvars.activeUser.activeMods);
             }
@@ -133,7 +133,7 @@ class SettingsTabModifiers extends SettingsTabBase
             {
                 _gvars.activeUser.activeMods.push(mod);
             }
-            if (mod == "reverse")
+            if (as3hx.Compat.truthy(mod == "reverse"))
             {
                 _gvars.dirtySongFiles();
             }

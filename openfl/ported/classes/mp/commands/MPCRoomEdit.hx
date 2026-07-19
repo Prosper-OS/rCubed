@@ -4,22 +4,22 @@ import classes.mp.room.MPRoom;
 
 class MPCRoomEdit implements IMPCommand
 {
-    public var room : MPRoom;
+    public var room                             : Dynamic;
     
-    public var name : String;
-    public var password : String;
+    public var name                             : Dynamic;
+    public var password                             : Dynamic;
     
-    public var team_count : Float;
-    public var max_players : Float;
+    public var team_count                             : Dynamic;
+    public var max_players                             : Dynamic;
     
-    public function new(room : MPRoom)
+    public function new(room                             : Dynamic)
     {
         this.room = room;
     }
     
     public function toJSON() : String
     {
-        var data : Dynamic = {
+        var data                             : Dynamic= {
             uid : room.uid,
             name : name,
             password : password,

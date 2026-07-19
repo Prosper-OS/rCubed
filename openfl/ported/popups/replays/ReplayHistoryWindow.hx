@@ -31,46 +31,48 @@ import com.greensock.TweenLite;
 
 class ReplayHistoryWindow extends MenuPanel
 {
-    public var searchText(get, never) : String;
+    private static var e_changeHandler                    : Dynamic;
+    private static var closePrompt                    : Dynamic;
+    public var searchText(get, never)                       : Dynamic;
 
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var box : Sprite;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    public var scrollbar : ScrollBar;
-    public var pane : ReplayHistoryScrollpane;
+    public var scrollbar                       : Dynamic;
+    public var pane                       : Dynamic;
     
-    private var TABS : Array<ReplayHistoryTabBase>;
+    private var TABS                       : Dynamic;
     
-    private var CURRENT_TAB : ReplayHistoryTabBase;
-    private var CURRENT_INDEX : Int = -1;
-    private static var LAST_INDEX : Int = 0;
+    private var CURRENT_TAB                       : Dynamic;
+    private var CURRENT_INDEX                       : Dynamic= -1;
+    private static var LAST_INDEX                       : Dynamic= 0;
     
-    private var TAB_BUTTONS : Array<TabButton>;
+    private var TAB_BUTTONS                       : Dynamic;
     
-    private var txt_title : Text;
+    private var txt_title                       : Dynamic;
     
-    private var search_field : BoxText;
-    private var search_field_placeholder : Text;
-    private var _search_text : String = "";
+    private var search_field                       : Dynamic;
+    private var search_field_placeholder                       : Dynamic;
+    private var _search_text                       : Dynamic= "";
     
     // settings
-    private var useReplayLayout : Bool = true;
+    private var useReplayLayout                       : Dynamic= true;
     
     // buttons
-    private var btn_close : BoxButton;
-    private var btn_options : BoxButton;
+    private var btn_close                       : Dynamic;
+    private var btn_options                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     
     {
 TABS = [new ReplayHistoryTabSession(this), 
                         new ReplayHistoryTabLocal(this)
             ];
         
-        if (!_gvars.activeUser.isGuest)
+        if (as3hx.Compat.truthy(!_gvars.activeUser.isGuest))
         {
             TABS.push(new ReplayHistoryTabOnline(this));
         }
@@ -143,7 +145,7 @@ TABS = [new ReplayHistoryTabSession(this),
         search_field = new BoxText(box, 400, 15, 220, 29);
         search_field.addEventListener(Event.CHANGE, e_searchChange, false, 0, true);
         
-        var searchSprite : Sprite = new IconSearch();
+        var searchSprite                       : Dynamic= new IconSearch();
         searchSprite.x = 644;
         searchSprite.y = 31;
         searchSprite.scaleX = searchSprite.scaleY = 0.25;
@@ -165,7 +167,7 @@ TABS = [new ReplayHistoryTabSession(this),
     
     public function buildTabs() : Void
     {
-        var tabBox : TabButton;
+        var tabBox                       : Dynamic= null;
         
         for (idx in 0...TABS.length)
         {
@@ -177,14 +179,14 @@ TABS = [new ReplayHistoryTabSession(this),
         }
     }
     
-    public function changeTab(idx : Int) : Void
+    public function changeTab(idx                       : Dynamic) : Void
     {
-        if (CURRENT_INDEX == idx)
+        if (as3hx.Compat.truthy(CURRENT_INDEX == idx))
         {
             return;
         }
         
-        if (CURRENT_TAB != null)
+        if (as3hx.Compat.truthy(CURRENT_TAB != null))
         {
             CURRENT_TAB.closeTab();
             pane.clear();
@@ -197,39 +199,39 @@ TABS = [new ReplayHistoryTabSession(this),
         LAST_INDEX = idx;
         
         // update buttons
-        for (tabButton in TAB_BUTTONS)
+        for (tabButton in as3hx.Compat.iter(TAB_BUTTONS))
         {
             tabButton.setActive(tabButton.index == idx);
         }
     }
     
-    private function e_tabHandler(e : MouseEvent) : Void
+    private function e_tabHandler(e                       : Dynamic) : Void
     {
         changeTab((try cast(e.currentTarget, TabButton) catch(e:Dynamic) null).index);
     }
     
-    private function e_clickHandler(e : MouseEvent) : Void
+    private function e_clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == btn_close)
+        if (as3hx.Compat.truthy(e.target == btn_close))
         {
             removePopup();
             return;
         }
     }
     
-    private function e_mouseWheelMoved(e : MouseEvent) : Void
+    private function e_mouseWheelMoved(e                       : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
         
-        var dist : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var dist                       : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(dist);
         scrollbar.scrollTo(dist);
     }
     
-    private function e_scrollBarMoved(e : Event) : Void
+    private function e_scrollBarMoved(e                       : Dynamic) : Void
     {
         pane.scrollTo(e.target.scroll);
     }
@@ -242,46 +244,46 @@ TABS = [new ReplayHistoryTabSession(this),
         scrollbar.visible = pane.doScroll;
     }
     
-    public function e_replayEntryClick(e : MouseEvent) : Void
+    public function e_replayEntryClick(e                       : Dynamic) : Void
     {
-        var te : Dynamic = e.target;
-        if (Std.is(te, SimpleBoxButton))
+        var te                       : Dynamic= e.target;
+        if (as3hx.Compat.truthy(Std.is(te, SimpleBoxButton)))
         {
-            var target : SimpleBoxButton = try cast(te, SimpleBoxButton) catch(e:Dynamic) null;
-            var entry : ReplayHistoryEntry = try cast(target.parent, ReplayHistoryEntry) catch(e:Dynamic) null;
-            var replay : Replay = CURRENT_TAB.prepareReplay(entry.replay);
+            var target                       : Dynamic= try cast(te, SimpleBoxButton) catch(e:Dynamic) null;
+            var entry                       : Dynamic= try cast(target.parent, ReplayHistoryEntry) catch(e:Dynamic) null;
+            var replay                       : Dynamic= CURRENT_TAB.prepareReplay(entry.replay);
             
-            if (replay == null)
+            if (as3hx.Compat.truthy(replay == null))
             {
                 return;
             }
             
-            if (target == entry.btn_play)
+            if (as3hx.Compat.truthy(target == entry.btn_play))
             {
-                if (replay.song == null)
+                if (as3hx.Compat.truthy(replay.song == null))
                 {
                     Alert.add(_lang.string("popup_replay_missing_song_data"), 120, Alert.RED);
                     return;
                 }
                 
-                if (replay.isFileLoader)
+                if (as3hx.Compat.truthy(replay.isFileLoader))
                 {
-                    var chartLoaded : Bool = true;
-                    if (_gvars.externalSongInfo == null || _gvars.externalSongInfo.engine == null || _gvars.externalSongInfo.engine.cache_id != replay.cacheID)
+                    var chartLoaded                       : Dynamic= true;
+                    if (as3hx.Compat.truthy(_gvars.externalSongInfo == null || _gvars.externalSongInfo.engine == null || _gvars.externalSongInfo.engine.cache_id != replay.cacheID))
                     {
                         chartLoaded = FileLoader.setupLocalFile(replay.chartPath, replay.settings.arc_engine.chartID);
                     }
                     
                     replay.song = _gvars.externalSongInfo;
                     
-                    if (!chartLoaded)
+                    if (as3hx.Compat.truthy(!chartLoaded))
                     {
                         Alert.add(_lang.string("popup_replay_file_browser_replays"), 120, Alert.RED);
                         return;
                     }
                 }
                 
-                if (!replay.user.isLoaded())
+                if (as3hx.Compat.truthy(!replay.user.isLoaded()))
                 {
                     replay.user.loadUser(replay.user.siteId);
                 }
@@ -291,9 +293,9 @@ TABS = [new ReplayHistoryTabSession(this),
                 _gvars.options.replay = replay;
                 _gvars.options.fillFromReplay();
                 
-                if (!useReplayLayout || _gvars.options.layout == null)
+                if (as3hx.Compat.truthy(!useReplayLayout || _gvars.options.layout == null))
                 {
-                    _gvars.options.layout = _gvars.playerUser.gameLayout["sp"];
+                    _gvars.options.layout = Reflect.field(_gvars.playerUser.gameLayout, "sp");
                 }
                 
                 _gvars.songResults.length = 0;
@@ -304,11 +306,11 @@ TABS = [new ReplayHistoryTabSession(this),
                 _gvars.gameMain.switchTo(Main.GAME_PLAY_PANEL);
             }
             
-            if (target == entry.btn_copy)
+            if (as3hx.Compat.truthy(target == entry.btn_copy))
             {
-                var replayString : String = replay.getEncode();
-                var success : Bool = SystemUtil.setClipboard(replayString);
-                if (success)
+                var replayString                       : Dynamic= replay.getEncode();
+                var success                       : Dynamic= SystemUtil.setClipboard(replayString);
+                if (as3hx.Compat.truthy(success))
                 {
                     Alert.add(_lang.string("clipboard_success"), 120, Alert.GREEN);
                 }
@@ -320,7 +322,7 @@ TABS = [new ReplayHistoryTabSession(this),
         }
     }
     
-    private function e_searchChange(e : Event) : Void
+    private function e_searchChange(e                       : Dynamic) : Void
     {
         _search_text = search_field.text.toLowerCase();
         search_field_placeholder.visible = (_search_text.length <= 0);
@@ -332,29 +334,29 @@ TABS = [new ReplayHistoryTabSession(this),
         return _search_text;
     }
     
-    private function e_replayOptions(e : Event) : Void
+    private function e_replayOptions(e                       : Dynamic) : Void
     {
-        var prompt : Prompt = new Prompt(this, 300, 150);
+        var prompt                       : Dynamic= new Prompt(this, 300, 150);
         prompt.content.graphics.moveTo(10, 40);
         prompt.content.graphics.lineTo(prompt.width - 9, 40);
         
         //- Add Text
-        var _text : Text = new Text(prompt, 9, 10, _lang.string("popup_replay_settings_title"), 16);
+        var _text                       : Dynamic= new Text(prompt, 9, 10, _lang.string("popup_replay_settings_title"), 16);
         _text.setAreaParams(prompt.width - 45, 22);
         
         //- Add Close Button
-        var _close_button : BoxIcon = new BoxIcon(prompt, prompt.width - 32, 10, 22, 22, new IconClose(), closePrompt);
+        var _close_button                       : Dynamic= new BoxIcon(prompt, prompt.width - 32, 10, 22, 22, new IconClose(), closePrompt);
         
-        var cy : Float = 47;
+        var cy                       : Dynamic= 47;
         
-        var checkUseReplayLayout : BoxCheck = new BoxCheck(prompt, 10 + 3, cy + 3, e_changeHandler);
+        var checkUseReplayLayout                       : Dynamic= new BoxCheck(prompt, 10 + 3, cy + 3, e_changeHandler);
         checkUseReplayLayout.checked = useReplayLayout;
         new Text(prompt, 30, cy, _lang.string("popup_replay_settings_use_layout"));
         cy += 22;
         
-        var e_changeHandler : Event->Void = function(e : Event) : Void
+        e_changeHandler = function(e                       : Dynamic) : Void
         {
-            if (e.target == checkUseReplayLayout)
+            if (as3hx.Compat.truthy(e.target == checkUseReplayLayout))
             {
                 checkUseReplayLayout.checked = !checkUseReplayLayout.checked;
                 useReplayLayout = checkUseReplayLayout.checked;
@@ -362,9 +364,9 @@ TABS = [new ReplayHistoryTabSession(this),
             }
         }
         
-        var closePrompt : MouseEvent->Void = function(e : MouseEvent) : Void
+        closePrompt = function(e                       : Dynamic) : Void
         {
-            if (prompt.parent)
+            if (as3hx.Compat.truthy(prompt.parent))
             {
                 prompt.parent.removeChild(prompt);
             }
@@ -377,18 +379,20 @@ TABS = [new ReplayHistoryTabSession(this),
 
 class TabButton extends Sprite
 {
-    public var index : Int;
+    private static var e_changeHandler                    : Dynamic;
+    private static var closePrompt                    : Dynamic;
+    public var index                       : Dynamic;
     
-    private var text : Text;
-    private var button : SimpleBoxButton;
-    private var chevron : IconRight;
+    private var text                       : Dynamic;
+    private var button                       : Dynamic;
+    private var chevron                       : Dynamic;
     
-    private var active : Bool = false;
+    private var active                       : Dynamic= false;
     
-    private var hasTopBorder : Bool = false;
+    private var hasTopBorder                       : Dynamic= false;
     
     @:allow(popups.replays)
-    private function new(parent : Sprite, xpos : Float, ypos : Float, index : Int, btnText : String, hasTopBorder : Bool = false)
+    private function new(parent                       : Dynamic, xpos                       : Dynamic, ypos                       : Dynamic, index                       : Dynamic, btnText                       : Dynamic, hasTopBorder                       : Dynamic= false)
     {
         super();
         this.index = index;
@@ -426,16 +430,16 @@ class TabButton extends Sprite
         this.graphics.moveTo(0, 32);
         this.graphics.lineTo(175, 32);
         
-        if (hasTopBorder)
+        if (as3hx.Compat.truthy(hasTopBorder))
         {
             this.graphics.moveTo(0, 0);
             this.graphics.lineTo(175, 0);
         }
     }
     
-    public function setActive(newState : Bool) : Void
+    public function setActive(newState                       : Dynamic) : Void
     {
-        if (this.active != newState)
+        if (as3hx.Compat.truthy(this.active != newState))
         {
             TweenLite.to(this.text, 0.25, {
                         x : ((newState) ? 25 : 15)

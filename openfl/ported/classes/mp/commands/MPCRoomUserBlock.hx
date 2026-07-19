@@ -5,11 +5,11 @@ import classes.mp.room.MPRoom;
 
 class MPCRoomUserBlock implements IMPCommand
 {
-    public var room : MPRoom;
-    public var user : MPUser;
-    public var duration : Float;
+    public var room                             : Dynamic;
+    public var user                             : Dynamic;
+    public var duration                             : Dynamic;
     
-    public function new(room : MPRoom, user : MPUser, duration : Int)
+    public function new(room                             : Dynamic, user                             : Dynamic, duration                             : Dynamic)
     {
         this.room = room;
         this.user = user;

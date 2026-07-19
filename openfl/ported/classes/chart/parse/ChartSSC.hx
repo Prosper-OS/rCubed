@@ -6,51 +6,51 @@ import openfl.utils.ByteArray;
 
 class ChartSSC extends ChartBase
 {
-    private static inline var NOTE_TYPE_4TH : Int = 0;
-    private static inline var NOTE_TYPE_8TH : Int = 1;
-    private static inline var NOTE_TYPE_12TH : Int = 2;
-    private static inline var NOTE_TYPE_16TH : Int = 3;
-    private static inline var NOTE_TYPE_24TH : Int = 4;
-    private static inline var NOTE_TYPE_32ND : Int = 5;
-    private static inline var NOTE_TYPE_48TH : Int = 6;
-    private static inline var NOTE_TYPE_64TH : Int = 7;
-    private static inline var NOTE_TYPE_192ND : Int = 8;
-    private static inline var NOTE_TYPE_INVALID : Int = 9;
+    private static inline var NOTE_TYPE_4TH                             : Dynamic= 0;
+    private static inline var NOTE_TYPE_8TH                             : Dynamic= 1;
+    private static inline var NOTE_TYPE_12TH                             : Dynamic= 2;
+    private static inline var NOTE_TYPE_16TH                             : Dynamic= 3;
+    private static inline var NOTE_TYPE_24TH                             : Dynamic= 4;
+    private static inline var NOTE_TYPE_32ND                             : Dynamic= 5;
+    private static inline var NOTE_TYPE_48TH                             : Dynamic= 6;
+    private static inline var NOTE_TYPE_64TH                             : Dynamic= 7;
+    private static inline var NOTE_TYPE_192ND                             : Dynamic= 8;
+    private static inline var NOTE_TYPE_INVALID                             : Dynamic= 9;
     
-    private static inline var ROWS_PER_MEASURE : Int = 192;
+    private static inline var ROWS_PER_MEASURE                             : Dynamic= 192;
     
-    private var fields_number : Array<Dynamic> = ["offset", 
+    private var fields_number                             : Dynamic= ["offset", 
         "samplestart", 
         "samplelength", 
         "version", 
         "meter"
     ];
     
-    override public function load(fileData : ByteArray, fileName : String = null) : Bool
+    override public function load(fileData                             : Dynamic, fileName                             : Dynamic= null) : Bool
     // Validation
     {
         try
         {
             fileData.position = 0;
             
-            var buff : String = fileData.readUTFBytes(fileData.length).replace(new as3hx.Compat.Regex('\\r\\n|\\r', "gm"), "\n");
+            var buff                             : Dynamic= new as3hx.Compat.Regex('\\r\\n|\\r', "gm").replace(fileData.readUTFBytes(fileData.length), "\n");
             
             // Get All Matches
-            var matches : Array<Dynamic> = [];
-            var sI : Int = -1;
-            var sE : Int = -1;
-            while (true)
+            var matches                             : Dynamic= [];
+            var sI                             : Dynamic= -1;
+            var sE                             : Dynamic= -1;
+            while (as3hx.Compat.truthy(true))
             {
                 sI = buff.indexOf("#", sE);
                 sE = buff.indexOf(";", sI);
                 
-                if (sI >= 0 && sE > sI)
+                if (as3hx.Compat.truthy(sI >= 0 && sE > sI))
                 {
-                    var matchString : String = buff.substring(sI, sE);
+                    var matchString                             : Dynamic= buff.substring(sI, sE);
                     
-                    var split : Int = matchString.indexOf(":");
-                    var key : String = matchString.substring(1, split).toLowerCase();
-                    var value : String = matchString.substr(split + 1);
+                    var split                             : Dynamic= matchString.indexOf(":");
+                    var key                             : Dynamic= matchString.substring(1, split).toLowerCase();
+                    var value                             : Dynamic= matchString.substr(split + 1);
                     
                     matches[matches.length] = [key, value];
                 }
@@ -60,89 +60,89 @@ class ChartSSC extends ChartBase
                 }
             }
             
-            var tmp_array : Array<Dynamic>;
-            var chart : Int = -1;
+            var tmp_array                             : Dynamic= null;
+            var chart                             : Dynamic= -1;
             
             // Build Data Structure
-            for (match in matches)
+            for (match in as3hx.Compat.iter(matches))
             {
-                if (Reflect.field(match, Std.string(0)) == "notedata")
+                if (as3hx.Compat.truthy(as3hx.Compat.field(match, 0) == "notedata"))
                 {
                     chart++;
-                    Reflect.setField(data, "notes", { })[chart];
+                    Reflect.field(data, "notes")[chart] = { };
                     continue;
                 }
                 
-                if (chart > -1)
+                if (as3hx.Compat.truthy(chart > -1))
                 {
-                    var _sw0_ = (Reflect.field(match, Std.string(0)));                    
+                    var _sw0_ = (as3hx.Compat.field(match, 0));                    
 
                     switch (_sw0_)
                     {
                         case "labels", "speeds", "timesignatures":
-                            Reflect.setField(data, "notes", getListValues(Reflect.field(match, Std.string(1)), false))[chart][Reflect.setField(match, Std.string(0), )];
+                            Reflect.setField(Reflect.field(data, "notes")[chart], Std.string(as3hx.Compat.field(match, 0)), getListValues(as3hx.Compat.field(match, 1), false));
                         case "bpms", "stops", "delays", "warps", "tickcounts", "combos", "scrolls":
-                            Reflect.setField(data, "notes", getListValues(Reflect.field(match, Std.string(1)), true))[chart][Reflect.setField(match, Std.string(0), )];
+                            Reflect.setField(Reflect.field(data, "notes")[chart], Std.string(as3hx.Compat.field(match, 0)), getListValues(as3hx.Compat.field(match, 1), true));
                         
                         case "notes":
                             // filter out anything except notes and commas
-                            var notesData : Array<Dynamic> = StringTools.trim(Reflect.field(match, Std.string(1))).split("\n");
+                            var notesData                             : Dynamic= StringTools.trim(as3hx.Compat.field(match, 1)).split("\n");
                             for (i in 0...notesData.length)
                             {
-                                var pos : Int = Lambda.indexOf(notesData[i], "//");
+                                var pos                             : Dynamic= Lambda.indexOf(notesData[i], "//");
                                 
-                                if (pos != -1)
+                                if (as3hx.Compat.truthy(pos != -1))
                                 {
                                     notesData[i] = notesData[i].substr(0, pos);
                                 }
                                 
                                 notesData[i] = StringTools.trim(notesData[i]);
                             }
-                            Reflect.setField(data, "notes", notesData.join(""))[chart]["data"];
+                            Reflect.setField(Reflect.field(data, "notes")[chart], Std.string("data"), notesData.join(""));
                             
                             // count arrows, holds, mines
-                            Reflect.setField(data, "notes", getCharacterCount(Reflect.field(data, "notes")[chart]["data"], "1"))[chart]["arrows"];
-                            Reflect.setField(data, "notes", getCharacterCount(Reflect.field(data, "notes")[chart]["data"], "2"))[chart]["holds"];
-                            Reflect.setField(data, "notes", getCharacterCount(Reflect.field(data, "notes")[chart]["data"], "M"))[chart]["mines"];
+                            Reflect.setField(Reflect.field(data, "notes")[chart], Std.string("arrows"), getCharacterCount(Reflect.field(Reflect.field(data, "notes")[chart], "data"), "1"));
+                            Reflect.setField(Reflect.field(data, "notes")[chart], Std.string("holds"), getCharacterCount(Reflect.field(Reflect.field(data, "notes")[chart], "data"), "2"));
+                            Reflect.setField(Reflect.field(data, "notes")[chart], Std.string("mines"), getCharacterCount(Reflect.field(Reflect.field(data, "notes")[chart], "data"), "M"));
                         default:
-                            if (Lambda.indexOf(fields_number, Reflect.field(match, Std.string(0))) != -1)
+                            if (as3hx.Compat.truthy(Lambda.indexOf(fields_number, as3hx.Compat.field(match, 0)) != -1))
                             {
-                                Reflect.setField(data, "notes", as3hx.Compat.parseFloat(StringTools.trim(Reflect.field(match, Std.string(1)))))[chart][Reflect.setField(match, Std.string(0), )];
+                                Reflect.setField(Reflect.field(data, "notes")[chart], Std.string(as3hx.Compat.field(match, 0)), as3hx.Compat.parseFloat(StringTools.trim(as3hx.Compat.field(match, 1))));
                             }
                             else
                             {
-                                Reflect.setField(data, "notes", StringTools.trim(Reflect.field(match, Std.string(1))))[chart][Reflect.setField(match, Std.string(0), )];
+                                Reflect.setField(Reflect.field(data, "notes")[chart], Std.string(as3hx.Compat.field(match, 0)), StringTools.trim(as3hx.Compat.field(match, 1)));
                             }
                     }
                 }
                 else
                 {
-                    var _sw1_ = (Reflect.field(match, Std.string(0)));                    
+                    var _sw1_ = (as3hx.Compat.field(match, 0));                    
 
                     switch (_sw1_)
                     {
                         case "labels", "speeds", "timesignatures":
-                            tmp_array = getListValues(Reflect.field(match, Std.string(1)), false);
+                            tmp_array = getListValues(as3hx.Compat.field(match, 1), false);
                             
-                            if (tmp_array.length > 0)
+                            if (as3hx.Compat.truthy(tmp_array.length > 0))
                             {
-                                Reflect.setField(data, Std.string(Reflect.field(match, Std.string(0))), tmp_array);
+                                Reflect.setField(data, Std.string(as3hx.Compat.field(match, 0)), tmp_array);
                             }
                         case "bpms", "stops", "delays", "warps", "tickcounts", "combos", "scrolls":
-                            tmp_array = getListValues(Reflect.field(match, Std.string(1)), true);
+                            tmp_array = getListValues(as3hx.Compat.field(match, 1), true);
                             
-                            if (tmp_array.length > 0)
+                            if (as3hx.Compat.truthy(tmp_array.length > 0))
                             {
-                                Reflect.setField(data, Std.string(Reflect.field(match, Std.string(0))), tmp_array);
+                                Reflect.setField(data, Std.string(as3hx.Compat.field(match, 0)), tmp_array);
                             }
                         default:
-                            if (Lambda.indexOf(fields_number, Reflect.field(match, Std.string(0))) != -1)
+                            if (as3hx.Compat.truthy(Lambda.indexOf(fields_number, as3hx.Compat.field(match, 0)) != -1))
                             {
-                                Reflect.setField(data, Std.string(Reflect.field(match, Std.string(0))), as3hx.Compat.parseFloat(StringTools.trim(Reflect.field(match, Std.string(1)))));
+                                Reflect.setField(data, Std.string(as3hx.Compat.field(match, 0)), as3hx.Compat.parseFloat(StringTools.trim(as3hx.Compat.field(match, 1))));
                             }
                             else
                             {
-                                Reflect.setField(data, Std.string(Reflect.field(match, Std.string(0))), StringTools.trim(Reflect.field(match, Std.string(1))));
+                                Reflect.setField(data, Std.string(as3hx.Compat.field(match, 0)), StringTools.trim(as3hx.Compat.field(match, 1)));
                             }
                     }
                 }
@@ -150,26 +150,26 @@ class ChartSSC extends ChartBase
             
             // Finalize Charts
             chart = as3hx.Compat.parseInt(Reflect.field(data, "notes").length - 1);
-            while (chart >= 0)
+            while (as3hx.Compat.truthy(chart >= 0))
             {
-                var notes : Dynamic = Reflect.field(data, "notes")[chart];
+                var notes                             : Dynamic= Reflect.field(data, "notes")[chart];
                 
                 Reflect.setField(notes, "type", standardType(Reflect.field(notes, "stepstype")));  // dance-single, dance-double, dance-couple, dance-solo, etc.  
                 Reflect.setField(notes, "desc", "");  // ???  
-                Reflect.setField(notes, "class", Reflect.field(notes, "difficulty") || "Easy");  // Beginner, Easy, Medium, Hard, Challenge, ...Edit?  
-                Reflect.setField(notes, "class_color", Reflect.field(notes, "difficulty") || "Easy");  // Beginner, Easy, Medium, Hard, Challenge, ...Edit?  
-                Reflect.setField(notes, "difficulty", Reflect.field(notes, "meter") || 1);  // [0-9]+  
-                Reflect.setField(notes, "radar_values", Reflect.field(notes, "radarvalues") || "");  // 0.000,0.000,0.000,0.000,0.000  
+                Reflect.setField(notes, "class", as3hx.Compat.orValue(Reflect.field(notes, "difficulty"), "Easy"));  // Beginner, Easy, Medium, Hard, Challenge, ...Edit?  
+                Reflect.setField(notes, "class_color", as3hx.Compat.orValue(Reflect.field(notes, "difficulty"), "Easy"));  // Beginner, Easy, Medium, Hard, Challenge, ...Edit?  
+                Reflect.setField(notes, "difficulty", as3hx.Compat.orValue(Reflect.field(notes, "meter"), 1));  // [0-9]+  
+                Reflect.setField(notes, "radar_values", as3hx.Compat.orValue(Reflect.field(notes, "radarvalues"), ""));  // 0.000,0.000,0.000,0.000,0.000  
                 Reflect.setField(notes, "time_sec", getChartTimeFast(chart));
                 Reflect.setField(notes, "nps", ((Reflect.field(notes, "arrows") + Reflect.field(notes, "holds")) / (Reflect.field(notes, "time_sec"))));
                 
-                if (Reflect.field(notes, "credit") != null)
+                if (as3hx.Compat.truthy(Reflect.field(notes, "credit") != null))
                 {
                     Reflect.setField(notes, "stepauthor", Reflect.field(notes, "credit"));
                     Reflect.deleteField(notes, "credit");
                 }
                 
-                if (!ignoreValidation && (Lambda.indexOf(validColumnCounts, Reflect.field(notes, "type")) == -1))
+                if (as3hx.Compat.truthy(!ignoreValidation && (Lambda.indexOf(validColumnCounts, Reflect.field(notes, "type")) == -1)))
                 {
                     trace("SSC: Invalid: [", Reflect.field(notes, "stepstype"), Reflect.field(notes, "type"), "]");
                     Reflect.field(data, "notes").removeAt(chart);
@@ -193,25 +193,25 @@ class ChartSSC extends ChartBase
         
         
         
-        if (Reflect.field(data, "music") == null || Reflect.field(data, "music") == "")
+        if (as3hx.Compat.truthy(Reflect.field(data, "music") == null || Reflect.field(data, "music") == ""))
         {
             Reflect.setField(data, "music", fileName.substr(0, fileName.lastIndexOf(".")) + ".mp3");
         }
         
-        if (Reflect.field(data, "title") == null || Reflect.field(data, "title") == "")
+        if (as3hx.Compat.truthy(Reflect.field(data, "title") == null || Reflect.field(data, "title") == ""))
         {
             Reflect.setField(data, "title", fileName);
         }
         
-        var audioExt : String = (Reflect.field(data, "music") || "").substr(-3).toLowerCase();
-        if (!ignoreValidation && (audioExt != "mp3"))
+        var audioExt                           : Dynamic= Std.string(as3hx.Compat.orValue(Reflect.field(data, "music"), "")).substr(-3).toLowerCase();
+        if (as3hx.Compat.truthy(!ignoreValidation && (audioExt != "mp3")))
         {
             trace("SSC: Invalid: [", audioExt, "]");
             return false;
         }
         
         // No valid charts found.
-        if (Reflect.field(data, "notes").length <= 0)
+        if (as3hx.Compat.truthy(Reflect.field(data, "notes").length <= 0))
         {
             trace("SSC: No Charts");
             return false;
@@ -224,13 +224,13 @@ class ChartSSC extends ChartBase
     
     override public function parse() : Void
     {
-        if (!loaded || this.parsed)
+        if (as3hx.Compat.truthy(!loaded || this.parsed))
         {
             return;
         }
         
         // Fully Parse Charts
-        for (chartData/* AS3HX WARNING could not determine type for var: chartData exp: EArray(EIdent(data),EConst(CString(notes))) type: ByteArray */ in Reflect.field(data, "notes"))
+        for (chartData/* AS3HX WARNING could not determine type for var: chartData exp: EArray(EIdent(data),EConst(CString(notes))) type: ByteArray */ in as3hx.Compat.iter(Reflect.field(data, "notes")))
         {
             this.charts[this.charts.length] = parseNoteData(chartData);
         }
@@ -244,90 +244,90 @@ class ChartSSC extends ChartBase
      * @param chartData
      * @return
      */
-    private function parseNoteData(chartData : Dynamic) : Dynamic
-    //var t:Number = getTimer();
+    private function parseNoteData(chartData                             : Dynamic) : Dynamic
+    //var t                            : Dynamic= getTimer();
     {
         
         
-        var columnCount : Int = Reflect.field(chartData, "type");
-        var columnMap : Array<Dynamic> = Reflect.field(COLUMNS, Std.string(Reflect.field(chartData, "type"))) || [];
+        var columnCount                             : Dynamic= Reflect.field(chartData, "type");
+        var columnMap                           : Dynamic= as3hx.Compat.orValue(as3hx.Compat.field(COLUMNS, Reflect.field(chartData, "type")), []);
         
-        var offset : Float = Reflect.field(data, "offset") * -1000;
+        var offset                             : Dynamic= Reflect.field(data, "offset") * -1000;
         
-        var out : Dynamic = {
+        var out                             : Dynamic= {
             data : chartData,
             columns : columnCount
         };
         
-        var notes : Array<Dynamic> = [];
-        var holds : Array<Dynamic> = [];
-        var mines : Array<Dynamic> = [];
+        var notes                             : Dynamic= [];
+        var holds                             : Dynamic= [];
+        var mines                             : Dynamic= [];
         
-        var pre_notes : Array<ChartSSCChartObject> = [];
-        var pre_mines : Array<ChartSSCChartObject> = [];
-        var pre_holds : Dynamic = { };
+        var pre_notes                             : Dynamic= [];
+        var pre_mines                             : Dynamic= [];
+        var pre_holds                             : Dynamic= { };
         
-        var currentBeat : Float = 0;
-        var currentTime : Float = 0;
+        var currentBeat                             : Dynamic= 0;
+        var currentTime                             : Dynamic= 0;
         
-        var measureArray : Array<Dynamic> = Reflect.field(chartData, "data").split(",");
-        var measureCount : Int = measureArray.length;
-        var notebarOffset : Int = 0;
-        var rowValue : Int = 0;
+        var measureArray                             : Dynamic= Reflect.field(chartData, "data").split(",");
+        var measureCount                             : Dynamic= measureArray.length;
+        var notebarOffset                             : Dynamic= 0;
+        var rowValue                             : Dynamic= 0;
         
-        var row : Int;
-        var rowUpdates : Int;
+        var row                             : Dynamic= null;
+        var rowUpdates                             : Dynamic= null;
         
-        var msBeatIncrement : Float;
-        var lastBPMIndex : Int = 0;
-        var lastStopIndex : Int = 0;
-        var lastStop : Array<Dynamic>;
+        var msBeatIncrement                             : Dynamic= null;
+        var lastBPMIndex                             : Dynamic= 0;
+        var lastStopIndex                             : Dynamic= 0;
+        var lastStop                             : Dynamic= null;
         
-        var warpStart : Float = -1;
-        var isWarping : Bool = false;
+        var warpStart                             : Dynamic= -1;
+        var isWarping                             : Dynamic= false;
         
         // Setup BPMs
-        var bpms : Array<Dynamic> = Reflect.field(chartData, "bpms") || this.data["bpms"] || [[0, 60]];
+        var bpms                         : Dynamic= as3hx.Compat.orValue(Reflect.field(chartData, "bpms"), as3hx.Compat.orValue(Reflect.field(this.data, "bpms"), [[0, 60]]));
         bpms.sort(keyPairSort);
         bpms[0][0] = 0;  // First BPM starts at beat 0.  
         
         // Setup Stops
-        var stops : Array<Dynamic> = Reflect.field(chartData, "stops") || this.data["stops"] || [];
+        var stops                         : Dynamic= as3hx.Compat.orValue(Reflect.field(chartData, "stops"), as3hx.Compat.orValue(Reflect.field(this.data, "stops"), []));
         stops.sort(keyPairSort);
         
         // Setup Warps
-        var warps : Array<Dynamic> = Reflect.field(chartData, "warps") || this.data["warps"] || [];
+        var warps                         : Dynamic= as3hx.Compat.orValue(Reflect.field(chartData, "warps"), as3hx.Compat.orValue(Reflect.field(this.data, "warps"), []));
         warps.sort(keyPairSort);
         
         for (currentMeasure in 0...measureCount)
         {
             rowValue = as3hx.Compat.parseInt(currentMeasure * ROWS_PER_MEASURE);
             
-            var measure : String = measureArray[currentMeasure];
+            var measure                             : Dynamic= measureArray[currentMeasure];
             notebarOffset = 0;
             
-            var barsPerMeasure : Int = as3hx.Compat.parseInt(measure.length / columnCount);
-            var measureBeat : Int = as3hx.Compat.parseInt(currentMeasure * 4);
+            var barsPerMeasure                             : Dynamic= as3hx.Compat.parseInt(measure.length / columnCount);
+            var measureBeat                             : Dynamic= as3hx.Compat.parseInt(currentMeasure * 4);
             
             for (currentNoteBar in 0...barsPerMeasure) {
 currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
                 
                 lastBPMIndex = bpm_at_beat_index(bpms, currentBeat, lastBPMIndex);
-                var currentBPM : Float = bpms[lastBPMIndex][1];
+                var currentBPM                             : Dynamic= bpms[lastBPMIndex][1];
                 
                 // Stops
-                if (stops.length > 0 && lastStopIndex < stops.length)
+                if (as3hx.Compat.truthy(stops.length > 0 && lastStopIndex < stops.length))
                 {
-                    if (lastStop == null)
+                    if (as3hx.Compat.truthy(lastStop == null))
                     {
                         lastStop = stops[0];
                     }
                     
-                    while (lastStop[0] <= currentBeat)
+                    while (as3hx.Compat.truthy(as3hx.Compat.parseFloat(lastStop[0]) <= as3hx.Compat.parseFloat(currentBeat)))
                     {
                         currentTime += lastStop[1] * 1000;
                         lastStopIndex++;
-                        if (lastStopIndex >= stops.length)
+                        if (as3hx.Compat.truthy(lastStopIndex >= stops.length))
                         {
                             break;
                         }
@@ -337,46 +337,46 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
                 }
                 
                 // Start Warp
-                if (currentBPM < 0 && !isWarping)
+                if (as3hx.Compat.truthy(currentBPM < 0 && !isWarping))
                 {
                     warpStart = currentTime;
                     isWarping = true;
                 }
                 
                 // No Notes during Warps
-                if (!isWarping)
+                if (as3hx.Compat.truthy(!isWarping))
                 {
                     for (column in 0...columnCount)
                     {
-                        var noteStr : String = measure.charAt(notebarOffset + column);
+                        var noteStr                             : Dynamic= measure.charAt(notebarOffset + column);
                         
-                        if (noteStr == "0")
+                        if (as3hx.Compat.truthy(noteStr == "0"))
                         {
                             continue;
                         }
                         
-                        if (noteStr == "1" || noteStr == "2" || noteStr == "4")
+                        if (as3hx.Compat.truthy(noteStr == "1" || noteStr == "2" || noteStr == "4"))
                         {
-                            if (noteStr == "2" || noteStr == "4")
+                            if (as3hx.Compat.truthy(noteStr == "2" || noteStr == "4"))
                             {
                                 Reflect.setField(pre_holds, Std.string(column), pre_notes.length);
                             }
                             
-                            var noteColor : String = noteTypeToColor(getNoteType(currentNoteBar * (ROWS_PER_MEASURE / barsPerMeasure)));
+                            var noteColor                             : Dynamic= noteTypeToColor(getNoteType(currentNoteBar * (ROWS_PER_MEASURE / barsPerMeasure)));
                             
                             pre_notes[pre_notes.length] = new ChartSSCChartObject(as3hx.Compat.parseInt(currentTime), columnMap[column], noteColor);
                         }
-                        else if (noteStr == "3")
+                        else if (as3hx.Compat.truthy(noteStr == "3"))
                         {
-                            if (Reflect.field(pre_holds, Std.string(column)) != null)
+                            if (as3hx.Compat.truthy(as3hx.Compat.field(pre_holds, column) != null))
                             {
-                                var holdStart : Int = Reflect.field(pre_holds, Std.string(column));
-                                var holdStartData : ChartSSCChartObject = pre_notes[holdStart];
+                                var holdStart                             : Dynamic= as3hx.Compat.field(pre_holds, column);
+                                var holdStartData                             : Dynamic= pre_notes[holdStart];
                                 pre_notes[holdStart].tail = (currentTime - holdStartData.time);
                                 Reflect.deleteField(pre_holds, Std.string(column));
                             }
                         }
-                        else if (noteStr == "M")
+                        else if (as3hx.Compat.truthy(noteStr == "M"))
                         {
                             pre_mines[pre_mines.length] = new ChartSSCChartObject(as3hx.Compat.parseInt(currentTime), columnMap[column]);
                         }
@@ -397,7 +397,7 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
                     currentBPM = bpms[lastBPMIndex][1];
                     
                     // Start Warp
-                    if (currentBPM < 0 && !isWarping)
+                    if (as3hx.Compat.truthy(currentBPM < 0 && !isWarping))
                     {
                         warpStart = currentTime;
                         isWarping = true;
@@ -409,9 +409,9 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
                 }
                 
                 // End Warp
-                if (isWarping)
+                if (as3hx.Compat.truthy(isWarping))
                 {
-                    if (as3hx.Compat.parseInt(currentTime) >= as3hx.Compat.parseInt(warpStart)) {
+                    if (as3hx.Compat.truthy(as3hx.Compat.parseInt(currentTime) >= as3hx.Compat.parseInt(warpStart))) {
 {
                             warpStart = -1;
                             isWarping = false;
@@ -422,8 +422,8 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
         }
         
         // finalize notes
-        var i : Int;
-        var elm : ChartSSCChartObject;
+        var i                             : Dynamic= null;
+        var elm                             : Dynamic= null;
         for (i in 0...pre_notes.length)
         {
             elm = pre_notes[i];
@@ -432,7 +432,7 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
             
             notes[notes.length] = [elm.time, elm.dir, elm.color];
             
-            if (!Math.isNaN(elm.tail))
+            if (as3hx.Compat.truthy(!Math.isNaN(elm.tail)))
             {
                 holds[holds.length] = [elm.time, elm.dir, elm.color, (as3hx.Compat.parseInt(elm.tail) / 1000)];
             }
@@ -449,9 +449,8 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
         }
         
         // sort data array so time is in order
-        notes.sortOn("0", Array.NUMERIC);
-        mines.sortOn("0", Array.NUMERIC);
-        
+        as3hx.Compat.sortOn(notes, "0", as3hx.Compat.ARRAY_NUMERIC);
+        as3hx.Compat.sortOn(mines, "0", as3hx.Compat.ARRAY_NUMERIC);
         Reflect.setField(out, "notes", notes);
         Reflect.setField(out, "holds", holds);
         Reflect.setField(out, "mines", mines);
@@ -475,43 +474,43 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
      * @param chart_index
      * @return
      */
-    override public function getChartTimeFast(chart_index : Dynamic = null) : Float
+    override public function getChartTimeFast(chart_index                             : Dynamic= null) : Float
     // Cached Time
     {
         
-        if (Reflect.field(data, "notes")[chart_index]["time_sec"] != null)
+        if (as3hx.Compat.truthy(Reflect.field(Reflect.field(data, "notes")[as3hx.Compat.parseInt(chart_index)], "time_sec") != null))
         {
-            return Reflect.field(data, "notes")[chart_index]["time_sec"];
+            return Reflect.field(Reflect.field(data, "notes")[as3hx.Compat.parseInt(chart_index)], "time_sec");
         }
         
         // Calculate
-        //var t:Number = getTimer();
+        //var t                            : Dynamic= getTimer();
         
-        var chartData : Dynamic = Reflect.field(data, "notes")[chart_index];
+        var chartData                             : Dynamic= Reflect.field(data, "notes")[as3hx.Compat.parseInt(chart_index)];
         
-        var currentBeat : Float = 0;
-        var currentTime : Float = 0;
-        var currentBPM : Float;
+        var currentBeat                             : Dynamic= 0;
+        var currentTime                             : Dynamic= 0;
+        var currentBPM                             : Dynamic= null;
         
-        var measureCount : Int = as3hx.Compat.parseInt(getCharacterCount(Reflect.field(chartData, "data"), ",") + 1);
-        var maxRows : Int = as3hx.Compat.parseInt(ROWS_PER_MEASURE * measureCount);
+        var measureCount                             : Dynamic= as3hx.Compat.parseInt(getCharacterCount(Reflect.field(chartData, "data"), ",") + 1);
+        var maxRows                             : Dynamic= as3hx.Compat.parseInt(ROWS_PER_MEASURE * measureCount);
         
-        var msBeatIncrement : Float;
-        var lastBPMIndex : Int = 0;
+        var msBeatIncrement                             : Dynamic= null;
+        var lastBPMIndex                             : Dynamic= 0;
         
-        var timeSeq : Float = (4 / ROWS_PER_MEASURE);
+        var timeSeq                             : Dynamic= (4 / ROWS_PER_MEASURE);
         
         // Setup BPMs
-        var bpms : Array<Dynamic> = Reflect.field(chartData, "bpms") || this.data["bpms"] || [[0, 60]];
+        var bpms                         : Dynamic= as3hx.Compat.orValue(Reflect.field(chartData, "bpms"), as3hx.Compat.orValue(Reflect.field(this.data, "bpms"), [[0, 60]]));
         bpms.sort(keyPairSort);
         bpms[0][0] = 0;  // First BPM starts at beat 0.  
         
         // Setup Stops
-        var stops : Array<Dynamic> = Reflect.field(chartData, "stops") || this.data["stops"] || [];
+        var stops                         : Dynamic= as3hx.Compat.orValue(Reflect.field(chartData, "stops"), as3hx.Compat.orValue(Reflect.field(this.data, "stops"), []));
         stops.sort(keyPairSort);
         
         // Setup Warps
-        var warps : Array<Dynamic> = Reflect.field(chartData, "warps") || this.data["warps"] || [];
+        var warps                         : Dynamic= as3hx.Compat.orValue(Reflect.field(chartData, "warps"), as3hx.Compat.orValue(Reflect.field(this.data, "warps"), []));
         warps.sort(keyPairSort);
         
         // BPMs need to be handled on every 192nd, skipping any row will result in
@@ -528,10 +527,10 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
         }
         
         // Stops
-        if (stops.length > 0)
+        if (as3hx.Compat.truthy(stops.length > 0))
         {
-            var i : Int = as3hx.Compat.parseInt(stops.length - 1);
-            while (i >= 0)
+            var i                             : Dynamic= as3hx.Compat.parseInt(stops.length - 1);
+            while (as3hx.Compat.truthy(i >= 0))
             {
                 currentTime += stops[i][1] * 1000;
                 i--;
@@ -539,7 +538,7 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
         }
         
         // Offset
-        currentTime += ((Reflect.field(chartData, "offset") || Reflect.field(data, "offset") || 0) * -1000);
+        currentTime += (as3hx.Compat.parseFloat(as3hx.Compat.orValue(Reflect.field(chartData, "offset"), as3hx.Compat.orValue(Reflect.field(data, "offset"), 0))) * -1000);
         
         // MS -> Seconds
         currentTime /= 1000;
@@ -555,7 +554,7 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
      * @param type
      * @return
      */
-    private function standardType(type : String) : Int
+    private function standardType(type                             : Dynamic) : Int
     {
         switch (type)
         {
@@ -580,37 +579,37 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
      * @param noteIndex
      * @return
      */
-    private function getNoteType(noteIndex : Int) : Int
+    private function getNoteType(noteIndex                             : Dynamic) : Int
     {
-        if (noteIndex % (ROWS_PER_MEASURE / 4) == 0)
+        if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 4) == 0))
         {
             return NOTE_TYPE_4TH;
         }
-        else if (noteIndex % (ROWS_PER_MEASURE / 8) == 0)
+        else if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 8) == 0))
         {
             return NOTE_TYPE_8TH;
         }
-        else if (noteIndex % (ROWS_PER_MEASURE / 12) == 0)
+        else if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 12) == 0))
         {
             return NOTE_TYPE_12TH;
         }
-        else if (noteIndex % (ROWS_PER_MEASURE / 16) == 0)
+        else if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 16) == 0))
         {
             return NOTE_TYPE_16TH;
         }
-        else if (noteIndex % (ROWS_PER_MEASURE / 24) == 0)
+        else if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 24) == 0))
         {
             return NOTE_TYPE_24TH;
         }
-        else if (noteIndex % (ROWS_PER_MEASURE / 32) == 0)
+        else if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 32) == 0))
         {
             return NOTE_TYPE_32ND;
         }
-        else if (noteIndex % (ROWS_PER_MEASURE / 48) == 0)
+        else if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 48) == 0))
         {
             return NOTE_TYPE_48TH;
         }
-        else if (noteIndex % (ROWS_PER_MEASURE / 64) == 0)
+        else if (as3hx.Compat.truthy(noteIndex % (ROWS_PER_MEASURE / 64) == 0))
         {
             return NOTE_TYPE_64TH;
         }
@@ -623,7 +622,7 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
     /**
      * Converts a note type into a given color.
      */
-    private function noteTypeToColor(noteType : Int) : String
+    private function noteTypeToColor(noteType                             : Dynamic) : String
     {
         switch (noteType)
         {
@@ -655,13 +654,13 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
     /**
      * Sorts an array based on the first item.
      */
-    private function keyPairSort(a : Array<Dynamic>, b : Array<Dynamic>) : Int
+    private function keyPairSort(a                             : Dynamic, b                             : Dynamic) : Int
     {
-        if (a[0] < b[0])
+        if (as3hx.Compat.truthy(a[0] < b[0]))
         {
             return -1;
         }
-        if (a[0] > b[0])
+        if (as3hx.Compat.truthy(a[0] > b[0]))
         {
             return 1;
         }
@@ -676,16 +675,16 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
      * @param startIndex
      * @return
      */
-    private function bpm_at_beat_index(bpms : Array<Dynamic>, currentBeat : Float, startIndex : Int = 0) : Int
+    private function bpm_at_beat_index(bpms                             : Dynamic, currentBeat                             : Dynamic, startIndex                             : Dynamic= 0) : Int
     {
         currentBeat = Math.round(currentBeat * 48);  // round to nearest row  
         
-        var bpm : Int = startIndex;
-        var len : Int = bpms.length;
+        var bpm                             : Dynamic= startIndex;
+        var len                             : Dynamic= bpms.length;
         
         for (i in startIndex...len)
         {
-            if (Math.round(bpms[i][0]) * 48 > currentBeat)
+            if (as3hx.Compat.truthy(Math.round(as3hx.Compat.parseFloat(bpms[i][0])) * 48 > currentBeat))
             {
                 break;
             }
@@ -701,38 +700,38 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
      * @param isNumber Parse value as a number.
      * @return
      */
-    private function getListValues(input : String, isNumber : Bool = false) : Array<Dynamic>
+    private function getListValues(input                             : Dynamic, isNumber                             : Dynamic= false) : Array<Dynamic>
     {
-        var tmp_array : Array<Dynamic> = [];
+        var tmp_array                             : Dynamic= [];
         input = StringTools.trim(input);
         
-        if (input.length == 0)
+        if (as3hx.Compat.truthy(input.length == 0))
         {
             return tmp_array;
         }
         
-        var arrayValues : Array<Dynamic> = input.split(",");
+        var arrayValues                             : Dynamic= input.split(",");
         
-        if (arrayValues.length == 0)
+        if (as3hx.Compat.truthy(arrayValues.length == 0))
         {
             return tmp_array;
         }
         
-        var splitIndex : Int;
-        for (arrayList in arrayValues)
+        var splitIndex                             : Dynamic= null;
+        for (arrayList in as3hx.Compat.iter(arrayValues))
         {
             arrayList = StringTools.trim(arrayList);
             splitIndex = arrayList.indexOf("=");
             
-            if (splitIndex >= 1)
+            if (as3hx.Compat.truthy(splitIndex >= 1))
             {
-                if (isNumber)
+                if (as3hx.Compat.truthy(isNumber))
                 {
                     tmp_array[tmp_array.length] = [as3hx.Compat.parseFloat(arrayList.substr(0, splitIndex)), as3hx.Compat.parseFloat(arrayList.substr(splitIndex + 1))];
                 }
                 else
                 {
-                    tmp_array[tmp_array.length] = [as3hx.Compat.parseFloat(arrayList.substr(0, splitIndex)), arrayList.substr(splitIndex + 1)];
+                    tmp_array[tmp_array.length] = ([as3hx.Compat.parseFloat(arrayList.substr(0, splitIndex)), arrayList.substr(splitIndex + 1)] : Array<Dynamic>);
                 }
             }
         }
@@ -746,12 +745,12 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
      * @param pattern
      * @return
      */
-    private function getCharacterCount(input : String, pattern : String) : Float
+    private function getCharacterCount(input                             : Dynamic, pattern                             : Dynamic) : Float
     {
-        var count : Float = 0;
-        var index : Int = -1;
+        var count                             : Dynamic= 0;
+        var index                             : Dynamic= -1;
         
-        while ((index = input.indexOf(pattern, index + 1)) >= 0)
+        while (as3hx.Compat.truthy((index = input.indexOf(pattern, index + 1)) >= 0))
         {
             count++;
         }
@@ -768,13 +767,13 @@ currentBeat = measureBeat + ((currentNoteBar / barsPerMeasure) * 4);
 
 class ChartSSCChartObject
 {
-    public var time : Float;
-    public var color : String;
-    public var dir : String;
-    public var tail : Float;
+    public var time                             : Dynamic;
+    public var color                             : Dynamic;
+    public var dir                             : Dynamic;
+    public var tail                             : Dynamic;
     
     @:allow(classes.chart.parse)
-    private function new(time : Float, dir : String, color : String = null)
+    private function new(time                             : Dynamic, dir                             : Dynamic, color                             : Dynamic= null)
     {
         this.time = time;
         this.dir = dir;

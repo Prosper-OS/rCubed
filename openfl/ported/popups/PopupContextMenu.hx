@@ -11,14 +11,14 @@ import menu.MenuPanel;
 
 class PopupContextMenu extends MenuPanel
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
     //- Background
-    private var box : Box;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
     }
@@ -28,7 +28,7 @@ class PopupContextMenu extends MenuPanel
         bmp = SpriteUtil.getBitmapSprite(stage);
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, (Main.GAME_WIDTH - 230) / 2, 20, false, false);
+        var bgbox                       : Dynamic= new Box(this, (Main.GAME_WIDTH - 230) / 2, 20, false, false);
         bgbox.setSize(230, Main.GAME_HEIGHT - 40);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -38,9 +38,9 @@ class PopupContextMenu extends MenuPanel
         box.setSize(230, Main.GAME_HEIGHT - 40);
         box.activeAlpha = 0.4;
         
-        var cButton : BoxButton;
-        var cButtonHeight : Float = 39;
-        var yOff : Float = 5;
+        var cButton                       : Dynamic= null;
+        var cButtonHeight                       : Dynamic= 39;
+        var yOff                       : Dynamic= 5;
         
         //- Reload Engine
         cButton = new BoxButton(box, 5, yOff, box.width - 10, cButtonHeight, _lang.string("popup_cm_reload_engine_user"), 12, clickHandler);
@@ -76,24 +76,24 @@ class PopupContextMenu extends MenuPanel
         box = null;
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
         removePopup();
         
         //- Close
-        if (e.target.action == "fullscreen")
+        if (as3hx.Compat.truthy(e.target.action == "fullscreen"))
         {
             _gvars.toggleFullScreen();
         }
-        else if (e.target.action == "screenshot_local")
+        else if (as3hx.Compat.truthy(e.target.action == "screenshot_local"))
         {
             _gvars.takeScreenShot();
         }
-        else if (e.target.action == "reload_engine")
+        else if (as3hx.Compat.truthy(e.target.action == "reload_engine"))
         {
             _gvars.reloadEngineData();
         }
-        else if (e.target.action == "switch_profile")
+        else if (as3hx.Compat.truthy(e.target.action == "switch_profile"))
         {
             _gvars.switchUserAccount();
         }

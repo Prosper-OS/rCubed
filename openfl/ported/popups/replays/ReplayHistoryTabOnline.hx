@@ -15,27 +15,27 @@ import openfl.events.MouseEvent;
 
 class ReplayHistoryTabOnline extends ReplayHistoryTabBase
 {
-    public var lockUI(never, set) : Bool;
+    public var lockUI(never, set)                       : Dynamic;
 
-    private static var INITIAL_LOAD : Bool = false;
-    private static var REPLAYS : Array<Replay>;
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private static var INITIAL_LOAD                       : Dynamic= false;
+    private static var REPLAYS                       : Dynamic;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var _http : WebRequest;
-    private var btn_refresh : BoxButton;
+    private var _http                       : Dynamic;
+    private var btn_refresh                       : Dynamic;
     
-    private var uiLock : Sprite;
-    private var uiLockBG : Bitmap;
-    private var loadingCancelButton : BoxButton;
+    private var uiLock                       : Dynamic;
+    private var uiLockBG                       : Dynamic;
+    private var loadingCancelButton                       : Dynamic;
     
-    public function new(replayWindow : ReplayHistoryWindow)
+    public function new(replayWindow                       : Dynamic)
     {
         super(replayWindow);
         
         // UI Lock
         uiLock = new Sprite();
-        var lockUIText : Text = new Text(uiLock, 0, 200, _lang.string("replay_loading_online"), 24);
+        var lockUIText                       : Dynamic= new Text(uiLock, 0, 200, _lang.string("replay_loading_online"), 24);
         lockUIText.setAreaParams(780, 30, "center");
         
         loadingCancelButton = new BoxButton(uiLock, 390 - 40, 440, 80, 30, _lang.string("menu_cancel"), 12, clickHandler);
@@ -50,14 +50,14 @@ class ReplayHistoryTabOnline extends ReplayHistoryTabBase
     // Add UI Elements
     {
         
-        if (btn_refresh == null)
+        if (as3hx.Compat.truthy(btn_refresh == null))
         {
             btn_refresh = new BoxButton(null, 5, 410, 162, 29, _lang.string("menu_refresh"), 12, loadOnlineReplays);
         }
         parent.addChild(btn_refresh);
         
         // Initial Load
-        if (!INITIAL_LOAD)
+        if (as3hx.Compat.truthy(!INITIAL_LOAD))
         {
             loadOnlineReplays();
             INITIAL_LOAD = true;
@@ -71,15 +71,15 @@ class ReplayHistoryTabOnline extends ReplayHistoryTabBase
     
     override public function setValues() : Void
     {
-        var render_list : Array<Dynamic> = [];
-        for (r in REPLAYS)
+        var render_list                       : Dynamic= [];
+        for (r in as3hx.Compat.iter(REPLAYS))
         {
-            if (r.song == null)
+            if (as3hx.Compat.truthy(r.song == null))
             {
                 continue;
             }
             
-            if (parent.searchText.length >= 1 && r.song.name.toLowerCase().indexOf(parent.searchText) == -1)
+            if (as3hx.Compat.truthy(parent.searchText.length >= 1 && r.song.name.toLowerCase().indexOf(parent.searchText) == -1))
             {
                 continue;
             }
@@ -90,7 +90,7 @@ class ReplayHistoryTabOnline extends ReplayHistoryTabBase
         parent.updateScrollPane();
     }
     
-    private function loadOnlineReplays(e : MouseEvent = null) : Void
+    private function loadOnlineReplays(e                       : Dynamic= null) : Void
     {
         Logger.info(this, "Loading Online Replays");
         lockUI = true;
@@ -103,24 +103,24 @@ class ReplayHistoryTabOnline extends ReplayHistoryTabBase
                 });
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == loadingCancelButton)
+        if (as3hx.Compat.truthy(e.target == loadingCancelButton))
         {
             webLoadComplete(true);
         }
     }
     
-    private function e_webLoad(e : Event) : Void
+    private function e_webLoad(e                       : Dynamic) : Void
     {
-        var data : String = e.target.data;
+        var data                       : Dynamic= e.target.data;
         
         try
         {
-            var json : Dynamic = haxe.Json.parse(data);
-            for (replay/* AS3HX WARNING could not determine type for var: replay exp: EIdent(json) type: Dynamic */ in json)
+            var json                       : Dynamic= haxe.Json.parse(data);
+            for (replay/* AS3HX WARNING could not determine type for var: replay exp: EIdent(json) type: Dynamic */ in as3hx.Compat.iter(json))
             {
-                var r : Replay = new Replay(Reflect.field(replay, "replayid"));
+                var r                       : Dynamic= new Replay(Reflect.field(replay, "replayid"));
                 r.parseReplay(replay, false);
                 r.loadSongInfo();
                 r.user = _gvars.playerUser;
@@ -134,15 +134,15 @@ class ReplayHistoryTabOnline extends ReplayHistoryTabBase
         webLoadComplete();
     }
     
-    private function e_webError(e : Event) : Void
+    private function e_webError(e                       : Dynamic) : Void
     {
         Alert.add(_lang.string("replay_error_retrieving_online"), 120, Alert.RED);
         webLoadComplete();
     }
     
-    private function webLoadComplete(cancelled : Bool = false) : Void
+    private function webLoadComplete(cancelled                       : Dynamic= false) : Void
     {
-        if (cancelled)
+        if (as3hx.Compat.truthy(cancelled))
         {
             _http.loader.close();
         }
@@ -152,15 +152,15 @@ class ReplayHistoryTabOnline extends ReplayHistoryTabBase
         setValues();
     }
     
-    private function set_lockUI(val : Bool) : Bool
+    private function set_lockUI(val                       : Dynamic) : Bool
     {
-        if (val)
+        if (as3hx.Compat.truthy(val))
         {
             uiLockBG = SpriteUtil.getBitmapSprite(_gvars.gameMain.stage, 0.3);
             uiLock.addChildAt(uiLockBG, 0);
             parent.addChild(uiLock);
         }
-        else if (parent.contains(uiLock))
+        else if (as3hx.Compat.truthy(parent.contains(uiLock)))
         {
             uiLock.removeChildAt(0);
             uiLockBG = null;

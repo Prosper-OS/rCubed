@@ -8,13 +8,13 @@ import openfl.geom.ColorTransform;
 
 class HiResGameReceptor extends GameReceptor
 {
-    private var _hiResNote : Sprite;
-    private var _hitNote : Sprite;
-    private var _hitColorTransform : ColorTransform = new ColorTransform();
-    private var _animationFrame : Int = 0;
-    private var _animationActive : Bool = false;
+    private var _hiResNote                              : Dynamic;
+    private var _hitNote                              : Dynamic;
+    private var _hitColorTransform                              : Dynamic= new ColorTransform();
+    private var _animationFrame                              : Dynamic= 0;
+    private var _animationActive                              : Dynamic= false;
     
-    public function new(dir : String, receptorWidth : Float = 64, receptorHeight : Float = 64)
+    public function new(dir                              : Dynamic, receptorWidth                              : Dynamic= 64, receptorHeight                              : Dynamic= 64)
     {
         super(dir, transparentBitmap());
         
@@ -36,7 +36,7 @@ class HiResGameReceptor extends GameReceptor
         addChild(_hitNote);
     }
     
-    override public function playAnimation(color : Int) : Void
+    override public function playAnimation(color                              : Dynamic) : Void
     {
         _hiResNote.scaleX = _hiResNote.scaleY = 1.18;
         _hitNote.scaleX = _hitNote.scaleY = 1.18;
@@ -46,26 +46,26 @@ class HiResGameReceptor extends GameReceptor
         _hitNote.transform.colorTransform = _hitColorTransform;
         _animationFrame = 0;
         
-        if (!_animationActive)
+        if (as3hx.Compat.truthy(!_animationActive))
         {
             _animationActive = true;
             addEventListener(Event.ENTER_FRAME, updateAnimation, false, 0, true);
         }
     }
     
-    private function updateAnimation(e : Event) : Void
+    private function updateAnimation(e                              : Dynamic) : Void
     {
         _animationFrame++;
         
-        var settle : Float = Math.min(1, _animationFrame / Math.max(1, Math.round(3 / animationSpeed)));
-        var scale : Float = 1.18 - (0.18 * settle);
+        var settle                              : Dynamic= Math.min(1, _animationFrame / Math.max(1, Math.round(3 / animationSpeed)));
+        var scale                              : Dynamic= 1.18 - (0.18 * settle);
         _hiResNote.scaleX = _hiResNote.scaleY = scale;
         _hitNote.scaleX = _hitNote.scaleY = scale;
         
-        var fade : Float = Math.min(1, _animationFrame / Math.max(1, Math.round(13 / animationSpeed)));
+        var fade                              : Dynamic= Math.min(1, _animationFrame / Math.max(1, Math.round(13 / animationSpeed)));
         _hitNote.alpha = 0.96 * (1 - fade);
         
-        if (fade >= 1)
+        if (as3hx.Compat.truthy(fade >= 1))
         {
             _animationActive = false;
             removeEventListener(Event.ENTER_FRAME, updateAnimation);
@@ -75,9 +75,9 @@ class HiResGameReceptor extends GameReceptor
         }
     }
     
-    public function playScoreAnimation(score : Int, configuredColor : Int) : Void
+    public function playScoreAnimation(score                              : Dynamic, configuredColor                              : Dynamic) : Void
     {
-        var color : Int = configuredColor;
+        var color                              : Dynamic= configuredColor;
         switch (score)
         {
             case 100:
@@ -100,11 +100,11 @@ class HiResGameReceptor extends GameReceptor
     {
         removeEventListener(Event.ENTER_FRAME, updateAnimation);
         
-        if (_hiResNote != null && contains(_hiResNote))
+        if (as3hx.Compat.truthy(_hiResNote != null && contains(_hiResNote)))
         {
             removeChild(_hiResNote);
         }
-        if (_hitNote != null && contains(_hitNote))
+        if (as3hx.Compat.truthy(_hitNote != null && contains(_hitNote)))
         {
             removeChild(_hitNote);
         }

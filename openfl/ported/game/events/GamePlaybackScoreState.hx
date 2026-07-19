@@ -5,24 +5,24 @@ import openfl.utils.IDataOutput;
 
 class GamePlaybackScoreState extends GamePlaybackEvent
 {
-    public static inline var ID : Int = 1;
+    public static inline var ID                       : Dynamic= 1;
     
-    public var raw_score : Int;
-    public var amazing : Int;
-    public var perfect : Int;
-    public var good : Int;
-    public var average : Int;
-    public var miss : Int;
-    public var boo : Int;
-    public var combo : Int;
-    public var max_combo : Int;
+    public var raw_score                       : Dynamic;
+    public var amazing                       : Dynamic;
+    public var perfect                       : Dynamic;
+    public var good                       : Dynamic;
+    public var average                       : Dynamic;
+    public var miss                       : Dynamic;
+    public var boo                       : Dynamic;
+    public var combo                       : Dynamic;
+    public var max_combo                       : Dynamic;
     
-    public function new(index : Int, timestamp : Float)
+    public function new(index                       : Dynamic, timestamp                       : Dynamic)
     {
         super(ID, index, timestamp);
     }
     
-    override public function writeData(output : IDataOutput) : Void
+    override public function writeData(output                       : Dynamic) : Void
     {
         output.writeByte(ID);
         output.writeByte(4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4);  // Length of everything below this.  
@@ -39,12 +39,12 @@ class GamePlaybackScoreState extends GamePlaybackEvent
         output.writeInt(max_combo);
     }
     
-    public static function readData(input : IDataInput) : GamePlaybackScoreState
+    public static function readData(input                       : Dynamic) : GamePlaybackScoreState
     {
-        var index : Int = input.readUnsignedInt();
-        var timestamp : Int = input.readUnsignedInt();
+        var index                       : Dynamic= input.readUnsignedInt();
+        var timestamp                       : Dynamic= input.readUnsignedInt();
         
-        var state : GamePlaybackScoreState = new GamePlaybackScoreState(index, timestamp);
+        var state                       : Dynamic= new GamePlaybackScoreState(index, timestamp);
         state.raw_score = input.readInt();
         state.amazing = input.readInt();
         state.perfect = input.readInt();

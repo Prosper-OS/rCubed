@@ -4,6 +4,7 @@ import haxe.io.Bytes;
 import sys.FileSystem;
 
 class File {
+	public static var separator(default, null):String = Sys.systemName() == "Windows" ? "\\" : "/";
 	public static var applicationDirectory(default, null):File = new File(Sys.getCwd());
 	public static var applicationStorageDirectory(default, null):File = new File(Sys.getCwd());
 	public static var desktopDirectory(default, null):File = new File(Sys.getCwd());
@@ -14,8 +15,11 @@ class File {
 	public var url(get, never):String;
 	public var exists(get, never):Bool;
 	public var isDirectory(get, never):Bool;
+	public var isHidden(get, never):Bool;
 	public var name(get, never):String;
+	public var extension(get, never):String;
 	public var parent(get, never):File;
+	public var modificationDate(get, never):Date;
 
 	public function new(path:String = "") {
 		nativePath = path == null ? "" : path;
@@ -66,11 +70,25 @@ class File {
 		return FileSystem.exists(nativePath) && FileSystem.isDirectory(nativePath);
 	}
 
+	private function get_isHidden():Bool {
+		return get_name().indexOf(".") == 0;
+	}
+
 	private function get_name():String {
 		return haxe.io.Path.withoutDirectory(nativePath);
 	}
 
+	private function get_extension():String {
+		var fileName = get_name();
+		var index = fileName.lastIndexOf(".");
+		return index >= 0 && index < fileName.length - 1 ? fileName.substr(index + 1) : "";
+	}
+
 	private function get_parent():File {
 		return new File(haxe.io.Path.directory(nativePath));
+	}
+
+	private function get_modificationDate():Date {
+		return FileSystem.exists(nativePath) ? FileSystem.stat(nativePath).mtime : Date.fromTime(0);
 	}
 }

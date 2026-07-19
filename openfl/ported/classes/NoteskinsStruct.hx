@@ -6,10 +6,10 @@ class NoteskinsStruct
 {
     public static function getDefaultStruct() : Dynamic
     {
-        var DEFAULT_OPTIONS : GameOptions = new GameOptions();
+        var DEFAULT_OPTIONS                              : Dynamic= new GameOptions();
         DEFAULT_OPTIONS.noteColors.push("receptor");
         
-        var output : Dynamic = {
+        var output                              : Dynamic= {
             options : {
                 grid_dim : "5,2",
                 rotate : "90"
@@ -17,10 +17,10 @@ class NoteskinsStruct
         };
         for (c in 0...DEFAULT_OPTIONS.noteColors.length)
         {
-            var color_obj : Dynamic = { };
+            var color_obj                              : Dynamic= { };
             for (d in 0...DEFAULT_OPTIONS.noteDirections.length)
             {
-                var dir_obj : Dynamic = {
+                var dir_obj                              : Dynamic= {
                     r : "",
                     c : ""
                 };
@@ -31,24 +31,24 @@ class NoteskinsStruct
         return output;
     }
     
-    public static function getDirectionValue(struct : Dynamic, color : String, dir : String, key : String) : Dynamic
+    public static function getDirectionValue(struct                              : Dynamic, color                              : Dynamic, dir                              : Dynamic, key                              : Dynamic) : Dynamic
     {
-        if (struct != null && Reflect.field(struct, color) != null && Reflect.field(Reflect.field(struct, color), dir) != null && Reflect.field(Reflect.field(Reflect.field(struct, color), dir), key) != null)
+        if (as3hx.Compat.truthy(struct != null && Reflect.field(struct, color) != null && Reflect.field(Reflect.field(struct, color), dir) != null && Reflect.field(Reflect.field(Reflect.field(struct, color), dir), key) != null))
         {
             return Reflect.field(Reflect.field(Reflect.field(struct, color), dir), key);
         }
         return "";
     }
     
-    public static function setDirectionValue(struct : Dynamic, color : String, dir : String, key : String, val : String) : Void
+    public static function setDirectionValue(struct                              : Dynamic, color                              : Dynamic, dir                              : Dynamic, key                              : Dynamic, val                              : Dynamic) : Void
     {
-        if (struct != null)
+        if (as3hx.Compat.truthy(struct != null))
         {
-            if (Reflect.field(struct, color) == null)
+            if (as3hx.Compat.truthy(Reflect.field(struct, color) == null))
             {
                 Reflect.setField(struct, color, { });
             }
-            if (Reflect.field(Reflect.field(struct, color), dir) == null)
+            if (as3hx.Compat.truthy(Reflect.field(Reflect.field(struct, color), dir) == null))
             {
                 Reflect.setField(Reflect.field(struct, color), dir, { });
             }
@@ -56,25 +56,25 @@ class NoteskinsStruct
         }
     }
     
-    public static function parseCellInput(text : String, min_x : Int = 0, min_y : Int = 0, max_x : Int = 20, max_y : Int = 20) : Array<Dynamic>
+    public static function parseCellInput(text                              : Dynamic, min_x                              : Dynamic= 0, min_y                              : Dynamic= 0, max_x                              : Dynamic= 20, max_y                              : Dynamic= 20) : Array<Dynamic>
     {
-        var out : Array<Dynamic> = [1, 1];
-        var cell_values : Array<Dynamic> = text.split(",");
-        if (cell_values.length >= 2)
+        var out                              : Dynamic= [1, 1];
+        var cell_values                              : Dynamic= text.split(",");
+        if (as3hx.Compat.truthy(cell_values.length >= 2))
         {
             out[0] = as3hx.Compat.parseInt(cell_values[0]);
             out[1] = as3hx.Compat.parseInt(cell_values[1]);
         }
-        else if (cell_values.length == 1)
+        else if (as3hx.Compat.truthy(cell_values.length == 1))
         {
             out[0] = out[1] = as3hx.Compat.parseInt(cell_values[0]);
         }
         
-        if (Math.isNaN(out[0]) || !Math.isFinite(out[0]))
+        if (as3hx.Compat.truthy(Math.isNaN(out[0]) || !Math.isFinite(out[0])))
         {
             out[0] = 1;
         }
-        if (Math.isNaN(out[1]) || !Math.isFinite(out[1]))
+        if (as3hx.Compat.truthy(Math.isNaN(out[1]) || !Math.isFinite(out[1])))
         {
             out[1] = 1;
         }
@@ -85,10 +85,10 @@ class NoteskinsStruct
         return out;
     }
     
-    public static function textToRotation(t : String, def : Float) : Float
+    public static function textToRotation(t                              : Dynamic, def                              : Dynamic) : Float
     {
-        var n : Float = as3hx.Compat.parseFloat(t);
-        if (Math.isNaN(n) || !Math.isFinite(n))
+        var n                              : Dynamic= as3hx.Compat.parseFloat(t);
+        if (as3hx.Compat.truthy(Math.isNaN(n) || !Math.isFinite(n)))
         {
             n = def;
         }

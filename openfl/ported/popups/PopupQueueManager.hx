@@ -37,33 +37,47 @@ import popups.PopupQueueManager;
 
 class PopupQueueManager extends MenuPanel
 {
-    private var TAB_MAIN(default, never) : Int = 0;
-    private var TAB_PREGEN(default, never) : Int = 1;
+    private var TAB_MAIN(default, never)                       : Dynamic= 0;
+    private var TAB_PREGEN(default, never)                       : Dynamic= 1;
     
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _playlist : Playlist = Playlist.instanceCanon;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _playlist                       : Dynamic= Playlist.instanceCanon;
     
-    private var CURRENT_TAB : Int = TAB_MAIN;
+    private var CURRENT_TAB                     : Dynamic;
     
-    private static var STAT_LIST : Array<Dynamic>;
+    private static var STAT_LIST                       : Dynamic;
     
     //- Background
-    private var box : Box;
-    private var bmd : BitmapData;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmd                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    private var scrollpane : ScrollPane;
-    private var scrollbar : ScrollBar;
+    private var scrollpane                       : Dynamic;
+    private var scrollbar                       : Dynamic;
     
-    private var menuMain : BoxButton;
-    private var menuPregen : BoxButton;
-    private var importBtn : BoxButton;
-    private var closeBtn : BoxButton;
+    private var menuMain                       : Dynamic;
+    private var menuPregen                       : Dynamic;
+    private var importBtn                       : Dynamic;
+    private var closeBtn                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
+        CURRENT_TAB = TAB_MAIN;
     }
     
     override public function stageAdd() : Void
@@ -75,7 +89,7 @@ class PopupQueueManager extends MenuPanel
         
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, 20, 20, false, false);
+        var bgbox                       : Dynamic= new Box(this, 20, 20, false, false);
         bgbox.setSize(Main.GAME_WIDTH - 40, Main.GAME_HEIGHT - 40);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -85,7 +99,7 @@ class PopupQueueManager extends MenuPanel
         box.setSize(Main.GAME_WIDTH - 40, Main.GAME_HEIGHT - 40);
         box.activeAlpha = 0.4;
         
-        var titleDisplay : Text = new Text(box, 10, 8, _lang.string("popup_queue_manager"), 20);
+        var titleDisplay                       : Dynamic= new Text(box, 10, 8, _lang.string("popup_queue_manager"), 20);
         titleDisplay.width = box.width - 10;
         
         menuMain = new BoxButton(box, box.width - 125 * 2 - 30, 8, 125, 25, _lang.string("options_queue_saved"), 12, clickHandler);
@@ -109,14 +123,14 @@ class PopupQueueManager extends MenuPanel
         closeBtn = new BoxButton(box, box.width - 94.5, box.height - 42, 79.5, 27, _lang.string("menu_close"), 12, clickHandler);
     }
     
-    private function scrollBarMoved(e : Event) : Void
+    private function scrollBarMoved(e                       : Dynamic) : Void
     {
         scrollpane.scrollTo(scrollbar.scroll);
     }
     
-    private function mouseWheelHandler(e : MouseEvent) : Void
+    private function mouseWheelHandler(e                       : Dynamic) : Void
     {
-        var dist : Float = scrollbar.scroll + (scrollpane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var dist                       : Dynamic= scrollbar.scroll + (scrollpane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         scrollpane.scrollTo(dist);
         scrollbar.scrollTo(dist);
     }
@@ -138,19 +152,19 @@ class PopupQueueManager extends MenuPanel
     
     public function renderQueues() : Void
     {
-        var yOffset : Int = 0;
-        var sI : QueueBox;
-        var sX : Int = 0;
+        var yOffset                       : Dynamic= 0;
+        var sI                       : Dynamic= null;
+        var sX                       : Dynamic= 0;
         
         scrollbar.reset();
         scrollpane.clear();
         
-        if (CURRENT_TAB == TAB_MAIN) {
-if (_gvars.playerUser.songQueues.length > 0)
+        if (as3hx.Compat.truthy(CURRENT_TAB == TAB_MAIN)) {
+if (as3hx.Compat.truthy(_gvars.playerUser.songQueues.length > 0))
             {
-                for (sqi/* AS3HX WARNING could not determine type for var: sqi exp: EField(EField(EIdent(_gvars),playerUser),songQueues) type: null */ in _gvars.playerUser.songQueues)
+                for (sqi/* AS3HX WARNING could not determine type for var: sqi exp: EField(EField(EIdent(_gvars),playerUser),songQueues) type: null */ in as3hx.Compat.iter(_gvars.playerUser.songQueues))
                 {
-                    if (sqi.items.length > 0)
+                    if (as3hx.Compat.truthy(sqi.items.length > 0))
                     {
                         sI = new QueueBox(this, sqi);
                         sI.y = yOffset;
@@ -167,16 +181,16 @@ if (_gvars.playerUser.songQueues.length > 0)
             }
             else
             {
-                var noSavedDisplay : Text = new Text(scrollpane.content, 10, 8, _lang.string("popup_queue_no_queues"));
+                var noSavedDisplay                       : Dynamic= new Text(scrollpane.content, 10, 8, _lang.string("popup_queue_no_queues"));
                 noSavedDisplay.width = box.width - 10;
             }
         }
-        else if (CURRENT_TAB == TAB_PREGEN)
+        else if (as3hx.Compat.truthy(CURRENT_TAB == TAB_PREGEN))
         {
             genResultBasedQueues();
             
             // Display Premade Genre Queues
-            for (curGenre in Reflect.fields(_playlist.generatedQueues))
+            for (curGenre in as3hx.Compat.iter(Reflect.fields(_playlist.generatedQueues)))
             {
                 sI = new QueueBox(this, new SongQueueItem(_lang.string("genre_" + (as3hx.Compat.parseInt(curGenre) - 1)), _playlist.generatedQueues[curGenre]), false, true);
                 sI.y = yOffset;
@@ -187,7 +201,7 @@ if (_gvars.playerUser.songQueues.length > 0)
             }
             
             // Display Premade Stats queues
-            for (stat in Reflect.fields(STAT_LIST))
+            for (stat in as3hx.Compat.iter(Reflect.fields(STAT_LIST)))
             {
                 sI = new QueueBox(this, Reflect.field(STAT_LIST, stat), false, true);
                 sI.y = yOffset;
@@ -202,36 +216,36 @@ if (_gvars.playerUser.songQueues.length > 0)
         scrollbar.draggerVisibility = (yOffset > scrollpane.height);
     }
     
-    private function e_importSongQueue(songQueueJSON : String) : Void
+    private function e_importSongQueue(songQueueJSON                       : Dynamic) : Void
     {
-        var temp : SongQueueItem = SongQueueItem.fromString(songQueueJSON);
-        if (temp.items.length > 0)
+        var temp                       : Dynamic= SongQueueItem.fromString(songQueueJSON);
+        if (as3hx.Compat.truthy(temp.items.length > 0))
         {
             _gvars.playerUser.songQueues.push(temp);
             renderQueues();
         }
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == importBtn)
+        if (as3hx.Compat.truthy(e.target == importBtn))
         {
             new PromptInput(box.parent, _lang.string("popup_queue_import_song_queue"), _lang.string("popup_queue_submit"), e_importSongQueue);
         }
-        else if (e.target == menuPregen)
+        else if (as3hx.Compat.truthy(e.target == menuPregen))
         {
             CURRENT_TAB = TAB_PREGEN;
             renderQueues();
             return;
         }
-        else if (e.target == menuMain)
+        else if (as3hx.Compat.truthy(e.target == menuMain))
         {
             CURRENT_TAB = TAB_MAIN;
             renderQueues();
             return;
         }
         //- Close
-        if (e.target == closeBtn)
+        if (as3hx.Compat.truthy(e.target == closeBtn))
         {
             removePopup();
             return;
@@ -240,28 +254,28 @@ if (_gvars.playerUser.songQueues.length > 0)
     
     private function genResultBasedQueues() : Void
     {
-        var songlist : Array<Dynamic> = [];
+        var songlist                       : Dynamic= [];
         STAT_LIST = [];
-        for (index in Reflect.fields(_playlist.indexList))
+        for (index in as3hx.Compat.iter(Reflect.fields(_playlist.indexList)))
         {
-            var _songInfo : SongInfo = _playlist.indexList[index];
-            var _rank : Dynamic = _gvars.activeUser.getLevelRank(_songInfo);
-            var _access : Int = _gvars.checkSongAccess(_songInfo);
+            var _songInfo                       : Dynamic= _playlist.indexList[index];
+            var _rank                       : Dynamic= _gvars.activeUser.getLevelRank(_songInfo);
+            var _access                       : Dynamic= _gvars.checkSongAccess(_songInfo);
             
-            if (_access == GlobalVariables.SONG_ACCESS_PLAYABLE)
+            if (as3hx.Compat.truthy(_access == GlobalVariables.SONG_ACCESS_PLAYABLE))
             {
-                var stats : Int = GlobalVariables.getSongIconIndex(_songInfo, _rank);
-                if (songlist[stats] == null)
+                var stats                       : Dynamic= GlobalVariables.getSongIconIndex(_songInfo, _rank);
+                if (as3hx.Compat.truthy(songlist[stats] == null))
                 {
                     songlist[stats] = [];
                 }
                 songlist[stats].push(_songInfo.level);
             }
         }
-        for (rank in Reflect.fields(songlist))
+        for (rank in as3hx.Compat.iter(Reflect.fields(songlist)))
         {
-            var name : String = GlobalVariables.SONG_ICON_TEXT[rank];
-            STAT_LIST.push(new SongQueueItem(((name == "") ? "PLAYED" : name), Reflect.field(songlist, rank)));
+            var name                       : Dynamic= GlobalVariables.SONG_ICON_TEXT[rank];
+            STAT_LIST.push(new SongQueueItem(((name == "") ? "PLAYED" : name), as3hx.Compat.field(songlist, rank)));
         }
     }
 }
@@ -270,45 +284,45 @@ if (_gvars.playerUser.songQueues.length > 0)
 
 class QueueBox extends Sprite
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _playlist : Playlist = Playlist.instanceCanon;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _playlist                       : Dynamic= Playlist.instanceCanon;
     
     //- Song Details
-    public var box : Box;
-    public var index : Int;
-    private var copyBtn : BoxButton;
-    private var deleteBtn : BoxButton;
-    private var playBtn : BoxButton;
-    private var renameBtn : BoxButton;
-    private var queueItem : SongQueueItem;
-    private var popup : PopupQueueManager;
+    public var box                       : Dynamic;
+    public var index                       : Dynamic;
+    private var copyBtn                       : Dynamic;
+    private var deleteBtn                       : Dynamic;
+    private var playBtn                       : Dynamic;
+    private var renameBtn                       : Dynamic;
+    private var queueItem                       : Dynamic;
+    private var popup                       : Dynamic;
     
     @:allow(popups)
-    private function new(p : PopupQueueManager, qi : SongQueueItem, longview : Bool = true, premade : Bool = false)
+    private function new(p                       : Dynamic, qi                       : Dynamic, longview                       : Dynamic= true, premade                       : Dynamic= false)
     {
         super();
         this.popup = p;
         this.queueItem = qi;
         
         //- Make Display
-        var yOffset : Int = 25;
+        var yOffset                       : Dynamic= 25;
         
         // Draw Box
         box = new Box(this, 0, 0, false);
         box.setSize(690, !(longview) ? 35 : queueItem.items.length * 20 + 30);
         
         // Add Song Names
-        var totalTime : Int = 0;
-        for (songid/* AS3HX WARNING could not determine type for var: songid exp: EField(EIdent(queueItem),items) type: null */ in queueItem.items)
+        var totalTime                       : Dynamic= 0;
+        for (songid/* AS3HX WARNING could not determine type for var: songid exp: EField(EIdent(queueItem),items) type: null */ in as3hx.Compat.iter(queueItem.items))
         {
-            var songInfo : SongInfo = _playlist.playList[songid];
-            if (songInfo != null)
+            var songInfo                       : Dynamic= _playlist.playList[songid];
+            if (as3hx.Compat.truthy(songInfo != null))
             {
-                if (longview)
+                if (as3hx.Compat.truthy(longview))
                 {
-                    var access : Int = _gvars.checkSongAccess(songInfo);
-                    var songName : Text = new Text(box, 5, yOffset, " - " + songInfo.name + " [" + songInfo.time + "]", 12, (access == GlobalVariables.SONG_ACCESS_PLAYABLE) ? "#FFFFFF" : "#FF9797");
+                    var access                       : Dynamic= _gvars.checkSongAccess(songInfo);
+                    var songName                       : Dynamic= new Text(box, 5, yOffset, " - " + songInfo.name + " [" + songInfo.time + "]", 12, (access == GlobalVariables.SONG_ACCESS_PLAYABLE) ? "#FFFFFF" : "#FF9797");
                     yOffset += 20;
                 }
                 totalTime += songInfo.time_secs;
@@ -316,9 +330,9 @@ class QueueBox extends Sprite
         }
         
         // Add Queue Names + Info
-        var queueName : Text = new Text(box, 5, 5, queueItem.name + " [" + TimeUtil.convertToHHMMSS(totalTime) + "]", 14);
+        var queueName                       : Dynamic= new Text(box, 5, 5, queueItem.name + " [" + TimeUtil.convertToHHMMSS(totalTime) + "]", 14);
         
-        if (!premade) {
+        if (as3hx.Compat.truthy(!premade)) {
 copyBtn = new BoxButton(box, box.width - 75, 5, 70, 25, _lang.string("popup_queue_copy"));
             
             //- Delete Button
@@ -334,21 +348,21 @@ copyBtn = new BoxButton(box, box.width - 75, 5, 70, 25, _lang.string("popup_queu
         this.addEventListener(MouseEvent.CLICK, clickEvent);
     }
     
-    private function clickEvent(e : MouseEvent) : Void
+    private function clickEvent(e                       : Dynamic) : Void
     {
-        if (e.target == copyBtn)
+        if (as3hx.Compat.truthy(e.target == copyBtn))
         {
             copyQueue();
         }
-        else if (e.target == deleteBtn)
+        else if (as3hx.Compat.truthy(e.target == deleteBtn))
         {
             deleteQueue();
         }
-        else if (e.target == playBtn)
+        else if (as3hx.Compat.truthy(e.target == playBtn))
         {
             playQueue();
         }
-        else if (e.target == renameBtn)
+        else if (as3hx.Compat.truthy(e.target == renameBtn))
         {
             renameQueue();
         }
@@ -356,9 +370,9 @@ copyBtn = new BoxButton(box, box.width - 75, 5, 70, 25, _lang.string("popup_queu
     
     private function copyQueue() : Void
     {
-        var queueString : String = Std.string(this.queueItem);
-        var success : Bool = SystemUtil.setClipboard(queueString);
-        if (success)
+        var queueString                       : Dynamic= Std.string(this.queueItem);
+        var success                       : Dynamic= SystemUtil.setClipboard(queueString);
+        if (as3hx.Compat.truthy(success))
         {
             Alert.add(_lang.string("clipboard_success"), 120, Alert.GREEN);
         }
@@ -377,14 +391,14 @@ copyBtn = new BoxButton(box, box.width - 75, 5, 70, 25, _lang.string("popup_queu
     
     private function playQueue() : Void
     {
-        var newSongQueue : Array<Dynamic> = [];
-        for (songid/* AS3HX WARNING could not determine type for var: songid exp: EField(EIdent(queueItem),items) type: null */ in queueItem.items)
+        var newSongQueue                       : Dynamic= [];
+        for (songid/* AS3HX WARNING could not determine type for var: songid exp: EField(EIdent(queueItem),items) type: null */ in as3hx.Compat.iter(queueItem.items))
         {
-            var songInfo : SongInfo = _playlist.playList[songid];
-            if (songInfo != null)
+            var songInfo                       : Dynamic= _playlist.playList[songid];
+            if (as3hx.Compat.truthy(songInfo != null))
             {
-                var access : Int = _gvars.checkSongAccess(songInfo);
-                if (access == GlobalVariables.SONG_ACCESS_PLAYABLE)
+                var access                       : Dynamic= _gvars.checkSongAccess(songInfo);
+                if (as3hx.Compat.truthy(access == GlobalVariables.SONG_ACCESS_PLAYABLE))
                 {
                     newSongQueue.push(songInfo);
                 }
@@ -393,26 +407,26 @@ copyBtn = new BoxButton(box, box.width - 75, 5, 70, 25, _lang.string("popup_queu
         
         popup.removePopup();
         
-        if (newSongQueue.length <= 0)
+        if (as3hx.Compat.truthy(newSongQueue.length <= 0))
         {
             return;
         }
         
         _gvars.songQueue = newSongQueue;
         MenuSongSelection.options.queuePlaylist = newSongQueue;
-        if (_gvars.gameMain.activePanel != null && Std.is(_gvars.gameMain.activePanel, MainMenu))
+        if (as3hx.Compat.truthy(_gvars.gameMain.activePanel != null && Std.is(_gvars.gameMain.activePanel, MainMenu)))
         {
-            var mmmenu : MainMenu = (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
-            if (mmmenu.panel != null && (Std.is(mmmenu.panel, MenuSongSelection)))
+            var mmmenu                       : Dynamic= (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
+            if (as3hx.Compat.truthy(mmmenu.panel != null && (Std.is(mmmenu.panel, MenuSongSelection))))
             {
-                var msmenu : MenuSongSelection = (try cast(mmmenu.panel, MenuSongSelection) catch(e:Dynamic) null);
+                var msmenu                       : Dynamic= (try cast(mmmenu.panel, MenuSongSelection) catch(e:Dynamic) null);
                 msmenu.buildPlayList();
                 msmenu.buildInfoBox();
             }
         }
     }
     
-    private function e_renameQueue(queueName : String) : Void
+    private function e_renameQueue(queueName                       : Dynamic) : Void
     {
         queueItem.name = queueName;
         popup.renderQueues();
@@ -428,7 +442,7 @@ copyBtn = new BoxButton(box, box.width - 75, 5, 70, 25, _lang.string("popup_queu
     //- Remove is already existed.
     {
         
-        if (box != null)
+        if (as3hx.Compat.truthy(box != null))
         {
             copyBtn.dispose();
             deleteBtn.dispose();

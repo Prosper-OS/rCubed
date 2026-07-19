@@ -18,7 +18,7 @@ class Base64 {
 	}
 
 	private static function toBytes(value:Dynamic):Bytes {
-		if (Std.isOfType(value, ByteArray)) {
+		if (value != null && Reflect.hasField(value, "readUTFBytes") && Reflect.hasField(value, "length")) {
 			var byteArray:ByteArray = cast value;
 			var position = byteArray.position;
 			byteArray.position = 0;

@@ -39,24 +39,24 @@ import assets.GameBackgroundColor;
 
 class Slider extends Component
 {
-    public var backClick(get, set) : Bool;
-    public var value(get, set) : Float;
-    public var rawValue(get, never) : Float;
-    public var maximum(get, set) : Float;
-    public var minimum(get, set) : Float;
-    public var tick(get, set) : Float;
+    public var backClick(get, set)                            : Dynamic;
+    public var value(get, set)                            : Dynamic;
+    public var rawValue(get, never)                            : Dynamic;
+    public var maximum(get, set)                            : Dynamic;
+    public var minimum(get, set)                            : Dynamic;
+    public var tick(get, set)                            : Dynamic;
 
-    private var _handle : Sprite;
-    private var _back : Sprite;
-    private var _backClick : Bool = true;
-    private var _value : Float = 0;
-    private var _max : Float = 100;
-    private var _min : Float = 0;
-    private var _orientation : String;
-    private var _tick : Float = 0.01;
+    public var _handle                            : Dynamic;
+    public var _back                            : Dynamic;
+    public var _backClick                            : Dynamic= true;
+    public var _value                            : Dynamic= 0;
+    public var _max                            : Dynamic= 100;
+    public var _min                            : Dynamic= 0;
+    public var _orientation                            : Dynamic;
+    public var _tick                            : Dynamic= 0.01;
     
-    public static inline var HORIZONTAL : String = "horizontal";
-    public static inline var VERTICAL : String = "vertical";
+    public static inline var HORIZONTAL                            : Dynamic= "horizontal";
+    public static inline var VERTICAL                            : Dynamic= "vertical";
     
     /**
      * Constructor
@@ -66,11 +66,11 @@ class Slider extends Component
      * @param ypos The y position to place this component.
      * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
      */
-    public function new(orientation : String = Slider.HORIZONTAL, parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, defaultHandler : Dynamic = null)
+    public function new(orientation                            : Dynamic= Slider.HORIZONTAL, parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, defaultHandler                            : Dynamic= null)
     {
         _orientation = orientation;
         super(parent, xpos, ypos);
-        if (defaultHandler != null)
+        if (as3hx.Compat.truthy(defaultHandler != null))
         {
             addEventListener(Event.CHANGE, defaultHandler);
         }
@@ -79,11 +79,11 @@ class Slider extends Component
     /**
      * Initializes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         
-        if (_orientation == HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == HORIZONTAL))
         {
             setSize(100, 10);
         }
@@ -96,7 +96,7 @@ class Slider extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         _back = new Sprite();
         addChild(_back);
@@ -111,14 +111,14 @@ class Slider extends Component
     /**
      * Draws the back of the slider.
      */
-    private function drawBack() : Void
+    public function drawBack() : Void
     {
         _back.graphics.clear();
         _back.graphics.beginFill(GameBackgroundColor.BG_POPUP);
         _back.graphics.drawRect(0, 0, _width, _height);
         _back.graphics.endFill();
         
-        if (_backClick)
+        if (as3hx.Compat.truthy(_backClick))
         {
             _back.addEventListener(MouseEvent.MOUSE_DOWN, onBackClick);
         }
@@ -131,11 +131,11 @@ class Slider extends Component
     /**
      * Draws the handle of the slider.
      */
-    private function drawHandle() : Void
+    public function drawHandle() : Void
     {
         _handle.graphics.clear();
         _handle.graphics.beginFill(0xFFFFFF, 0.5);
-        if (_orientation == HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == HORIZONTAL))
         {
             _handle.graphics.drawRect(1, 1, _height - 2, _height - 2);
         }
@@ -150,9 +150,9 @@ class Slider extends Component
     /**
      * Adjusts value to be within minimum and maximum.
      */
-    private function correctValue() : Void
+    public function correctValue() : Void
     {
-        if (_max > _min)
+        if (as3hx.Compat.truthy(_max > _min))
         {
             _value = Math.min(_value, _max);
             _value = Math.max(_value, _min);
@@ -167,10 +167,10 @@ class Slider extends Component
     /**
      * Adjusts position of handle when value, maximum or minimum have changed.
      */
-    private function positionHandle() : Void
+    public function positionHandle() : Void
     {
-        var range : Float;
-        if (_orientation == HORIZONTAL)
+        var range                            : Dynamic= null;
+        if (as3hx.Compat.truthy(_orientation == HORIZONTAL))
         {
             range = _width - _height;
             _handle.x = (_value - _min) / (_max - _min) * range;
@@ -205,7 +205,7 @@ class Slider extends Component
      * @param max The maximum value of the slider.
      * @param value The value of the slider.
      */
-    public function setSliderParams(min : Float, max : Float, value : Float) : Void
+    public function setSliderParams(min                            : Dynamic, max                            : Dynamic, value                            : Dynamic) : Void
     {
         this.minimum = min;
         this.maximum = max;
@@ -223,9 +223,9 @@ class Slider extends Component
      * Handler called when user clicks the background of the slider, causing the handle to move to that point. Only active if backClick is true.
      * @param event The MouseEvent passed by the system.
      */
-    private function onBackClick(event : MouseEvent) : Void
+    public function onBackClick(event                            : Dynamic) : Void
     {
-        if (_orientation == HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == HORIZONTAL))
         {
             _handle.x = mouseX - _height / 2;
             _handle.x = Math.max(_handle.x, 0);
@@ -246,11 +246,11 @@ class Slider extends Component
      * Internal mouseDown handler. Starts dragging the handle.
      * @param event The MouseEvent passed by the system.
      */
-    private function onDrag(event : MouseEvent) : Void
+    public function onDrag(event                            : Dynamic) : Void
     {
         stage.addEventListener(MouseEvent.MOUSE_UP, onDrop);
         stage.addEventListener(MouseEvent.MOUSE_MOVE, onSlide);
-        if (_orientation == HORIZONTAL)
+        if (as3hx.Compat.truthy(_orientation == HORIZONTAL))
         {
             _handle.startDrag(false, new Rectangle(0, 0, _width - _height, 0));
         }
@@ -264,7 +264,7 @@ class Slider extends Component
      * Internal mouseUp handler. Stops dragging the handle.
      * @param event The MouseEvent passed by the system.
      */
-    private function onDrop(event : MouseEvent) : Void
+    public function onDrop(event                            : Dynamic) : Void
     {
         stage.removeEventListener(MouseEvent.MOUSE_UP, onDrop);
         stage.removeEventListener(MouseEvent.MOUSE_MOVE, onSlide);
@@ -275,10 +275,10 @@ class Slider extends Component
      * Internal mouseMove handler for when the handle is being moved.
      * @param event The MouseEvent passed by the system.
      */
-    private function onSlide(event : MouseEvent) : Void
+    public function onSlide(event                            : Dynamic) : Void
     {
-        var oldValue : Float = _value;
-        if (_orientation == HORIZONTAL)
+        var oldValue                            : Dynamic= _value;
+        if (as3hx.Compat.truthy(_orientation == HORIZONTAL))
         {
             _value = _handle.x / (width - _height) * (_max - _min) + _min;
         }
@@ -286,7 +286,7 @@ class Slider extends Component
         {
             _value = (_height - _width - _handle.y) / (height - _width) * (_max - _min) + _min;
         }
-        if (_value != oldValue)
+        if (as3hx.Compat.truthy(_value != oldValue))
         {
             dispatchEvent(new Event(Event.CHANGE));
         }
@@ -302,7 +302,7 @@ class Slider extends Component
     /**
      * Sets / gets whether or not a click on the background of the slider will move the handler to that position.
      */
-    private function set_backClick(b : Bool) : Bool
+    private function set_backClick(b                            : Dynamic) : Bool
     {
         _backClick = b;
         invalidate();
@@ -317,7 +317,7 @@ class Slider extends Component
     /**
      * Sets / gets the current value of this slider.
      */
-    private function set_value(v : Float) : Float
+    private function set_value(v                            : Dynamic) : Float
     {
         _value = v;
         correctValue();
@@ -341,7 +341,7 @@ class Slider extends Component
     /**
      * Gets / sets the maximum value of this slider.
      */
-    private function set_maximum(m : Float) : Float
+    private function set_maximum(m                            : Dynamic) : Float
     {
         _max = m;
         correctValue();
@@ -357,7 +357,7 @@ class Slider extends Component
     /**
      * Gets / sets the minimum value of this slider.
      */
-    private function set_minimum(m : Float) : Float
+    private function set_minimum(m                            : Dynamic) : Float
     {
         _min = m;
         correctValue();
@@ -373,7 +373,7 @@ class Slider extends Component
     /**
      * Gets / sets the tick value of this slider. This round the value to the nearest multiple of this number.
      */
-    private function set_tick(t : Float) : Float
+    private function set_tick(t                            : Dynamic) : Float
     {
         _tick = t;
         return t;

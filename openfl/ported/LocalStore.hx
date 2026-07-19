@@ -4,7 +4,7 @@ import openfl.net.SharedObject;
 class LocalStore
 {
     /** Local Shared Object, this is saved/flushed automatically when the application closes. */
-    private static var SO_OBJECT : SharedObject = SharedObject.getLocal(Constant.LOCAL_SO_NAME);
+    private static var SO_OBJECT                              : Dynamic= SharedObject.getLocal(Constant.LOCAL_SO_NAME);
     
     /**
      * Returns a top-level cloned object of all SharedObject variables.
@@ -12,10 +12,10 @@ class LocalStore
      */
     public static function getAllVariables() : Dynamic
     {
-        var out : Dynamic = { };
-        for (key in Reflect.fields(SO_OBJECT.data))
+        var out                              : Dynamic= { };
+        for (key in as3hx.Compat.iter(Reflect.fields(SO_OBJECT.data)))
         {
-            Reflect.setField(out, key, SO_OBJECT.data[key]);
+            Reflect.setField(out, Std.string(key), as3hx.Compat.field(SO_OBJECT.data, key));
         }
         return out;
     }
@@ -25,9 +25,9 @@ class LocalStore
      * @param key Variable Key
      * @param defaultValue Default Value
      */
-    public static function getVariable(key : String, defaultValue : Dynamic) : Dynamic
+    public static function getVariable(key                              : Dynamic, defaultValue                              : Dynamic) : Dynamic
     {
-        if (SO_OBJECT.data[key] != null)
+        if (as3hx.Compat.truthy(SO_OBJECT.data[key] != null))
         {
             return SO_OBJECT.data[key];
         }
@@ -40,11 +40,11 @@ class LocalStore
      * @param value Value
      * @param minDiskSize Minimum Local Store Size
      */
-    public static function setVariable(key : String, value : Dynamic, minDiskSize : Int = 0) : Void
+    public static function setVariable(key                              : Dynamic, value                              : Dynamic, minDiskSize                              : Dynamic= 0) : Void
     {
         SO_OBJECT.setProperty(key, value);
         
-        if (minDiskSize > 0)
+        if (as3hx.Compat.truthy(minDiskSize > 0))
         {
             flush(minDiskSize);
         }
@@ -54,7 +54,7 @@ class LocalStore
      * Deletes a variable from the local store.
      * @param key Variable Key
      */
-    public static function deleteVariable(key : String) : Void
+    public static function deleteVariable(key                              : Dynamic) : Void
     {
     }
     
@@ -62,7 +62,7 @@ class LocalStore
      * Writes shared object to file.
      * @param minDiskSize Minimum Local Store Size
      */
-    public static function flush(minDiskSize : Int = 0) : Void
+    public static function flush(minDiskSize                              : Dynamic= 0) : Void
     {
         try
         {

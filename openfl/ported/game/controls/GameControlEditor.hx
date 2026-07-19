@@ -11,19 +11,19 @@ import openfl.geom.Rectangle;
 
 class GameControlEditor extends Sprite
 {
-    private var _width : Float;
-    private var _height : Float;
+    private var _width                       : Dynamic;
+    private var _height                       : Dynamic;
     
-    private var bounds : Rectangle;
+    private var bounds                       : Dynamic;
     
-    public var title : Text;
+    public var title                       : Dynamic;
     
-    public var dragButton : UIIcon;
-    public var closeButton : UIIcon;
+    public var dragButton                       : Dynamic;
+    public var closeButton                       : Dynamic;
     
-    public var cy : Float = 37;
+    public var cy                       : Dynamic= 37;
     
-    public function new(paneWidth : Float)
+    public function new(paneWidth                       : Dynamic)
     {
         super();
         _width = paneWidth;
@@ -76,15 +76,15 @@ class GameControlEditor extends Sprite
         this.y = (Main.GAME_HEIGHT - _height) / 2;
     }
     
-    private function e_onDragStart(e : MouseEvent) : Void
+    private function e_onDragStart(e                       : Dynamic) : Void
     {
         stage.addEventListener(MouseEvent.MOUSE_UP, e_onDragEnd);
         startDrag(false, bounds);
     }
     
-    private function e_onDragEnd(e : MouseEvent) : Void
+    private function e_onDragEnd(e                       : Dynamic) : Void
     {
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
             stage.removeEventListener(MouseEvent.MOUSE_UP, e_onDragEnd);
         }

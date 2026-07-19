@@ -4,11 +4,11 @@ import openfl.events.Event;
 
 class MPViewEvent extends Event
 {
-    public static inline var CHANGE : String = "change_selected_view";
+    public static inline var CHANGE                             : Dynamic= "change_selected_view";
     
-    public var view : String;
+    public var view                             : Dynamic;
     
-    public function new(view : String)
+    public function new(view                             : Dynamic)
     {
         super(CHANGE, false, false);
         

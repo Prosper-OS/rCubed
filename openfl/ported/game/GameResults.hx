@@ -26,38 +26,38 @@ import popups.PopupSongNotes;
 
 class GameResults extends MenuPanel
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _playlist : Playlist = Playlist.instance;
-    private var _score : ScoreHandler = ScoreHandler.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _playlist                       : Dynamic= Playlist.instance;
+    private var _score                       : Dynamic= ScoreHandler.instance;
     
     // Results
-    private var resultIndex : Int = 0;
-    private var songResults : Array<GameScoreResult>;
-    private var result : GameScoreResult;
+    private var resultIndex                       : Dynamic= 0;
+    private var songResults                       : Dynamic;
+    private var result                       : Dynamic;
     
-    private var queueTotalResult : GameScoreResult;
+    private var queueTotalResult                       : Dynamic;
     
-    private var background : GameResultBackground;
-    private var resultsDisplay : GameResultSingleView;
+    private var background                       : Dynamic;
+    private var resultsDisplay                       : Dynamic;
     
     // Title Bar
-    private var navSaveReplay : BoxIcon;
-    private var navScreenShot : BoxIcon;
-    private var navRandomSong : BoxIcon;
+    private var navSaveReplay                       : Dynamic;
+    private var navScreenShot                       : Dynamic;
+    private var navRandomSong                       : Dynamic;
     
     // Game Result
-    private var navRating : Sprite;
-    private var navPrev : BoxButton;
-    private var navNext : BoxButton;
+    private var navRating                       : Dynamic;
+    private var navPrev                       : Dynamic;
+    private var navNext                       : Dynamic;
     
     // Menu Bar
-    private var navReplay : BoxButton;
-    private var navOptions : BoxButton;
-    private var navHighscores : BoxButton;
-    private var navMenu : BoxButton;
+    private var navReplay                       : Dynamic;
+    private var navOptions                       : Dynamic;
+    private var navHighscores                       : Dynamic;
+    private var navMenu                       : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
     }
@@ -67,14 +67,14 @@ class GameResults extends MenuPanel
         songResults = _gvars.songResults.concat();
         
         // Send last score
-        if (!_gvars.options.replay)
+        if (as3hx.Compat.truthy(!_gvars.options.replay))
         {
-            var lastResult : GameScoreResult = songResults[songResults.length - 1];
+            var lastResult                       : Dynamic= songResults[as3hx.Compat.parseInt(songResults.length - 1)];
             
             // Update Judge Offset
             updateJudgeOffset(lastResult);
             
-            if (_gvars.songQueue.length == 0)
+            if (as3hx.Compat.truthy(_gvars.songQueue.length == 0))
             {
                 _score.addEventListener(ScoreHandlerEvent.SUCCESS, e_onScoreResult);
                 _score.addEventListener(ScoreHandlerEvent.FAILURE, e_onScoreResult);
@@ -84,7 +84,7 @@ class GameResults extends MenuPanel
         }
         
         // More songs to play, jump to gameplay or loading.
-        if (_gvars.songQueue.length > 0)
+        if (as3hx.Compat.truthy(_gvars.songQueue.length > 0))
         {
             _gvars.options.song = null;
             switchTo(GameMenu.GAME_LOADING);
@@ -109,9 +109,9 @@ class GameResults extends MenuPanel
         addChild(background);
         
         // Background Noise
-        var noiseSource : BitmapData = new BitmapData(Main.GAME_WIDTH, Main.GAME_HEIGHT, false, 0x00000000);
+        var noiseSource                       : Dynamic= new BitmapData(Main.GAME_WIDTH, Main.GAME_HEIGHT, false, 0x00000000);
         noiseSource.perlinNoise(Main.GAME_WIDTH, Main.GAME_HEIGHT, 12, Math.round(haxe.Timer.stamp() * 1000), true, false, 7, true);
-        var noiseImage : Bitmap = new Bitmap(noiseSource);
+        var noiseImage                       : Dynamic= new Bitmap(noiseSource);
         noiseImage.alpha = 0.15;
         background.addChild(noiseImage);
         
@@ -119,8 +119,8 @@ class GameResults extends MenuPanel
         addChild(resultsDisplay);
         
         // Main Navigation Buttons
-        var buttonMenu : Sprite = new Sprite();
-        var buttonMenuItems : Array<Dynamic> = [];
+        var buttonMenu                       : Dynamic= new Sprite();
+        var buttonMenuItems                       : Dynamic= [];
         buttonMenu.x = 22;
         buttonMenu.y = 428;
         this.addChild(buttonMenu);
@@ -137,8 +137,8 @@ class GameResults extends MenuPanel
         navMenu = new BoxButton(buttonMenu, 0, 0, 170, 40, _lang.string("game_results_menu_exit_menu"), 17, eventHandler);
         buttonMenuItems.push(navMenu);
         
-        var BUTTON_GAP : Int = 11;
-        var BUTTON_WIDTH : Int = as3hx.Compat.parseInt((735 - (Math.max(0, buttonMenuItems.length - 1) * BUTTON_GAP)) / buttonMenuItems.length);
+        var BUTTON_GAP                       : Dynamic= 11;
+        var BUTTON_WIDTH                       : Dynamic= as3hx.Compat.parseInt((735 - (Math.max(0, buttonMenuItems.length - 1) * BUTTON_GAP)) / buttonMenuItems.length);
         for (bx in 0...buttonMenuItems.length)
         {
             buttonMenuItems[bx].width = BUTTON_WIDTH;
@@ -196,7 +196,7 @@ class GameResults extends MenuPanel
         stage.removeEventListener(KeyboardEvent.KEY_DOWN, eventHandler);
         
         // Remove Mouse Move for graphs
-        if (resultsDisplay != null)
+        if (as3hx.Compat.truthy(resultsDisplay != null))
         {
             stage.removeEventListener(MouseEvent.MOUSE_MOVE, resultsDisplay.e_graphHover);
         }
@@ -204,9 +204,9 @@ class GameResults extends MenuPanel
         super.stageRemove();
     }
     
-    private function e_onScoreResult(e : ScoreHandlerEvent) : Void
+    private function e_onScoreResult(e                       : Dynamic) : Void
     {
-        if (resultsDisplay != null)
+        if (as3hx.Compat.truthy(resultsDisplay != null))
         {
             resultsDisplay.onScoreResult(e);
             
@@ -220,12 +220,12 @@ class GameResults extends MenuPanel
     //******************************************************************************************//
     public function buildQueueTotal() : Void
     {
-        if (songResults.length <= 1)
+        if (as3hx.Compat.truthy(songResults.length <= 1))
         {
             return;
         }
         
-        var songSubTitle : String = "";
+        var songSubTitle                       : Dynamic= "";
         
         queueTotalResult = new GameScoreResult();
         queueTotalResult.game_index = -1;
@@ -239,7 +239,7 @@ class GameResults extends MenuPanel
         
         for (x in 0...songResults.length)
         {
-            var tempResult : GameScoreResult = songResults[x];
+            var tempResult                       : Dynamic= songResults[x];
             
             songSubTitle += tempResult.songInfo.name + ", ";
             
@@ -270,7 +270,7 @@ class GameResults extends MenuPanel
         queueTotalResult.songInfo.name = songSubTitle.substr(0, songSubTitle.length - 2);
     }
     
-    public function displayGameResult(gameIndex : Int) : Void
+    public function displayGameResult(gameIndex                       : Dynamic) : Void
     // Set Index
     {
         
@@ -282,14 +282,14 @@ class GameResults extends MenuPanel
         navPrev.visible = false;
         navNext.visible = false;
         
-        if (songResults.length > 1)
+        if (as3hx.Compat.truthy(songResults.length > 1))
         {
-            if (gameIndex > -1)
+            if (as3hx.Compat.truthy(gameIndex > -1))
             {
                 navPrev.visible = true;
                 navPrev.text = ((gameIndex == 0) ? _lang.string("game_results_queue_total") : _lang.string("game_results_queue_previous"));
             }
-            if (gameIndex < songResults.length - 1)
+            if (as3hx.Compat.truthy(gameIndex < songResults.length - 1))
             {
                 navNext.visible = true;
             }
@@ -297,7 +297,7 @@ class GameResults extends MenuPanel
         
         // Song Results
         // Song Queue (Multiple Songs)
-        if (gameIndex == -1)
+        if (as3hx.Compat.truthy(gameIndex == -1))
         {
             navHighscores.enabled = false;
             result = queueTotalResult;
@@ -314,14 +314,14 @@ class GameResults extends MenuPanel
                 navRating.visible = (result.songInfo != null);
                 
                 // Highscores
-                if (result.songInfo && result.songInfo.engine)
+                if (as3hx.Compat.truthy(result.songInfo && result.songInfo.engine))
                 {
                     navHighscores.enabled = false;
                 }
                 
                 // Save Replay Button
                 navSaveReplay.enabled = true;
-                if (!_score.canSendScore(result, true, false, true, true) || result.is_preview)
+                if (as3hx.Compat.truthy(!_score.canSendScore(result, true, false, true, true) || result.is_preview))
                 {
                     navSaveReplay.enabled = false;
                 }
@@ -329,13 +329,13 @@ class GameResults extends MenuPanel
         }
         
         // Save Screenshot
-        if (!result.is_preview)
+        if (as3hx.Compat.truthy(!result.is_preview))
         {
             navScreenShot.enabled = true;
         }
         
         // Random Song Button
-        if (result.options.replay || result.is_preview)
+        if (as3hx.Compat.truthy(result.options.replay || result.is_preview))
         {
             navRandomSong.enabled = false;
         }
@@ -357,7 +357,7 @@ class GameResults extends MenuPanel
      * the user settings. This is called when scores are saved successfully.
      * @param result GameScoreResult
      */
-    private function updateJudgeOffset(result : GameScoreResult) : Void
+    private function updateJudgeOffset(result                       : Dynamic) : Void
     {
         if (_gvars.activeUser.AUTO_JUDGE_OFFSET &&  // Auto Judge Offset enabled  
             (result.amazing + result.perfect + result.good + result.average >= 50) &&  // Accuracy data is reliable  
@@ -377,22 +377,22 @@ class GameResults extends MenuPanel
      * @param gameResult
      * @return int
      */
-    private function getMaxCombo(gameResult : GameScoreResult) : Int
+    private function getMaxCombo(gameResult                       : Dynamic) : Int
     {
-        var maxCombo : Int = 0;
-        var curCombo : Int = 0;
+        var maxCombo                       : Dynamic= 0;
+        var curCombo                       : Dynamic= 0;
         for (x in 0...gameResult.replay_hit.length)
         {
-            var curNote : Int = gameResult.replay_hit[x];
-            if (curNote > 0)
+            var curNote                       : Dynamic= gameResult.replay_hit[x];
+            if (as3hx.Compat.truthy(curNote > 0))
             {
                 curCombo += 1;
             }
-            else if (curNote <= 0)
+            else if (as3hx.Compat.truthy(curNote <= 0))
             {
                 curCombo = 0;
             }
-            if (curCombo > maxCombo)
+            if (as3hx.Compat.truthy(curCombo > maxCombo))
             {
                 maxCombo = curCombo;
             }
@@ -408,34 +408,34 @@ class GameResults extends MenuPanel
      * Handles all UI events, both mouse and keyboard.
      * @param e
      */
-    private function eventHandler(e : Dynamic = null) : Void
+    private function eventHandler(e                       : Dynamic= null) : Void
     {
-        var target : DisplayObject = e.target;
+        var target                       : Dynamic= e.target;
         
         // Don't do anything with popups open.
-        if (_gvars.gameMain.current_popup != null)
+        if (as3hx.Compat.truthy(_gvars.gameMain.current_popup != null))
         {
             return;
         }
         
         // Handle Key events and click in the same function
-        if (e.type == "keyDown")
+        if (as3hx.Compat.truthy(e.type == "keyDown"))
         {
             target = null;
-            var keyCode : Int = e.keyCode;
-            if ((keyCode == _gvars.playerUser.keyLeft || keyCode == Keyboard.LEFT) && navPrev.visible)
+            var keyCode                       : Dynamic= e.keyCode;
+            if (as3hx.Compat.truthy((keyCode == _gvars.playerUser.keyLeft || keyCode == Keyboard.LEFT) && navPrev.visible))
             {
                 target = navPrev;
             }
-            else if ((keyCode == _gvars.playerUser.keyRight || keyCode == Keyboard.RIGHT) && navNext.visible)
+            else if (as3hx.Compat.truthy((keyCode == _gvars.playerUser.keyRight || keyCode == Keyboard.RIGHT) && navNext.visible))
             {
                 target = navNext;
             }
-            else if (keyCode == _gvars.playerUser.keyRestart)
+            else if (as3hx.Compat.truthy(keyCode == _gvars.playerUser.keyRestart))
             {
                 target = navReplay;
             }
-            else if (keyCode == _gvars.playerUser.keyQuit)
+            else if (as3hx.Compat.truthy(keyCode == _gvars.playerUser.keyQuit))
             {
                 target = navMenu;
                 stage.removeEventListener(KeyboardEvent.KEY_DOWN, eventHandler);
@@ -443,51 +443,51 @@ class GameResults extends MenuPanel
         }
         
         
-        if (target == null)
+        if (as3hx.Compat.truthy(target == null))
         {
             return;
         }
         
         // Based on target
-        if (target == navSaveReplay)
+        if (as3hx.Compat.truthy(target == navSaveReplay))
         {
             _score.saveServerReplay(result);
         }
-        else if (target == navScreenShot)
+        else if (as3hx.Compat.truthy(target == navScreenShot))
         {
             navScreenShot.purgeHoverSprite();
-            if (e.ctrlKey)
+            if (as3hx.Compat.truthy(e.ctrlKey))
             {
                 _gvars.saveScreenshotToClipboard();
             }
             else
             {
-                var ext : String = "";
-                if (resultIndex >= 0)
+                var ext                       : Dynamic= "";
+                if (as3hx.Compat.truthy(resultIndex >= 0))
                 {
                     ext = result.screenshot_path;
                 }
                 _gvars.takeScreenShot(ext);
             }
         }
-        else if (target == navPrev)
+        else if (as3hx.Compat.truthy(target == navPrev))
         {
             displayGameResult(resultIndex - 1);
         }
-        else if (target == navNext)
+        else if (as3hx.Compat.truthy(target == navNext))
         {
             displayGameResult(resultIndex + 1);
         }
-        else if (target == navReplay)
+        else if (as3hx.Compat.truthy(target == navReplay))
         {
-            var skipload : Bool = (songResults.length == 1 && songResults[0].song && songResults[0].song.isLoaded);
+            var skipload                       : Dynamic= (songResults.length == 1 && songResults[0].song && songResults[0].song.isLoaded);
             
-            if (!_gvars.options.replay)
+            if (as3hx.Compat.truthy(!_gvars.options.replay))
             {
                 _gvars.options.fill();
             }
             
-            if (skipload)
+            if (as3hx.Compat.truthy(skipload))
             {
                 _gvars.songRestarts++;
                 switchTo(GameMenu.GAME_PLAY);
@@ -498,35 +498,35 @@ class GameResults extends MenuPanel
                 switchTo(GameMenu.GAME_LOADING);
             }
         }
-        else if (target == navRandomSong)
+        else if (as3hx.Compat.truthy(target == navRandomSong))
         {
-            var songList : Array<Dynamic> = _playlist.playList;
-            var selectedSong : Dynamic;
+            var songList                       : Dynamic= _playlist.playList;
+            var selectedSong                       : Dynamic= null;
             
             //Check for filters and filter the songs list
-            if (_gvars.activeFilter != null)
+            if (as3hx.Compat.truthy(_gvars.activeFilter != null))
             {
-                var filteredSongInfos : Array<SongInfo>;
-                filteredSongInfos = _playlist.indexList.filter(function(item : SongInfo, index : Int, vec : Array<SongInfo>) : Bool
+                var filteredSongInfos                       : Dynamic= null;
+                filteredSongInfos = _playlist.indexList.filter(function(item                       : Dynamic, index                       : Dynamic, vec                       : Dynamic) : Bool
                                 {
                                     return _gvars.activeFilter.process(item, _gvars.activeUser);
                                 });
                 
                 songList = [];
-                for (songInfo in filteredSongInfos)
+                for (songInfo in as3hx.Compat.iter(filteredSongInfos))
                 {
                     songList.push(songInfo);
                 }
             }
             
             // Filter to only Playable Songs
-            songList = songList.filter(function(item : SongInfo, index : Int, array : Array<Dynamic>) : Bool
+            songList = songList.filter(function(item                       : Dynamic, index                       : Dynamic, array                       : Dynamic) : Bool
                             {
                                 return _gvars.checkSongAccess(item) == GlobalVariables.SONG_ACCESS_PLAYABLE;
                             });
             
             // Check for at least 1 possible playable song.
-            if (songList.length > 0)
+            if (as3hx.Compat.truthy(songList.length > 0))
             {
                 selectedSong = songList[Math.floor(Math.random() * (songList.length - 1))];
                 _gvars.songQueue.push(selectedSong);
@@ -535,24 +535,24 @@ class GameResults extends MenuPanel
                 switchTo(Main.GAME_PLAY_PANEL);
             }
         }
-        else if (target == navOptions)
+        else if (as3hx.Compat.truthy(target == navOptions))
         {
             addPopup(Main.POPUP_OPTIONS);
         }
-        else if (target == navHighscores)
+        else if (as3hx.Compat.truthy(target == navHighscores))
         {
-            if (resultIndex >= 0)
+            if (as3hx.Compat.truthy(resultIndex >= 0))
             {
                 addPopup(new PopupHighscores(this, result.songInfo));
             }
         }
-        else if (target == navMenu)
+        else if (as3hx.Compat.truthy(target == navMenu))
         {
             switchTo(Main.GAME_MENU_PANEL);
         }
-        else if (target == navRating)
+        else if (as3hx.Compat.truthy(target == navRating))
         {
-            if (resultIndex >= 0)
+            if (as3hx.Compat.truthy(resultIndex >= 0))
             {
                 _gvars.gameMain.addPopup(new PopupSongNotes(this, result.songInfo));
             }

@@ -4,22 +4,22 @@ import classes.replay.Replay;
 
 class SongPreview extends Replay
 {
-    public function new(song_id : Int)
+    public function new(song_id                              : Dynamic)
     {
         super(song_id);
         this.level = song_id;
     }
     
-    public function setupSongPreview(songData : Dynamic = null) : Void
+    public function setupSongPreview(songData                              : Dynamic= null) : Void
     {
-        var _gvars : GlobalVariables = GlobalVariables.instance;
+        var _gvars                              : Dynamic= GlobalVariables.instance;
         
-        if (songData == null)
+        if (as3hx.Compat.truthy(songData == null))
         {
             songData = Playlist.instanceCanon.playList[this.level];
         }
         
-        if (songData == null)
+        if (as3hx.Compat.truthy(songData == null))
         {
             return;
         }

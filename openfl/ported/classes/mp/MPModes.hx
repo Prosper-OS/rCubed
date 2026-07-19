@@ -4,7 +4,7 @@ import classes.Language;
 
 class MPModes
 {
-    private static var _lang : Language = Language.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
     public static function getTeamModes() : Array<Dynamic>
     {
@@ -21,7 +21,7 @@ class MPModes
     
     public static function getMaxPlayers() : Array<Dynamic>
     {
-        var out : Array<Dynamic> = [];
+        var out                             : Dynamic= [];
         for (i in 1...10)
         {
             out[out.length] = i;
@@ -31,7 +31,7 @@ class MPModes
     
     public static function getTeams() : Array<Dynamic>
     {
-        var out : Array<Dynamic> = [];
+        var out                             : Dynamic= [];
         for (i in 2...5)
         {
             out[out.length] = i;
@@ -41,7 +41,7 @@ class MPModes
     
     public static function getTeamMaxPlayers() : Array<Dynamic>
     {
-        var out : Array<Dynamic> = [];
+        var out                             : Dynamic= [];
         for (i in 1...5)
         {
             out[out.length] = i;

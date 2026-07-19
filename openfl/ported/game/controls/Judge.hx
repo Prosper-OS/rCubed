@@ -16,33 +16,33 @@ import game.GameOptions;
 
 class Judge extends GameControl
 {
-    private var options : GameOptions;
-    private var indexes : Dynamic = Judge_Tweens.judge_indexes;
-    private var labelDesc : Array<Dynamic> = [];
-    private var field : TextField;
-    private var freeze : Bool = false;
+    private var options                       : Dynamic;
+    private var indexes                       : Dynamic= JudgeTweens.judge_indexes;
+    private var labelDesc                       : Dynamic= [];
+    private var field                       : Dynamic;
+    private var freeze                       : Dynamic= false;
     
-    private var lastScore : Float = 100;
-    private var frame : Int = 0;
-    private var subframe : Float = 0;
-    private var lastTime : Float = 0;
-    private var sX : Float = 0;
+    private var lastScore                       : Dynamic= 100;
+    private var frame                       : Dynamic= 0;
+    private var subframe                       : Dynamic= 0;
+    private var lastTime                       : Dynamic= 0;
+    private var sX                       : Dynamic= 0;
     
-    private var speedScale : Float = 1;
+    private var speedScale                       : Dynamic= 1;
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
         
         this.options = options;
         
-        if (!this.options.displayJudgeAnimations)
+        if (as3hx.Compat.truthy(!this.options.displayJudgeAnimations))
         {
-            indexes = Judge_Tweens.judge_indexes_static;
+            indexes = JudgeTweens.judge_indexes_static;
         }
         
         speedScale = this.options.judgeSpeed;
@@ -72,7 +72,7 @@ class Judge extends GameControl
                     title : "MISS!"
                 };
         
-        var textFormat : TextFormat = new TextFormat(Fonts.AACHEN_LIGHT, 42 * options.judgeScale, 0xffffff, true);
+        var textFormat                       : Dynamic= new TextFormat(Fonts.AACHEN_LIGHT, as3hx.Compat.parseInt(42 * options.judgeScale), 0xffffff, true);
         
         field = new TextField();
         field.defaultTextFormat = textFormat;
@@ -110,11 +110,11 @@ class Judge extends GameControl
         this.visible = false;
     }
     
-    public function showJudge(newScore : Int, doFreeze : Bool = false) : Void
+    public function showJudge(newScore                       : Dynamic, doFreeze                       : Dynamic= false) : Void
     // Hide Perfect/Amazing Judge
     {
         
-        if (!options.isEditor && newScore >= 50 && !options.displayPerfect)
+        if (as3hx.Compat.truthy(!options.isEditor && newScore >= 50 && !options.displayPerfect))
         {
             return;
         }
@@ -132,13 +132,13 @@ class Judge extends GameControl
         updateDisplay();
     }
     
-    public function updateJudge(e : Event) : Void
+    public function updateJudge(e                       : Dynamic) : Void
     {
-        if (!freeze && this.alpha > 0)
+        if (as3hx.Compat.truthy(!freeze && this.alpha > 0))
         {
-            var curTime : Float = Math.round(haxe.Timer.stamp() * 1000);
+            var curTime                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
             subframe += ((curTime - lastTime) / 30) * speedScale;  // Animation keys are 30fps.  
-            while (as3hx.Compat.parseInt(subframe) > frame)
+            while (as3hx.Compat.truthy(as3hx.Compat.parseInt(subframe) > frame))
             {
                 frame++;
                 updateDisplay();
@@ -148,23 +148,23 @@ class Judge extends GameControl
         }
     }
     
-    public function getTextBounds(targetSpace : DisplayObject) : Rectangle
+    public function getTextBounds(targetSpace                       : Dynamic) : Rectangle
     {
-        if (!visible || alpha <= 0.02 || !field.visible || field.text == "")
+        if (as3hx.Compat.truthy(!visible || alpha <= 0.02 || !field.visible || field.text == ""))
         {
             return null;
         }
         
-        var bounds : Rectangle;
+        var bounds                       : Dynamic= null;
         for (i in 0...field.length)
         {
-            var charBounds : Rectangle = field.getCharBoundaries(i);
-            if (charBounds == null)
+            var charBounds                       : Dynamic= field.getCharBoundaries(i);
+            if (as3hx.Compat.truthy(charBounds == null))
             {
                 continue;
             }
             
-            if (bounds != null)
+            if (as3hx.Compat.truthy(bounds != null))
             {
                 bounds = bounds.union(charBounds);
             }
@@ -174,14 +174,14 @@ class Judge extends GameControl
             }
         }
         
-        if (bounds == null)
+        if (as3hx.Compat.truthy(bounds == null))
         {
             return field.getBounds((targetSpace != null) ? targetSpace : this);
         }
         
-        var topLeft : Point = field.localToGlobal(new Point(bounds.left, bounds.top));
-        var bottomRight : Point = field.localToGlobal(new Point(bounds.right, bounds.bottom));
-        if (targetSpace != null)
+        var topLeft                       : Dynamic= field.localToGlobal(new Point(bounds.left, bounds.top));
+        var bottomRight                       : Dynamic= field.localToGlobal(new Point(bounds.right, bounds.bottom));
+        if (as3hx.Compat.truthy(targetSpace != null))
         {
             topLeft = targetSpace.globalToLocal(topLeft);
             bottomRight = targetSpace.globalToLocal(bottomRight);
@@ -193,14 +193,14 @@ class Judge extends GameControl
     
     private function updateDisplay() : Void
     {
-        if (freeze && frame > 0)
+        if (as3hx.Compat.truthy(freeze && frame > 0))
         {
             return;
         }
         
-        if (Reflect.field(Reflect.field(indexes, Std.string(lastScore)), Std.string(frame)) != null)
+        if (as3hx.Compat.truthy(Reflect.field(as3hx.Compat.field(indexes, lastScore), Std.string(frame)) != null))
         {
-            var i : Array<Dynamic> = Reflect.field(Reflect.field(indexes, Std.string(lastScore)), Std.string(frame));
+            var i                       : Dynamic= Reflect.field(as3hx.Compat.field(indexes, lastScore), Std.string(frame));
             
             field.x = sX + i[1];
             field.y = (i[2] - 30);
@@ -208,14 +208,14 @@ class Judge extends GameControl
             this.scaleY = i[4];
             this.alpha = i[5];
             
-            if (freeze)
+            if (as3hx.Compat.truthy(freeze))
             {
                 return;
             }
             
             // Tween
-            var next : Array<Dynamic> = Reflect.field(Reflect.field(indexes, Std.string(lastScore)), Std.string(frame + i[6]));  // Next Frame  
-            if (i[0] > 0 && next != null)
+            var next                       : Dynamic= Reflect.field(as3hx.Compat.field(indexes, lastScore), Std.string(frame + i[6]));  // Next Frame  
+            if (as3hx.Compat.truthy(i[0] > 0 && next != null))
             {
                 TweenLite.to(this, i[0] / speedScale, {
                             scaleX : next[3],
@@ -237,7 +237,7 @@ class Judge extends GameControl
     
     override private function get_editorFlags() : Int
     {
-        return as3hx.Compat.parseInt(FLAG_POSITION | FLAG_ROTATE | FLAG_OPACITY);
+        return as3hx.Compat.parseInt(GameControl.FLAG_POSITION | GameControl.FLAG_ROTATE | GameControl.FLAG_OPACITY);
     }
 }
 

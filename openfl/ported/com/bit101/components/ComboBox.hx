@@ -41,33 +41,33 @@ import openfl.geom.Rectangle;
 
 class ComboBox extends Component
 {
-    public var selectedIndex(get, set) : Int;
-    public var selectedItem(get, set) : Dynamic;
-    public var selectedItemByData(never, set) : Dynamic;
-    public var listItemHeight(get, set) : Float;
-    public var openPosition(get, set) : String;
-    public var defaultLabel(get, set) : String;
-    public var numVisibleItems(get, set) : Int;
-    public var items(get, set) : Array<Dynamic>;
-    public var listItemClass(get, set) : Class<Dynamic>;
-    public var alternateRows(get, set) : Bool;
-    public var autoHideScrollBar(get, set) : Bool;
-    public var isOpen(get, never) : Bool;
-    public var fontSize(never, set) : Int;
+    public var selectedIndex(get, set)                            : Dynamic;
+    public var selectedItem(get, set)                            : Dynamic;
+    public var selectedItemByData(never, set)                            : Dynamic;
+    public var listItemHeight(get, set)                            : Dynamic;
+    public var openPosition(get, set)                            : Dynamic;
+    public var defaultLabel(get, set)                            : Dynamic;
+    public var numVisibleItems(get, set)                            : Dynamic;
+    public var items(get, set)                            : Dynamic;
+    public var listItemClass(get, set)                            : Dynamic;
+    public var alternateRows(get, set)                            : Dynamic;
+    public var autoHideScrollBar(get, set)                            : Dynamic;
+    public var isOpen(get, never)                            : Dynamic;
+    public var fontSize(never, set)                            : Dynamic;
 
-    public static inline var TOP : String = "top";
-    public static inline var BOTTOM : String = "bottom";
+    public static inline var TOP                            : Dynamic= "top";
+    public static inline var BOTTOM                            : Dynamic= "bottom";
     
-    private var _defaultLabel : String = "";
-    private var _items : Array<Dynamic>;
-    private var _labelButton : PushButton;
-    private var _divider : Sprite;
-    private var _triangle : IconLeft;
-    private var _list : List;
-    private var _numVisibleItems : Int = 6;
-    private var _open : Bool = false;
-    private var _openPosition : String = BOTTOM;
-    private var _stage : Stage;
+    public var _defaultLabel                            : Dynamic= "";
+    public var _items                            : Dynamic;
+    public var _labelButton                            : Dynamic;
+    public var _divider                            : Dynamic;
+    public var _triangle                            : Dynamic;
+    public var _list                            : Dynamic;
+    public var _numVisibleItems                            : Dynamic= 6;
+    public var _open                            : Dynamic= false;
+    public var _openPosition                            : Dynamic= BOTTOM;
+    public var _stage                            : Dynamic;
     
     
     /**
@@ -78,7 +78,7 @@ class ComboBox extends Component
      * @param defaultLabel The label to show when no item is selected.
      * @param items An array of items to display in the list. Either strings or objects with label property.
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, defaultLabel : String = "", items : Array<Dynamic> = null)
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, defaultLabel                            : Dynamic= "", items                            : Dynamic= null)
     {
         _defaultLabel = defaultLabel;
         _items = items;
@@ -90,7 +90,7 @@ class ComboBox extends Component
     /**
      * Initilizes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         setSize(100, 22);
@@ -100,14 +100,14 @@ class ComboBox extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         super.addChildren();
         _list = new List(null, 0, 0, _items);
         _list.autoHideScrollBar = true;
         _list.addEventListener(Event.SELECT, onSelect);
         
-        if (_items != null)
+        if (as3hx.Compat.truthy(_items != null))
         {
             numVisibleItems = Math.min(6, Math.max(1, _items.length));
         }
@@ -129,17 +129,17 @@ class ComboBox extends Component
     /**
      * Determines what to use for the main button label and sets it.
      */
-    private function setLabelButtonLabel() : Void
+    public function setLabelButtonLabel() : Void
     {
-        if (selectedItem == null)
+        if (as3hx.Compat.truthy(selectedItem == null))
         {
             _labelButton.label = _defaultLabel;
         }
-        else if (Std.is(selectedItem, String))
+        else if (as3hx.Compat.truthy(Std.is(selectedItem, String)))
         {
             _labelButton.label = Std.string(selectedItem);
         }
-        else if (selectedItem.exists("label") && Std.is(selectedItem.label, String))
+        else if (as3hx.Compat.truthy(selectedItem.exists("label") && Std.is(selectedItem.label, String)))
         {
             _labelButton.label = selectedItem.label;
         }
@@ -152,9 +152,9 @@ class ComboBox extends Component
     /**
      * Removes the list from the stage.
      */
-    private function removeList() : Void
+    public function removeList() : Void
     {
-        if (_stage.contains(_list))
+        if (as3hx.Compat.truthy(_stage.contains(_list)))
         {
             _stage.removeChild(_list);
         }
@@ -191,7 +191,7 @@ class ComboBox extends Component
      * Adds an item to the list.
      * @param item The item to add. Can be a string or an object containing a string property named label.
      */
-    public function addItem(item : Dynamic) : Void
+    public function addItem(item                            : Dynamic) : Void
     {
         _list.addItem(item);
     }
@@ -201,7 +201,7 @@ class ComboBox extends Component
      * @param item The item to add. Can be a string or an object containing a string property named label.
      * @param index The index at which to add the item.
      */
-    public function addItemAt(item : Dynamic, index : Int) : Void
+    public function addItemAt(item                            : Dynamic, index                            : Dynamic) : Void
     {
         _list.addItemAt(item, index);
     }
@@ -210,7 +210,7 @@ class ComboBox extends Component
      * Removes the referenced item from the list.
      * @param item The item to remove. If a string, must match the item containing that string. If an object, must be a reference to the exact same object.
      */
-    public function removeItem(item : Dynamic) : Void
+    public function removeItem(item                            : Dynamic) : Void
     {
         _list.removeItem(item);
     }
@@ -219,7 +219,7 @@ class ComboBox extends Component
      * Removes the item from the list at the specified index
      * @param index The index of the item to remove.
      */
-    public function removeItemAt(index : Int) : Void
+    public function removeItemAt(index                            : Dynamic) : Void
     {
         _list.removeItemAt(index);
     }
@@ -240,13 +240,13 @@ class ComboBox extends Component
     /**
      * Called when one of the top buttons is pressed. Either opens or closes the list.
      */
-    private function onDropDown(event : MouseEvent) : Void
+    public function onDropDown(event                            : Dynamic) : Void
     {
         _open = !_open;
-        if (_open)
+        if (as3hx.Compat.truthy(_open))
         {
-            var point : Point = new Point();
-            if (_openPosition == BOTTOM)
+            var point                            : Dynamic= new Point();
+            if (as3hx.Compat.truthy(_openPosition == BOTTOM))
             {
                 point.y = _height;
             }
@@ -257,7 +257,7 @@ class ComboBox extends Component
             point = this.localToGlobal(point);
             
             // check for off stage
-            if (_openPosition == BOTTOM && (point.y + (_numVisibleItems * _list.listItemHeight)) > _stage.stageHeight)
+            if (as3hx.Compat.truthy(_openPosition == BOTTOM && (point.y + (_numVisibleItems * _list.listItemHeight)) > _stage.stageHeight))
             {
                 point.x = 0;
                 point.y = -_numVisibleItems * _list.listItemHeight;
@@ -278,15 +278,15 @@ class ComboBox extends Component
     /**
      * Called when the mouse is clicked somewhere outside of the combo box when the list is open. Closes the list.
      */
-    private function onStageClick(event : MouseEvent) : Void
+    public function onStageClick(event                            : Dynamic) : Void
     // ignore clicks within buttons or list
     {
         
-        if (event.target == _labelButton)
+        if (as3hx.Compat.truthy(event.target == _labelButton))
         {
             return;
         }
-        if (new Rectangle(_list.x, _list.y, _list.width, _list.height).contains(event.stageX, event.stageY))
+        if (as3hx.Compat.truthy(new Rectangle(_list.x, _list.y, _list.width, _list.height).contains(event.stageX, event.stageY)))
         {
             return;
         }
@@ -298,11 +298,11 @@ class ComboBox extends Component
     /**
      * Called when an item in the list is selected. Displays that item in the label button.
      */
-    private function onSelect(event : Event) : Void
+    public function onSelect(event                            : Dynamic) : Void
     {
         _open = false;
         _triangle.scaleX = 0.15;
-        if (stage != null && stage.contains(_list))
+        if (as3hx.Compat.truthy(stage != null && stage.contains(_list)))
         {
             stage.removeChild(_list);
         }
@@ -313,7 +313,7 @@ class ComboBox extends Component
     /**
      * Called when the component is added to the stage.
      */
-    private function onAddedToStage(event : Event) : Void
+    public function onAddedToStage(event                            : Dynamic) : Void
     {
         _stage = stage;
     }
@@ -321,7 +321,7 @@ class ComboBox extends Component
     /**
      * Called when the component is removed from the stage.
      */
-    private function onRemovedFromStage(event : Event) : Void
+    public function onRemovedFromStage(event                            : Dynamic) : Void
     {
         removeList();
     }
@@ -333,7 +333,7 @@ class ComboBox extends Component
     /**
      * Sets / gets the index of the selected list item.
      */
-    private function set_selectedIndex(value : Int) : Int
+    private function set_selectedIndex(value                            : Dynamic) : Int
     {
         _list.selectedIndex = value;
         setLabelButtonLabel();
@@ -348,7 +348,7 @@ class ComboBox extends Component
     /**
      * Sets / gets the item in the list, if it exists.
      */
-    private function set_selectedItem(item : Dynamic) : Dynamic
+    private function set_selectedItem(item                            : Dynamic) : Dynamic
     {
         _list.selectedItem = item;
         setLabelButtonLabel();
@@ -360,7 +360,7 @@ class ComboBox extends Component
         return _list.selectedItem;
     }
     
-    private function set_selectedItemByData(item : Dynamic) : Dynamic
+    private function set_selectedItemByData(item                            : Dynamic) : Dynamic
     {
         _list.selectedItemByData = item;
         setLabelButtonLabel();
@@ -370,7 +370,7 @@ class ComboBox extends Component
     /**
      * Sets the height of each list item.
      */
-    private function set_listItemHeight(value : Float) : Float
+    private function set_listItemHeight(value                            : Dynamic) : Float
     {
         _list.listItemHeight = value;
         invalidate();
@@ -385,7 +385,7 @@ class ComboBox extends Component
     /**
      * Sets / gets the position the list will open on: top or bottom.
      */
-    private function set_openPosition(value : String) : String
+    private function set_openPosition(value                            : Dynamic) : String
     {
         _openPosition = value;
         return value;
@@ -399,7 +399,7 @@ class ComboBox extends Component
     /**
      * Sets / gets the label that will be shown if no item is selected.
      */
-    private function set_defaultLabel(value : String) : String
+    private function set_defaultLabel(value                            : Dynamic) : String
     {
         _defaultLabel = value;
         setLabelButtonLabel();
@@ -414,7 +414,7 @@ class ComboBox extends Component
     /**
      * Sets / gets the number of visible items in the drop down list. i.e. the height of the list.
      */
-    private function set_numVisibleItems(value : Int) : Int
+    private function set_numVisibleItems(value                            : Dynamic) : Int
     {
         _numVisibleItems = Math.max(1, value);
         invalidate();
@@ -429,7 +429,7 @@ class ComboBox extends Component
     /**
      * Sets / gets the list of items to be shown.
      */
-    private function set_items(value : Array<Dynamic>) : Array<Dynamic>
+    private function set_items(value                            : Dynamic) : Array<Dynamic>
     {
         _list.items = value;
         return value;
@@ -443,7 +443,7 @@ class ComboBox extends Component
     /**
      * Sets / gets the class used to render list items. Must extend ListItem.
      */
-    private function set_listItemClass(value : Class<Dynamic>) : Class<Dynamic>
+    private function set_listItemClass(value                            : Dynamic) : Class<Dynamic>
     {
         _list.listItemClass = value;
         return value;
@@ -457,7 +457,7 @@ class ComboBox extends Component
     /**
      * Sets / gets whether or not every other row will be colored with the alternate color.
      */
-    private function set_alternateRows(value : Bool) : Bool
+    private function set_alternateRows(value                            : Dynamic) : Bool
     {
         _list.alternateRows = value;
         return value;
@@ -471,7 +471,7 @@ class ComboBox extends Component
     /**
      * Sets / gets whether the scrollbar will auto hide when there is nothing to scroll.
      */
-    private function set_autoHideScrollBar(value : Bool) : Bool
+    private function set_autoHideScrollBar(value                            : Dynamic) : Bool
     {
         _list.autoHideScrollBar = value;
         invalidate();
@@ -491,7 +491,7 @@ class ComboBox extends Component
         return _open;
     }
     
-    private function set_fontSize(val : Int) : Int
+    private function set_fontSize(val                            : Dynamic) : Int
     {
         _labelButton.fontSize = val;
         invalidate();

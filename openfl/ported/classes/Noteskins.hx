@@ -17,46 +17,46 @@ import game.noteskins.*;
 
 class Noteskins extends EventDispatcher
 {
-    public static var instance(get, never) : Noteskins;
-    public var data(get, never) : Dynamic;
-    public var externalNoteskins(get, never) : Array<ExternalNoteskin>;
+    public static var instance(get, never)                              : Dynamic;
+    public var data(get, never)                              : Dynamic;
+    public var externalNoteskins(get, never)                              : Dynamic;
 
-    private static var note_asset_names : Array<Dynamic> = ["blue", "red", "yellow", "green", "purple", "pink", "orange", "cyan", "white"];
-    private static var note_direction_names : Array<Dynamic> = ["D", "U", "L", "R"];
-    private static inline var TYPE_SWF : Int = 0;
-    private static inline var TYPE_BITMAP : Int = 1;
+    private static var note_asset_names                              : Dynamic= ["blue", "red", "yellow", "green", "purple", "pink", "orange", "cyan", "white"];
+    private static var note_direction_names                              : Dynamic= ["D", "U", "L", "R"];
+    private static inline var TYPE_SWF                              : Dynamic= 0;
+    private static inline var TYPE_BITMAP                              : Dynamic= 1;
     
-    public static inline var CUSTOM_NOTESKIN_DATA : String = "custom_noteskin";
-    public static inline var CUSTOM_NOTESKIN_IMPORT : String = "custom_noteskin_import";
-    public static inline var CUSTOM_NOTESKIN_FILE : String = "custom_noteskin_filename";
+    public static inline var CUSTOM_NOTESKIN_DATA                              : Dynamic= "custom_noteskin";
+    public static inline var CUSTOM_NOTESKIN_IMPORT                              : Dynamic= "custom_noteskin_import";
+    public static inline var CUSTOM_NOTESKIN_FILE                              : Dynamic= "custom_noteskin_filename";
     
-    public static inline var JSON_LOAD : String = "json_load";
-    public static inline var JSON_ERROR : String = "json_error";
+    public static inline var JSON_LOAD                              : Dynamic= "json_load";
+    public static inline var JSON_ERROR                              : Dynamic= "json_error";
     
     ///- Singleton Instance
-    private static var _instance : Noteskins = null;
-    private static var _externalNoteskins : Array<ExternalNoteskin>;
+    private static var _instance                              : Dynamic= null;
+    private static var _externalNoteskins                              : Dynamic;
     
     ///- Private Locals
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _isLoaded : Bool = false;
-    private var _isLoading : Bool = false;
-    private var _loadError : Bool = false;
+    private var _gvars                              : Dynamic= GlobalVariables.instance;
+    private var _isLoaded                              : Dynamic= false;
+    private var _isLoading                              : Dynamic= false;
+    private var _loadError                              : Dynamic= false;
     
-    private var _data : Dynamic;
-    public var lastCustomNoteskin : String;
+    private var _data                              : Dynamic;
+    public var lastCustomNoteskin                              : Dynamic;
     
-    public var totalNoteskins : Int = 0;
-    public var totalLoaded : Int = 0;
+    public var totalNoteskins                              : Dynamic= 0;
+    public var totalLoaded                              : Dynamic= 0;
     
     //******************************************************************************************//
     // Core Class Functions
     //******************************************************************************************//
     
-    public function new(en : NoteskinsSingletonEnforcer)
+    public function new(en                              : Dynamic)
     {
         super();
-        if (en == null)
+        if (as3hx.Compat.truthy(en == null))
         {
             throw cast(("Multi-Instance Blocked"), Error);
         }
@@ -64,7 +64,7 @@ class Noteskins extends EventDispatcher
     
     private static function get_instance() : Noteskins
     {
-        if (_instance == null)
+        if (as3hx.Compat.truthy(_instance == null))
         {
             _instance = new Noteskins(new NoteskinsSingletonEnforcer());
         }
@@ -97,13 +97,13 @@ class Noteskins extends EventDispatcher
     // All Noteskins loaded.
     {
         
-        if (totalNoteskins == totalLoaded && totalNoteskins > 0)
+        if (as3hx.Compat.truthy(totalNoteskins == totalLoaded && totalNoteskins > 0))
         {
             _isLoaded = true;
             this.dispatchEvent(new Event(GlobalVariables.LOAD_COMPLETE));
         }
         // No Loaded Noteskins
-        else if (totalNoteskins == 0)
+        else if (as3hx.Compat.truthy(totalNoteskins == 0))
         {
             _loadError = true;
             this.dispatchEvent(new Event(GlobalVariables.LOAD_ERROR));
@@ -122,7 +122,7 @@ class Noteskins extends EventDispatcher
         _loadError = false;
         _data = { };
         
-        var embeddedNoteskins : Array<EmbedNoteskinBase> = [new EmbedNoteskin1(), 
+        var embeddedNoteskins                              : Dynamic= [new EmbedNoteskin1(), 
                 new EmbedNoteskin2(), 
                 new EmbedNoteskin3(), 
                 new EmbedNoteskin4(), 
@@ -134,7 +134,7 @@ class Noteskins extends EventDispatcher
                 new EmbedNoteskin10()
         ];
         
-        for (embedNoteskin in embeddedNoteskins)
+        for (embedNoteskin in as3hx.Compat.iter(embeddedNoteskins))
         {
             Reflect.setField(_data, Std.string(embedNoteskin.getID()), embedNoteskin.getData());
             Reflect.setField(Reflect.field(_data, Std.string(embedNoteskin.getID())), "notes", { });
@@ -163,13 +163,13 @@ class Noteskins extends EventDispatcher
      * @param noteskin
      * @return
      */
-    public function getInfo(noteskin : Int) : Dynamic
+    public function getInfo(noteskin                              : Dynamic) : Dynamic
     {
-        if (Reflect.field(_data, Std.string(noteskin)) != null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(_data, noteskin) != null))
         {
-            return Reflect.field(_data, Std.string(noteskin));
+            return as3hx.Compat.field(_data, noteskin);
         }
-        return Reflect.field(_data, Std.string(1));
+        return as3hx.Compat.field(_data, 1);
     }
     
     /**
@@ -179,25 +179,25 @@ class Noteskins extends EventDispatcher
      * @param direction
      * @return
      */
-    public function getNote(noteskin : Int, color : String, direction : String) : Sprite
+    public function getNote(noteskin                              : Dynamic, color                              : Dynamic, direction                              : Dynamic) : Sprite
     {
         try {
-if (Reflect.field(_data, Std.string(noteskin)) == null)
+if (as3hx.Compat.truthy(as3hx.Compat.field(_data, noteskin) == null))
             {
                 noteskin = 1;
             }
             
-            if (RenderQuality.useHiResDefaultNotes(noteskin))
+            if (as3hx.Compat.truthy(RenderQuality.useHiResDefaultNotes(noteskin)))
             {
-                return new HiResArrowNote(color, Reflect.field(Reflect.field(_data, Std.string(noteskin)), "width"), Reflect.field(Reflect.field(_data, Std.string(noteskin)), "height"));
+                return new HiResArrowNote(color, Reflect.field(as3hx.Compat.field(_data, noteskin), "width"), Reflect.field(as3hx.Compat.field(_data, noteskin), "height"));
             }
             
-            if (Reflect.field(Reflect.field(_data, Std.string(noteskin)), "type") == TYPE_BITMAP)
+            if (as3hx.Compat.truthy(Reflect.field(as3hx.Compat.field(_data, noteskin), "type") == TYPE_BITMAP))
             {
-                return drawBitmapNote(Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, Std.string(noteskin)), "notes"), color), direction));
+                return drawBitmapNote(Reflect.field(Reflect.field(Reflect.field(as3hx.Compat.field(_data, noteskin), "notes"), color), direction));
             }
             
-            var note : Sprite = new Data()[noteskin]["notes"][color][direction];
+            var note                              : Dynamic= Type.createInstance(Reflect.field(Reflect.field(Reflect.field(as3hx.Compat.field(_data, noteskin), "notes"), color), direction), []);
             RenderQuality.cacheDisplayObject(note);
             return note;
         }
@@ -217,25 +217,25 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * @param direction
      * @return
      */
-    public function getReceptor(noteskin : Int, direction : String) : MovieClip
+    public function getReceptor(noteskin                              : Dynamic, direction                              : Dynamic) : MovieClip
     {
         try {
-if (Reflect.field(_data, Std.string(noteskin)) == null)
+if (as3hx.Compat.truthy(as3hx.Compat.field(_data, noteskin) == null))
             {
                 noteskin = 1;
             }
             
-            if (RenderQuality.useHiResDefaultNotes(noteskin))
+            if (as3hx.Compat.truthy(RenderQuality.useHiResDefaultNotes(noteskin)))
             {
-                return new HiResGameReceptor(direction, Reflect.field(Reflect.field(_data, Std.string(noteskin)), "width"), Reflect.field(Reflect.field(_data, Std.string(noteskin)), "height"));
+                return new HiResGameReceptor(direction, Reflect.field(as3hx.Compat.field(_data, noteskin), "width"), Reflect.field(as3hx.Compat.field(_data, noteskin), "height"));
             }
             
-            if (Reflect.field(Reflect.field(_data, Std.string(noteskin)), "type") == TYPE_BITMAP)
+            if (as3hx.Compat.truthy(Reflect.field(as3hx.Compat.field(_data, noteskin), "type") == TYPE_BITMAP))
             {
-                return new GameReceptor(direction, Reflect.field(Reflect.field(Reflect.field(_data, Std.string(noteskin)), "receptor"), direction));
+                return new GameReceptor(direction, Reflect.field(Reflect.field(as3hx.Compat.field(_data, noteskin), "receptor"), direction));
             }
             
-            var receptor : MovieClip = new Data()[noteskin]["receptor"][direction];
+            var receptor                              : Dynamic= Type.createInstance(Reflect.field(Reflect.field(as3hx.Compat.field(_data, noteskin), "receptor"), direction), []);
             RenderQuality.cacheDisplayObject(receptor);
             return receptor;
         }
@@ -250,9 +250,9 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * @param bmd BitmapData
      * @return
      */
-    private function drawBitmapNote(bmd : BitmapData) : Sprite
+    private function drawBitmapNote(bmd                              : Dynamic) : Sprite
     {
-        var n : Sprite = new Sprite();
+        var n                              : Dynamic= new Sprite();
         n.graphics.beginBitmapFill(bmd, RenderQuality.bitmapFillMatrix(), false, true);
         n.graphics.drawRect(0, 0, bmd.width / RenderQuality.SUPERSAMPLE_SCALE, bmd.height / RenderQuality.SUPERSAMPLE_SCALE);
         n.graphics.endFill();
@@ -268,9 +268,9 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * @param noteskin
      * @return
      */
-    public function isValid(noteskin : Int) : Bool
+    public function isValid(noteskin                              : Dynamic) : Bool
     {
-        return Reflect.field(_data, Std.string(noteskin)) != null;
+        return as3hx.Compat.field(_data, noteskin) != null;
     }
     
     //******************************************************************************************//
@@ -281,14 +281,14 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * Begin loading of a SWF noteskin and marks the type for this noteskin as TYPE_SWF.
      * @param noteID
      */
-    private function loadNoteskinSWF(noteID : Int, bytes : ByteArray) : Void
+    private function loadNoteskinSWF(noteID                              : Dynamic, bytes                              : Dynamic) : Void
     {
-        var _swfloader : DynamicLoader = new DynamicLoader();
+        var _swfloader                              : Dynamic= new DynamicLoader();
         _swfloader.contentLoaderInfo.addEventListener(Event.COMPLETE, noteskinSWFLoadComplete);
         _swfloader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, noteskinSWFLoadError);
         _swfloader.loadBytes(bytes, AirContext.getLoaderContext());
         _swfloader.ID = noteID;
-        Reflect.setField(Reflect.field(_data, Std.string(noteID)), "type", TYPE_SWF);
+        Reflect.setField(as3hx.Compat.field(_data, noteID), "type", TYPE_SWF);
         totalNoteskins++;
     }
     
@@ -296,24 +296,24 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * Event.COMPLETE for SWF loading complete.
      * @param e
      */
-    private function noteskinSWFLoadComplete(e : Event = null) : Void
+    private function noteskinSWFLoadComplete(e                              : Dynamic= null) : Void
     {
-        var loader : DynamicLoader = e.target.loader;
-        var noteID : String = loader.ID;
+        var loader                              : Dynamic= e.target.loader;
+        var noteID                              : Dynamic= loader.ID;
         
         // Remove Listeners
         loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, noteskinSWFLoadComplete);
         loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, noteskinSWFLoadError);
         
         // Create Objects
-        for (asset_name in note_asset_names)
+        for (asset_name in as3hx.Compat.iter(note_asset_names))
         {
             Reflect.setField(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name), getAssetFromTarget(e.target, "assets.noteskin::note_" + asset_name));
         }
         Reflect.setField(Reflect.field(_data, noteID), "receptor", getAssetFromTarget(e.target, "assets.noteskin::receptor"));
         
         // Verify or Remove
-        if (verifyNoteSkin(noteID))
+        if (as3hx.Compat.truthy(verifyNoteSkin(noteID)))
         {
             totalLoaded++;
         }
@@ -330,9 +330,9 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * IOErrorEvent.IO_ERROR for SWF loading failure.
      * @param e
      */
-    private function noteskinSWFLoadError(e : Event = null) : Void
+    private function noteskinSWFLoadError(e                              : Dynamic= null) : Void
     {
-        var loader : DynamicLoader = e.target.loader;
+        var loader                              : Dynamic= e.target.loader;
         
         // Remove Listeners
         loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, noteskinSWFLoadComplete);
@@ -352,7 +352,7 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * @param assetName
      * @return
      */
-    private function getAssetFromTarget(loader : Dynamic, assetName : String) : Dynamic
+    private function getAssetFromTarget(loader                              : Dynamic, assetName                              : Dynamic) : Dynamic
     {
         try
         {
@@ -374,17 +374,17 @@ if (Reflect.field(_data, Std.string(noteskin)) == null)
      * Begin loading of a bitmap noteskin and marks the type for this noteskin as TYPE_BITMAP.
      * @param noteID
      */
-    private function loadNoteskinBitmap(noteID : String) : Void
+    private function loadNoteskinBitmap(noteID                              : Dynamic) : Void
     {
-        if (Reflect.field(Reflect.field(_data, noteID), "data") == null)
+        if (as3hx.Compat.truthy(Reflect.field(Reflect.field(_data, noteID), "data") == null))
         {
             return;
         }
         
         Reflect.setField(Reflect.field(_data, noteID), "type", TYPE_BITMAP);
         
-        var mbpString : String = Reflect.field(Reflect.field(_data, noteID), "data");
-        var imgLoader : DynamicLoader = new DynamicLoader();
+        var mbpString                              : Dynamic= Reflect.field(Reflect.field(_data, noteID), "data");
+        var imgLoader                              : Dynamic= new DynamicLoader();
         imgLoader.ID = noteID;
         totalNoteskins++;
         
@@ -405,19 +405,19 @@ totalNoteskins--;
      * Event.COMPLETE for bitmap loading complete.
      * @param e
      */
-    private function e_bitmapLoad(e : Event) : Void
+    private function e_bitmapLoad(e                              : Dynamic) : Void
     {
-        var loader : DynamicLoader = e.currentTarget.loader;
+        var loader                              : Dynamic= e.currentTarget.loader;
         loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, e_bitmapFail);
         loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, e_bitmapLoad);
         
-        var noteID : String = loader.ID;
-        var noteskin_struct : Dynamic = null;
+        var noteID                              : Dynamic= loader.ID;
+        var noteskin_struct                              : Dynamic= null;
         
         // Get Noteskin Structure
-        if (Reflect.field(Reflect.field(_data, noteID), "rects") != null)
+        if (as3hx.Compat.truthy(Reflect.field(Reflect.field(_data, noteID), "rects") != null))
         {
-            if (Std.is(Reflect.field(Reflect.field(_data, noteID), "rects"), String))
+            if (as3hx.Compat.truthy(Std.is(Reflect.field(Reflect.field(_data, noteID), "rects"), String)))
             {
                 try
                 {
@@ -434,12 +434,12 @@ totalNoteskins--;
         }
         
         // Draw Source Bitmap
-        var bmp : BitmapData = new BitmapData(loader.width, loader.height, true, 0);
+        var bmp                              : Dynamic= new BitmapData(loader.width, loader.height, true, 0);
         bmp.draw(loader);
         
         // Draw Sub-Images for Noteskin
-        var arr : Dynamic = buildFromBitmapData(bmp, noteskin_struct);
-        if (arr == null)
+        var arr                              : Dynamic= buildFromBitmapData(bmp, noteskin_struct);
+        if (as3hx.Compat.truthy(arr == null))
         {
             dispatchEvent(new Event(JSON_ERROR));
             
@@ -454,9 +454,9 @@ totalNoteskins--;
         Reflect.setField(Reflect.field(_data, noteID), "height", Reflect.field(Reflect.field(arr, "_cell"), Std.string(1)));
         Reflect.setField(Reflect.field(_data, noteID), "rotation", Reflect.field(Reflect.field(arr, "_cell"), Std.string(2)));
         
-        for (name in Reflect.fields(arr))
+        for (name in as3hx.Compat.iter(Reflect.fields(arr)))
         {
-            if (name == "receptor")
+            if (as3hx.Compat.truthy(name == "receptor"))
             {
                 Reflect.setField(Reflect.field(_data, noteID), "receptor", Reflect.field(arr, "receptor"));
             }
@@ -467,7 +467,7 @@ totalNoteskins--;
         }
         
         // Verify or Remove
-        if (verifyNoteSkin(noteID))
+        if (as3hx.Compat.truthy(verifyNoteSkin(noteID)))
         {
             dispatchEvent(new Event(JSON_LOAD));
             
@@ -490,13 +490,13 @@ totalNoteskins--;
      * IOErrorEvent.IO_ERROR for bitmap loading failure.
      * @param e
      */
-    private function e_bitmapFail(e : Event) : Void
+    private function e_bitmapFail(e                              : Dynamic) : Void
     {
-        var loader : DynamicLoader = e.currentTarget.loader;
+        var loader                              : Dynamic= e.currentTarget.loader;
         loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, e_bitmapFail);
         loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, e_bitmapLoad);
         
-        var noteID : String = loader.ID;
+        var noteID                              : Dynamic= loader.ID;
         
         //- Remove From List
         totalNoteskins--;
@@ -514,65 +514,65 @@ totalNoteskins--;
      * @param import_struct
      * @return
      */
-    public static function buildFromBitmapData(bmd : BitmapData, import_struct : Dynamic) : Dynamic
+    public static function buildFromBitmapData(bmd                              : Dynamic, import_struct                              : Dynamic) : Dynamic
     {
-        var struct : Dynamic = NoteskinsStruct.getDefaultStruct();
-        var out : Dynamic = { };
-        var cuts : Dynamic = { };
+        var struct                              : Dynamic= NoteskinsStruct.getDefaultStruct();
+        var out                              : Dynamic= { };
+        var cuts                              : Dynamic= { };
         ObjectUtil.merge(struct, import_struct);
         
-        if (import_struct == null || Reflect.field(struct, "options") == null || Reflect.field(Reflect.field(struct, "options"), "grid_dim") == null || Reflect.field(struct, "blue") == null || Reflect.field(Reflect.field(struct, "blue"), "D") == null || Reflect.field(Reflect.field(Reflect.field(struct, "blue"), "D"), "c") == null)
+        if (as3hx.Compat.truthy(import_struct == null || Reflect.field(struct, "options") == null || Reflect.field(Reflect.field(struct, "options"), "grid_dim") == null || Reflect.field(struct, "blue") == null || Reflect.field(Reflect.field(struct, "blue"), "D") == null || Reflect.field(Reflect.field(Reflect.field(struct, "blue"), "D"), "c") == null))
         {
             return null;
         }
         
-        var parsedCell : Array<Dynamic> = NoteskinsStruct.parseCellInput(Reflect.field(Reflect.field(struct, "options"), "grid_dim"), 1, 1, 20, 20);
-        var img_w : Int = bmd.width;
-        var img_h : Int = bmd.height;
-        var dim_w : Int = parsedCell[0];
-        var dim_h : Int = parsedCell[1];
-        var cell_width : Float = img_w / dim_w;
-        var cell_height : Float = img_h / dim_h;
-        var cell_rotate : Float = NoteskinsStruct.textToRotation(Reflect.field(Reflect.field(struct, "options"), "rotate"), 90);
+        var parsedCell                              : Dynamic= NoteskinsStruct.parseCellInput(Reflect.field(Reflect.field(struct, "options"), "grid_dim"), 1, 1, 20, 20);
+        var img_w                              : Dynamic= bmd.width;
+        var img_h                              : Dynamic= bmd.height;
+        var dim_w                              : Dynamic= parsedCell[0];
+        var dim_h                              : Dynamic= parsedCell[1];
+        var cell_width                              : Dynamic= img_w / dim_w;
+        var cell_height                              : Dynamic= img_h / dim_h;
+        var cell_rotate                              : Dynamic= NoteskinsStruct.textToRotation(Reflect.field(Reflect.field(struct, "options"), "rotate"), 90);
         
         Reflect.setField(out, "_cell", [cell_width, cell_height, cell_rotate]);
         
-        for (color in Reflect.fields(struct))
+        for (color in as3hx.Compat.iter(Reflect.fields(struct)))
         {
-            if (color == "options")
+            if (as3hx.Compat.truthy(color == "options"))
             {
                 continue;
             }
             
-            for (dir in Reflect.fields(Reflect.field(struct, color)))
+            for (dir in as3hx.Compat.iter(Reflect.fields(Reflect.field(struct, color))))
             {
-                if (Reflect.field(Reflect.field(Reflect.field(struct, color), dir), "c") == "")
+                if (as3hx.Compat.truthy(Reflect.field(Reflect.field(Reflect.field(struct, color), dir), "c") == ""))
                 {
                     continue;
                 }
                 
-                var note_pos : Array<Dynamic> = NoteskinsStruct.parseCellInput(Reflect.field(Reflect.field(Reflect.field(struct, color), dir), "c"));
+                var note_pos                              : Dynamic= NoteskinsStruct.parseCellInput(Reflect.field(Reflect.field(Reflect.field(struct, color), dir), "c"));
                 
-                if (Reflect.field(out, color) == null)
+                if (as3hx.Compat.truthy(Reflect.field(out, color) == null))
                 {
                     Reflect.setField(out, color, { });
                 }
                 
                 // Position outside grid.
-                if (note_pos[0] > dim_w || note_pos[1] > dim_h)
+                if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(note_pos[0]) > as3hx.Compat.parseFloat(dim_w) || as3hx.Compat.parseFloat(note_pos[1]) > as3hx.Compat.parseFloat(dim_h)))
                 {
                     continue;
                 }
                 // Get Existing Bitmap if Cords already used.
-                else if (Reflect.field(cuts, Std.string(note_pos[0] + "x" + note_pos[1])) != null)
+                else if (as3hx.Compat.truthy(as3hx.Compat.field(cuts, note_pos[0] + "x" + note_pos[1]) != null))
                 {
-                    Reflect.setField(Reflect.field(out, color), dir, Reflect.field(cuts, Std.string(note_pos[0] + "x" + note_pos[1])));
+                    Reflect.setField(Reflect.field(out, color), dir, as3hx.Compat.field(cuts, note_pos[0] + "x" + note_pos[1]));
                 }
                 else
                 {
-                    var scale : Int = RenderQuality.SUPERSAMPLE_SCALE;
-                    var note_canvas : BitmapData = new BitmapData(cell_width * scale, cell_height * scale, true, 0);
-                    var note_matrix : Matrix = new Matrix(scale, 0, 0, scale, -note_pos[0] * cell_width * scale, -note_pos[1] * cell_height * scale);
+                    var scale                              : Dynamic= RenderQuality.SUPERSAMPLE_SCALE;
+                    var note_canvas                            : Dynamic= new BitmapData(Std.int(cell_width * scale), Std.int(cell_height * scale), true, 0);
+                    var note_matrix                              : Dynamic= new Matrix(scale, 0, 0, scale, -note_pos[0] * cell_width * scale, -note_pos[1] * cell_height * scale);
                     note_canvas.draw(bmd, note_matrix, null, null, new Rectangle(0, 0, note_canvas.width, note_canvas.height), true);
                     Reflect.setField(Reflect.field(out, color), dir, note_canvas);
                     Reflect.setField(cuts, Std.string(note_pos[0] + "x" + note_pos[1]), "x");
@@ -590,44 +590,44 @@ totalNoteskins--;
      * @param noteID Note ID to check.
      * @return boolean If Valid Noteskin
      */
-    private function verifyNoteSkin(noteID : String) : Bool
+    private function verifyNoteSkin(noteID                              : Dynamic) : Bool
     // Check if this noteskin has the bare minimum requirements.
     {
         
-        if (Reflect.field(_data, noteID) == null)
+        if (as3hx.Compat.truthy(Reflect.field(_data, noteID) == null))
         {
             return false;
         }
         
         // Check Receptor
-        if (Reflect.field(Reflect.field(_data, noteID), "receptor") == null || Reflect.field(Reflect.field(Reflect.field(_data, noteID), "receptor"), "D") == null)
+        if (as3hx.Compat.truthy(Reflect.field(Reflect.field(_data, noteID), "receptor") == null || Reflect.field(Reflect.field(Reflect.field(_data, noteID), "receptor"), "D") == null))
         {
             return false;
         }
         
         // Check Blue Note
-        if (Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue") == null || Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue"), "D") == null)
+        if (as3hx.Compat.truthy(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue") == null || Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue"), "D") == null))
         {
             return false;
         }
         
         // Check Missing Notes and fill from Blue
-        for (asset_name in note_asset_names)
+        for (asset_name in as3hx.Compat.iter(note_asset_names))
         {
-            if (Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)) == null)
+            if (as3hx.Compat.truthy(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)) == null))
             {
                 Reflect.setField(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name), Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue"));
             }
             
             // Check Missing Directions and fill from Down
-            for (direction_name in note_direction_names) {
-if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), Std.string(direction_name)) == null && Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), "D") != null)
+            for (direction_name in as3hx.Compat.iter(note_direction_names)) {
+if (as3hx.Compat.truthy(Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), Std.string(direction_name)) == null && Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), "D") != null))
                 {
                     Reflect.setField(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), Std.string(direction_name), Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), "D"));
                 }
                 
                 // Fill from blue.
-                if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), Std.string(direction_name)) == null && Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue"), "D") != null)
+                if (as3hx.Compat.truthy(Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), Std.string(direction_name)) == null && Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue"), "D") != null))
                 {
                     Reflect.setField(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), Std.string(asset_name)), Std.string(direction_name), Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "notes"), "blue"), "D"));
                 }
@@ -635,9 +635,9 @@ if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "not
         }
         
         // Check Missing Receptor Directions and fill from Down
-        for (receptor_direction in note_direction_names)
+        for (receptor_direction in as3hx.Compat.iter(note_direction_names))
         {
-            if (Reflect.field(Reflect.field(Reflect.field(_data, noteID), "receptor"), Std.string(receptor_direction)) == null)
+            if (as3hx.Compat.truthy(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "receptor"), Std.string(receptor_direction)) == null))
             {
                 Reflect.setField(Reflect.field(Reflect.field(_data, noteID), "receptor"), Std.string(receptor_direction), Reflect.field(Reflect.field(Reflect.field(_data, noteID), "receptor"), "D"));
             }
@@ -647,31 +647,31 @@ if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "not
     
     public function loadCustomNoteskin() : Void
     {
-        var noteskinData : String = LocalStore.getVariable(CUSTOM_NOTESKIN_DATA, null);
-        var noteskinImport : String = LocalStore.getVariable(CUSTOM_NOTESKIN_IMPORT, null);
-        var noteskinFilename : String = LocalStore.getVariable(CUSTOM_NOTESKIN_FILE, null);
+        var noteskinData                              : Dynamic= LocalStore.getVariable(CUSTOM_NOTESKIN_DATA, null);
+        var noteskinImport                              : Dynamic= LocalStore.getVariable(CUSTOM_NOTESKIN_IMPORT, null);
+        var noteskinFilename                              : Dynamic= LocalStore.getVariable(CUSTOM_NOTESKIN_FILE, null);
         
         // Copy Data into Import Slot if coming from old version.
-        if (noteskinData != null && noteskinImport == null)
+        if (as3hx.Compat.truthy(noteskinData != null && noteskinImport == null))
         {
             Logger.debug(this, "Storing Internal Noteskin");
             LocalStore.setVariable(CUSTOM_NOTESKIN_IMPORT, noteskinData);
         }
         
         // No Data, no Custom Noteskin
-        if (noteskinData == null)
+        if (as3hx.Compat.truthy(noteskinData == null))
         {
             Logger.debug(this, "No Noteskin Data");
             return;
         }
         
         // Reload External Noteskin if exist
-        if (noteskinFilename != null)
+        if (as3hx.Compat.truthy(noteskinFilename != null))
         {
             Logger.debug(this, "Reloading External Noteskin: " + noteskinFilename);
-            var noteskinJSON : String = AirContext.readTextFile(AirContext.getAppFile(Constant.NOTESKIN_PATH).resolvePath(noteskinFilename));
+            var noteskinJSON                              : Dynamic= AirContext.readTextFile(AirContext.getAppFile(Constant.NOTESKIN_PATH).resolvePath(noteskinFilename));
             
-            if (noteskinJSON == null)
+            if (as3hx.Compat.truthy(noteskinJSON == null))
             {
                 LocalStore.deleteVariable(CUSTOM_NOTESKIN_FILE);
             }
@@ -684,23 +684,23 @@ if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "not
         loadCustomNoteskinJSON(noteskinData);
     }
     
-    public function loadCustomNoteskinJSON(data : String, noteskinID : String = "0") : Void
+    public function loadCustomNoteskinJSON(data                              : Dynamic, noteskinID                              : Dynamic= "0") : Void
     {
-        if (data != null)
+        if (as3hx.Compat.truthy(data != null))
         {
-            if (noteskinID == "0")
+            if (as3hx.Compat.truthy(noteskinID == "0"))
             {
                 lastCustomNoteskin = data;
             }
             
-            var obj : Dynamic = haxe.Json.parse(data);
+            var obj                              : Dynamic= haxe.Json.parse(data);
             Reflect.setField(obj, "id", noteskinID);
             Reflect.setField(obj, "_hidden", true);
             Reflect.setField(obj, "notes", { });
             Reflect.setField(_data, Std.string(Reflect.field(obj, "id")), obj);
             loadNoteskinBitmap(noteskinID);
         }
-        else if (Reflect.field(_data, noteskinID) != null)
+        else if (as3hx.Compat.truthy(Reflect.field(_data, noteskinID) != null))
         {
             Reflect.deleteField(_data, noteskinID);
         }
@@ -708,7 +708,7 @@ if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "not
     
     private function get_externalNoteskins() : Array<ExternalNoteskin>
     {
-        if (_externalNoteskins == null)
+        if (as3hx.Compat.truthy(_externalNoteskins == null))
         {
             loadExternalNoteskins();
         }
@@ -720,22 +720,22 @@ if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "not
     {
         _externalNoteskins = [];
         
-        var noteskinFolder : File = AirContext.getAppFile(Constant.NOTESKIN_PATH);
-        if (!noteskinFolder.exists || !noteskinFolder.isDirectory || noteskinFolder.isHidden)
+        var noteskinFolder                              : Dynamic= AirContext.getAppFile(Constant.NOTESKIN_PATH);
+        if (as3hx.Compat.truthy(!noteskinFolder.exists || !noteskinFolder.isDirectory || noteskinFolder.isHidden))
         {
             return false;
         }
         
-        var file : File;
-        var fileDataJSON : String;
-        var fileData : Dynamic;
-        var files : Array<Dynamic> = noteskinFolder.getDirectoryListing();
+        var file                              : Dynamic= null;
+        var fileDataJSON                              : Dynamic= null;
+        var fileData                              : Dynamic= null;
+        var files                              : Dynamic= noteskinFolder.getDirectoryListing();
         for (i in 0...files.length)
         {
             file = files[i];
             try
             {
-                if (file.extension != "txt")
+                if (as3hx.Compat.truthy(file.extension != "txt"))
                 {
                     continue;
                 }
@@ -743,7 +743,7 @@ if (Reflect.field(Reflect.field(Reflect.field(Reflect.field(_data, noteID), "not
                 fileDataJSON = AirContext.readTextFile(file);
                 fileData = haxe.Json.parse(fileDataJSON);
                 
-                var extNoteskin : ExternalNoteskin = new ExternalNoteskin();
+                var extNoteskin                              : Dynamic= new ExternalNoteskin();
                 extNoteskin.file = file.name;
                 extNoteskin.data = fileData;
                 extNoteskin.json = fileDataJSON;

@@ -5,10 +5,10 @@ import classes.mp.room.MPRoom;
 
 class MPCRoomInvite implements IMPCommand
 {
-    public var user : MPUser;
-    public var room : MPRoom;
+    public var user                             : Dynamic;
+    public var room                             : Dynamic;
     
-    public function new(user : MPUser, room : MPRoom)
+    public function new(user                             : Dynamic, room                             : Dynamic)
     {
         this.user = user;
         this.room = room;

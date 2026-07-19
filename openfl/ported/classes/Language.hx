@@ -12,26 +12,26 @@ import openfl.net.URLRequest;
 
 class Language extends EventDispatcher
 {
-    public static var instance(get, never) : Language;
+    public static var instance(get, never)                              : Dynamic;
 
     ///- Singleton Instance
-    private static var _instance : Language = null;
+    private static var _instance                              : Dynamic= null;
     
     ///- Private Locals
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _loader : URLLoader;
-    private var _isLoaded : Bool = false;
-    private var _isLoading : Bool = false;
-    private var _loadError : Bool = false;
+    private var _gvars                              : Dynamic= GlobalVariables.instance;
+    private var _loader                              : Dynamic;
+    private var _isLoaded                              : Dynamic= false;
+    private var _isLoading                              : Dynamic= false;
+    private var _loadError                              : Dynamic= false;
     
-    public var data : Dynamic;
-    public var indexed : Array<Dynamic>;
+    public var data                              : Dynamic;
+    public var indexed                              : Dynamic;
     
     ///- Constructor
-    public function new(en : LanguageSingletonEnforcer)
+    public function new(en                              : Dynamic)
     {
         super();
-        if (en == null)
+        if (as3hx.Compat.truthy(en == null))
         {
             throw cast(("Multi-Instance Blocked"), Error);
         }
@@ -39,7 +39,7 @@ class Language extends EventDispatcher
     
     private static function get_instance() : Language
     {
-        if (_instance == null)
+        if (as3hx.Compat.truthy(_instance == null))
         {
             _instance = new Language(new LanguageSingletonEnforcer());
         }
@@ -58,66 +58,66 @@ class Language extends EventDispatcher
     }
     
     ///- Public Functions
-    public function font(testStr : String = "") : String
+    public function font(testStr                              : Dynamic= "") : String
     {
         return (Text.isUnicode(testStr)) ? Fonts.BASE_FONT_CJK : Fonts.BASE_FONT;
     }
     
-    public function wrapFont(text : String) : String
+    public function wrapFont(text                              : Dynamic) : String
     {
         return "<font face=\"" + font(text) + "\">" + text + "</font>";
     }
     
-    public function string(id : String) : String
+    public function string(id                              : Dynamic) : String
     {
         return string2(id, (_gvars.playerUser) ? _gvars.playerUser.language : "us");
     }
     
-    public function string2(id : String, lang : String) : String
+    public function string2(id                              : Dynamic, lang                              : Dynamic) : String
     // Get Text
     {
         
-        var text : String = id;
-        if (data == null)
+        var text                              : Dynamic= id;
+        if (as3hx.Compat.truthy(data == null))
         {
         }
-        else if (Reflect.field(data, lang) != null && Reflect.field(Reflect.field(data, lang), id) != null)
+        else if (as3hx.Compat.truthy(Reflect.field(data, lang) != null && Reflect.field(Reflect.field(data, lang), id) != null))
         {
             text = Reflect.field(Reflect.field(data, lang), id);
         }
-        else if (Reflect.field(Reflect.field(data, "us"), id) != null)
+        else if (as3hx.Compat.truthy(Reflect.field(Reflect.field(data, "us"), id) != null))
         {
             text = Reflect.field(Reflect.field(data, "us"), id);
         }
-        if (data != null && text == id)
+        if (as3hx.Compat.truthy(data != null && text == id))
         {
             trace(id);
         }
         return wrapFont(text);
     }
     
-    public function stringSimple(id : String) : String
+    public function stringSimple(id                              : Dynamic) : String
     {
         return string2Simple(id, (_gvars.playerUser) ? _gvars.playerUser.language : "us");
     }
     
-    public function string2Simple(id : String, lang : String) : String
+    public function string2Simple(id                              : Dynamic, lang                              : Dynamic) : String
     // Get Text
     {
         
-        var text : String = id;
-        if (data == null)
+        var text                              : Dynamic= id;
+        if (as3hx.Compat.truthy(data == null))
         {
         }
-        else if (Reflect.field(data, lang) != null && Reflect.field(Reflect.field(data, lang), id) != null)
+        else if (as3hx.Compat.truthy(Reflect.field(data, lang) != null && Reflect.field(Reflect.field(data, lang), id) != null))
         {
             text = Reflect.field(Reflect.field(data, lang), id);
         }
-        else if (Reflect.field(Reflect.field(data, "us"), id) != null)
+        else if (as3hx.Compat.truthy(Reflect.field(Reflect.field(data, "us"), id) != null))
         {
             text = Reflect.field(Reflect.field(data, "us"), id);
         }
-        if (data != null && text == id)
+        if (as3hx.Compat.truthy(data != null && text == id))
         {
             trace(id);
         }
@@ -129,7 +129,7 @@ class Language extends EventDispatcher
     // Kill old Loading Stream
     {
         
-        if (_loader != null && _isLoading)
+        if (as3hx.Compat.truthy(_loader != null && _isLoading))
         {
             removeLoaderListeners();
             _loader.close();
@@ -141,22 +141,23 @@ class Language extends EventDispatcher
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.SITE_LANGUAGE_URL) + "?d=" + Date.now().getTime());
+        var req                              : Dynamic= new URLRequest(URLs.resolve(URLs.SITE_LANGUAGE_URL) + "?d=" + Date.now().getTime());
         _loader.load(req);
         _isLoading = true;
     }
     
-    private function languageLoadComplete(e : Event) : Void
+    private function languageLoadComplete(e                              : Dynamic) : Void
     {
         Logger.info(this, "Data Loaded");
         removeLoaderListeners();
         
         // Parse Response
-        var siteDataString : String = e.target.data;
+        var siteDataString                              : Dynamic= e.target.data;
+        var xmlChildren                              : Dynamic= null;
         try
         {
-            var xmlMain : FastXML = new FastXML(siteDataString);
-            var xmlChildren : FastXMLList = xmlMain.node.children.innerData();
+            var xmlMain                              : Dynamic= new FastXML(siteDataString);
+            xmlChildren = xmlMain.node.children.innerData();
         }
         catch (err : Error)
         {
@@ -175,24 +176,24 @@ class Language extends EventDispatcher
         indexed = new Array<Dynamic>();
         
         for (a in 0...xmlChildren.length()) {
-var lang : String = Std.string(xmlChildren[a].attribute("id"));
-            if (Reflect.field(data, lang) == null)
+var lang                              : Dynamic= Std.string(xmlChildren[a].attribute("id"));
+            if (as3hx.Compat.truthy(Reflect.field(data, lang) == null))
             {
                 Reflect.setField(data, lang, {});
             }
             
             // Add Attributes to Object
-            var langAttr : FastXMLList = xmlChildren[a].attributes();
+            var langAttr                              : Dynamic= xmlChildren[a].attributes();
             for (b in 0...langAttr.length())
             {
                 Reflect.setField(Reflect.field(data, lang), Std.string("_" + langAttr.get(b).node.name.innerData()), langAttr.get(b).node.name.innerData());
             }
             
             // Add Text to Object
-            var langNodes : FastXMLList = xmlChildren[a].children();
+            var langNodes                              : Dynamic= xmlChildren[a].children();
             for (c in 0...langNodes.length())
             {
-                Reflect.setField(Reflect.field(data, lang), Std.string(Std.string(langNodes.get(c).node.attribute.innerData("id"))), Std.string(langNodes.get(c).node.children.innerData()[0]).replace(new as3hx.Compat.Regex('\\r\\n', "gi"), "\n"));
+                Reflect.setField(Reflect.field(data, lang), Std.string(Std.string(langNodes.get(c).node.attribute.innerData("id"))), new as3hx.Compat.Regex('\\r\\n', "gi").replace(Std.string(langNodes.get(c).node.children.innerData()[0]), "\n"));
             }
             Reflect.setField(indexed, Std.string(Reflect.field(Reflect.field(data, lang), "_index")), lang);
         }
@@ -205,13 +206,13 @@ var lang : String = Std.string(xmlChildren[a].attribute("id"));
     
     private function checkCompleteLoad() : Void
     {
-        if (isLoaded())
+        if (as3hx.Compat.truthy(isLoaded()))
         {
             this.dispatchEvent(new Event(GlobalVariables.LOAD_COMPLETE));
         }
     }
     
-    private function languageLoadError(err : ErrorEvent = null) : Void
+    private function languageLoadError(err                              : Dynamic= null) : Void
     {
         Logger.error(this, "Load Failure: " + Logger.event_error(err));
         removeLoaderListeners();

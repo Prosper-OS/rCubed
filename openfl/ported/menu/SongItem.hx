@@ -22,56 +22,56 @@ import openfl.utils.Timer;
 
 class SongItem extends Sprite
 {
-    public var songInfo(get, never) : SongInfo;
-    public var level(get, never) : Int;
-    public var highlight(get, set) : Bool;
-    public var active(get, set) : Bool;
-    public var noteEnabled(get, set) : Bool;
+    public var songInfo(get, never)                       : Dynamic;
+    public var level(get, never)                       : Dynamic;
+    public var highlight(get, set)                       : Dynamic;
+    public var active(get, set)                       : Dynamic;
+    public var noteEnabled(get, set)                       : Dynamic;
 
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _gvars                       : Dynamic= GlobalVariables.instance;
+    private static var _lang                       : Dynamic= Language.instance;
     
-    private static var HOVER_POINT_GLOBAL : Point = new Point();
-    private static var DISABLED_COLORS : Array<Dynamic> = [0xFF0000, 0xFF0000];
-    private static var GRADIENT_COLORS : Array<Dynamic> = [0xFFFFFF, 0xFFFFFF];
-    private static var GRADIENT_ALPHA_HIGHLIGHT : Array<Dynamic> = [0.35, 0.1225];
-    private static var GRADIENT_ALPHA : Array<Dynamic> = [0.2, 0.04];
-    private static var GRADIENT_RATIO : Array<Dynamic> = [0, 255];
+    private static var HOVER_POINT_GLOBAL                       : Dynamic= new Point();
+    private static var DISABLED_COLORS                       : Dynamic= [0xFF0000, 0xFF0000];
+    private static var GRADIENT_COLORS                       : Dynamic= [0xFFFFFF, 0xFFFFFF];
+    private static var GRADIENT_ALPHA_HIGHLIGHT                       : Dynamic= [0.35, 0.1225];
+    private static var GRADIENT_ALPHA                       : Dynamic= [0.2, 0.04];
+    private static var GRADIENT_RATIO                       : Dynamic= [0, 255];
     
     /** Marks the Button as in-use to avoid removal in song selector. */
-    //public var garbageSweep:Boolean = false;
+    //public var garbageSweep                      : Dynamic= false;
     
     /** Calculated y position in the scroll pane. */
-    //public var fixed_y:Number = 0;
+    //public var fixed_y                      : Dynamic= 0;
     
-    public var index : Int = 0;
+    public var index                       : Dynamic= 0;
     
     // Text
-    private var _lblSongDifficulty : Text;
-    private var _lblSongName : Text;
-    private var _lblSongFlag : Text;
+    private var _lblSongDifficulty                       : Dynamic;
+    private var _lblSongName                       : Dynamic;
+    private var _lblSongFlag                       : Dynamic;
     
-    private var _lblMessageText : TextField;
+    private var _lblMessageText                       : Dynamic;
     
     // Display
-    private var _width : Float = 400;
-    private var _height : Float = 27;
-    private var _highlight : Bool = false;
-    private var _active : Bool = false;
+    private var _width                       : Dynamic= 400;
+    private var _height                       : Dynamic= 27;
+    private var _highlight                       : Dynamic= false;
+    private var _active                       : Dynamic= false;
     
     // Song Data
-    private var _songInfo : SongInfo;
-    private var _songUserInfo : UserSongData;
-    private var _level : Int = 0;
-    public var isLocked : Bool = false;
-    public var isFavorite : Bool = false;
+    private var _songInfo                       : Dynamic;
+    private var _songUserInfo                       : Dynamic;
+    private var _level                       : Dynamic= 0;
+    public var isLocked                       : Dynamic= false;
+    public var isFavorite                       : Dynamic= false;
     
     // Hover Data
-    private var _hoverEnabled : Bool = true;
-    private var _hoverTimer : Timer;
-    private var _hoverSprite : MouseTooltip;
-    private var _hoverTick : Int = 0;
-    private var _hoverPoint : Point;
+    private var _hoverEnabled                       : Dynamic= true;
+    private var _hoverTimer                       : Dynamic;
+    private var _hoverSprite                       : Dynamic;
+    private var _hoverTick                       : Dynamic= 0;
+    private var _hoverPoint                       : Dynamic;
     
     public function new()
     {
@@ -87,8 +87,8 @@ class SongItem extends Sprite
     
     public function draw() : Void
     {
-        var ALPHAS : Array<Dynamic> = ((highlight) ? GRADIENT_ALPHA_HIGHLIGHT : GRADIENT_ALPHA);
-        var COLORS : Array<Dynamic> = ((songInfo.is_disabled) ? DISABLED_COLORS : GRADIENT_COLORS);
+        var ALPHAS                       : Dynamic= ((highlight) ? GRADIENT_ALPHA_HIGHLIGHT : GRADIENT_ALPHA);
+        var COLORS                       : Dynamic= ((songInfo.is_disabled) ? DISABLED_COLORS : GRADIENT_COLORS);
         
         this.graphics.clear();
         this.graphics.lineStyle(1, 0xFFFFFF, (highlight) ? 0.8 : 0.55);
@@ -97,12 +97,12 @@ class SongItem extends Sprite
         this.graphics.endFill();
         
         // Difficulty Divider
-        if (!isLocked)
+        if (as3hx.Compat.truthy(!isLocked))
         {
             this.graphics.moveTo(32, 0);
             this.graphics.lineTo(32, height - 1);
             
-            if (isFavorite)
+            if (as3hx.Compat.truthy(isFavorite))
             {
                 this.graphics.lineStyle(0, 0, 0);
                 this.graphics.beginFill(0xf7b9e4, 1);
@@ -117,7 +117,7 @@ class SongItem extends Sprite
     
     ////////////////////////////////////////////////////////////////////////
     //- Events
-    private function e_onHover(e : MouseEvent) : Void
+    private function e_onHover(e                       : Dynamic) : Void
     {
         _highlight = true;
         draw();
@@ -125,7 +125,7 @@ class SongItem extends Sprite
         this.addEventListener(MouseEvent.ROLL_OUT, e_onHoverOut);
     }
     
-    private function e_onHoverOut(e : MouseEvent) : Void
+    private function e_onHoverOut(e                       : Dynamic) : Void
     {
         _highlight = false;
         draw();
@@ -137,33 +137,33 @@ class SongItem extends Sprite
      * Displays or hides the note hover for the song item.
      * @param enabled
      */
-    public function showHoverMessage(enabled : Bool) : Void
+    public function showHoverMessage(enabled                       : Dynamic) : Void
     // `enabled` accounts for both `active` and `highlight`.
     {
         
-        if (enabled) {
-if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes.length > 0)))
+        if (as3hx.Compat.truthy(enabled)) {
+if (as3hx.Compat.truthy(highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes.length > 0))))
             {
-                if (_hoverTimer == null)
+                if (as3hx.Compat.truthy(_hoverTimer == null))
                 {
                     _hoverTimer = new Timer(500, 1);
                 }
                 
-                if (!_hoverTimer.running && (_hoverSprite == null || _hoverSprite.parent == null))
+                if (as3hx.Compat.truthy(!_hoverTimer.running && (_hoverSprite == null || _hoverSprite.parent == null)))
                 {
                     _hoverTimer.addEventListener(TimerEvent.TIMER_COMPLETE, e_hoverTimerComplete);
                     _hoverTimer.start();
                 }
             }
         }
-        else if (!highlight)
+        else if (as3hx.Compat.truthy(!highlight))
         {
-            if (_hoverTimer != null && _hoverTimer.running)
+            if (as3hx.Compat.truthy(_hoverTimer != null && _hoverTimer.running))
             {
                 _hoverTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, e_hoverTimerComplete);
                 _hoverTimer.stop();
             }
-            if (_hoverSprite != null && _hoverSprite.parent)
+            if (as3hx.Compat.truthy(_hoverSprite != null && _hoverSprite.parent))
             {
                 this.removeEventListener(Event.ENTER_FRAME, e_positionHoverSprite);
                 _hoverSprite.parent.removeChild(_hoverSprite);
@@ -176,13 +176,13 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
      * Displays the song note sprite when the timer completes.
      * @param e
      */
-    private function e_hoverTimerComplete(e : Event = null) : Void
+    private function e_hoverTimerComplete(e                       : Dynamic= null) : Void
     {
         _hoverTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, e_hoverTimerComplete);
         
-        if (this.parent != null)
+        if (as3hx.Compat.truthy(this.parent != null))
         {
-            if (_hoverSprite == null)
+            if (as3hx.Compat.truthy(_hoverSprite == null))
             {
                 _hoverSprite = new MouseTooltip("", _width - 1);
             }
@@ -201,13 +201,13 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
      * is supposedly visible when scrolled to high or low.
      * @param e
      */
-    private function e_positionHoverSprite(e : Event) : Void
+    private function e_positionHoverSprite(e                       : Dynamic) : Void
     // Only check 12 times per second instead of 60.
     {
         
-        if (++_hoverTick > 5)
+        if (as3hx.Compat.truthy(++_hoverTick > 5))
         {
-            if (_hoverSprite != null && _hoverSprite.parent != null)
+            if (as3hx.Compat.truthy(_hoverSprite != null && _hoverSprite.parent != null))
             {
                 positionHoverSprite();
                 _hoverTick = 0;
@@ -225,11 +225,11 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
      */
     private function positionHoverSprite() : Void
     {
-        if (_hoverSprite != null)
+        if (as3hx.Compat.truthy(_hoverSprite != null))
         {
             _hoverPoint = this.localToGlobal(HOVER_POINT_GLOBAL);
             
-            if (_hoverPoint.y > Main.GAME_HEIGHT / 2)
+            if (as3hx.Compat.truthy(_hoverPoint.y > Main.GAME_HEIGHT / 2))
             {
                 _hoverSprite.y = this.y - _hoverSprite.height - 2;
             }
@@ -250,7 +250,7 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
     // Check for Changes
     {
         
-        if (_songUserInfo == null)
+        if (as3hx.Compat.truthy(_songUserInfo == null))
         {
             _songUserInfo = UserSongNotes.getSongUserInfo(songInfo);
         }
@@ -261,7 +261,7 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
         draw();
         
         // Update Note
-        if (_hoverSprite != null)
+        if (as3hx.Compat.truthy(_hoverSprite != null))
         {
             update();
         }
@@ -276,7 +276,7 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
      */
     public function update() : Void
     {
-        if (_hoverSprite != null)
+        if (as3hx.Compat.truthy(_hoverSprite != null))
         {
             _hoverSprite.message = "<font face=\"" + Fonts.BASE_FONT_CJK + "\" >" + _songUserInfo.notes + "</font>";
         }
@@ -284,36 +284,36 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
     
     ////////////////////////////////////////////////////////////////////////
     //- Getters / Setters
-    public function setData(songInfo : SongInfo, rank : Dynamic) : Void
+    public function setData(songInfo                       : Dynamic, rank                       : Dynamic) : Void
     {
         _songInfo = songInfo;
         _level = songInfo.level;
-        isLocked = !(!songInfo.access || songInfo.access == GlobalVariables.SONG_ACCESS_PLAYABLE);
+        isLocked = !(!as3hx.Compat.truthy(songInfo.access) || songInfo.access == GlobalVariables.SONG_ACCESS_PLAYABLE);
         
         // Song Details
         _songUserInfo = UserSongNotes.getSongUserInfo(songInfo);
         isFavorite = (_songUserInfo != null && _songUserInfo.song_favorite);
         
         // Song Name
-        var songname : String = songInfo.name;
+        var songname                       : Dynamic= songInfo.name;
         
-        if (songInfo.is_explicit)
+        if (as3hx.Compat.truthy(songInfo.is_explicit))
         {
             songname = "<font color=\"#e89200\">[E]</font> " + songname;
         }
-        if (songInfo.is_legacy)
+        if (as3hx.Compat.truthy(songInfo.is_legacy))
         {
             songname = "<font color=\"#004587\">[L]</font> " + songname;
         }
         
-        _lblSongName = new Text(this, 0, 0, songname || "", 14);
+        _lblSongName = new Text(this, 0, 0, songname, 14);
         
         // Locked Song Item, basically anything but playable songs.
-        if (isLocked)
+        if (as3hx.Compat.truthy(isLocked))
         {
             this.mouseChildren = (songInfo.access == GlobalVariables.SONG_ACCESS_TOKEN);
             
-            var _message : String = getSongLockText();
+            var _message                       : Dynamic= getSongLockText();
             
             _lblMessageText = new TextField();
             _lblMessageText.styleSheet = Constant.STYLESHEET;
@@ -348,8 +348,8 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
                 _lblSongDifficulty.setAreaParams(30, 27, Text.CENTER);
                 
                 // Song Flag
-                var FLAG_TEXT : String = GlobalVariables.getSongIcon(_songInfo, rank);
-                if (FLAG_TEXT != "" && GlobalVariables.instance.activeUser.DISPLAY_SONG_FLAG)
+                var FLAG_TEXT                       : Dynamic= GlobalVariables.getSongIcon(_songInfo, rank);
+                if (as3hx.Compat.truthy(FLAG_TEXT != "" && GlobalVariables.instance.activeUser.DISPLAY_SONG_FLAG))
                 {
                     _lblSongFlag = new Text(this, 296, 0, FLAG_TEXT, 14);
                     _lblSongFlag.setAreaParams(100, 27, Text.RIGHT);
@@ -369,19 +369,19 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
         draw();
     }
     
-    public function setContextMenu(val : ContextMenu) : Void
+    public function setContextMenu(val                       : Dynamic) : Void
     {
-        this.contextMenu = val;
+        Reflect.setField(this, "contextMenu", val);
     }
     
     public function getDifficultyText() : String
     {
-        if (isFavorite)
+        if (as3hx.Compat.truthy(isFavorite))
         {
             return "<font color=\"#f7b9e4\">" + _songInfo.difficulty + "</font>";
         }
         
-        if (songInfo.is_unranked)
+        if (as3hx.Compat.truthy(songInfo.is_unranked))
         {
             return "<font color=\"#9C9C9C\">" + _songInfo.difficulty + "</font>";
         }
@@ -431,7 +431,7 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
         return _level;
     }
     
-    private function set_highlight(val : Bool) : Bool
+    private function set_highlight(val                       : Dynamic) : Bool
     {
         _highlight = val;
         draw();
@@ -444,7 +444,7 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
         return _highlight || _active;
     }
     
-    private function set_active(val : Bool) : Bool
+    private function set_active(val                       : Dynamic) : Bool
     {
         _active = val;
         draw();
@@ -472,10 +472,9 @@ if (highlight && (_hoverEnabled && (_songUserInfo != null && _songUserInfo.notes
         return _hoverEnabled;
     }
     
-    private function set_noteEnabled(val : Bool) : Bool
+    private function set_noteEnabled(val                       : Dynamic) : Bool
     {
         _hoverEnabled = val;
         return val;
     }
 }
-

@@ -26,46 +26,46 @@ import openfl.utils.*;
  */
 class ZipFileWriter extends EventDispatcher
 {
-    private var _headers : Array<Dynamic>;
-    private var _endRecord : ZipEndRecord;
+    private var _headers                            : Dynamic;
+    private var _endRecord                            : Dynamic;
     
-    private var _stream : FileStream;
-    private var _filenameEncoding : String = "utf-8";
-    private var _numFiles : Int = 0;
-    private var _host : Int = 0;
+    private var _stream                            : Dynamic;
+    private var _filenameEncoding                            : Dynamic= "utf-8";
+    private var _numFiles                            : Dynamic= 0;
+    private var _host                            : Dynamic= 0;
     
-    public static var HOST_WIN : String = "WIN";
-    public static var HOST_UNIX : String = "UNIX";
+    public static var HOST_WIN                            : Dynamic= "WIN";
+    public static var HOST_UNIX                            : Dynamic= "UNIX";
     
-    private var _dirMode : Int = as3hx.Compat.parseInt("0770");
-    private var _fileMode : Int = as3hx.Compat.parseInt("0640");
+    private var _dirMode                            : Dynamic= as3hx.Compat.parseInt("0770");
+    private var _fileMode                            : Dynamic= as3hx.Compat.parseInt("0640");
     
-    private var _async : Bool = false;
-    private var _zipStack : Array<Dynamic>;
-    private var _zipWorking : Bool = false;
+    private var _async                            : Dynamic= false;
+    private var _zipStack                            : Dynamic;
+    private var _zipWorking                            : Dynamic= false;
     
     /* ???????????????? */
-    private var _password : ByteArray;
-    private var _isCrypt : Bool = false;
-    private var _crypt : ICrypto;
+    private var _password                            : Dynamic;
+    private var _isCrypt                            : Dynamic= false;
+    private var _crypt                            : Dynamic;
     
-    public function new(hostType : String = "WIN")
+    public function new(hostType                            : Dynamic= "WIN")
     {
         super();
         _headers = new Array<Dynamic>();
         
-        if (hostType == HOST_WIN)
+        if (as3hx.Compat.truthy(hostType == HOST_WIN))
         {
-            if (Capabilities.language == "ja")
+            if (as3hx.Compat.truthy(Capabilities.language == "ja"))
             {
-                if (Capabilities.version.indexOf("WIN") != -1)
+                if (as3hx.Compat.truthy(Capabilities.version.indexOf("WIN") != -1))
                 {
                     _filenameEncoding = "shift_jis";
                 }
             }
             _host = 0;
         }
-        else if (hostType == HOST_UNIX)
+        else if (as3hx.Compat.truthy(hostType == HOST_UNIX))
         {
             _host = 3;
         }
@@ -73,14 +73,14 @@ class ZipFileWriter extends EventDispatcher
         _crypt = new ZipCrypto();
     }
     
-    public function setCrypto(crypto : ICrypto) : Void
+    public function setCrypto(crypto                            : Dynamic) : Void
     {
         this._crypt = crypto;
     }
     
-    public function setPasswordBytes(bytes : ByteArray) : Void
+    public function setPasswordBytes(bytes                            : Dynamic) : Void
     {
-        if (bytes != null)
+        if (as3hx.Compat.truthy(bytes != null))
         {
             this._password = bytes;
             this._password.position = 0;
@@ -95,10 +95,10 @@ class ZipFileWriter extends EventDispatcher
     /**
      *  ??????????????
      */
-    public function setPassword(password : String, charset : String = null) : Void
+    public function setPassword(password                            : Dynamic, charset                            : Dynamic= null) : Void
     {
-        var ba : ByteArray = new ByteArray();
-        if (charset == null)
+        var ba                            : Dynamic= new ByteArray();
+        if (as3hx.Compat.truthy(charset == null))
         {
             ba.writeUTFBytes(password);
         }
@@ -118,7 +118,7 @@ class ZipFileWriter extends EventDispatcher
      *  "0775"????8???????????
      *
      */
-    public function setDirMode(mode : String) : Void
+    public function setDirMode(mode                            : Dynamic) : Void
     {
         _dirMode = as3hx.Compat.parseInt(mode);
     }
@@ -130,7 +130,7 @@ class ZipFileWriter extends EventDispatcher
      *  "0665" ????8???????????
      *
      */
-    public function setFileMode(mode : String) : Void
+    public function setFileMode(mode                            : Dynamic) : Void
     {
         _fileMode = as3hx.Compat.parseInt(mode);
     }
@@ -140,7 +140,7 @@ class ZipFileWriter extends EventDispatcher
      *
      *  ????????????????????
      */
-    public function open(file : File) : Void
+    public function open(file                            : Dynamic) : Void
     {
         _stream = new FileStream();
         _stream.open(file, FileMode.WRITE);
@@ -154,7 +154,7 @@ class ZipFileWriter extends EventDispatcher
      * ??:???????????????????
      * open???????????
      */
-    public function openAsync(file : File) : Void
+    public function openAsync(file                            : Dynamic) : Void
     {
         _async = true;
         _zipStack = new Array<Dynamic>();
@@ -166,11 +166,11 @@ class ZipFileWriter extends EventDispatcher
      *
      *  ??:????????????????
      */
-    public function addFile(file : File, filename : String) : Void
+    public function addFile(file                            : Dynamic, filename                            : Dynamic) : Void
     {
-        if (_async)
+        if (as3hx.Compat.truthy(_async))
         {
-            var task : Dynamic = {};
+            var task                            : Dynamic= {};
             task.type = "file";
             task.file = file;
             task.filename = filename;
@@ -179,9 +179,9 @@ class ZipFileWriter extends EventDispatcher
         }
         else
         {
-            var fs : FileStream = new FileStream();
+            var fs                            : Dynamic= new FileStream();
             fs.open(file, FileMode.READ);
-            var bytes : ByteArray = new ByteArray();
+            var bytes                            : Dynamic= new ByteArray();
             fs.readBytes(bytes, 0, file.size);
             fs.close();
             this.internalAddBytes(false, filename, bytes, file.modificationDate);
@@ -191,11 +191,11 @@ class ZipFileWriter extends EventDispatcher
     /**
      *  ByteArray????zip??????????
      */
-    public function addBytes(bytes : ByteArray, filename : String, date : Date = null) : Void
+    public function addBytes(bytes                            : Dynamic, filename                            : Dynamic, date                            : Dynamic= null) : Void
     {
-        if (_async)
+        if (as3hx.Compat.truthy(_async))
         {
-            var task : Dynamic = {};
+            var task                            : Dynamic= {};
             task.type = "bytes";
             task.filename = filename;
             task.bytes = bytes;
@@ -212,15 +212,15 @@ class ZipFileWriter extends EventDispatcher
     /**
      *  ?????????????
      */
-    public function addDirectory(filename : String) : Void
+    public function addDirectory(filename                            : Dynamic) : Void
     {
-        if (filename.charAt(filename.length - 1) != "/")
+        if (as3hx.Compat.truthy(filename.charAt(filename.length - 1) != "/"))
         {
             filename += "/";
         }
-        if (_async)
+        if (as3hx.Compat.truthy(_async))
         {
-            var task : Dynamic = {};
+            var task                            : Dynamic= {};
             task.type = "dir";
             task.filename = filename;
             _zipStack.push(task);
@@ -239,9 +239,9 @@ class ZipFileWriter extends EventDispatcher
      */
     public function close() : Void
     {
-        if (_async)
+        if (as3hx.Compat.truthy(_async))
         {
-            var task : Dynamic = {};
+            var task                            : Dynamic= {};
             task.type = "close";
             _zipStack.push(task);
             execZip();
@@ -254,70 +254,70 @@ class ZipFileWriter extends EventDispatcher
     
     private function execClose() : Void
     {
-        var len : Int = _headers.length;
-        var pos1 : Int = _stream.position;
+        var len                            : Dynamic= _headers.length;
+        var pos1                            : Dynamic= _stream.position;
         for (i in 0...len)
         {
-            var header : ZipHeader = try cast(_headers[i], ZipHeader) catch(e:Dynamic) null;
+            var header                            : Dynamic= try cast(_headers[i], ZipHeader) catch(e:Dynamic) null;
             header.writeCentralHeader(_stream);
         }
-        var pos2 : Int = _stream.position;
+        var pos2                            : Dynamic= _stream.position;
         
         _endRecord = new ZipEndRecord();
         _endRecord.write(_stream, _numFiles, pos1, pos2 - pos1);
         _stream.close();
     }
     
-    private function execZip(delay : Int = 10) : Void
+    private function execZip(delay                            : Dynamic= 10) : Void
     {
-        if (_zipStack.length > 0 && _zipWorking == false)
+        if (as3hx.Compat.truthy(_zipStack.length > 0 && _zipWorking == false))
         {
             _zipWorking = true;
-            var task : Dynamic = _zipStack.shift();
+            var task                            : Dynamic= _zipStack.shift();
             as3hx.Compat.setTimeout(zipAsyncTimeout, delay, [task]);
         }
     }
     
-    private function zipAsyncTimeout(task : Dynamic) : Void
+    private function zipAsyncTimeout(task                            : Dynamic) : Void
     {
-        var filename : String;
-        var bytes : ByteArray;
-        var zipHeader : ZipHeader;
-        if (task.type == "file")
+        var filename                            : Dynamic= null;
+        var bytes                            : Dynamic= null;
+        var zipHeader                            : Dynamic= null;
+        if (as3hx.Compat.truthy(task.type == "file"))
         {
-            var file : File = task.file;
+            var file                            : Dynamic= task.file;
             filename = task.filename;
-            var fs : FileStream = new FileStream();
+            var fs                            : Dynamic= new FileStream();
             fs.open(file, FileMode.READ);
             bytes = new ByteArray();
             fs.readBytes(bytes, 0, file.size);
             fs.close();
             zipHeader = this.internalAddBytes(false, filename, bytes, file.modificationDate);
         }
-        else if (task.type == "bytes")
+        else if (as3hx.Compat.truthy(task.type == "bytes"))
         {
             filename = task.filename;
             bytes = task.bytes;
-            var date : Date = task.date;
+            var date                            : Dynamic= task.date;
             zipHeader = this.internalAddBytes(false, filename, bytes, date);
         }
-        else if (task.type == "dir")
+        else if (as3hx.Compat.truthy(task.type == "dir"))
         {
             zipHeader = this.internalAddBytes(true, task.filename);
         }
-        else if (task.type == "close")
+        else if (as3hx.Compat.truthy(task.type == "close"))
         {
             execClose();
         }
         
-        if (task.type == "close")
+        if (as3hx.Compat.truthy(task.type == "close"))
         {
-            var end : ZipEvent = new ZipEvent(ZipEvent.ZIP_FILE_CREATED);
+            var end                            : Dynamic= new ZipEvent(ZipEvent.ZIP_FILE_CREATED);
             this.dispatchEvent(end);
         }
-        else if (zipHeader != null)
+        else if (as3hx.Compat.truthy(zipHeader != null))
         {
-            var zip : ZipEvent = new ZipEvent(ZipEvent.ZIP_DATA_COMPRESS);
+            var zip                            : Dynamic= new ZipEvent(ZipEvent.ZIP_DATA_COMPRESS);
             zip.__DOLLAR__entry = new ZipEntry(_stream);
             zip.__DOLLAR__entry.setHeader(zipHeader);
             this.dispatchEvent(zip);
@@ -331,19 +331,19 @@ class ZipFileWriter extends EventDispatcher
      *
      * @private
      */
-    private function internalAddBytes(isDir : Bool, filename : String, data : ByteArray = null, date : Date = null) : ZipHeader
+    private function internalAddBytes(isDir                            : Dynamic, filename                            : Dynamic, data                            : Dynamic= null, date                            : Dynamic= null) : ZipHeader
     {
-        if (date == null)
+        if (as3hx.Compat.truthy(date == null))
         {
             date = Date.now();
         }
         
-        var header : ZipHeader = new ZipHeader();
+        var header                            : Dynamic= new ZipHeader();
         
         header._lastModTime = as3hx.Compat.parseInt(date.getSeconds()) | (as3hx.Compat.parseInt(date.getMinutes()) << 5) | (as3hx.Compat.parseInt(date.getHours()) << 11);
         header._lastModDate = as3hx.Compat.parseInt(date.getDate()) | (as3hx.Compat.parseInt(date.getMonth() + 1) << 5) | (as3hx.Compat.parseInt(date.getFullYear() - 1980) << 9);
         
-        var filenameBytes : ByteArray = new ByteArray();
+        var filenameBytes                            : Dynamic= new ByteArray();
         filenameBytes.writeMultiByte(filename, _filenameEncoding);
         header._filename = filenameBytes;
         header._filenameLength = filenameBytes.length;
@@ -351,7 +351,7 @@ class ZipFileWriter extends EventDispatcher
         header._extraFieldLength = 0;
         
         //  ?????????????
-        if (_isCrypt)
+        if (as3hx.Compat.truthy(_isCrypt))
         {
             header._bitFlag = 0x1;
         }
@@ -370,7 +370,7 @@ class ZipFileWriter extends EventDispatcher
         header._externalFileAttrs = 0;
         header._offsetLocalHeader = _stream.position;
         
-        if (isDir)
+        if (as3hx.Compat.truthy(isDir))
         {
             header._compressMethod = 0;
             header._version = 10;
@@ -378,7 +378,7 @@ class ZipFileWriter extends EventDispatcher
             header._crc32 = 0;
             header._compressSize = 0;
             header._uncompressSize = 0;
-            if (_host == 3)
+            if (as3hx.Compat.truthy(_host == 3))
             {
                 header._externalFileAttrs = ((ZipHeader.UNIX_DIR | _dirMode) << 16) + ZipHeader.WIN_DIR;
             }
@@ -387,7 +387,7 @@ class ZipFileWriter extends EventDispatcher
                 header._externalFileAttrs = ZipHeader.WIN_DIR;
             }
         }
-        else if (data.length == 0)
+        else if (as3hx.Compat.truthy(data.length == 0))
         {
             header._compressMethod = 0;
             header._version = 10;
@@ -396,7 +396,7 @@ class ZipFileWriter extends EventDispatcher
             header._compressSize = 0;
             header._uncompressSize = 0;
             
-            if (_host == 3)
+            if (as3hx.Compat.truthy(_host == 3))
             {
                 header._externalFileAttrs = ((ZipHeader.UNIX_FILE | _fileMode) << 16);
             }
@@ -415,7 +415,7 @@ class ZipFileWriter extends EventDispatcher
             data.compress(CompressionAlgorithm.DEFLATE);
             header._compressSize = data.length;
             
-            if (_host == 3)
+            if (as3hx.Compat.truthy(_host == 3))
             {
                 header._externalFileAttrs = ((ZipHeader.UNIX_FILE | _fileMode) << 16);
             }
@@ -426,10 +426,10 @@ class ZipFileWriter extends EventDispatcher
         }
         
         //  ??????????
-        if (isDir == false)
+        if (as3hx.Compat.truthy(isDir == false))
         {
             data.position = 0;
-            if (_isCrypt)
+            if (as3hx.Compat.truthy(_isCrypt))
             {
                 _crypt.initEncrypt(_password, header);
                 header.writeLocalHeader(_stream);

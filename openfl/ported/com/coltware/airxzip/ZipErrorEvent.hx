@@ -4,13 +4,13 @@ import openfl.events.ErrorEvent;
 
 class ZipErrorEvent extends ErrorEvent
 {
-    public static inline var ZIP_NO_SUCH_METHOD : String = "ZipNoSuchMethod";
+    public static inline var ZIP_NO_SUCH_METHOD                            : Dynamic= "ZipNoSuchMethod";
     /**
 		 *  Password is not match or not set(NULL)
 		 */
-    public static inline var ZIP_PASSWORD_ERROR : String = "ZipPasswordError";
+    public static inline var ZIP_PASSWORD_ERROR                            : Dynamic= "ZipPasswordError";
     
-    public function new(type : String, bubbles : Bool = false, cancelable : Bool = false, text : String = null, id : Int = 0)
+    public function new(type                            : Dynamic, bubbles                            : Dynamic= false, cancelable                            : Dynamic= false, text                            : Dynamic= null, id                            : Dynamic= 0)
     {
         super(type, bubbles, cancelable, text, id);
     }

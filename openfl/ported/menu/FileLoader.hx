@@ -11,11 +11,11 @@ import game.GameOptions;
 
 class FileLoader
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
+    private static var _gvars                       : Dynamic= GlobalVariables.instance;
     
-    public static var cache : FileCache = new FileCache("chart_cache.json", 2);
+    public static var cache                       : Dynamic= new FileCache("chart_cache.json", 2);
     
-    public static var ENGINE_INFO : Dynamic = {
+    public static var ENGINE_INFO                       : Dynamic= {
             name : "File Loader",
             id : "fileloader",
             config_url : "",
@@ -25,22 +25,22 @@ class FileLoader
             songURL : ""
         };
     
-    public static function buildSongInfo(loc : String, id : Int, isUnique : Bool = false) : SongInfo
+    public static function buildSongInfo(loc                       : Dynamic, id                       : Dynamic, isUnique                       : Dynamic= false) : SongInfo
     {
-        if (loc == null || loc.length == 0)
+        if (as3hx.Compat.truthy(loc == null || loc.length == 0))
         {
             return null;
         }
         
         // Parse Chart
-        var emb : ExternalChartBase = new ExternalChartBase();
-        if (emb.load(new File(loc)))
+        var emb                       : Dynamic= new ExternalChartBase();
+        if (as3hx.Compat.truthy(emb.load(new File(loc))))
         {
-            var chartinfo : Dynamic = emb.getInfo();
-            var chartData : Dynamic = emb.getValidChartData(id);
+            var chartinfo                       : Dynamic= emb.getInfo();
+            var chartData                       : Dynamic= emb.getValidChartData(id);
             
             // Build Song Info
-            var songInfo : SongInfo = new SongInfo();
+            var songInfo                       : Dynamic= new SongInfo();
             songInfo.access = GlobalVariables.SONG_ACCESS_PLAYABLE;
             songInfo.genre = 14;
             songInfo.author = songInfo.author_html = chartinfo.author;
@@ -54,7 +54,7 @@ class FileLoader
             songInfo.time_end = 0;
             songInfo.background = (chartinfo.background != "") ? chartinfo.folder + chartinfo.background : null;
             
-            if (isUnique)
+            if (as3hx.Compat.truthy(isUnique))
             {
                 songInfo.engine = {
                             id : "fileloader",
@@ -79,33 +79,33 @@ class FileLoader
         return null;
     }
     
-    public static function buildSong(info : SongInfo) : Void
+    public static function buildSong(info                       : Dynamic) : Void
     {
-        if (!info.is_local)
+        if (as3hx.Compat.truthy(!info.is_local))
         {
             return;
         }
         
-        var emb : ExternalChartBase = info.chart_parser;
-        var id : Int = info.engine.chart_id;
+        var emb                       : Dynamic= info.chart_parser;
+        var id                       : Dynamic= info.engine.chart_id;
         
         emb.parseData();
         
-        var chartData : Dynamic = emb.getValidChartData(id);
+        var chartData                       : Dynamic= emb.getValidChartData(id);
         
         ENGINE_INFO.cache_id = emb.ID;
         ENGINE_INFO.chart_id = id;
         
         // Build Chart
-        var noteChart : NoteChart = new NoteChart();
+        var noteChart                       : Dynamic= new NoteChart();
         noteChart.type = "EXTERNAL";
-        for (note/* AS3HX WARNING could not determine type for var: note exp: EField(EIdent(chartData),notes) type: null */ in chartData.notes)
+        for (note/* AS3HX WARNING could not determine type for var: note exp: EField(EIdent(chartData),notes) type: null */ in as3hx.Compat.iter(chartData.notes))
         {
             noteChart.Notes.push(new Note(note[1], note[0], note[2], Math.floor(note[0] * 30)));
         }
         
         // Build Song
-        var song : Song = new Song(info, false);
+        var song                       : Dynamic= new Song(info, false);
         song.chart = noteChart;
         song.loadSoundBytes(emb.getAudioData());
         song.isChartLoaded = song.isMusicLoaded = song.isLoaded = true;
@@ -115,10 +115,10 @@ class FileLoader
         _gvars.externalSong = song;
     }
     
-    public static function setupLocalFile(loc : String, id : Int) : Bool
+    public static function setupLocalFile(loc                       : Dynamic, id                       : Dynamic) : Bool
     {
-        var info : SongInfo = buildSongInfo(loc, id);
-        if (info != null)
+        var info                       : Dynamic= buildSongInfo(loc, id);
+        if (as3hx.Compat.truthy(info != null))
         {
             buildSong(info);
             return true;
@@ -126,9 +126,9 @@ class FileLoader
         return false;
     }
     
-    public static function loadLocalFile(loc : String, id : Int) : Void
+    public static function loadLocalFile(loc                       : Dynamic, id                       : Dynamic) : Void
     {
-        if (setupLocalFile(loc, id))
+        if (as3hx.Compat.truthy(setupLocalFile(loc, id)))
         {
             _gvars.songQueue = [_gvars.externalSongInfo];
             
@@ -138,17 +138,17 @@ class FileLoader
         }
     }
     
-    public static function buildCacheObject(chartFile : File) : Dynamic
+    public static function buildCacheObject(chartFile                       : Dynamic) : Dynamic
     {
-        var cacheObj : Dynamic = {
+        var cacheObj                       : Dynamic= {
             valid : 0,
             date : chartFile.modificationDate.getTime()
         };
-        var emb : ExternalChartBase = new ExternalChartBase();
-        if (emb.load(chartFile, true))
+        var emb                       : Dynamic= new ExternalChartBase();
+        if (as3hx.Compat.truthy(emb.load(chartFile, true)))
         {
-            var chartData : Dynamic = emb.getInfo();
-            var chartCharts : Array<Dynamic> = emb.getAllCharts();
+            var chartData                       : Dynamic= emb.getInfo();
+            var chartCharts                       : Dynamic= emb.getAllCharts();
             
             cacheObj = {
                         valid : 1,
@@ -167,7 +167,7 @@ class FileLoader
             
             for (i in 0...chartCharts.length)
             {
-                var difficultyData : Dynamic = chartCharts[i];
+                var difficultyData                       : Dynamic= chartCharts[i];
                 Reflect.setField(Reflect.field(cacheObj, "chart"), Std.string(i), {
                     "class" : Reflect.field(difficultyData, "class"),
                     class_color : Reflect.field(difficultyData, "class_color"),

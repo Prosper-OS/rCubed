@@ -13,21 +13,33 @@ import menu.MenuPanel;
 class PopupMessage extends MenuPanel
 {
     //- Background
-    private var box : Box;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    private var titleDisplay : Text;
-    private var messageDisplay : Text;
+    private var titleDisplay                       : Dynamic;
+    private var messageDisplay                       : Dynamic;
     
-    private var _lang : Language = Language.instance;
+    private var _lang                      : Dynamic;
     
-    private var displayTitle : String = "";
-    private var dislayText : String = _lang.string("popup_message_missing_error_text");
-    private var closeOptions : BoxButton;
+    private var displayTitle                       : Dynamic= "";
+    private var dislayText                      : Dynamic= "";
+    private var closeOptions                       : Dynamic;
     
-    public function new(myParent : MenuPanel, dislayText : String, displayTitle : String = "")
+    public function new(myParent                       : Dynamic, dislayText                       : Dynamic, displayTitle                       : Dynamic= "")
     {
         super(myParent);
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
+        _lang = Language.instance;
         this.dislayText = dislayText;
         this.displayTitle = displayTitle;
     }
@@ -37,7 +49,7 @@ class PopupMessage extends MenuPanel
         bmp = SpriteUtil.getBitmapSprite(stage);
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, 20, 20, false, false);
+        var bgbox                       : Dynamic= new Box(this, 20, 20, false, false);
         bgbox.setSize(Main.GAME_WIDTH - 40, Main.GAME_HEIGHT - 40);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -72,11 +84,11 @@ class PopupMessage extends MenuPanel
         box = null;
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     //- Close
     {
         
-        if (e.target == closeOptions)
+        if (as3hx.Compat.truthy(e.target == closeOptions))
         {
             removePopup();
             return;

@@ -19,32 +19,32 @@ import menu.MenuPanel;
 
 class PopupTokenUnlock extends MenuPanel
 {
-    private var _lang : Language = Language.instance;
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
     
     //- Background
-    private var box : Box;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    private var tType : String;
-    private var tID : String;
-    private var uText : String;
-    private var tObject : Dynamic;
+    private var tType                       : Dynamic;
+    private var tID                       : Dynamic;
+    private var uText                       : Dynamic;
+    private var tObject                       : Dynamic;
     
-    private var closeOptions : BoxButton;
+    private var closeOptions                       : Dynamic;
     
-    public function new(myParent : MenuPanel, tokenType : String, tokenID : String, unlockText : String, tokenName : String = null, tokenMessage : String = null)
+    public function new(myParent                       : Dynamic, tokenType                       : Dynamic, tokenID                       : Dynamic, unlockText                       : Dynamic, tokenName                       : Dynamic= null, tokenMessage                       : Dynamic= null)
     {
         super(myParent);
         tType = tokenType;
         tID = tokenID;
         uText = unlockText;
-        tObject = _gvars.TOKENS_TYPE[tType][tID] || { };
-        if (tokenName != null)
+        tObject = as3hx.Compat.orValue(_gvars.TOKENS_TYPE[tType][tID], { });
+        if (as3hx.Compat.truthy(tokenName != null))
         {
             Reflect.setField(tObject, "name", tokenName);
         }
-        if (tokenMessage != null)
+        if (as3hx.Compat.truthy(tokenMessage != null))
         {
             Reflect.setField(tObject, "info", tokenMessage);
         }
@@ -56,7 +56,7 @@ class PopupTokenUnlock extends MenuPanel
         bmp.alpha = 0;
         this.addChild(bmp);
         
-        var bh : Sprite = new Sprite();
+        var bh                       : Dynamic= new Sprite();
         bh.x = Main.GAME_WIDTH / 2;
         bh.y = Main.GAME_HEIGHT / 2;
         bh.scaleX = 0.5;
@@ -64,7 +64,7 @@ class PopupTokenUnlock extends MenuPanel
         bh.alpha = 0;
         this.addChild(bh);
         
-        var bgbox : Box = new Box(bh, -((Main.GAME_WIDTH / 2) / 2), -((Main.GAME_HEIGHT - 40) / 2), false, false);
+        var bgbox                       : Dynamic= new Box(bh, -((Main.GAME_WIDTH / 2) / 2), -((Main.GAME_HEIGHT - 40) / 2), false, false);
         bgbox.setSize(Main.GAME_WIDTH / 2, Main.GAME_HEIGHT - 40);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -74,13 +74,13 @@ class PopupTokenUnlock extends MenuPanel
         box.setSize(Main.GAME_WIDTH / 2, Main.GAME_HEIGHT - 40);
         box.activeAlpha = 0.4;
         
-        var th : Sprite = new Sprite();
-        var textbmd : BitmapData = new BitmapData(box.width, box.height, true, 0x000000);
+        var th                       : Dynamic= new Sprite();
+        var textbmd                       : Dynamic= new BitmapData(box.width, box.height, true, 0x000000);
         
-        var messageDisplay : TextField;
-        var yOff : Float = 0;
+        var messageDisplay                       : Dynamic= null;
+        var yOff                       : Dynamic= 0;
         
-        if (tObject != null) {
+        if (as3hx.Compat.truthy(tObject != null)) {
 messageDisplay = new TextField();
             messageDisplay.x = 10;
             messageDisplay.y = 0;
@@ -107,7 +107,7 @@ messageDisplay = new TextField();
             messageDisplay.wordWrap = true;
             messageDisplay.defaultTextFormat = Constant.TEXT_FORMAT_CENTER;
             messageDisplay.autoSize = TextFieldAutoSize.CENTER;
-            messageDisplay.htmlText = tObject.info.replace(new as3hx.Compat.Regex('\\r\\n', "gi"), "\n");
+            messageDisplay.htmlText = new as3hx.Compat.Regex('\\r\\n', "gi").replace(tObject.info, "\n");
             th.addChild(messageDisplay);
             yOff = messageDisplay.y + messageDisplay.height + 15;
         }
@@ -120,12 +120,12 @@ messageDisplay = new TextField();
         yOff += 15;
         
         //- Avatar
-        var userAvatar : DisplayObject = _gvars.activeUser.avatar;
-        if (userAvatar.height > 0 && userAvatar.width > 0)
+        var userAvatar                       : Dynamic= _gvars.activeUser.avatar;
+        if (as3hx.Compat.truthy(userAvatar.height > 0 && userAvatar.width > 0))
         {
-            var avatarbmd : BitmapData = new BitmapData(userAvatar.width, userAvatar.height, true, 0x000000);
+            var avatarbmd                       : Dynamic= new BitmapData(userAvatar.width, userAvatar.height, true, 0x000000);
             avatarbmd.draw(userAvatar);
-            var avatarbmp : Bitmap = new Bitmap(avatarbmd);
+            var avatarbmp                       : Dynamic= new Bitmap(avatarbmd);
             avatarbmp.x = (box.width / 2) - (userAvatar.width / 2);
             avatarbmp.y = yOff + 15;
             yOff += userAvatar.height + 15;
@@ -198,11 +198,11 @@ messageDisplay = new TextField();
         box = null;
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     //- Close
     {
         
-        if (e.target == closeOptions)
+        if (as3hx.Compat.truthy(e.target == closeOptions))
         {
             removePopup();
             return;

@@ -4,101 +4,101 @@ import classes.chart.parse.ExternalChartBase;
 
 class SongInfo
 {
-    public static inline var SONG_TYPE_PUBLIC : Int = 0;
-    public static inline var SONG_TYPE_TOKEN : Int = 1;
-    public static inline var SONG_TYPE_PURCHASED : Int = 2;
-    public static inline var SONG_TYPE_SECRET : Int = 3;
+    public static inline var SONG_TYPE_PUBLIC                              : Dynamic= 0;
+    public static inline var SONG_TYPE_TOKEN                              : Dynamic= 1;
+    public static inline var SONG_TYPE_PURCHASED                              : Dynamic= 2;
+    public static inline var SONG_TYPE_SECRET                              : Dynamic= 3;
     
     // Engine Variables
-    public var access : Int = 0;
-    public var chart_type : String;
-    public var song_type : Int;
-    public var index : Int;
+    public var access                              : Dynamic= 0;
+    public var chart_type                              : Dynamic;
+    public var song_type                              : Dynamic;
+    public var index                              : Dynamic;
     
-    public var score_raw : Int;
-    public var score_total : Int;
+    public var score_raw                              : Dynamic;
+    public var score_total                              : Dynamic;
     
     // Song Variables
-    public var genre : Int;
-    public var level : Int;
-    public var name : String;
-    public var name_original : String;
-    public var name_explicit : String;
-    public var subtitle : String;
-    public var difficulty : Int;
-    public var note_count : Int;
-    public var order : Int;
-    public var style : String;
-    public var tags : String;
+    public var genre                              : Dynamic;
+    public var level                              : Dynamic;
+    public var name                              : Dynamic;
+    public var name_original                              : Dynamic;
+    public var name_explicit                              : Dynamic;
+    public var subtitle                              : Dynamic;
+    public var difficulty                              : Dynamic;
+    public var note_count                              : Dynamic;
+    public var order                              : Dynamic;
+    public var style                              : Dynamic;
+    public var tags                              : Dynamic;
     
-    public var author : String;
-    public var author_original : String;
-    public var author_url : String;
-    public var author_html : String;
+    public var author                              : Dynamic;
+    public var author_original                              : Dynamic;
+    public var author_url                              : Dynamic;
+    public var author_html                              : Dynamic;
     
-    public var stepauthor : String;
-    public var stepauthor_html : String;
+    public var stepauthor                              : Dynamic;
+    public var stepauthor_html                              : Dynamic;
     
-    public var play_hash : String;
-    public var swf_hash : String;
+    public var play_hash                              : Dynamic;
+    public var swf_hash                              : Dynamic;
     
-    public var prerelease : Bool;
-    public var release_date : Int;
+    public var prerelease                              : Dynamic;
+    public var release_date                              : Dynamic;
     
-    public var min_nps : Int;
-    public var max_nps : Int;
+    public var min_nps                              : Dynamic;
+    public var max_nps                              : Dynamic;
     
-    public var time : String;
-    public var time_secs : Int;
-    public var time_end : Float = 0;
+    public var time                              : Dynamic;
+    public var time_secs                              : Dynamic;
+    public var time_end                              : Dynamic= 0;
     
-    public var is_unranked : Bool = false;
-    public var is_explicit : Bool = false;
-    public var is_legacy : Bool = false;
-    public var is_disabled : Bool = false;
+    public var is_unranked                              : Dynamic= false;
+    public var is_explicit                              : Dynamic= false;
+    public var is_legacy                              : Dynamic= false;
+    public var is_disabled                              : Dynamic= false;
     
     // Song - Optional
-    public var price : Int;
-    public var credits : Int;
-    public var song_rating : Float;
+    public var price                              : Dynamic;
+    public var credits                              : Dynamic;
+    public var song_rating                              : Dynamic;
     
     // Alt Engines Variables
-    public var engine : Dynamic;
-    public var level_id : String;
-    public var sync : Int;
-    public var background : String;
+    public var engine                              : Dynamic;
+    public var level_id                              : Dynamic;
+    public var sync                              : Dynamic;
+    public var background                              : Dynamic;
     
     // Local Files
-    public var is_local : Bool = false;
-    public var chart_parser : ExternalChartBase;
+    public var is_local                              : Dynamic= false;
+    public var chart_parser                              : Dynamic;
     
     public function new()
     {
     }
     
-    public function compareTo(s2 : SongInfo) : Bool
+    public function compareTo(s2                              : Dynamic) : Bool
     {
         return compare(this, s2);
     }
     
-    public static function compare(s1 : SongInfo, s2 : SongInfo) : Bool
+    public static function compare(s1                              : Dynamic, s2                              : Dynamic) : Bool
     {
-        if (s1 == null || s2 == null)
+        if (as3hx.Compat.truthy(s1 == null || s2 == null))
         {
             return false;
         }
         
-        if (s1.engine && s2.engine && s1.engine.id != s2.engine.id)
+        if (as3hx.Compat.truthy(s1.engine && s2.engine && s1.engine.id != s2.engine.id))
         {
             return false;
         }
         
-        if (s1.level > 0 && s2.level > 0 && s1.level != s2.level)
+        if (as3hx.Compat.truthy(s1.level > 0 && s2.level > 0 && s1.level != s2.level))
         {
             return false;
         }
         
-        if (s1.level_id && s2.level_id && s1.level_id != s2.level_id)
+        if (as3hx.Compat.truthy(s1.level_id && s2.level_id && s1.level_id != s2.level_id))
         {
             return false;
         }

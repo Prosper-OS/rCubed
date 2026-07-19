@@ -4,10 +4,10 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRSongProgress implements IMPCommand
 {
-    public var room : MPRoomFFR;
-    public var progress : Float;
+    public var room                             : Dynamic;
+    public var progress                             : Dynamic;
     
-    public function new(room : MPRoomFFR, progress : Float)
+    public function new(room                             : Dynamic, progress                             : Dynamic)
     {
         this.room = room;
         this.progress = progress;

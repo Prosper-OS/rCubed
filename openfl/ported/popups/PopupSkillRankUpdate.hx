@@ -15,13 +15,13 @@ import menu.MenuPanel;
 
 class PopupSkillRankUpdate extends MenuPanel
 {
-    private var _lang : Language = Language.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var box : Box;
-    private var closeBox : BoxButton;
-    private var results : Dynamic;
+    private var box                       : Dynamic;
+    private var closeBox                       : Dynamic;
+    private var results                       : Dynamic;
     
-    public function new(myParent : MenuPanel, results : Dynamic)
+    public function new(myParent                       : Dynamic, results                       : Dynamic)
     {
         super(myParent);
         this.results = results;
@@ -29,8 +29,8 @@ class PopupSkillRankUpdate extends MenuPanel
     
     override public function stageAdd() : Void
     {
-        var renderPlane : Sprite = new Sprite();
-        var yOffset : Float = 5;
+        var renderPlane                       : Dynamic= new Sprite();
+        var yOffset                       : Dynamic= 5;
         yOffset += renderMessages(renderPlane, yOffset, Reflect.field(results, "positive"), 0x00ff00);
         yOffset += renderMessages(renderPlane, yOffset, Reflect.field(results, "negative"), 0xff0000);
         yOffset += renderMessages(renderPlane, yOffset, Reflect.field(results, "neutral"), 0x0000ff);
@@ -60,17 +60,17 @@ class PopupSkillRankUpdate extends MenuPanel
         box = null;
     }
     
-    private function clickHandler(e : Event) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (e.target == closeBox)
+        if (as3hx.Compat.truthy(e.target == closeBox))
         {
-            if (this.parent.contains(this))
+            if (as3hx.Compat.truthy(this.parent.contains(this)))
             {
                 TweenLite.to(box, 0.5, {
                             y : Main.GAME_HEIGHT + 2,
                             ease : BackIn.ease,
                             onCompleteParams : [this],
-                            onComplete : function(trg : DisplayObjectContainer) : Void
+                            onComplete : function(trg                       : Dynamic) : Void
                             {
                                 trg.parent.removeChild(trg);
                             }
@@ -79,14 +79,14 @@ class PopupSkillRankUpdate extends MenuPanel
         }
     }
     
-    private function renderMessages(target : Sprite, offetY : Float, messages : Array<Dynamic>, color : Int = 0xFFFFFF) : Float
+    private function renderMessages(target                       : Dynamic, offetY                       : Dynamic, messages                       : Dynamic, color                       : Dynamic= 0xFFFFFF) : Float
     {
-        if (messages.length <= 0)
+        if (as3hx.Compat.truthy(messages.length <= 0))
         {
             return 0;
         }
         
-        var tf : TextField = new TextField();
+        var tf                       : Dynamic= new TextField();
         tf = new TextField();
         tf.x = 10;
         tf.y = offetY + 5;

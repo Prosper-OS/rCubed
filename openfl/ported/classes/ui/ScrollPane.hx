@@ -7,19 +7,19 @@ import openfl.geom.Rectangle;
 
 class ScrollPane extends Sprite implements IScrollPane
 {
-    public var scrollFactorVertical(get, never) : Float;
+    public var scrollFactorVertical(get, never)                             : Dynamic;
 
-    private var _width : Float;
-    private var _height : Float;
+    private var _width                             : Dynamic;
+    private var _height                             : Dynamic;
     
-    public var content : ScrollPaneContent;
+    public var content                             : Dynamic;
     
-    private var _listener : Dynamic = null;
+    private var _listener                             : Dynamic= null;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, width : Int = 0, height : Int = 0, listener : Dynamic = null)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, width                             : Dynamic= 0, height                             : Dynamic= 0, listener                             : Dynamic= null)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -43,7 +43,7 @@ class ScrollPane extends Sprite implements IScrollPane
         this.addChild(content);
         
         //- Set click event listener
-        if (listener != null)
+        if (as3hx.Compat.truthy(listener != null))
         {
             this._listener = listener;
             this.addEventListener(MouseEvent.MOUSE_WHEEL, listener);
@@ -52,12 +52,12 @@ class ScrollPane extends Sprite implements IScrollPane
     
     public function dispose() : Void
     {
-        if (_listener != null)
+        if (as3hx.Compat.truthy(_listener != null))
         {
             this.removeEventListener(MouseEvent.MOUSE_WHEEL, _listener);
         }
         
-        if (content != null)
+        if (as3hx.Compat.truthy(content != null))
         {
             content.removeChildren();
             this.removeChild(content);
@@ -75,13 +75,13 @@ class ScrollPane extends Sprite implements IScrollPane
         content.update(content.y * -1, _height);
     }
     
-    public function scrollTo(val : Float) : Void
+    public function scrollTo(val                             : Dynamic) : Void
     {
-        if (val < 0)
+        if (as3hx.Compat.truthy(val < 0))
         {
             val = 0;
         }
-        if (val > 1)
+        if (as3hx.Compat.truthy(val > 1))
         {
             val = 1;
         }
@@ -106,7 +106,7 @@ class ScrollPane extends Sprite implements IScrollPane
      */
     private function get_scrollFactorVertical() : Float
     {
-        return Math.max(Math.min(height / content.height, 1), 0) || 0;
+        return as3hx.Compat.parseFloat(as3hx.Compat.orValue(Math.max(Math.min(height / content.height, 1), 0), 0));
     }
 }
 

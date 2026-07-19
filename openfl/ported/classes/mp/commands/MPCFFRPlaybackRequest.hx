@@ -6,11 +6,11 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRPlaybackRequest implements IMPCommand
 {
-    public var room : MPRoomFFR;
-    public var user : MPUser;
-    public var index : Int;
+    public var room                             : Dynamic;
+    public var user                             : Dynamic;
+    public var index                             : Dynamic;
     
-    public function new(room : MPRoomFFR, user : MPUser, index : Int)
+    public function new(room                             : Dynamic, user                             : Dynamic, index                             : Dynamic)
     {
         this.room = room;
         this.user = user;

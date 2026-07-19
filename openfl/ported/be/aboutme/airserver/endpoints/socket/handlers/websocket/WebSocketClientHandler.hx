@@ -46,71 +46,71 @@ import openfl.utils.ByteArray;
 
 class WebSocketClientHandler extends SocketClientHandler
 {
-    private static inline var PROTOCOL_HYBI_00 : Int = 0;
-    private static inline var PROTOCOL_HYBI_10 : Int = 8;
-    private static inline var PROTOCOL_HYBI_17 : Int = 13;
+    public static inline var PROTOCOL_HYBI_00                              : Dynamic= 0;
+    public static inline var PROTOCOL_HYBI_10                              : Dynamic= 8;
+    public static inline var PROTOCOL_HYBI_17                              : Dynamic= 13;
     
-    private static inline var FRAME_CONTINUATION : Int = 0x00;
-    private static inline var FRAME_TEXT : Int = 0x01;
-    private static inline var FRAME_BINARY : Int = 0x02;
-    private static inline var FRAME_CLOSE : Int = 0x08;
-    private static inline var FRAME_PING : Int = 0x09;
-    private static inline var FRAME_PONG : Int = 0x0A;
+    public static inline var FRAME_CONTINUATION                              : Dynamic= 0x00;
+    public static inline var FRAME_TEXT                              : Dynamic= 0x01;
+    public static inline var FRAME_BINARY                              : Dynamic= 0x02;
+    public static inline var FRAME_CLOSE                              : Dynamic= 0x08;
+    public static inline var FRAME_PING                              : Dynamic= 0x09;
+    public static inline var FRAME_PONG                              : Dynamic= 0x0A;
     
-    private var protocol : Int;
+    public var protocol                              : Dynamic;
     
-    public function new(socket : Socket, messageSerializer : IMessageSerializer, crossDomainPolicyXML : FastXML = null)
+    public function new(socket                              : Dynamic, messageSerializer                              : Dynamic, crossDomainPolicyXML                              : Dynamic= null)
     {
         super(socket, messageSerializer, crossDomainPolicyXML);
     }
     
-    override private function socketDataHandler(event : ProgressEvent) : Void
+    override public function socketDataHandler(event                              : Dynamic) : Void
     //trace("WebSocketClientHandler::socketDataHandler");
     {
         
-        if (socket.bytesAvailable > 0)
+        if (as3hx.Compat.truthy(socket.bytesAvailable > 0))
         {
-            if (!firstRequestProcessed)
+            if (as3hx.Compat.truthy(!firstRequestProcessed))
             {
                 firstRequestProcessed = true;
                 
                 //websockets handshake?
                 socket.readBytes(socketBytes, 0);
-                var message : String = socketBytes.readUTFBytes(socketBytes.bytesAvailable);
-                if (message.indexOf("GET ") == 0)
+                var message                              : Dynamic= socketBytes.readUTFBytes(socketBytes.bytesAvailable);
+                if (as3hx.Compat.truthy(message.indexOf("GET ") == 0))
                 {
-                    var messageLines : Array<Dynamic> = message.split("\n");
-                    var fields : Dynamic = { };
-                    var requestedURL : String = "";
+                    var messageLines                              : Dynamic= message.split("\n");
+                    var fields                              : Dynamic= { };
+                    var requestedURL                              : Dynamic= "";
                     for (i in 0...messageLines.length)
                     {
-                        var line : String = messageLines[i];
-                        if (i == 0)
+                        var line                              : Dynamic= messageLines[i];
+                        if (as3hx.Compat.truthy(i == 0))
                         {
-                            var getSplit : Array<Dynamic> = line.split(" ");
-                            if (getSplit.length > 1)
+                            var getSplit                              : Dynamic= line.split(" ");
+                            if (as3hx.Compat.truthy(getSplit.length > 1))
                             {
                                 requestedURL = getSplit[1];
                             }
                         }
                         else
                         {
-                            var index : Int = line.indexOf(":");
-                            if (index > -1)
+                            var index                              : Dynamic= line.indexOf(":");
+                            if (as3hx.Compat.truthy(index > -1))
                             {
-                                var key : String = line.substr(0, index);
+                                var key                              : Dynamic= line.substr(0, index);
                                 Reflect.setField(fields, key, line.substr(index + 1).replace(new as3hx.Compat.Regex('^([\\s|\\t|\\n]+)?(.*)([\\s|\\t|\\n]+)?$', "gm"), "$2"));
                             }
                         }
                     }
                     
                     //check for any fields stating websocket
-                    var isWebsocket : Bool = (Reflect.field(fields, "Upgrade") != null && Reflect.field(fields, "Upgrade") == "websocket");
-                    if (!isWebsocket)
+                    var isWebsocket                              : Dynamic= (Reflect.field(fields, "Upgrade") != null && Reflect.field(fields, "Upgrade") == "websocket");
+                    if (as3hx.Compat.truthy(!isWebsocket))
                     {
-                        for (field_name in Reflect.fields(fields))
+                        for (field_name in as3hx.Compat.iter(Reflect.fields(fields)))
                         {
-                            if (field_name.toLowerCase().indexOf("websocket") >= 0)
+                            if (as3hx.Compat.truthy(field_name.toLowerCase().indexOf("websocket") >= 0))
                             {
                                 isWebsocket = true;
                                 break;
@@ -118,14 +118,14 @@ class WebSocketClientHandler extends SocketClientHandler
                         }
                     }
                     
-                    if (!isWebsocket)
+                    if (as3hx.Compat.truthy(!isWebsocket))
                     {
                         printInvalidConnectionMessage();
                         return;
                     }
                     
                     //check the websocket version
-                    if (Reflect.field(fields, "Sec-WebSocket-Version") != null)
+                    if (as3hx.Compat.truthy(Reflect.field(fields, "Sec-WebSocket-Version") != null))
                     {
                         protocol = as3hx.Compat.parseInt(Reflect.field(fields, "Sec-WebSocket-Version"));
                     }
@@ -159,7 +159,7 @@ class WebSocketClientHandler extends SocketClientHandler
             }
             socketBytes.position = 0;
             
-            if (queueMessagesFromSocketBytes())
+            if (as3hx.Compat.truthy(queueMessagesFromSocketBytes()))
             {
                 socketBytes.clear();
             }
@@ -167,50 +167,50 @@ class WebSocketClientHandler extends SocketClientHandler
             else
             {
                 
-                if (socketBytes.length > MAX_SOCKET_BYTE_SIZE)
+                if (as3hx.Compat.truthy(socketBytes.length > SocketClientHandler.MAX_SOCKET_BYTE_SIZE))
                 {
                     socketBytes.clear();
                 }
             }
-            if (readQueue.length > 0)
+            if (as3hx.Compat.truthy(readQueue.length > 0))
             {
                 dispatchEvent(new MessagesAvailableEvent(MessagesAvailableEvent.MESSAGES_AVAILABLE));
             }
         }
     }
     
-    private function sendHybi00Response(fields : Dynamic, requestedURL : String) : Void
+    public function sendHybi00Response(fields                              : Dynamic, requestedURL                              : Dynamic) : Void
     //draft-ietf-hybi-thewebsocketprotocol-00
     {
         
         //send a response
-        var result : Dynamic = Reflect.field(fields, "Sec-WebSocket-Key1").match(new as3hx.Compat.Regex('[0-9]', "gi"));
-        var key1Nr : Int = ((Std.is(result, Array))) ? as3hx.Compat.parseInt(result.join("")) : 1;
+        var result                              : Dynamic= Reflect.field(fields, "Sec-WebSocket-Key1").match(new as3hx.Compat.Regex('[0-9]', "gi"));
+        var key1Nr                              : Dynamic= ((Std.is(result, Array))) ? as3hx.Compat.parseInt(result.join("")) : 1;
         result = Reflect.field(fields, "Sec-WebSocket-Key1").match(new as3hx.Compat.Regex(' ', "gi"));
-        var key1SpaceCount : Int = ((Std.is(result, Array))) ? result.length : 1;
-        var key1Part : Float = key1Nr / key1SpaceCount;
+        var key1SpaceCount                              : Dynamic= ((Std.is(result, Array))) ? result.length : 1;
+        var key1Part                              : Dynamic= key1Nr / key1SpaceCount;
         
         result = Reflect.field(fields, "Sec-WebSocket-Key2").match(new as3hx.Compat.Regex('[0-9]', "gi"));
-        var key2Nr : Int = ((Std.is(result, Array))) ? as3hx.Compat.parseInt(result.join("")) : 1;
+        var key2Nr                              : Dynamic= ((Std.is(result, Array))) ? as3hx.Compat.parseInt(result.join("")) : 1;
         result = Reflect.field(fields, "Sec-WebSocket-Key2").match(new as3hx.Compat.Regex(' ', "gi"));
-        var key2SpaceCount : Int = ((Std.is(result, Array))) ? result.length : 1;
-        var key2Part : Float = key2Nr / key2SpaceCount;
+        var key2SpaceCount                              : Dynamic= ((Std.is(result, Array))) ? result.length : 1;
+        var key2Part                              : Dynamic= key2Nr / key2SpaceCount;
         
         //calculate binary md5 hash
-        var bytesToHash : ByteArray = new ByteArray();
+        var bytesToHash                              : Dynamic= new ByteArray();
         bytesToHash.writeUnsignedInt(key1Part);
         bytesToHash.writeUnsignedInt(key2Part);
         bytesToHash.writeBytes(socketBytes, socketBytes.length - 8);
         
         //hash it
-        var hash : String = MD5.hashBytes(bytesToHash);
+        var hash                              : Dynamic= MD5.hashBytes(bytesToHash);
         
-        var response : String = "HTTP/1.1 101 WebSocket Protocol Handshake\r\n" + "Upgrade: WebSocket\r\n" + "Connection: Upgrade\r\n" + "Sec-WebSocket-Origin: " + Reflect.field(fields, "Origin") + "\r\n" + "Sec-WebSocket-Location: ws://" + Reflect.field(fields, "Host") + requestedURL + "\r\n" + "\r\n";
-        var responseBytes : ByteArray = new ByteArray();
+        var response                              : Dynamic= "HTTP/1.1 101 WebSocket Protocol Handshake\r\n" + "Upgrade: WebSocket\r\n" + "Connection: Upgrade\r\n" + "Sec-WebSocket-Origin: " + Reflect.field(fields, "Origin") + "\r\n" + "Sec-WebSocket-Location: ws://" + Reflect.field(fields, "Host") + requestedURL + "\r\n" + "\r\n";
+        var responseBytes                              : Dynamic= new ByteArray();
         responseBytes.writeUTFBytes(response);
         
-        var i : Int = 0;
-        while (i < hash.length)
+        var i                              : Dynamic= 0;
+        while (as3hx.Compat.truthy(i < hash.length))
         {
             responseBytes.writeByte(as3hx.Compat.parseInt(hash.substr(i, 2)));
             i += 2;
@@ -223,20 +223,20 @@ class WebSocketClientHandler extends SocketClientHandler
         socketBytes.clear();
     }
     
-    private function sendHybi10Response(fields : Dynamic, requestedURL : String) : Void
-    //var websocketKey:String = "dGhlIHNhbXBsZSBub25jZQ==";//test
+    public function sendHybi10Response(fields                              : Dynamic, requestedURL                              : Dynamic) : Void
+    //var websocketKey                             : Dynamic= "dGhlIHNhbXBsZSBub25jZQ==";//test
     {
         
-        var websocketKey : String = Reflect.field(fields, "Sec-WebSocket-Key");
+        var websocketKey                              : Dynamic= Reflect.field(fields, "Sec-WebSocket-Key");
         
-        var guid : String = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-        var hash : String = websocketKey + guid;
+        var guid                              : Dynamic= "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+        var hash                              : Dynamic= websocketKey + guid;
         
         hash = SHA1.hash(hash);
         
-        var hashBytes : ByteArray = new ByteArray();
-        var i : Int = 0;
-        while (i < hash.length)
+        var hashBytes                              : Dynamic= new ByteArray();
+        var i                              : Dynamic= 0;
+        while (as3hx.Compat.truthy(i < hash.length))
         {
             hashBytes.writeByte(as3hx.Compat.parseInt(hash.substr(i, 2)));
             i += 2;
@@ -244,9 +244,9 @@ class WebSocketClientHandler extends SocketClientHandler
         
         hash = Base64.encode(hashBytes);
         
-        var response : String = "HTTP/1.1 101 Switching Protocols\r\n" + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n" + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
+        var response                              : Dynamic= "HTTP/1.1 101 Switching Protocols\r\n" + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n" + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
         
-        var responseBytes : ByteArray = new ByteArray();
+        var responseBytes                              : Dynamic= new ByteArray();
         responseBytes.writeUTFBytes(response);
         responseBytes.position = 0;
         socket.writeBytes(responseBytes);
@@ -254,16 +254,16 @@ class WebSocketClientHandler extends SocketClientHandler
         socketBytes.clear();
     }
     
-    private function sendHybi17Response(fields : Dynamic, requestedURL : String) : Void
+    public function sendHybi17Response(fields                              : Dynamic, requestedURL                              : Dynamic) : Void
     {
         sendHybi10Response(fields, requestedURL);
     }
     
-    override private function queueMessagesFromSocketBytes() : Bool
+    override public function queueMessagesFromSocketBytes() : Bool
     {
-        if (socketBytes.bytesAvailable > 0)
+        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
         {
-            var input : String;
+            var input                             : Dynamic= null;
             switch (protocol)
             {
                 case PROTOCOL_HYBI_00:
@@ -274,9 +274,9 @@ class WebSocketClientHandler extends SocketClientHandler
                     input = decodeHybi17Input();
             }
             
-            if (input != null) {
-var deserialized : Array<Message> = messageSerializer.deserialize(input);
-                for (message in deserialized)
+            if (as3hx.Compat.truthy(input != null)) {
+var deserialized                              : Dynamic= messageSerializer.deserialize(input);
+                for (message in as3hx.Compat.iter(deserialized))
                 {
                     readQueue.push(message);
                 }
@@ -288,10 +288,10 @@ var deserialized : Array<Message> = messageSerializer.deserialize(input);
     
     private function decodeHybi00Input() : String
     {
-        var messageString : String = "";
-        while (socketBytes.bytesAvailable > 0)
+        var messageString                              : Dynamic= "";
+        while (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
         {
-            var byte : Int = socketBytes.readByte();
+            var byte                              : Dynamic= socketBytes.readByte();
             switch (byte)
             {
                 case 0, -1:
@@ -304,126 +304,126 @@ var deserialized : Array<Message> = messageSerializer.deserialize(input);
     
     private function decodeHybi10Input() : String
     {
-        var messageString : String = "";
-        var bt : Int;
-        var len : Int;
-        var mask : Bool;
-        var masks : Array<Dynamic> = [0, 0, 0, 0];
+        var messageString                              : Dynamic= "";
+        var bt                              : Dynamic= null;
+        var len                              : Dynamic= null;
+        var mask                              : Dynamic= null;
+        var masks                              : Dynamic= [0, 0, 0, 0];
         
-        if (socketBytes.bytesAvailable > 0)
+        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
         {
             bt = socketBytes.readUnsignedByte();
             
-            var aReadFinal : Bool = (bt & 0x80) == 0x80;
-            var aRes1 : Bool = (bt & 0x40) == 0x40;
-            var aRes2 : Bool = (bt & 0x20) == 0x20;
-            var aRes3 : Bool = (bt & 0x10) == 0x10;
-            var aReadCode : Int = as3hx.Compat.parseInt(bt & 0x0f);
+            var aReadFinal                              : Dynamic= (bt & 0x80) == 0x80;
+            var aRes1                              : Dynamic= (bt & 0x40) == 0x40;
+            var aRes2                              : Dynamic= (bt & 0x20) == 0x20;
+            var aRes3                              : Dynamic= (bt & 0x10) == 0x10;
+            var aReadCode                              : Dynamic= as3hx.Compat.parseInt(bt & 0x0f);
             
             //frame_close
-            if (aReadCode == FRAME_CLOSE)
+            if (as3hx.Compat.truthy(aReadCode == FRAME_CLOSE))
             {
                 close();
                 return null;
             }
             
             //mask & length
-            if (socketBytes.bytesAvailable > 0)
+            if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
             {
                 bt = socketBytes.readUnsignedByte();
                 mask = (bt & 0x80) == 0x80;
                 len = as3hx.Compat.parseInt(bt & 0x7F);
-                if (len == 126)
+                if (as3hx.Compat.truthy(len == 126))
                 {
-                    if (socketBytes.bytesAvailable > 0)
+                    if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                     {
                         bt = socketBytes.readUnsignedByte();
                         len = as3hx.Compat.parseInt(bt * 0x100);
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
                             bt = socketBytes.readUnsignedByte();
                             len = as3hx.Compat.parseInt(len + bt);
                         }
                     }
                 }
-                else if (len == 127)
+                else if (as3hx.Compat.truthy(len == 127))
                 {
-                    if (socketBytes.bytesAvailable > 0)
+                    if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                     {
                         bt = socketBytes.readUnsignedByte();
-                        len = as3hx.Compat.parseInt(bt * 0x100000000000000);
+                        len = as3hx.Compat.parseInt(bt * Math.pow(2, 56));
                         bt = socketBytes.readUnsignedByte();
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
-                            len = as3hx.Compat.parseInt(len + bt * 0x1000000000000);
+                            len = as3hx.Compat.parseInt(len + bt * Math.pow(2, 48));
                             bt = socketBytes.readUnsignedByte();
                         }
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
-                            len = as3hx.Compat.parseInt(len + bt * 0x10000000000);
+                            len = as3hx.Compat.parseInt(len + bt * Math.pow(2, 40));
                             bt = socketBytes.readUnsignedByte();
                         }
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
-                            len = as3hx.Compat.parseInt(len + bt * 0x100000000);
+                            len = as3hx.Compat.parseInt(len + bt * Math.pow(2, 32));
                             bt = socketBytes.readUnsignedByte();
                         }
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
                             len = as3hx.Compat.parseInt(len + bt * 0x1000000);
                             bt = socketBytes.readUnsignedByte();
                         }
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
                             len = as3hx.Compat.parseInt(len + bt * 0x10000);
                             bt = socketBytes.readUnsignedByte();
                         }
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
                             len = as3hx.Compat.parseInt(len + bt * 0x100);
                             bt = socketBytes.readUnsignedByte();
                         }
-                        if (socketBytes.bytesAvailable > 0)
+                        if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                         {
                             len = as3hx.Compat.parseInt(len + bt);
                         }
                     }
                 }
                 
-                if (!mask)
+                if (as3hx.Compat.truthy(!mask))
                 {
                     socket.close();
                     return null;
                 }
                 
                 //read mask
-                if (mask)
+                if (as3hx.Compat.truthy(mask))
                 {
-                    if (socketBytes.bytesAvailable > 0)
+                    if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                     {
                         masks[0] = socketBytes.readUnsignedByte();
                     }
-                    if (socketBytes.bytesAvailable > 0)
+                    if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                     {
                         masks[1] = socketBytes.readUnsignedByte();
                     }
-                    if (socketBytes.bytesAvailable > 0)
+                    if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                     {
                         masks[2] = socketBytes.readUnsignedByte();
                     }
-                    if (socketBytes.bytesAvailable > 0)
+                    if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                     {
                         masks[3] = socketBytes.readUnsignedByte();
                     }
                 }
                 
-                if (socketBytes.bytesAvailable > 0)
+                if (as3hx.Compat.truthy(socketBytes.bytesAvailable > 0))
                 {
-                    var byteArray : ByteArray = new ByteArray();
-                    var j : Int = 0;
-                    var k : Int = 0;
-                    var previousLength : Int = 0;
-                    while (len > 0)
+                    var byteArray                              : Dynamic= new ByteArray();
+                    var j                              : Dynamic= 0;
+                    var k                              : Dynamic= 0;
+                    var previousLength                              : Dynamic= 0;
+                    while (as3hx.Compat.truthy(len > 0))
                     {
                         socketBytes.readBytes(byteArray, j, Math.min(len, as3hx.Compat.INT_MAX));
                         k = as3hx.Compat.parseInt(byteArray.length - previousLength);
@@ -431,7 +431,7 @@ var deserialized : Array<Message> = messageSerializer.deserialize(input);
                         len -= k;
                         previousLength = byteArray.length;
                     }
-                    if (mask)
+                    if (as3hx.Compat.truthy(mask))
                     {
                         for (i in 0...byteArray.length)
                         {
@@ -440,9 +440,9 @@ var deserialized : Array<Message> = messageSerializer.deserialize(input);
                     }
                     
                     byteArray.position = 0;
-                    while (byteArray.bytesAvailable > 0)
+                    while (as3hx.Compat.truthy(byteArray.bytesAvailable > 0))
                     {
-                        var byte : Int = byteArray.readUnsignedByte();
+                        var byte                              : Dynamic= byteArray.readUnsignedByte();
                         switch (byte)
                         {
                             default:
@@ -460,10 +460,10 @@ var deserialized : Array<Message> = messageSerializer.deserialize(input);
         return decodeHybi10Input();
     }
     
-    override public function writeMessage(messageToWrite : Message) : Void
+    override public function writeMessage(messageToWrite                              : Dynamic) : Void
     {
-        var serialized : String = messageSerializer.serialize(messageToWrite);
-        var bytes : ByteArray = new ByteArray();
+        var serialized                              : Dynamic= messageSerializer.serialize(messageToWrite);
+        var bytes                              : Dynamic= new ByteArray();
         switch (protocol)
         {
             case PROTOCOL_HYBI_00:
@@ -483,20 +483,20 @@ var deserialized : Array<Message> = messageSerializer.deserialize(input);
     /*
 
      */
-    private function sendHybi10Data(aWriteFinal : Bool, aRes1 : Bool, aRes2 : Bool, aRes3 : Bool, aWriteCode : Int, aStream : ByteArray) : Bool
+    public function sendHybi10Data(aWriteFinal                              : Dynamic, aRes1                              : Dynamic, aRes2                              : Dynamic, aRes3                              : Dynamic, aWriteCode                              : Dynamic, aStream                              : Dynamic) : Bool
     {
-        var result : Bool = !closed;  // && (aWriteCode == FRAME_CLOSE);  
-        var bt : Int = 0;
-        var sendLen : Int = 0;
-        var i : Int;
-        var len : Int = 0;
-        var stream : ByteArray = new ByteArray();
-        var bytes : ByteArray;
-        var masks : ByteArray = new ByteArray();
-        var send : ByteArray = new ByteArray();
-        var fMasking : Bool = false;  //do not mask when we are sending data  
+        var result                              : Dynamic= !closed;  // && (aWriteCode == FRAME_CLOSE);  
+        var bt                              : Dynamic= 0;
+        var sendLen                              : Dynamic= 0;
+        var i                              : Dynamic= null;
+        var len                              : Dynamic= 0;
+        var stream                              : Dynamic= new ByteArray();
+        var bytes                              : Dynamic= null;
+        var masks                              : Dynamic= new ByteArray();
+        var send                              : Dynamic= new ByteArray();
+        var fMasking                              : Dynamic= false;  //do not mask when we are sending data  
         
-        if (result)
+        if (as3hx.Compat.truthy(result))
         {
             try {
 bt = as3hx.Compat.parseInt(((aWriteFinal) ? 1 : 0) * 0x80);
@@ -509,11 +509,11 @@ bt = as3hx.Compat.parseInt(((aWriteFinal) ? 1 : 0) * 0x80);
                 
                 //length & mask
                 len = as3hx.Compat.parseInt(((fMasking) ? 1 : 0) * 0x80);
-                if (aStream.length < 126)
+                if (as3hx.Compat.truthy(aStream.length < 126))
                 {
                     len += aStream.length;
                 }
-                else if (aStream.length < 65536)
+                else if (as3hx.Compat.truthy(aStream.length < 65536))
                 {
                     len += 126;
                 }
@@ -523,10 +523,10 @@ bt = as3hx.Compat.parseInt(((aWriteFinal) ? 1 : 0) * 0x80);
                 }
                 stream.writeByte(len);
                 
-                if (aStream.length >= 126)
+                if (as3hx.Compat.truthy(aStream.length >= 126))
                 {
                     bytes = new ByteArray();
-                    if (aStream.length < 65536)
+                    if (as3hx.Compat.truthy(aStream.length < 65536))
                     {
                         bytes.writeShort(aStream.length);
                     }
@@ -540,7 +540,7 @@ bt = as3hx.Compat.parseInt(((aWriteFinal) ? 1 : 0) * 0x80);
                 }
                 
                 //masking
-                if (fMasking)
+                if (as3hx.Compat.truthy(fMasking))
                 {
                     masks.writeByte(Math.floor(Math.random() * 256));
                     masks.writeByte(Math.floor(Math.random() * 256));
@@ -554,7 +554,7 @@ bt = as3hx.Compat.parseInt(((aWriteFinal) ? 1 : 0) * 0x80);
                 
                 aStream.readBytes(send);
                 
-                if (fMasking)
+                if (as3hx.Compat.truthy(fMasking))
                 {
                     for (i in 0...send.length)
                     {
@@ -574,7 +574,7 @@ bt = as3hx.Compat.parseInt(((aWriteFinal) ? 1 : 0) * 0x80);
         return result;
     }
     
-    private function sendHybi17Data(aWriteFinal : Bool, aRes1 : Bool, aRes2 : Bool, aRes3 : Bool, aWriteCode : Int, aStream : ByteArray) : Bool
+    public function sendHybi17Data(aWriteFinal                              : Dynamic, aRes1                              : Dynamic, aRes2                              : Dynamic, aRes3                              : Dynamic, aWriteCode                              : Dynamic, aStream                              : Dynamic) : Bool
     {
         return sendHybi10Data(aWriteFinal, aRes1, aRes2, aRes3, aWriteCode, aStream);
     }

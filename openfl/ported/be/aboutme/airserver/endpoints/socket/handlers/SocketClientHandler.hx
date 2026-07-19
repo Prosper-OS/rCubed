@@ -15,34 +15,34 @@ import openfl.utils.ByteArray;
 
 class SocketClientHandler extends EventDispatcher implements IClientHandler
 {
-    public var messagesAvailable(get, never) : Bool;
+    public var messagesAvailable(get, never)                              : Dynamic;
 
     
-    public static var MAX_SOCKET_BYTE_SIZE : Int = 1024 * 1024 * 8;
+    public static var MAX_SOCKET_BYTE_SIZE                              : Dynamic= 1024 * 1024 * 8;
     
     private function get_messagesAvailable() : Bool
     {
         return readQueue.length > 0;
     }
     
-    private var socketBytes : ByteArray;
-    private var readQueue : Array<Message>;
+    public var socketBytes                              : Dynamic;
+    public var readQueue                              : Dynamic;
     
-    private var closed : Bool;
-    private var firstRequestProcessed : Bool;
-    private var socket : Socket;
+    public var closed                              : Dynamic;
+    public var firstRequestProcessed                              : Dynamic;
+    public var socket                              : Dynamic;
     
-    private var messageSerializer : IMessageSerializer;
-    private var crossDomainPolicyXML : FastXML;
+    public var messageSerializer                              : Dynamic;
+    public var crossDomainPolicyXML                              : Dynamic;
     
-    public function new(socket : Socket, messageSerializer : IMessageSerializer, crossDomainPolicyXML : FastXML = null)
+    public function new(socket                              : Dynamic, messageSerializer                              : Dynamic, crossDomainPolicyXML                              : Dynamic= null)
     {
         super();
         this.socket = socket;
         this.messageSerializer = messageSerializer;
         this.crossDomainPolicyXML = crossDomainPolicyXML;
         
-        if (crossDomainPolicyXML == null)
+        if (as3hx.Compat.truthy(crossDomainPolicyXML == null))
         {
             crossDomainPolicyXML = new FastXML("<?xml version=\"1.0\"?>" + "<!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">" + "<cross-domain-policy>" + "   <allow-access-from domain=\"*\" to-ports=\"*\" />" + "</cross-domain-policy>");
         }
@@ -59,10 +59,10 @@ class SocketClientHandler extends EventDispatcher implements IClientHandler
     
     public function close() : Void
     {
-        if (!closed)
+        if (as3hx.Compat.truthy(!closed))
         {
             closed = true;
-            if (socket.connected)
+            if (as3hx.Compat.truthy(socket.connected))
             {
                 socket.close();
             }
@@ -74,23 +74,23 @@ class SocketClientHandler extends EventDispatcher implements IClientHandler
     
     public function readMessage() : Message
     {
-        var message : Message = null;
-        if (readQueue.length > 0)
+        var message                              : Dynamic= null;
+        if (as3hx.Compat.truthy(readQueue.length > 0))
         {
             message = readQueue.shift();
         }
         return message;
     }
     
-    public function writeMessage(messageToWrite : Message) : Void
+    public function writeMessage(messageToWrite                              : Dynamic) : Void
     {  //override this method in the inheriting classes  
         
     }
     
     public function printInvalidConnectionMessage() : Void
     {
-        var response : String = "HTTP/1.0 200 OK\nContent-Type: text/html\n\nPlease use <a href=\"" + Constant.WEBSOCKET_OVERLAY_URL + "\">" + Constant.WEBSOCKET_OVERLAY_URL + "</a> to access overlay features.";
-        var responseBytes : ByteArray = new ByteArray();
+        var response                              : Dynamic= "HTTP/1.0 200 OK\nContent-Type: text/html\n\nPlease use <a href=\"" + Constant.WEBSOCKET_OVERLAY_URL + "\">" + Constant.WEBSOCKET_OVERLAY_URL + "</a> to access overlay features.";
+        var responseBytes                              : Dynamic= new ByteArray();
         responseBytes.writeUTFBytes(response);
         responseBytes.position = 0;
         socket.writeBytes(responseBytes);
@@ -99,34 +99,34 @@ class SocketClientHandler extends EventDispatcher implements IClientHandler
         this.close();
     }
     
-    private function socketCloseHandler(event : Event) : Void
+    public function socketCloseHandler(event                              : Dynamic) : Void
     {
         close();
     }
     
-    private function socketIOErrorHandler(event : IOErrorEvent) : Void
+    public function socketIOErrorHandler(event                              : Dynamic) : Void
     {
     }
     
-    private function socketDataHandler(event : ProgressEvent) : Void
+    public function socketDataHandler(event                              : Dynamic) : Void
     {
-        if (socket.bytesAvailable > 0) {
-if (!firstRequestProcessed)
+        if (as3hx.Compat.truthy(socket.bytesAvailable > 0)) {
+if (as3hx.Compat.truthy(!firstRequestProcessed))
             {
                 firstRequestProcessed = true;
                 //process each byte, and send a cross domain reply, before the NULL byte
-                while (socket.bytesAvailable > 0)
+                while (as3hx.Compat.truthy(socket.bytesAvailable > 0))
                 {
-                    var byte : Int = socket.readByte();
+                    var byte                              : Dynamic= socket.readByte();
                     socketBytes.writeByte(byte);
-                    if (byte == 62) {
+                    if (as3hx.Compat.truthy(byte == 62)) {
 socketBytes.position = 0;
-                        var msg : String = socketBytes.readUTFBytes(socketBytes.length);
+                        var msg                              : Dynamic= socketBytes.readUTFBytes(socketBytes.length);
                         try
                         {
-                            var msgXML : FastXML = new FastXML(msg);
-                            if (msgXML.node.name.innerData() == "policy-file-request") {
-var crossDomainReply : ByteArray = new ByteArray();
+                            var msgXML                              : Dynamic= new FastXML(msg);
+                            if (as3hx.Compat.truthy(msgXML.node.name.innerData() == "policy-file-request")) {
+var crossDomainReply                              : Dynamic= new ByteArray();
                                 crossDomainReply.writeUTFBytes(crossDomainPolicyXML.node.toXMLString.innerData());
                                 crossDomainReply.writeByte(0);
                                 socket.writeBytes(crossDomainReply);
@@ -147,7 +147,7 @@ var crossDomainReply : ByteArray = new ByteArray();
                 socket.readBytes(socketBytes, socketBytes.position);
             }
             socketBytes.position = 0;
-            if (queueMessagesFromSocketBytes())
+            if (as3hx.Compat.truthy(queueMessagesFromSocketBytes()))
             {
                 socketBytes.clear();
             }
@@ -155,30 +155,30 @@ var crossDomainReply : ByteArray = new ByteArray();
             else
             {
                 
-                if (socketBytes.length > MAX_SOCKET_BYTE_SIZE)
+                if (as3hx.Compat.truthy(socketBytes.length > MAX_SOCKET_BYTE_SIZE))
                 {
                     socketBytes.clear();
                 }
             }
-            if (readQueue.length > 0)
+            if (as3hx.Compat.truthy(readQueue.length > 0))
             {
                 dispatchEvent(new MessagesAvailableEvent(MessagesAvailableEvent.MESSAGES_AVAILABLE));
             }
         }
     }
     
-    private function queueMessagesFromSocketBytes() : Bool
+    public function queueMessagesFromSocketBytes() : Bool
     {
         return false;
     }
     
-    private function writeSocketBytes(bytes : ByteArray) : Void
+    public function writeSocketBytes(bytes                              : Dynamic) : Void
     {
         socket.writeBytes(bytes);
         socket.flush();
     }
     
-    private function securityErrorHandler(event : SecurityErrorEvent) : Void
+    public function securityErrorHandler(event                              : Dynamic) : Void
     {
     }
     

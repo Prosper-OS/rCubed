@@ -20,10 +20,10 @@ import openfl.events.ErrorEvent;
 
 class WebSocketErrorEvent extends ErrorEvent
 {
-    public static inline var CONNECTION_FAIL : String = "connectionFail";
-    public static inline var ABNORMAL_CLOSE : String = "abnormalClose";
+    public static inline var CONNECTION_FAIL                          : Dynamic= "connectionFail";
+    public static inline var ABNORMAL_CLOSE                          : Dynamic= "abnormalClose";
     
-    public function new(type : String, bubbles : Bool = false, cancelable : Bool = false, text : String = "")
+    public function new(type                          : Dynamic, bubbles                          : Dynamic= false, cancelable                          : Dynamic= false, text                          : Dynamic= "")
     {
         super(type, bubbles, cancelable, text);
     }

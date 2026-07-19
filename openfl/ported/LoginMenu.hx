@@ -28,29 +28,30 @@ import menu.MenuPanel;
 
 class LoginMenu extends MenuPanel
 {
-    private var rememberPassword(get, never) : Bool;
+    private static var displayAvatarComplete                 : Dynamic;
+    private var rememberPassword(get, never)                              : Dynamic;
 
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _loader : URLLoader;
+    private var _gvars                              : Dynamic= GlobalVariables.instance;
+    private var _lang                              : Dynamic= Language.instance;
+    private var _loader                              : Dynamic;
     
-    private var STORED_NONE(default, never) : Int = 0;
-    private var STORED_PASSWORD(default, never) : Int = 1;
-    private var STORED_SESSION(default, never) : Int = 2;
+    private var STORED_NONE(default, never)                              : Dynamic= 0;
+    private var STORED_PASSWORD(default, never)                              : Dynamic= 1;
+    private var STORED_SESSION(default, never)                              : Dynamic= 2;
     
-    private var savedInfos : Dynamic;
+    private var savedInfos                              : Dynamic;
     
-    private var box : Box;
-    private var panel_login : Sprite;
-    private var panel_session : Sprite;
+    private var box                              : Dynamic;
+    private var panel_login                              : Dynamic;
+    private var panel_session                              : Dynamic;
     
-    private var input_user : BoxText;
-    private var input_pass : BoxText;
-    private var saveDetails : BoxCheck;
+    private var input_user                              : Dynamic;
+    private var input_pass                              : Dynamic;
+    private var saveDetails                              : Dynamic;
     
-    private var isLoading : Bool = false;
+    private var isLoading                              : Dynamic= false;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                              : Dynamic)
     {
         super(myParent);
         
@@ -77,12 +78,12 @@ class LoginMenu extends MenuPanel
         box.setSize(300, 140);
         
         // Register Button
-        var register_online_btn : BoxButton = new BoxButton(this, box.x, box.y + box.height + 10, 300, 30, _lang.string("register_online"), 12, registerOnline);
+        var register_online_btn                              : Dynamic= new BoxButton(this, box.x, box.y + box.height + 10, 300, 30, _lang.string("register_online"), 12, registerOnline);
         
         ///
         panel_session = new Sprite();
         
-        var draw_pane : Sprite = new Sprite();
+        var draw_pane                              : Dynamic= new Sprite();
         draw_pane.graphics.lineStyle(1, 0xffffff, 0);
         
         draw_pane.graphics.beginFill(0xffffff, 0.1);
@@ -96,20 +97,20 @@ class LoginMenu extends MenuPanel
         draw_pane.graphics.lineTo(box.width, 98);
         panel_session.addChild(draw_pane);
         
-        if (savedInfos.avatar != null)
+        if (as3hx.Compat.truthy(savedInfos.avatar != null))
         {
             try
             {
-                var avatarLoader : Loader = new Loader();
+                var avatarLoader                              : Dynamic= new Loader();
                 avatarLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, displayAvatarComplete);
                 avatarLoader.loadBytes(savedInfos.avatar, AirContext.getLoaderContext());
                 
-                function displayAvatarComplete(e : Event) : Void
+                displayAvatarComplete = function(e                              : Dynamic) : Void
                 {
                     avatarLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, displayAvatarComplete);
                     
-                    var userAvatar : DisplayObject = avatarLoader;
-                    if (userAvatar != null && userAvatar.height > 0 && userAvatar.width > 0)
+                    var userAvatar                              : Dynamic= avatarLoader;
+                    if (as3hx.Compat.truthy(userAvatar != null && userAvatar.height > 0 && userAvatar.width > 0))
                     {
                         SpriteUtil.scaleTo(userAvatar, 77, 77);
                         userAvatar.x = 11 + ((77 - userAvatar.width) / 2);
@@ -124,43 +125,43 @@ class LoginMenu extends MenuPanel
         }
         
         // Username
-        var session_label_user : Text = new Text(panel_session, 100, 30, _lang.string("login_continue_as"));
-        var session_txt_username : Text = new Text(panel_session, 100, 50, (savedInfos.username) ? savedInfos.username : "----", 16, "#F3FAFF");
+        var session_label_user                              : Dynamic= new Text(panel_session, 100, 30, _lang.string("login_continue_as"));
+        var session_txt_username                              : Dynamic= new Text(panel_session, 100, 50, (savedInfos.username) ? savedInfos.username : "----", 16, "#F3FAFF");
         
         //- Buttons
-        var session_continueAsbtn : SimpleBoxButton = new SimpleBoxButton(box.width, 98);
+        var session_continueAsbtn                              : Dynamic= new SimpleBoxButton(box.width, 98);
         session_continueAsbtn.addEventListener(MouseEvent.CLICK, attemptLoginSession);
         panel_session.addChild(session_continueAsbtn);
         
-        var session_guestbtn : BoxButton = new BoxButton(panel_session, 6, box.height - 36, 120, 30, _lang.string("login_guest"), 12, playAsGuest);
-        var session_changeusertbtn : BoxButton = new BoxButton(panel_session, box.width - 126, box.height - 36, 120, 30, _lang.string("login_change_user"), 12, changeUserEvent);
+        var session_guestbtn                              : Dynamic= new BoxButton(panel_session, 6, box.height - 36, 120, 30, _lang.string("login_guest"), 12, playAsGuest);
+        var session_changeusertbtn                              : Dynamic= new BoxButton(panel_session, box.width - 126, box.height - 36, 120, 30, _lang.string("login_change_user"), 12, changeUserEvent);
         
         /// Login Screen
         panel_login = new Sprite();
         
         //- Text
         // Username
-        var txt_user : Text = new Text(panel_login, 5, 5, _lang.string("login_name"));
+        var txt_user                              : Dynamic= new Text(panel_login, 5, 5, _lang.string("login_name"));
         input_user = new BoxText(panel_login, 5, 25, 290, 20);
         
         // Password
-        var txt_pass : Text = new Text(panel_login, 5, 55, _lang.string("login_pass"));
+        var txt_pass                              : Dynamic= new Text(panel_login, 5, 55, _lang.string("login_pass"));
         input_pass = new BoxText(panel_login, 5, 75, 290, 20);
         input_pass.displayAsPassword = true;
         
         // Save Details
         saveDetails = new BoxCheck(panel_login, 92, 113, toggleDetailsSave);
-        var txt_save : Text = new Text(panel_login, 110, 111, _lang.string("login_remember"));
+        var txt_save                              : Dynamic= new Text(panel_login, 110, 111, _lang.string("login_remember"));
         
         //- Buttons
-        var login_guestbtn : BoxButton = new BoxButton(panel_login, 6, box.height - 36, 75, 30, _lang.string("login_guest"), 12, playAsGuest);
-        var loginbtn : BoxButton = new BoxButton(panel_login, box.width - 81, box.height - 36, 75, 30, _lang.string("login_text"), 12, attemptLogin);
+        var login_guestbtn                              : Dynamic= new BoxButton(panel_login, 6, box.height - 36, 75, 30, _lang.string("login_guest"), 12, playAsGuest);
+        var loginbtn                              : Dynamic= new BoxButton(panel_login, box.width - 81, box.height - 36, 75, 30, _lang.string("login_text"), 12, attemptLogin);
         
         // Set Values
-        if (savedInfos.state == STORED_SESSION)
+        if (as3hx.Compat.truthy(savedInfos.state == STORED_SESSION))
         {
         }
-        else if (savedInfos.state == STORED_PASSWORD)
+        else if (as3hx.Compat.truthy(savedInfos.state == STORED_PASSWORD))
         {
             input_user.text = savedInfos.username;
             input_pass.text = savedInfos.password;
@@ -168,11 +169,11 @@ class LoginMenu extends MenuPanel
         }
         
         // Set Focus when at textboxes
-        if (savedInfos.state == STORED_SESSION)
+        if (as3hx.Compat.truthy(savedInfos.state == STORED_SESSION))
         {
             box.addChild(panel_session);
         }
-        else if (savedInfos.state == STORED_NONE || savedInfos.state == STORED_PASSWORD)
+        else if (as3hx.Compat.truthy(savedInfos.state == STORED_NONE || savedInfos.state == STORED_PASSWORD))
         {
             box.addChild(panel_login);
             stage.focus = input_user.field;
@@ -186,33 +187,33 @@ class LoginMenu extends MenuPanel
         return saveDetails.checked;
     }
     
-    public function toggleDetailsSave(e : Event) : Void
+    public function toggleDetailsSave(e                              : Dynamic) : Void
     {
         saveDetails.checked = !saveDetails.checked;
     }
     
-    public function playAsGuest(e : Event = null) : Void
+    public function playAsGuest(e                              : Dynamic= null) : Void
     {
         switchTo(Main.GAME_MENU_PANEL);
     }
     
-    public function registerOnline(e : Event = null) : Void
+    public function registerOnline(e                              : Dynamic= null) : Void
     {
         flash.Lib.getURL(new URLRequest(URLs.resolve(URLs.USER_REGISTER_URL)), "_blank");
     }
     
-    private function changeUserEvent(e : Event) : Void
+    private function changeUserEvent(e                              : Dynamic) : Void
     {
         saveLoginDetails(false);
         
-        if (box.contains(panel_session))
+        if (as3hx.Compat.truthy(box.contains(panel_session)))
         {
             box.removeChild(panel_session);
         }
         
         box.addChild(panel_login);
         
-        if (savedInfos.username != null)
+        if (as3hx.Compat.truthy(savedInfos.username != null))
         {
             input_user.text = savedInfos.username;
         }
@@ -221,9 +222,9 @@ class LoginMenu extends MenuPanel
         input_user.field.setSelection(input_user.text.length, input_user.text.length);
     }
     
-    public function attemptLoginSession(e : Event = null) : Void
+    public function attemptLoginSession(e                              : Dynamic= null) : Void
     {
-        if (isLoading)
+        if (as3hx.Compat.truthy(isLoading))
         {
             return;
         }
@@ -231,8 +232,8 @@ class LoginMenu extends MenuPanel
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_LOGIN_URL));
-        var requestVars : URLVariables = new URLVariables();
+        var req                              : Dynamic= new URLRequest(URLs.resolve(URLs.USER_LOGIN_URL));
+        var requestVars                              : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.username = savedInfos.username;
         requestVars.token = savedInfos.token;
@@ -245,9 +246,9 @@ class LoginMenu extends MenuPanel
         isLoading = true;
     }
     
-    public function attemptLogin(e : Event = null) : Void
+    public function attemptLogin(e                              : Dynamic= null) : Void
     {
-        if (isLoading)
+        if (as3hx.Compat.truthy(isLoading))
         {
             return;
         }
@@ -255,8 +256,8 @@ class LoginMenu extends MenuPanel
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_LOGIN_URL));
-        var requestVars : URLVariables = new URLVariables();
+        var req                              : Dynamic= new URLRequest(URLs.resolve(URLs.USER_LOGIN_URL));
+        var requestVars                              : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.username = input_user.text;
         requestVars.password = input_pass.text;
@@ -270,10 +271,10 @@ class LoginMenu extends MenuPanel
         setFields(true);
     }
     
-    private function loginKeyDown(event : KeyboardEvent) : Void
+    private function loginKeyDown(event                              : Dynamic) : Void
     {
-        if (event.keyCode == Keyboard.ENTER) {
-if (panel_session.stage != null)
+        if (as3hx.Compat.truthy(event.keyCode == Keyboard.ENTER)) {
+if (as3hx.Compat.truthy(panel_session.stage != null))
             {
                 attemptLoginSession(event);
             }
@@ -282,7 +283,7 @@ if (panel_session.stage != null)
             {
                 
                 {
-                    if (input_user.text.length > 0)
+                    if (as3hx.Compat.truthy(input_user.text.length > 0))
                     {
                         attemptLogin(event);
                     }
@@ -295,13 +296,13 @@ if (panel_session.stage != null)
         }
     }
     
-    private function loginLoadComplete(e : Event) : Void
+    private function loginLoadComplete(e                              : Dynamic) : Void
     {
         removeLoaderListeners();
         
         // Parse Response
-        var _data : Dynamic;
-        var siteDataString : String = e.target.data;
+        var _data                              : Dynamic= null;
+        var siteDataString                              : Dynamic= e.target.data;
         try
         {
             _data = haxe.Json.parse(siteDataString);
@@ -319,17 +320,17 @@ if (panel_session.stage != null)
         
         
         
-        if (_data.result == 4)
+        if (as3hx.Compat.truthy(_data.result == 4))
         {
             Logger.error(this, "Invalid User/Session");
             isLoading = false;
             Alert.add(_lang.string("login_invalid_session"));
             changeUserEvent(e);
         }
-        else if (_data.result >= 1 && _data.result <= 3)
+        else if (as3hx.Compat.truthy(_data.result >= 1 && _data.result <= 3))
         {
             Logger.success(this, "Login Success!");
-            if (_data.result == 1 || _data.result == 2)
+            if (as3hx.Compat.truthy(_data.result == 1 || _data.result == 2))
             {
                 saveLoginDetails(this.rememberPassword, _data.session);
             }
@@ -344,7 +345,7 @@ if (panel_session.stage != null)
         }
     }
     
-    private function loginLoadError(e : ErrorEvent = null) : Void
+    private function loginLoadError(e                              : Dynamic= null) : Void
     {
         Logger.error(this, "Login Load Error: " + Logger.event_error(e));
         Alert.add(_lang.string("login_connection_error"));
@@ -366,9 +367,9 @@ if (panel_session.stage != null)
         _loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loginLoadError);
     }
     
-    private function setFields(val : Bool, isError : Bool = false) : Void
+    private function setFields(val                              : Dynamic, isError                              : Dynamic= false) : Void
     {
-        if (val)
+        if (as3hx.Compat.truthy(val))
         {
             isLoading = true;
             input_user.selectable = false;
@@ -389,7 +390,7 @@ if (panel_session.stage != null)
             input_pass.borderColor = 0xFFFFFF;
         }
         
-        if (isError)
+        if (as3hx.Compat.truthy(isError))
         {
             input_pass.text = "";
             input_pass.textColor = 0xFFDBDB;
@@ -398,9 +399,9 @@ if (panel_session.stage != null)
         }
     }
     
-    public function saveLoginDetails(saveLogin : Bool = false, session : String = "") : Void
+    public function saveLoginDetails(saveLogin                              : Dynamic= false, session                              : Dynamic= "") : Void
     {
-        if (saveLogin && session != "")
+        if (as3hx.Compat.truthy(saveLogin && session != ""))
         {
             LocalStore.setVariable("uUsername", Crypt.Encode(input_user.text));
             LocalStore.setVariable("uSessionToken", Crypt.Encode(session));
@@ -418,23 +419,23 @@ if (panel_session.stage != null)
     
     public function loadLoginDetails() : Dynamic
     {
-        var out : Dynamic = {
+        var out                              : Dynamic= {
             state : STORED_NONE
         };
         
-        var username : String = LocalStore.getVariable("uUsername", "");
-        var sessionToken : String = LocalStore.getVariable("uSessionToken", "");
+        var username                              : Dynamic= LocalStore.getVariable("uUsername", "");
+        var sessionToken                              : Dynamic= LocalStore.getVariable("uSessionToken", "");
         
-        if (sessionToken != "")
+        if (as3hx.Compat.truthy(sessionToken != ""))
         {
             Reflect.setField(out, "state", STORED_SESSION);
             Reflect.setField(out, "username", Crypt.Decode(username));
             Reflect.setField(out, "token", Crypt.Decode(sessionToken));
             Reflect.setField(out, "avatar", LocalStore.getVariable("uAvatar", null));
         }
-        else if (username != "")
+        else if (as3hx.Compat.truthy(username != ""))
         {
-            var password : String = LocalStore.getVariable("uPassword", "");
+            var password                              : Dynamic= LocalStore.getVariable("uPassword", "");
             
             Reflect.setField(out, "state", STORED_PASSWORD);
             Reflect.setField(out, "username", Crypt.Decode(username));

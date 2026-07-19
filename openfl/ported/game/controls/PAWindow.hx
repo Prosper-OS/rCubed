@@ -12,18 +12,19 @@ import game.GameOptions;
 
 class PAWindow extends GameControl
 {
-    public var type(never, set) : Float;
-    public var show_labels(never, set) : Bool;
+    private static var e_changeHandler                    : Dynamic;
+    public var type(never, set)                       : Dynamic;
+    public var show_labels(never, set)                       : Dynamic;
 
-    public var scores : Array<Dynamic>;
-    private var labels : Array<Dynamic>;
+    public var scores                       : Dynamic;
+    private var labels                       : Dynamic;
     
-    private var options : GameOptions;
+    private var options                       : Dynamic;
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -33,9 +34,9 @@ class PAWindow extends GameControl
         labels = new Array<Dynamic>();
         scores = new Array<Dynamic>();
         
-        var scoreSize : Int = 36;
+        var scoreSize                       : Dynamic= 36;
         
-        var labelDesc : Array<Dynamic> = [{
+        var labelDesc                       : Dynamic= [{
             color : options.judgeColors[0],
             title : _lang.stringSimple("game_amazing")
         }, 
@@ -61,14 +62,14 @@ class PAWindow extends GameControl
         }
     ];
         
-        if (!options.displayAmazing)
+        if (as3hx.Compat.truthy(!options.displayAmazing))
         {
             labelDesc.splice(0, 1);
         }
         
-        for (label in labelDesc)
+        for (label in as3hx.Compat.iter(labelDesc))
         {
-            var field : TextField = new TextField();
+            var field                       : Dynamic= new TextField();
             field.defaultTextFormat = new TextFormat(_lang.font(), 13, label.color, true);
             field.antiAliasType = AntiAliasType.ADVANCED;
             field.embedFonts = true;
@@ -79,7 +80,7 @@ class PAWindow extends GameControl
             labels.push(field);
             
             field = new TextField();
-            field.defaultTextFormat = new TextFormat(_lang.font(), scoreSize--, label.color, true);
+            field.defaultTextFormat = new TextFormat(_lang.font(), as3hx.Compat.parseInt(scoreSize--), label.color, true);
             field.antiAliasType = AntiAliasType.ADVANCED;
             field.embedFonts = true;
             field.selectable = false;
@@ -95,10 +96,10 @@ class PAWindow extends GameControl
         update(0, 0, 0, 0, 0, 0);
     }
     
-    public function update(amazing : Int, perfect : Int, good : Int, average : Int, miss : Int, boo : Int) : Void
+    public function update(amazing                       : Dynamic, perfect                       : Dynamic, good                       : Dynamic, average                       : Dynamic, miss                       : Dynamic, boo                       : Dynamic) : Void
     {
-        var offset : Int = 0;
-        if (options.displayAmazing)
+        var offset                       : Dynamic= 0;
+        if (as3hx.Compat.truthy(options.displayAmazing))
         {
             updateScore(0, amazing);
             updateScore(1, perfect);
@@ -115,22 +116,22 @@ class PAWindow extends GameControl
         updateScore(offset + 4, boo);
     }
     
-    public function updateScore(field : Int, score : Int) : Void
+    public function updateScore(field                       : Dynamic, score                       : Dynamic) : Void
     {
         scores[field].text = Std.string(score);
     }
     
-    private function set_type(val : Float) : Float
+    private function set_type(val                       : Dynamic) : Float
     {
-        var xpos : Int = 50;
-        var ypos : Int = 0;
-        var scoreSize : Int = 36;
+        var xpos                       : Dynamic= 50;
+        var ypos                       : Dynamic= 0;
+        var scoreSize                       : Dynamic= 36;
         
-        var label : TextField;
-        var score : TextField;
+        var label                       : Dynamic= null;
+        var score                       : Dynamic= null;
         
         // --- / ---
-        if (val == 1)
+        if (as3hx.Compat.truthy(val == 1))
         {
             scoreSize = 0;
         }
@@ -139,7 +140,7 @@ class PAWindow extends GameControl
         {
             
             {
-                if (!options.displayAmazing)
+                if (as3hx.Compat.truthy(!options.displayAmazing))
                 {
                     ypos = 49;
                 }
@@ -152,7 +153,7 @@ class PAWindow extends GameControl
             score = scores[i];
             
             // LEFT/RIGHT - 2 Lines
-            if (val == 1)
+            if (as3hx.Compat.truthy(val == 1))
             {
                 label.x = xpos - label.textWidth;
                 label.y = ypos;
@@ -162,7 +163,7 @@ class PAWindow extends GameControl
                 
                 xpos += 166;
                 
-                if (!((i + 1) % 3))
+                if (as3hx.Compat.truthy(((i + 1) % 3) == 0))
                 {
                     xpos = 50;
                     ypos += 42;
@@ -186,7 +187,7 @@ class PAWindow extends GameControl
         return val;
     }
     
-    private function set_show_labels(val : Bool) : Bool
+    private function set_show_labels(val                       : Dynamic) : Bool
     {
         for (i in 0...labels.length)
         {
@@ -202,31 +203,31 @@ class PAWindow extends GameControl
     
     override public function getEditorInterface() : GameControlEditor
     {
-        var self : PAWindow = this;
+        var self                       : Dynamic= this;
         
-        var out : GameControlEditor = super.getEditorInterface();
+        var out                       : Dynamic= super.getEditorInterface();
         
         new Text(out, 10, out.cy, _lang.string("editor_component_show_labels"));
-        var checkLabels : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 22, e_changeHandler);
-        checkLabels.checked = (editorLayout.show_labels == null || editorLayout.show_labels);
+        var checkLabels                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 22, e_changeHandler);
+        checkLabels.checked = editorLayout.show_labels == null || as3hx.Compat.truthy(editorLayout.show_labels);
         
         out.cy += 42;
         
         new Text(out, 10, out.cy, _lang.string("editor_component_alt_layout"));
-        var checkLayout : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 22, e_changeHandler);
+        var checkLayout                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 22, e_changeHandler);
         checkLayout.checked = (editorLayout.type == 1);
         
         out.cy += 42;
         
-        var e_changeHandler : Event->Void = function(e : Event) : Void
+        e_changeHandler = function(e                       : Dynamic) : Void
         {
-            if (e.target == checkLabels)
+            if (as3hx.Compat.truthy(e.target == checkLabels))
             {
                 checkLabels.checked = !checkLabels.checked;
                 Reflect.setField(editorLayout, "show_labels", checkLabels.checked);
                 self.show_labels = Reflect.field(editorLayout, "show_labels");
             }
-            else if (e.target == checkLayout)
+            else if (as3hx.Compat.truthy(e.target == checkLayout))
             {
                 checkLayout.checked = !checkLayout.checked;
                 Reflect.setField(editorLayout, "type", (checkLayout.checked) ? 1 : 0);
@@ -237,4 +238,3 @@ class PAWindow extends GameControl
         return out;
     }
 }
-

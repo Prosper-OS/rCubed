@@ -20,9 +20,9 @@ import openfl.utils.ByteArray;
 
 class ChartFFRLegacy extends NoteChart
 {
-    private var songInfo : SongInfo;
+    private var songInfo                             : Dynamic;
     
-    public function new(songInfo : SongInfo, inData : Dynamic, framerate : Int = 30)
+    public function new(songInfo                             : Dynamic, inData                             : Dynamic, framerate                             : Dynamic= 30)
     {
         type = NoteChart.FFR_LEGACY;
         
@@ -33,15 +33,15 @@ class ChartFFRLegacy extends NoteChart
         parseChart(cast((inData), ByteArray));
     }
     
-    public static function songUrl(songInfo : SongInfo, engine : Dynamic = null) : String
+    public static function songUrl(songInfo                             : Dynamic, engine                             : Dynamic= null) : String
     {
-        if (engine == null)
+        if (as3hx.Compat.truthy(engine == null))
         {
             engine = songInfo.engine;
         }
-        if (engine.songURLMode != null && engine.songURLMode == "replace")
+        if (as3hx.Compat.truthy(engine.songURLMode != null && engine.songURLMode == "replace"))
         {
-            var song_variables : Dynamic = {
+            var song_variables                             : Dynamic= {
                 level : songInfo.level_id,
                 playhash : songInfo.play_hash
             };
@@ -51,19 +51,19 @@ class ChartFFRLegacy extends NoteChart
         return engine.songURL + "level_" + songInfo.level_id + ".swf";
     }
     
-    public static function validURL(url : String) : Bool
+    public static function validURL(url                             : Dynamic) : Bool
     {
-        var pieces : Array<Dynamic> = StringUtil.getURLPieces(url);
-        var urls : Array<Dynamic> = Site.instance.data["alt_engine_list"];
+        var pieces                             : Dynamic= StringUtil.getURLPieces(url);
+        var urls                         : Dynamic= Reflect.field(Site.instance.data, "alt_engine_list");
         
-        if (Lambda.indexOf(urls, "c1de69f4b4e024a4a943348b8e5e56d6") != -1)
+        if (as3hx.Compat.truthy(Lambda.indexOf(urls, "c1de69f4b4e024a4a943348b8e5e56d6") != -1))
         {
             return false;
         }
         
-        for (item in pieces)
+        for (item in as3hx.Compat.iter(pieces))
         {
-            if (Lambda.indexOf(urls, MD5.hash(item.toLowerCase())) != -1)
+            if (as3hx.Compat.truthy(Lambda.indexOf(urls, MD5.hash(item.toLowerCase())) != -1))
             {
                 return false;
             }
@@ -71,34 +71,34 @@ class ChartFFRLegacy extends NoteChart
         return true;
     }
     
-    public static function parseEngine(url : String, handler : Dynamic) : Void
+    public static function parseEngine(url                             : Dynamic, handler                             : Dynamic) : Void
     {
-        if (!validURL(url))
+        if (as3hx.Compat.truthy(!validURL(url)))
         {
             Alert.add("Incorrect legacy URL");
             return;
         }
         
-        var time : Float = Date.now().getTime();
-        var loader : URLLoader = new URLLoader();
+        var time                             : Dynamic= Date.now().getTime();
+        var loader                             : Dynamic= new URLLoader();
         
-        loader.addEventListener(Event.COMPLETE, function(event : Event) : Void
+        loader.addEventListener(Event.COMPLETE, function(event                             : Dynamic) : Void
                 {
                     try
                     {
-                        var xml : FastXML = new FastXML(event.target.data);
-                        if (xml.node.localName.innerData() != "arc_engines")
+                        var xml                             : Dynamic= new FastXML(event.target.data);
+                        if (as3hx.Compat.truthy(xml.node.localName.innerData() != "arc_engines"))
                         {
                             Alert.add("Incorrect legacy URL");
                             return;
                         }
-                        for (node/* AS3HX WARNING could not determine type for var: node exp: ECall(EField(EIdent(xml),children),[]) type: null */ in xml.nodes.children())
+                        for (node/* AS3HX WARNING could not determine type for var: node exp: ECall(EField(EIdent(xml),children),[]) type: null */ in as3hx.Compat.iter(xml.nodes.children()))
                         {
-                            if (node.id == null)
+                            if (as3hx.Compat.truthy(node.id == null))
                             {
                                 continue;
                             }
-                            var engine : Dynamic = { };
+                            var engine                             : Dynamic= { };
                             engine.level_ranks = { };
                             engine.config_url = url;
                             engine.id = Std.string(node.id);
@@ -108,18 +108,18 @@ class ChartFFRLegacy extends NoteChart
                             engine.playlistURL = Std.string(node.playlistURL);
                             engine.ignoreCache = cast(Std.string(node.att.ignoreCache), Bool);
                             engine.legacySync = cast(Std.string(node.att.legacySync), Bool);
-                            if (node.songURLMode != null)
+                            if (as3hx.Compat.truthy(node.songURLMode != null))
                             {
                                 engine.songURLMode = Std.string(node.songURLMode);
                             }
-                            if (engine.legacySync)
+                            if (as3hx.Compat.truthy(engine.legacySync))
                             {
                                 engine.legacySyncLevel = as3hx.Compat.parseInt(Std.string(node.att.legacySyncLevel));
                                 engine.legacySyncLow = as3hx.Compat.parseInt(Std.string(node.att.legacySyncLow));
                                 engine.legacySyncHigh = as3hx.Compat.parseInt(Std.string(node.att.legacySyncHigh));
                                 setEngineSync(engine);
                             }
-                            if (false || node.att.nocrossdomain != "true")
+                            if (as3hx.Compat.truthy(false || node.att.nocrossdomain != "true"))
                             {
                                 handler(engine);
                             }
@@ -135,40 +135,40 @@ class ChartFFRLegacy extends NoteChart
         loader.load(new URLRequest(url + (url.indexOf("?") == -(1) ? "?d=" + time : "&d=" + time)));
     }
     
-    public static function setEngineSync(engine : Dynamic) : Void
+    public static function setEngineSync(engine                             : Dynamic) : Void
     {
         engine.sync = engineLegacySync(engine.legacySyncLevel, engine.legacySyncLow, engine.legacySyncHigh);
     }
     
-    public static function engineLegacySync(level : Int, low : Int, high : Int) : Dynamic
+    public static function engineLegacySync(level                             : Dynamic, low                             : Dynamic, high                             : Dynamic) : Dynamic
     {
-        return function(songInfo : SongInfo) : Int
+        return function(songInfo                             : Dynamic) : Int
         {
             return ((songInfo.level > level) ? high : low);
         };
     }
     
-    private static function parseEngineError(event : Event = null) : Void
+    private static function parseEngineError(event                             : Dynamic= null) : Void
     {
         Alert.add("Error loading legacy engine");
     }
     
-    public static function parsePlaylist(data : Dynamic, engine : Dynamic = null) : Array<Dynamic>
+    public static function parsePlaylist(data                             : Dynamic, engine                             : Dynamic= null) : Array<Dynamic>
     {
-        if (engine == null)
+        if (as3hx.Compat.truthy(engine == null))
         {
             engine = ArcGlobals.instance.configLegacy;
         }
         
-        var xml : FastXML = new FastXML(data);
-        var nodes : FastXMLList = xml.node.children.innerData();
-        var count : Int = nodes.length();
-        var songs : Array<Dynamic> = [];
+        var xml                             : Dynamic= new FastXML(data);
+        var nodes                             : Dynamic= xml.node.children.innerData();
+        var count                             : Dynamic= nodes.length();
+        var songs                             : Dynamic= [];
         
         for (i in 0...count)
         {
-            var node : FastXML = nodes.get(i);
-            var songInfo : SongInfo = new SongInfo();
+            var node                             : Dynamic= nodes.get(i);
+            var songInfo                             : Dynamic= new SongInfo();
             
             songInfo.genre = as3hx.Compat.parseInt(Std.string(node.att.genre));
             songInfo.name = Std.string(node.node.songname.innerData);
@@ -191,11 +191,11 @@ class ChartFFRLegacy extends NoteChart
             songInfo.background = Std.string(node.node.background.innerData);
             songInfo.engine = engine;
             
-            if (cast(Std.string(node.node.arc_sync.innerData), Bool))
+            if (as3hx.Compat.truthy(cast(Std.string(node.node.arc_sync.innerData), Bool)))
             {
                 songInfo.sync = as3hx.Compat.parseInt(Std.string(node.node.arc_sync.innerData));
             }
-            else if (engine.sync)
+            else if (as3hx.Compat.truthy(engine.sync))
             {
                 songInfo.sync = engine.sync(songInfo);
             }
@@ -205,27 +205,27 @@ class ChartFFRLegacy extends NoteChart
         return songs;
     }
     
-    public function parseChart(data : ByteArray) : Void
+    public function parseChart(data                             : Dynamic) : Void
     {
-        var validDirections : Array<Dynamic> = ["L", "D", "U", "R"];
+        var validDirections                             : Dynamic= ["L", "D", "U", "R"];
         
-        var beatbox : Array<Dynamic> = Beatbox.parseBeatbox(data);
-        if (beatbox != null && beatbox.length > 0)
+        var beatbox                             : Dynamic= Beatbox.parseBeatbox(data);
+        if (as3hx.Compat.truthy(beatbox != null && beatbox.length > 0))
         {
-            for (beat in beatbox)
+            for (beat in as3hx.Compat.iter(beatbox))
             {
-                if (Lambda.indexOf(validDirections, Reflect.field(beat, Std.string(1))) >= 0)
+                if (as3hx.Compat.truthy(Lambda.indexOf(validDirections, as3hx.Compat.field(beat, 1)) >= 0))
                 {
-                    var beatPos : Int = as3hx.Compat.parseInt(Reflect.field(beat, Std.string(0)) + (songInfo.sync || 0));
-                    var beatPosMS : Float = beatPos / framerate;
+                    var beatPos                             : Dynamic= as3hx.Compat.parseInt(as3hx.Compat.field(beat, 0) + (as3hx.Compat.orValue(songInfo.sync, 0)));
+                    var beatPosMS                             : Dynamic= beatPos / framerate;
                     
                     // has ms timing data
-                    if (beat.length >= 4)
+                    if (as3hx.Compat.truthy(beat.length >= 4))
                     {
-                        beatPosMS = (Reflect.field(beat, Std.string(3)) / 1000);
+                        beatPosMS = (as3hx.Compat.field(beat, 3) / 1000);
                     }
                     
-                    Notes.push(new Note(Reflect.field(beat, Std.string(1)), beatPosMS, Reflect.field(beat, Std.string(2)) || "blue", beatPos));
+                    Notes.push(new Note(as3hx.Compat.field(beat, 1), beatPosMS, as3hx.Compat.orValue(as3hx.Compat.field(beat, 2), "blue"), beatPos));
                 }
             }
         }

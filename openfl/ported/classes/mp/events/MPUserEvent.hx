@@ -5,10 +5,10 @@ import classes.mp.MPUser;
 
 class MPUserEvent extends MPEvent
 {
-    public var user : MPUser;
-    public var user_sender : MPUser;
+    public var user                             : Dynamic;
+    public var user_sender                             : Dynamic;
     
-    public function new(type : String, command : MPSocketDataText, user : MPUser = null, user_sender : MPUser = null)
+    public function new(type                             : Dynamic, command                             : Dynamic, user                             : Dynamic= null, user_sender                             : Dynamic= null)
     {
         super(type, command);
         

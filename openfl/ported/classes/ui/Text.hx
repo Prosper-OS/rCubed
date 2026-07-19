@@ -9,33 +9,33 @@ import openfl.text.TextFormat;
 
 class Text extends Sprite
 {
-    public var useArea(get, set) : Bool;
-    public var align(never, set) : String;
-    public var textfield(get, never) : TextField;
-    public var text(get, set) : String;
-    public var fontColor(get, set) : String;
-    public var fontSize(get, set) : Int;
+    public var useArea(get, set)                            : Dynamic;
+    public var align(never, set)                            : Dynamic;
+    public var textfield(get, never)                            : Dynamic;
+    public var text(get, set)                            : Dynamic;
+    public var fontColor(get, set)                            : Dynamic;
+    public var fontSize(get, set)                            : Dynamic;
 
-    public static inline var LEFT : String = "left";
-    public static inline var CENTER : String = "center";
-    public static inline var RIGHT : String = "right";
+    public static inline var LEFT                            : Dynamic= "left";
+    public static inline var CENTER                            : Dynamic= "center";
+    public static inline var RIGHT                            : Dynamic= "right";
     
-    private var _textTF : TextField;
-    private var _textTFormat : TextFormat;
-    private var _message : String;
-    private var _width : Float = -1;
-    private var _height : Float = 22.6;
-    private var _fontSize : Float;
-    private var _fontColor : String;
-    private var _useArea : Bool = false;
-    private var _align : String = LEFT;
-    private var _isUnicode : Bool = false;
+    private var _textTF                            : Dynamic;
+    private var _textTFormat                            : Dynamic;
+    private var _message                            : Dynamic;
+    private var _width                            : Dynamic= -1;
+    private var _height                            : Dynamic= 22.6;
+    private var _fontSize                            : Dynamic;
+    private var _fontColor                            : Dynamic;
+    private var _useArea                            : Dynamic= false;
+    private var _align                            : Dynamic= LEFT;
+    private var _isUnicode                            : Dynamic= false;
     
     ///- Constructor
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, message : Dynamic = "", fontSize : Int = 12, fontColor : String = "#FFFFFF")
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, message                            : Dynamic= "", fontSize                            : Dynamic= 12, fontColor                            : Dynamic= "#FFFFFF")
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -63,7 +63,7 @@ class Text extends Sprite
         draw();
     }
     
-    public function setAreaParams(width : Float, height : Float, align : String = LEFT) : Void
+    public function setAreaParams(width                            : Dynamic, height                            : Dynamic, align                            : Dynamic= LEFT) : Void
     {
         _width = width;
         _height = height;
@@ -72,7 +72,7 @@ class Text extends Sprite
         draw();
     }
     
-    override private function set_width(nW : Float) : Float
+    override private function set_width(nW                            : Dynamic) : Float
     {
         _width = nW;
         _useArea = true;
@@ -80,7 +80,7 @@ class Text extends Sprite
         return nW;
     }
     
-    override private function set_height(nH : Float) : Float
+    override private function set_height(nH                            : Dynamic) : Float
     {
         _height = nH;
         _useArea = true;
@@ -93,14 +93,14 @@ class Text extends Sprite
         return _useArea;
     }
     
-    private function set_useArea(inBool : Bool) : Bool
+    private function set_useArea(inBool                            : Dynamic) : Bool
     {
         _useArea = inBool;
         draw();
         return inBool;
     }
     
-    private function set_align(inString : String) : String
+    private function set_align(inString                            : Dynamic) : String
     {
         _align = inString;
         _useArea = true;
@@ -118,9 +118,9 @@ class Text extends Sprite
         return _message;
     }
     
-    private function set_text(value : String) : String
+    private function set_text(value                            : Dynamic) : String
     {
-        if (_message != value)
+        if (as3hx.Compat.truthy(_message != value))
         {
             _message = value;
             draw();
@@ -133,7 +133,7 @@ class Text extends Sprite
         return _fontColor;
     }
     
-    private function set_fontColor(value : String) : String
+    private function set_fontColor(value                            : Dynamic) : String
     {
         _fontColor = value;
         draw();
@@ -145,9 +145,9 @@ class Text extends Sprite
         return as3hx.Compat.parseInt(_fontSize);
     }
     
-    private function set_fontSize(value : Int) : Int
+    private function set_fontSize(value                            : Dynamic) : Int
     {
-        if (_fontSize != value)
+        if (as3hx.Compat.truthy(_fontSize != value))
         {
             _fontSize = value;
             draw();
@@ -157,7 +157,7 @@ class Text extends Sprite
     
     private function html() : String
     {
-        var fnt : String = (isUnicode(_message)) ? Fonts.BASE_FONT_CJK : Fonts.BASE_FONT;
+        var fnt                            : Dynamic= (isUnicode(_message)) ? Fonts.BASE_FONT_CJK : Fonts.BASE_FONT;
         return "<font face=\"" + fnt + "\" color=\"" + _fontColor + "\" size=\"" + _fontSize + "\"><b>" + _message + "</b></font>";
     }
     
@@ -165,7 +165,7 @@ class Text extends Sprite
     {
         _textTF.htmlText = html();
         
-        if (_useArea) {
+        if (as3hx.Compat.truthy(_useArea)) {
 this.graphics.clear();
             //this.graphics.lineStyle(1, Math.random() * 0xFFFFFF, 1);
             this.graphics.beginFill(0, 0);
@@ -173,9 +173,9 @@ this.graphics.clear();
             this.graphics.endFill();
             
             //- Auto Center Y axis.
-            if (_width > 0) {
+            if (as3hx.Compat.truthy(_width > 0)) {
 _textTF.scaleX = _textTF.scaleY = 1;
-                if (_textTF.width > _width)
+                if (as3hx.Compat.truthy(_textTF.width > _width))
                 {
                     _textTF.scaleX = _textTF.scaleY = _width / _textTF.width;
                 }
@@ -183,15 +183,15 @@ _textTF.scaleX = _textTF.scaleY = 1;
             _textTF.y = ((_height - _textTF.height) / 2);
             
             //- Text Alignment to Area
-            if (_align == LEFT)
+            if (as3hx.Compat.truthy(_align == LEFT))
             {
                 _textTF.x = 0;
             }
-            else if (_align == CENTER)
+            else if (as3hx.Compat.truthy(_align == CENTER))
             {
                 _textTF.x = ((_width - _textTF.width) / 2);
             }
-            else if (_align == RIGHT)
+            else if (as3hx.Compat.truthy(_align == RIGHT))
             {
                 _textTF.x = (_width - _textTF.width);
             }
@@ -200,7 +200,7 @@ _textTF.scaleX = _textTF.scaleY = 1;
     
     public function dispose() : Void
     {
-        if (_textTF != null)
+        if (as3hx.Compat.truthy(_textTF != null))
         {
             this.removeChild(_textTF);
             _textTF = null;
@@ -208,7 +208,7 @@ _textTF.scaleX = _textTF.scaleY = 1;
         _textTF = null;
     }
     
-    public static function isUnicode(str : String) : Bool
+    public static function isUnicode(str                            : Dynamic) : Bool
     {
         return !((new as3hx.Compat.Regex('^[\\x20-\\x7E]*$', "")).test(str));
     }

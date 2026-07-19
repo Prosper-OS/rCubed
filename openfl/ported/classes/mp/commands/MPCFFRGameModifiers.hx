@@ -4,10 +4,10 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRGameModifiers implements IMPCommand
 {
-    public var room : MPRoomFFR;
-    public var mods : Dynamic;
+    public var room                             : Dynamic;
+    public var mods                             : Dynamic;
     
-    public function new(room : MPRoomFFR, mods : Dynamic)
+    public function new(room                             : Dynamic, mods                             : Dynamic)
     {
         this.room = room;
         this.mods = mods;

@@ -3,70 +3,70 @@ package classes.mp;
 
 class MPUser
 {
-    public var nameHTML(get, never) : String;
-    public var userLabel(get, never) : String;
-    public var userLabelHTML(get, never) : String;
+    public var nameHTML(get, never)                             : Dynamic;
+    public var userLabel(get, never)                             : Dynamic;
+    public var userLabelHTML(get, never)                             : Dynamic;
 
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
+    private static var _gvars                             : Dynamic= GlobalVariables.instance;
     
-    public var isStale : Bool = false;
+    public var isStale                             : Dynamic= false;
     
-    public var uid : Int;
-    public var variables : Dynamic = { };
-    public var permissions : MPUserPermissions = new MPUserPermissions();
+    public var uid                             : Dynamic;
+    public var variables                             : Dynamic= { };
+    public var permissions                             : Dynamic= new MPUserPermissions();
     
-    public var sid : Int;
-    public var name : String;
-    public var avatarURL : String;
-    public var skillRating : Float = 0;
+    public var sid                             : Dynamic;
+    public var name                             : Dynamic;
+    public var avatarURL                             : Dynamic;
+    public var skillRating                             : Dynamic= 0;
     
     // Private Variables
-    public var blockList : Array<Dynamic> = [];
+    public var blockList                             : Dynamic= [];
     
-    private var _nameHTML : String;
-    private var _userLabel : String;
-    private var _userLabelHTML : String;
+    private var _nameHTML                             : Dynamic;
+    private var _userLabel                             : Dynamic;
+    private var _userLabelHTML                             : Dynamic;
     
     
-    public function update(data : Dynamic) : Void
+    public function update(data                             : Dynamic) : Void
     {
-        if (data.uid != null)
+        if (as3hx.Compat.truthy(data.uid != null))
         {
             this.uid = data.uid;
         }
         
-        if (data.sid != null)
+        if (as3hx.Compat.truthy(data.sid != null))
         {
             this.sid = data.sid;
         }
         
-        if (data.permissions != null)
+        if (as3hx.Compat.truthy(data.permissions != null))
         {
             this.permissions.admin = data.permissions.admin;
             this.permissions.mod = data.permissions.mod;
         }
         
-        if (data.name != null)
+        if (as3hx.Compat.truthy(data.name != null))
         {
             this.name = data.name;
         }
         
-        if (data.avatar != null)
+        if (as3hx.Compat.truthy(data.avatar != null))
         {
             this.avatarURL = data.avatar;
         }
         
-        if (data.variables != null)
+        if (as3hx.Compat.truthy(data.variables != null))
         {
             this.variables = data.variables;
         }
         
-        if (data.skillRating != null)
+        if (as3hx.Compat.truthy(data.skillRating != null))
         {
             this.skillRating = data.skillRating;
         }
         
-        if (data.blockList != null)
+        if (as3hx.Compat.truthy(data.blockList != null))
         {
             this.blockList = data.blockList;
         }
@@ -81,13 +81,13 @@ class MPUser
      */
     private function buildUserLabels() : Void
     {
-        var prefixS : String = "";
-        var prefixH : String = "";
+        var prefixS                             : Dynamic= "";
+        var prefixH                             : Dynamic= "";
         
-        var suffixS : String = "";
-        var suffixH : String = "";
+        var suffixS                             : Dynamic= "";
+        var suffixH                             : Dynamic= "";
         
-        if (skillRating >= 255)
+        if (as3hx.Compat.truthy(skillRating >= 255))
         {
             prefixS += "[DEV] ";
             prefixH += "<font color=\"#d85454\">[DEV]</font> ";
@@ -98,13 +98,13 @@ class MPUser
             prefixH += "<font color=\"" + _gvars.getDivisionColor(skillRating) + "\">[" + skillRating + "]</font> ";
         }
         
-        if (permissions.admin)
+        if (as3hx.Compat.truthy(permissions.admin))
         {
             prefixH += "<font color=\"" + MPColors.NAME_ADMIN + "\">";
             suffixH += "</font>";
             _nameHTML = "<font color=\"" + MPColors.NAME_ADMIN + "\">" + name + "</font>";
         }
-        else if (permissions.mod)
+        else if (as3hx.Compat.truthy(permissions.mod))
         {
             prefixH += "<font color=\"" + MPColors.NAME_MOD + "\">";
             suffixH += "</font>";
@@ -138,7 +138,7 @@ class MPUser
         return _userLabelHTML;
     }
     
-    public function getVariable(key : String) : Dynamic
+    public function getVariable(key                             : Dynamic) : Dynamic
     {
         return Reflect.field(variables, key);
     }
@@ -146,39 +146,39 @@ class MPUser
     /**
      * Sort Users compare function based on permissions, skill ratings, then name.
      */
-    public static function sort(a : MPUser, b : MPUser) : Int
+    public static function sort(a                             : Dynamic, b                             : Dynamic) : Int
     // Admins First
     {
         
-        if (a.permissions.admin && b.permissions.admin)
+        if (as3hx.Compat.truthy(a.permissions.admin && b.permissions.admin))
         {
             return as3hx.Compat.parseInt(b.skillRating - a.skillRating);
         }
-        else if (a.permissions.admin && !b.permissions.admin)
+        else if (as3hx.Compat.truthy(a.permissions.admin && !b.permissions.admin))
         {
             return -1;
         }
-        else if (!a.permissions.admin && b.permissions.admin)
+        else if (as3hx.Compat.truthy(!a.permissions.admin && b.permissions.admin))
         {
             return 1;
         }
         
         // Mod Second
-        if (a.permissions.mod && b.permissions.mod)
+        if (as3hx.Compat.truthy(a.permissions.mod && b.permissions.mod))
         {
             return as3hx.Compat.parseInt(b.skillRating - a.skillRating);
         }
-        else if (a.permissions.mod && !b.permissions.mod)
+        else if (as3hx.Compat.truthy(a.permissions.mod && !b.permissions.mod))
         {
             return -1;
         }
-        else if (!a.permissions.mod && b.permissions.mod)
+        else if (as3hx.Compat.truthy(!a.permissions.mod && b.permissions.mod))
         {
             return 1;
         }
         
         // User Third
-        if (b.skillRating == a.skillRating)
+        if (as3hx.Compat.truthy(b.skillRating == a.skillRating))
         {
             return b.name.localeCompare(a.name);
         }

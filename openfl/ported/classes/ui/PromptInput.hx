@@ -9,14 +9,14 @@ import openfl.ui.Keyboard;
 
 class PromptInput extends Prompt
 {
-    private var _callback : Dynamic = null;
+    public var _callback                             : Dynamic= null;
     
-    private var _text : Text;
-    private var _textfield : BoxText;
-    private var _submit_button : BoxButton;
-    private var _close_button : BoxIcon;
+    public var _text                             : Dynamic;
+    public var _textfield                             : Dynamic;
+    public var _submit_button                             : Dynamic;
+    public var _close_button                             : Dynamic;
     
-    public function new(parent : DisplayObjectContainer, title : String = "", buttonText : String = "", callback : Dynamic = null, displayAsPassword : Bool = false)
+    public function new(parent                             : Dynamic, title                             : Dynamic= "", buttonText                             : Dynamic= "", callback                             : Dynamic= null, displayAsPassword                             : Dynamic= false)
     {
         super(parent, 400, 120);
         
@@ -40,7 +40,7 @@ class PromptInput extends Prompt
         _submit_button = new BoxButton(this, _width - 130, _height - 39, 120, 29, buttonText, 12, submitPrompt);
     }
     
-    private function closePrompt(e : MouseEvent = null) : Void
+    public function closePrompt(e                             : Dynamic= null) : Void
     {
         _textfield.field.removeEventListener(KeyboardEvent.KEY_DOWN, keyDown);
         _textfield.dispose();
@@ -51,9 +51,9 @@ class PromptInput extends Prompt
         close();
     }
     
-    private function submitPrompt(e : MouseEvent = null) : Void
+    public function submitPrompt(e                             : Dynamic= null) : Void
     {
-        if (this._callback != null && _textfield.field.text.length > 0)
+        if (as3hx.Compat.truthy(this._callback != null && _textfield.field.text.length > 0))
         {
             this._callback(_textfield.field.text);
         }
@@ -62,13 +62,13 @@ class PromptInput extends Prompt
         closePrompt();
     }
     
-    private function keyDown(e : KeyboardEvent) : Void
+    public function keyDown(e                             : Dynamic) : Void
     {
-        if (e.keyCode == Keyboard.ENTER)
+        if (as3hx.Compat.truthy(e.keyCode == Keyboard.ENTER))
         {
             submitPrompt();
         }
-        else if (e.keyCode == Keyboard.ESCAPE)
+        else if (as3hx.Compat.truthy(e.keyCode == Keyboard.ESCAPE))
         {
             closePrompt();
         }

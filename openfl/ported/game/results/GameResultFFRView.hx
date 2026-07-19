@@ -13,37 +13,37 @@ import openfl.display.Sprite;
 
 class GameResultFFRView extends Sprite
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _score : ScoreHandler = ScoreHandler.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _score                       : Dynamic= ScoreHandler.instance;
     
-    private var resultsDisplay : MPResultsBackground;
+    private var resultsDisplay                       : Dynamic;
     
-    private var room : MPRoomFFR;
-    private var matchDetails : MPMatchResultsFFR;
-    private var scoreSelect : Dynamic;
+    private var room                       : Dynamic;
+    private var matchDetails                       : Dynamic;
+    private var scoreSelect                       : Dynamic;
     
     // Title Bar
-    private var resultsTime : String = TimeUtil.getCurrentDate();
-    private var header : Text;
-    private var time : Text;
+    private var resultsTime                       : Dynamic= TimeUtil.getCurrentDate();
+    private var header                       : Dynamic;
+    private var time                       : Dynamic;
     
     // Game Result
-    private var songName : Text;
-    private var songDecription : Text;
-    private var gameMode : Text;
-    private var textScore : Text;
-    private var textAmazing : Text;
-    private var textPerfect : Text;
-    private var textGood : Text;
-    private var textAverage : Text;
-    private var textMiss : Text;
-    private var textBoo : Text;
-    private var textMaxCombo : Text;
+    private var songName                       : Dynamic;
+    private var songDecription                       : Dynamic;
+    private var gameMode                       : Dynamic;
+    private var textScore                       : Dynamic;
+    private var textAmazing                       : Dynamic;
+    private var textPerfect                       : Dynamic;
+    private var textGood                       : Dynamic;
+    private var textAverage                       : Dynamic;
+    private var textMiss                       : Dynamic;
+    private var textBoo                       : Dynamic;
+    private var textMaxCombo                       : Dynamic;
     
-    private var list : GameResultFFRScoreList;
+    private var list                       : Dynamic;
     
-    public function new(room : MPRoomFFR, matchDetails : MPMatchResultsFFR, scoreSelect : Dynamic)
+    public function new(room                       : Dynamic, matchDetails                       : Dynamic, scoreSelect                       : Dynamic)
     {
         super();
         this.room = room;
@@ -54,7 +54,7 @@ class GameResultFFRView extends Sprite
         addChild(resultsDisplay);
         
         // Text
-        if (matchDetails.wasTie)
+        if (as3hx.Compat.truthy(matchDetails.wasTie))
         {
             header = new Text(this, 20, 10, matchDetails.winnerText, 16, "#E2FEFF");
         }
@@ -69,25 +69,25 @@ class GameResultFFRView extends Sprite
         time = new Text(this, 576, 10, resultsTime, 16, "#E2FEFF");
         time.setAreaParams(196, 26, "center");
         
-        var songInfo : SongInfo = matchDetails.songInfo;
+        var songInfo                       : Dynamic= matchDetails.songInfo;
         
         // Song Title
-        var seconds : Float = songInfo.time_secs;
-        var songLength : String = (Math.floor(seconds / 60)) + ":" + ((seconds % 60 >= 10) ? "" : "0") + (seconds % 60);
+        var seconds                       : Dynamic= songInfo.time_secs;
+        var songLength                       : Dynamic= (Math.floor(seconds / 60)) + ":" + ((seconds % 60 >= 10) ? "" : "0") + (seconds % 60);
         
-        var songTitle : String = (songInfo.engine) ? songInfo.name : "<a href=\"" + URLs.resolve(URLs.LEVEL_STATS_URL) + songInfo.level + "\">" + songInfo.name + "</a>";
-        var songSubTitle : String = sprintf(_lang.string("game_results_subtitle_difficulty"), {
+        var songTitle                       : Dynamic= (songInfo.engine) ? songInfo.name : "<a href=\"" + URLs.resolve(URLs.LEVEL_STATS_URL) + songInfo.level + "\">" + songInfo.name + "</a>";
+        var songSubTitle                       : Dynamic= sprintf(_lang.string("game_results_subtitle_difficulty"), {
                     value : songInfo.difficulty
                 }) + " - " + sprintf(_lang.string("game_results_subtitle_length"), {
                     value : songLength
                 });
-        if (songInfo.author != "")
+        if (as3hx.Compat.truthy(songInfo.author != ""))
         {
             songSubTitle += " - " + _lang.wrapFont(sprintf(_lang.stringSimple("game_results_subtitle_author"), {
                                 value : songInfo.author_html
                             }));
         }
-        if (songInfo.stepauthor != "")
+        if (as3hx.Compat.truthy(songInfo.stepauthor != ""))
         {
             songSubTitle += " - " + _lang.wrapFont(sprintf(_lang.stringSimple("game_results_subtitle_stepauthor"), {
                                 value : songInfo.stepauthor_html
@@ -105,7 +105,7 @@ class GameResultFFRView extends Sprite
         songDecription.mouseChildren = true;
         songDecription.mouseEnabled = true;
         
-        var isTeamMode : Bool = matchDetails.teams.length > 1;
+        var isTeamMode                       : Dynamic= matchDetails.teams.length > 1;
         
         // Table
         gameMode = new Text(this, 30, 150, _lang.string((isTeamMode) ? "mp_room_ffr_table_mode_team" : "mp_room_ffr_table_mode_ffa"), 12, "#E2FEFF");

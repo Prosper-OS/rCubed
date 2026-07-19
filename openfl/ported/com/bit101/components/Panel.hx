@@ -35,23 +35,23 @@ import openfl.display.Sprite;
 
 class Panel extends Component
 {
-    public var color(get, set) : Int;
-    public var gridSize(get, set) : Int;
-    public var showGrid(get, set) : Bool;
-    public var gridColor(get, set) : Int;
+    public var color(get, set)                            : Dynamic;
+    public var gridSize(get, set)                            : Dynamic;
+    public var showGrid(get, set)                            : Dynamic;
+    public var gridColor(get, set)                            : Dynamic;
 
-    private var _mask : Sprite;
-    private var _background : Sprite;
-    private var _color : Int = -1;
-    private var _gridSize : Int = 10;
-    private var _showGrid : Bool = false;
-    private var _gridColor : Int = 0xd0d0d0;
+    public var _mask                            : Dynamic;
+    public var _background                            : Dynamic;
+    public var _color                            : Dynamic= -1;
+    public var _gridSize                            : Dynamic= 10;
+    public var _showGrid                            : Dynamic= false;
+    public var _gridColor                            : Dynamic= 0xd0d0d0;
     
     
     /**
      * Container for content added to this panel. This is masked, so best to add children to content, rather than directly to the panel.
      */
-    public var content : Sprite;
+    public var content                            : Dynamic;
     
     
     /**
@@ -60,7 +60,7 @@ class Panel extends Component
      * @param xpos The x position to place this component.
      * @param ypos The y position to place this component.
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0)
     {
         super(parent, xpos, ypos);
     }
@@ -69,7 +69,7 @@ class Panel extends Component
     /**
      * Initializes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         setSize(100, 100);
@@ -78,7 +78,7 @@ class Panel extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         _background = new Sprite();
         super.addChild(_background);
@@ -102,7 +102,7 @@ class Panel extends Component
     /**
      * Overridden to add new child to content.
      */
-    override public function addChild(child : DisplayObject) : DisplayObject
+    override public function addChild(child                            : Dynamic) : DisplayObject
     {
         content.addChild(child);
         return child;
@@ -111,7 +111,7 @@ class Panel extends Component
     /**
      * Access to super.addChild
      */
-    public function addRawChild(child : DisplayObject) : DisplayObject
+    public function addRawChild(child                            : Dynamic) : DisplayObject
     {
         super.addChild(child);
         return child;
@@ -125,7 +125,7 @@ class Panel extends Component
         super.draw();
         _background.graphics.clear();
         _background.graphics.lineStyle(1, 0xFFFFFF, 0.35);
-        if (_color == -1)
+        if (as3hx.Compat.truthy(_color == -1))
         {
             _background.graphics.beginFill(GameBackgroundColor.BG_POPUP);
         }
@@ -144,23 +144,23 @@ class Panel extends Component
         _mask.graphics.endFill();
     }
     
-    private function drawGrid() : Void
+    public function drawGrid() : Void
     {
-        if (!_showGrid)
+        if (as3hx.Compat.truthy(!_showGrid))
         {
             return;
         }
         
         _background.graphics.lineStyle(0, _gridColor);
-        var i : Int = 0;
-        while (i < _width)
+        var i                            : Dynamic= 0;
+        while (as3hx.Compat.truthy(i < _width))
         {
             _background.graphics.moveTo(i, 0);
             _background.graphics.lineTo(i, _height);
             i += _gridSize;
         }
         i = 0;
-        while (i < _height)
+        while (as3hx.Compat.truthy(i < _height))
         {
             _background.graphics.moveTo(0, i);
             _background.graphics.lineTo(_width, i);
@@ -181,7 +181,7 @@ class Panel extends Component
     /**
      * Gets / sets the backgrond color of this panel.
      */
-    private function set_color(c : Int) : Int
+    private function set_color(c                            : Dynamic) : Int
     {
         _color = c;
         invalidate();
@@ -196,7 +196,7 @@ class Panel extends Component
     /**
      * Sets / gets the size of the grid.
      */
-    private function set_gridSize(value : Int) : Int
+    private function set_gridSize(value                            : Dynamic) : Int
     {
         _gridSize = value;
         invalidate();
@@ -211,7 +211,7 @@ class Panel extends Component
     /**
      * Sets / gets whether or not the grid will be shown.
      */
-    private function set_showGrid(value : Bool) : Bool
+    private function set_showGrid(value                            : Dynamic) : Bool
     {
         _showGrid = value;
         invalidate();
@@ -226,7 +226,7 @@ class Panel extends Component
     /**
      * Sets / gets the color of the grid lines.
      */
-    private function set_gridColor(value : Int) : Int
+    private function set_gridColor(value                            : Dynamic) : Int
     {
         _gridColor = value;
         invalidate();

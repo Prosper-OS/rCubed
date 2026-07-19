@@ -10,23 +10,23 @@ import openfl.text.TextFormat;
 
 class BoxText extends Box
 {
-    public var text(get, set) : String;
-    public var htmlText(get, set) : String;
-    public var restrict(get, set) : String;
-    public var autoSize(get, set) : String;
-    public var selectable(get, set) : Bool;
-    public var displayAsPassword(get, set) : Bool;
-    public var textColor(get, set) : Int;
-    public var focus(get, never) : Bool;
-    public var field(get, never) : TextField;
+    public var text(get, set)                             : Dynamic;
+    public var htmlText(get, set)                             : Dynamic;
+    public var restrict(get, set)                             : Dynamic;
+    public var autoSize(get, set)                             : Dynamic;
+    public var selectable(get, set)                             : Dynamic;
+    public var displayAsPassword(get, set)                             : Dynamic;
+    public var textColor(get, set)                             : Dynamic;
+    public var focus(get, never)                             : Dynamic;
+    public var field(get, never)                             : Dynamic;
 
-    private var _textFormat : TextFormat = Constant.TEXT_FORMAT_UNICODE;
-    private var _input : TextField;
-    private var _isFocused : Bool = false;
+    private var _textFormat                             : Dynamic= Constant.TEXT_FORMAT_UNICODE;
+    private var _input                             : Dynamic;
+    private var _isFocused                             : Dynamic= false;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, width : Int = 100, height : Int = 20, textformat : TextFormat = null)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, width                             : Dynamic= 100, height                             : Dynamic= 20, textformat                             : Dynamic= null)
     {
-        if (textformat != null)
+        if (as3hx.Compat.truthy(textformat != null))
         {
             _textFormat = textformat;
         }
@@ -37,7 +37,7 @@ class BoxText extends Box
         init();
     }
     
-    private function init() : Void
+    public function init() : Void
     {
         _input = new TextField();
         _input.width = width - 4;
@@ -70,13 +70,13 @@ class BoxText extends Box
     
     ////////////////////////////////////////////////////////////////////////
     //- Events
-    private function onFocus(e : FocusEvent) : Void
+    private function onFocus(e                             : Dynamic) : Void
     {
         _isFocused = (e.type == FocusEvent.FOCUS_IN);
         draw();
     }
     
-    private function onChange(e : Event) : Void
+    private function onChange(e                             : Dynamic) : Void
     {
         this.dispatchEvent(e);
     }
@@ -93,7 +93,7 @@ class BoxText extends Box
         return _input.text;
     }
     
-    private function set_text(newString : String) : String
+    private function set_text(newString                             : Dynamic) : String
     {
         _input.text = newString;
         return newString;
@@ -104,7 +104,7 @@ class BoxText extends Box
         return _input.htmlText;
     }
     
-    private function set_htmlText(newString : String) : String
+    private function set_htmlText(newString                             : Dynamic) : String
     {
         _input.htmlText = newString;
         return newString;
@@ -115,7 +115,7 @@ class BoxText extends Box
         return _input.restrict;
     }
     
-    private function set_restrict(newString : String) : String
+    private function set_restrict(newString                             : Dynamic) : String
     {
         _input.restrict = newString;
         return newString;
@@ -126,7 +126,7 @@ class BoxText extends Box
         return _input.autoSize;
     }
     
-    private function set_autoSize(newString : String) : String
+    private function set_autoSize(newString                             : Dynamic) : String
     {
         _input.x = (newString == "center") ? 4 : 0;
         _input.autoSize = newString;
@@ -138,7 +138,7 @@ class BoxText extends Box
         return _input.selectable;
     }
     
-    private function set_selectable(newBool : Bool) : Bool
+    private function set_selectable(newBool                             : Dynamic) : Bool
     {
         _input.type = (newBool) ? "input" : "dynamic";
         _input.selectable = newBool;
@@ -150,7 +150,7 @@ class BoxText extends Box
         return _input.displayAsPassword;
     }
     
-    private function set_displayAsPassword(newBool : Bool) : Bool
+    private function set_displayAsPassword(newBool                             : Dynamic) : Bool
     {
         _input.displayAsPassword = newBool;
         return newBool;
@@ -161,7 +161,7 @@ class BoxText extends Box
         return _input.textColor;
     }
     
-    private function set_textColor(newint : Int) : Int
+    private function set_textColor(newint                             : Dynamic) : Int
     {
         _input.textColor = newint;
         return newint;

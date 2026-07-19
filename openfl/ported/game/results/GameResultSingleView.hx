@@ -32,79 +32,80 @@ import game.graph.GraphCombo;
 
 class GameResultSingleView extends Sprite
 {
-    public static inline var GRAPH_WIDTH : Int = 718;
-    public static inline var GRAPH_HEIGHT : Int = 117;
-    public static inline var GRAPH_COMBO : Int = 0;
-    public static inline var GRAPH_ACCURACY : Int = 1;
-    public static inline var GRAPH_ACCURACY_PRECISE : Int = 2;
-    public static inline var GRAPH_ACCURACY_PRECISE2 : Int = 3;
+    private static var e_backgroundLoaded                  : Dynamic;
+    public static inline var GRAPH_WIDTH                       : Dynamic= 718;
+    public static inline var GRAPH_HEIGHT                       : Dynamic= 117;
+    public static inline var GRAPH_COMBO                       : Dynamic= 0;
+    public static inline var GRAPH_ACCURACY                       : Dynamic= 1;
+    public static inline var GRAPH_ACCURACY_PRECISE                       : Dynamic= 2;
+    public static inline var GRAPH_ACCURACY_PRECISE2                       : Dynamic= 3;
     
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _score : ScoreHandler = ScoreHandler.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _score                       : Dynamic= ScoreHandler.instance;
     
-    private var resultsDisplay : ResultsBackground;
-    private var result : GameScoreResult;
+    private var resultsDisplay                       : Dynamic;
+    private var result                       : Dynamic;
     
-    private var graphCache : Dynamic = {
+    private var graphCache                       : Dynamic= {
             "0" : { },
             "1" : { },
             "2" : { },
             "3" : { }
         };
     
-    private var bgImage : Bitmap;
-    private var userAvatar : DisplayObject;
+    private var bgImage                       : Dynamic;
+    private var userAvatar                       : Dynamic;
     
     // Title Bar
-    private var resultsTime : String = TimeUtil.getCurrentDate();
-    private var header : Text;
-    private var time : Text;
+    private var resultsTime                       : Dynamic= TimeUtil.getCurrentDate();
+    private var header                       : Dynamic;
+    private var time                       : Dynamic;
     
     // Game Result
-    public var songName : Text;
-    public var songDecription : Text;
+    public var songName                       : Dynamic;
+    public var songDecription                       : Dynamic;
     
-    private var textAmazing : Text;
-    private var textPerfect : Text;
-    private var textGood : Text;
-    private var textAverage : Text;
-    private var textMiss : Text;
-    private var textBoo : Text;
-    private var valueAmazing : Text;
-    private var valuePerfect : Text;
-    private var valueGood : Text;
-    private var valueAverage : Text;
-    private var valueMiss : Text;
-    private var valueBoo : Text;
+    private var textAmazing                       : Dynamic;
+    private var textPerfect                       : Dynamic;
+    private var textGood                       : Dynamic;
+    private var textAverage                       : Dynamic;
+    private var textMiss                       : Dynamic;
+    private var textBoo                       : Dynamic;
+    private var valueAmazing                       : Dynamic;
+    private var valuePerfect                       : Dynamic;
+    private var valueGood                       : Dynamic;
+    private var valueAverage                       : Dynamic;
+    private var valueMiss                       : Dynamic;
+    private var valueBoo                       : Dynamic;
     
-    private var textAAAeq : Text;
-    private var textRawGoods : Text;
-    private var textRawScore : Text;
-    private var textGrandtotal : Text;
-    private var textMaxCombo : Text;
-    private var textCredits : Text;
-    private var valueAAAeq : Text;
-    private var valueRawGoods : Text;
-    private var valueRawScore : Text;
-    private var valueGrandtotal : Text;
-    private var valueMaxCombo : Text;
-    private var valueCredits : Text;
+    private var textAAAeq                       : Dynamic;
+    private var textRawGoods                       : Dynamic;
+    private var textRawScore                       : Dynamic;
+    private var textGrandtotal                       : Dynamic;
+    private var textMaxCombo                       : Dynamic;
+    private var textCredits                       : Dynamic;
+    private var valueAAAeq                       : Dynamic;
+    private var valueRawGoods                       : Dynamic;
+    private var valueRawScore                       : Dynamic;
+    private var valueGrandtotal                       : Dynamic;
+    private var valueMaxCombo                       : Dynamic;
+    private var valueCredits                       : Dynamic;
     
-    private var currentRank : Text;
-    private var lastRank : Text;
-    private var scoreHash : Text;
+    private var currentRank                       : Dynamic;
+    private var lastRank                       : Dynamic;
+    private var scoreHash                       : Dynamic;
     
-    private var resultsMods : Text;
+    private var resultsMods                       : Dynamic;
     
     // Graph
-    private var graphType : Int = 0;
-    private var graphToggle : BoxIcon;
-    private var graphAccuracy : BoxIcon;
-    private var activeGraph : GraphBase;
-    private var graphDraw : Sprite;
-    private var graphOverlay : Sprite;
-    private var graphOverlayText : Text;
+    private var graphType                       : Dynamic= 0;
+    private var graphToggle                       : Dynamic;
+    private var graphAccuracy                       : Dynamic;
+    private var activeGraph                       : Dynamic;
+    private var graphDraw                       : Dynamic;
+    private var graphOverlay                       : Dynamic;
+    private var graphOverlayText                       : Dynamic;
     
     public function new()
     {
@@ -221,9 +222,9 @@ class GameResultSingleView extends Sprite
         graphAccuracy.delay = 250;
     }
     
-    public function onScoreResult(e : ScoreHandlerEvent) : Void
+    public function onScoreResult(e                       : Dynamic) : Void
     {
-        if (result == e.result)
+        if (as3hx.Compat.truthy(result == e.result))
         {
             currentRank.text = e.rank;
             lastRank.text = e.last_best;
@@ -231,20 +232,20 @@ class GameResultSingleView extends Sprite
         }
     }
     
-    public function update(result : GameScoreResult) : Void
+    public function update(result                       : Dynamic) : Void
     {
         this.result = result;
         
         // Variables
-        var skillLevel : String = ((result.user != null)) ? ("[Lv." + result.user.skillLevel + "]" + " ") : "";
-        var displayTime : String = "";
-        var songInfo : SongInfo = result.songInfo;
-        var songTitle : String = "";
-        var songSubTitle : String = "";
-        var canScoreSave : Bool = _score.canSendScore(result, true, true, false, false);
+        var skillLevel                       : Dynamic= ((result.user != null)) ? ("[Lv." + result.user.skillLevel + "]" + " ") : "";
+        var displayTime                       : Dynamic= "";
+        var songInfo                       : Dynamic= result.songInfo;
+        var songTitle                       : Dynamic= "";
+        var songSubTitle                       : Dynamic= "";
+        var canScoreSave                       : Dynamic= _score.canSendScore(result, true, true, false, false);
         
         // Queue Total
-        if (result.game_index == -1)
+        if (as3hx.Compat.truthy(result.game_index == -1))
         {
             songTitle = sprintf(_lang.string("game_results_total_songs"), {
                                 total : NumberUtil.numberFormat(songInfo.order)
@@ -254,9 +255,9 @@ class GameResultSingleView extends Sprite
         }
         else
         {
-            var seconds : Float = Math.floor(songInfo.time_secs * (1 / result.options.songRate));
-            var songLength : String = (Math.floor(seconds / 60)) + ":" + ((seconds % 60 >= 10) ? "" : "0") + (seconds % 60);
-            var rateString : String = (result.options.songRate != 1) ? sprintf(_lang.string("results_rate"), {
+            var seconds                       : Dynamic= Math.floor(songInfo.time_secs * (1 / result.options.songRate));
+            var songLength                       : Dynamic= (Math.floor(seconds / 60)) + ":" + ((seconds % 60 >= 10) ? "" : "0") + (seconds % 60);
+            var rateString                       : Dynamic= (result.options.songRate != 1) ? sprintf(_lang.string("results_rate"), {
                         value : result.options.songRate
                     }) : "";
             
@@ -267,13 +268,13 @@ class GameResultSingleView extends Sprite
                             }) + " - " + sprintf(_lang.string("game_results_subtitle_length"), {
                                 value : songLength
                             });
-            if (songInfo.author != "")
+            if (as3hx.Compat.truthy(songInfo.author != ""))
             {
                 songSubTitle += " - " + _lang.wrapFont(sprintf(_lang.stringSimple("game_results_subtitle_author"), {
                                     value : songInfo.author_html
                                 }));
             }
-            if (songInfo.stepauthor != "")
+            if (as3hx.Compat.truthy(songInfo.stepauthor != ""))
             {
                 songSubTitle += " - " + _lang.wrapFont(sprintf(_lang.stringSimple("game_results_subtitle_stepauthor"), {
                                     value : songInfo.stepauthor_html
@@ -284,7 +285,7 @@ class GameResultSingleView extends Sprite
         }
         
         // Local Backgrounds
-        if (bgImage != null)
+        if (as3hx.Compat.truthy(bgImage != null))
         {
             removeChild(bgImage);
             bgImage = null;
@@ -293,16 +294,16 @@ class GameResultSingleView extends Sprite
         addBackgroundImage();
         
         // Avatar
-        if (userAvatar != null)
+        if (as3hx.Compat.truthy(userAvatar != null))
         {
             removeChild(userAvatar);
             userAvatar = null;
         }
         
-        if (result.user)
+        if (as3hx.Compat.truthy(result.user))
         {
             userAvatar = result.user.avatar;
-            if (userAvatar != null && userAvatar.height > 0 && userAvatar.width > 0)
+            if (as3hx.Compat.truthy(userAvatar != null && userAvatar.height > 0 && userAvatar.width > 0))
             {
                 userAvatar.x = 616 + ((99 - userAvatar.width) / 2);
                 userAvatar.y = 114 + ((99 - userAvatar.height) / 2);
@@ -315,8 +316,8 @@ class GameResultSingleView extends Sprite
         }
         
         // Skill rating
-        var song_weight : Float = SkillRating.getSongWeight(result);
-        if (result.last_note > 0)
+        var song_weight                       : Dynamic= SkillRating.getSongWeight(result);
+        if (as3hx.Compat.truthy(result.last_note > 0))
         {
             song_weight = 0;
         }
@@ -347,11 +348,11 @@ class GameResultSingleView extends Sprite
         currentRank.text = "";
         lastRank.text = "";
         scoreHash.text = "";
-        if (result.user.siteId == _gvars.playerUser.siteId) {
-var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
-            if (savedRankResult != null)
+        if (as3hx.Compat.truthy(result.user.siteId == _gvars.playerUser.siteId)) {
+var savedRankResult                       : Dynamic= _gvars.songResultRanks[result.game_index];
+            if (as3hx.Compat.truthy(savedRankResult != null))
             {
-                if (savedRankResult.error)
+                if (as3hx.Compat.truthy(savedRankResult.error))
                 {
                     currentRank.text = savedRankResult.text1;
                     lastRank.text = savedRankResult.text2;
@@ -368,11 +369,11 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
                 }
             }
             // Alt Engine Score
-            else if (result.songInfo && result.songInfo.engine)
+            else if (as3hx.Compat.truthy(result.songInfo && result.songInfo.engine))
             {
                 valueCredits.text = "0";
-                var rank : Dynamic = result.legacyLastRank;
-                if (rank != null)
+                var rank                       : Dynamic= result.legacyLastRank;
+                if (as3hx.Compat.truthy(rank != null))
                 {
                     currentRank.text = sprintf(_lang.string((rank.score < result.score) ? "results_last_best" : "results_best"), {
                                         score : rank.score
@@ -386,7 +387,7 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
                 }
             }
             // Getting Rank / Unsendable Score
-            else if (!result.options.replay && result.game_index >= 0 && !result.user.isGuest)
+            else if (as3hx.Compat.truthy(!result.options.replay && result.game_index >= 0 && !result.user.isGuest))
             {
                 currentRank.text = _lang.string((canScoreSave) ? "results_saving_score" : "results_score_not_saved");
                 lastRank.text = "";
@@ -394,14 +395,14 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
         }
         
         // Edited Replay
-        if (result.options.replay && result.options.replay.isEdited)
+        if (as3hx.Compat.truthy(result.options.replay && result.options.replay.isEdited))
         {
             currentRank.text = _lang.string("results_replay_modified");
             resultsDisplay.result_rank.textColor = 0xF06868;
         }
         
         // Song Preview
-        if (result.is_preview)
+        if (as3hx.Compat.truthy(result.is_preview))
         {
             header.text = _lang.string("results_song_preview");
             valueCredits.text = "0";
@@ -411,37 +412,37 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
         resultsMods.text = sprintf(_lang.string("results_scroll_speed"), {
                             value : result.options.scrollSpeed
                         });
-        if (result.restarts > 0)
+        if (as3hx.Compat.truthy(result.restarts > 0))
         {
             resultsMods.text += ", " + sprintf(_lang.string("results_restarts"), {
                         value : result.restarts
                     });
         }
         
-        var mods : Array<Dynamic> = [];
-        for (mod/* AS3HX WARNING could not determine type for var: mod exp: EField(EField(EIdent(result),options),mods) type: null */ in result.options.mods)
+        var mods                       : Dynamic= [];
+        for (mod/* AS3HX WARNING could not determine type for var: mod exp: EField(EField(EIdent(result),options),mods) type: null */ in as3hx.Compat.iter(result.options.mods))
         {
             mods.push(_lang.string("options_mod_" + mod));
         }
         
-        if (result.options.judgeWindow)
+        if (as3hx.Compat.truthy(result.options.judgeWindow))
         {
             mods.push(_lang.string("options_mod_judge"));
         }
-        if (mods.length > 0)
+        if (as3hx.Compat.truthy(mods.length > 0))
         {
             resultsMods.text += ", " + sprintf(_lang.string("results_game_mods"), {
                         value : mods.join(", ")
                     });
         }
-        if (result.last_note > 0)
+        if (as3hx.Compat.truthy(result.last_note > 0))
         {
             resultsMods.text += ", " + sprintf(_lang.string("results_last_note"), {
                         value : result.last_note
                     });
         }
         
-        if (result.game_index != -1)
+        if (as3hx.Compat.truthy(result.game_index != -1))
         {
             graphAccuracy.setHoverText(sprintf(_lang.string("result_accuracy_deviation"), {
                                 acc_frame : result.accuracy_frames.toFixed(3),
@@ -456,40 +457,40 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
     
     private function addBackgroundImage() : Void
     {
-        var songInfo : SongInfo = result.songInfo;
+        var songInfo                       : Dynamic= result.songInfo;
         
         // Background
-        if (songInfo.background != null)
+        if (as3hx.Compat.truthy(songInfo.background != null))
         {
-            var bgValid : Bool = false;
-            var bgPath : String = songInfo.background;
-            if (bgPath.substring(0, 4) == "http")
+            var bgValid                       : Dynamic= false;
+            var bgPath                       : Dynamic= songInfo.background;
+            if (as3hx.Compat.truthy(bgPath.substring(0, 4) == "http"))
             {
                 bgValid = true;
             }
             else
             {
-                var bgExt : String = songInfo.background.substr(songInfo.background.lastIndexOf(".") + 1).toLowerCase();
-                if (bgExt == "jpg" || bgExt == "png" || bgExt == "gif" || bgExt == "jpeg")
+                var bgExt                       : Dynamic= songInfo.background.substr(songInfo.background.lastIndexOf(".") + 1).toLowerCase();
+                if (as3hx.Compat.truthy(bgExt == "jpg" || bgExt == "png" || bgExt == "gif" || bgExt == "jpeg"))
                 {
                     bgPath = "file:///" + bgPath;
                     bgValid = true;
                 }
             }
             
-            if (bgValid)
+            if (as3hx.Compat.truthy(bgValid))
             {
-                var imageLoader : Loader = new Loader();
+                var imageLoader                       : Dynamic= new Loader();
                 imageLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, e_backgroundLoaded);
                 imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, e_backgroundLoaded);
                 imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, e_backgroundLoaded);
                 imageLoader.load(new URLRequest(bgPath), AirContext.getLoaderContext());
                 
-                function e_backgroundLoaded(e : Event) : Void
+                e_backgroundLoaded = function(e                       : Dynamic) : Void
                 // Position Loaded Banner Image
                 {
                     
-                    if (e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null)
+                    if (as3hx.Compat.truthy(e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null))
                     {
                         bgImage = try cast(((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content), Bitmap) catch(e:Dynamic) null;
                         bgImage.smoothing = true;
@@ -497,11 +498,11 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
                         addChildAt(bgImage, 1);
                         bgImage.alpha = 0.5;
                         
-                        var imageScale : Float = 780 / bgImage.width;
+                        var imageScale                       : Dynamic= 780 / bgImage.width;
                         
                         bgImage.scaleX = bgImage.scaleY = imageScale;
                         
-                        if (bgImage.height < 480)
+                        if (as3hx.Compat.truthy(bgImage.height < 480))
                         {
                             bgImage.scaleX = bgImage.scaleY = 1;
                             imageScale = 480 / bgImage.height;
@@ -530,10 +531,10 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
      */
     private function drawResultGraph() : Void
     {
-        var graph_type : Int = graphType;
+        var graph_type                       : Dynamic= graphType;
         
         // Check for Totals Index
-        if (result.song == null || result.replay_bin_notes == null)
+        if (as3hx.Compat.truthy(result.song == null || result.replay_bin_notes == null))
         {
             graph_type = GRAPH_COMBO;
         }
@@ -543,7 +544,7 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
         graphAccuracy.visible = (result.song != null);
         
         // Remove Old Graph
-        if (activeGraph != null)
+        if (as3hx.Compat.truthy(activeGraph != null))
         {
             activeGraph.onStageRemove();
         }
@@ -560,12 +561,12 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
      * @param result GameScoreResult
      * @return Graph Class
      */
-    public function getGraph(graphType : Int, result : GameScoreResult) : GraphBase
+    public function getGraph(graphType                       : Dynamic, result                       : Dynamic) : GraphBase
     {
-        var cacheId : String = graphType + "_" + result.game_index;
+        var cacheId                       : Dynamic= graphType + "_" + result.game_index;
         
         // From Cache
-        if (Reflect.field(graphCache, cacheId) != null)
+        if (as3hx.Compat.truthy(Reflect.field(graphCache, cacheId) != null))
         {
             return Reflect.field(graphCache, cacheId);
         }
@@ -574,17 +575,17 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
         {
             
             {
-                var newGraph : GraphBase;
+                var newGraph                       : Dynamic= null;
                 
-                if (graphType == GRAPH_ACCURACY)
+                if (as3hx.Compat.truthy(graphType == GRAPH_ACCURACY))
                 {
                     newGraph = new GraphAccuracy(graphDraw, graphOverlay, result);
                 }
-                else if (graphType == GRAPH_ACCURACY_PRECISE)
+                else if (as3hx.Compat.truthy(graphType == GRAPH_ACCURACY_PRECISE))
                 {
                     newGraph = new GraphAccuracyPrecise(graphDraw, graphOverlay, result);
                 }
-                else if (graphType == GRAPH_ACCURACY_PRECISE2)
+                else if (as3hx.Compat.truthy(graphType == GRAPH_ACCURACY_PRECISE2))
                 {
                     newGraph = new GraphAccuracyPrecise2(graphDraw, graphOverlay, result);
                 }
@@ -604,11 +605,11 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
      * Updates the active graph overlay with the current mouse coordinates
      * @param e
      */
-    public function e_graphHover(e : MouseEvent) : Void
+    public function e_graphHover(e                       : Dynamic) : Void
     //trace(e.stageX - graphOverlay.x, e.stageY - graphOverlay.y);
     {
         
-        if (activeGraph != null)
+        if (as3hx.Compat.truthy(activeGraph != null))
         {
             activeGraph.drawOverlay(e.stageX - graphOverlay.x, e.stageY - graphOverlay.y);
         }
@@ -623,13 +624,13 @@ var savedRankResult : Dynamic = _gvars.songResultRanks[result.game_index];
      * Handles all UI events, both mouse and keyboard.
      * @param e
      */
-    private function eventHandler(e : Dynamic = null) : Void
+    private function eventHandler(e                       : Dynamic= null) : Void
     {
-        var target : DisplayObject = e.target;
+        var target                       : Dynamic= e.target;
         
-        if (target == graphToggle)
+        if (as3hx.Compat.truthy(target == graphToggle))
         {
-            if (result.song != null)
+            if (as3hx.Compat.truthy(result.song != null))
             {
                 graphType = as3hx.Compat.parseInt((graphType + 1) % 4);
                 LocalStore.setVariable("result_graph_type", graphType);

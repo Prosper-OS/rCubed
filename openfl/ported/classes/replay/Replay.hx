@@ -22,49 +22,49 @@ import menu.FileLoader;
 
 class Replay
 {
-    public var songname(get, never) : String;
+    public var songname(get, never)                             : Dynamic;
 
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _loader : URLLoader;
+    private var _gvars                             : Dynamic= GlobalVariables.instance;
+    private var _loader                             : Dynamic;
     
-    public var fileReplay : Bool = false;
-    public var filePath : String;
+    public var fileReplay                             : Dynamic= false;
+    public var filePath                             : Dynamic;
     
-    public var chartPath : String;
-    public var cacheID : String;
+    public var chartPath                             : Dynamic;
+    public var cacheID                             : Dynamic;
     
-    public var replayBin : ByteArray;
+    public var replayBin                             : Dynamic;
     
-    public var isLoaded : Bool = false;
-    public var isEdited : Bool = false;
-    public var isPreview : Bool = false;
-    public var isFileLoader : Bool = false;
+    public var isLoaded                             : Dynamic= false;
+    public var isEdited                             : Dynamic= false;
+    public var isPreview                             : Dynamic= false;
+    public var isFileLoader                             : Dynamic= false;
     
-    public var needsBeatboxGeneration : Bool = false;
-    public var generationReplayBoos : Array<ReplayBinFrame>;
-    public var generationReplayNotes : Array<ReplayBinFrame>;
+    public var needsBeatboxGeneration                             : Dynamic= false;
+    public var generationReplayBoos                             : Dynamic;
+    public var generationReplayNotes                             : Dynamic;
     
-    public var id : Float;
-    public var user : User;
-    public var level : Int;
-    public var settings : Dynamic;
-    public var score : Float;
-    public var perfect : Float;
-    public var good : Float;
-    public var average : Float;
-    public var miss : Float;
-    public var boo : Float;
-    public var maxcombo : Float;
-    public var replayData : Array<Dynamic>;
-    public var timestamp : Float;
+    public var id                             : Dynamic;
+    public var user                             : Dynamic;
+    public var level                             : Dynamic;
+    public var settings                             : Dynamic;
+    public var score                             : Dynamic;
+    public var perfect                             : Dynamic;
+    public var good                             : Dynamic;
+    public var average                             : Dynamic;
+    public var miss                             : Dynamic;
+    public var boo                             : Dynamic;
+    public var maxcombo                             : Dynamic;
+    public var replayData                             : Dynamic;
+    public var timestamp                             : Dynamic;
     
-    public var song : SongInfo;
+    public var song                             : Dynamic;
     
-    public function new(id : Float, doLoad : Bool = false)
+    public function new(id                             : Dynamic, doLoad                             : Dynamic= false)
     {
         this.id = id;
         
-        if (doLoad)
+        if (as3hx.Compat.truthy(doLoad))
         {
             load();
         }
@@ -75,8 +75,8 @@ class Replay
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_LOAD_REPLAY_URL));
-        var urlVars : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.USER_LOAD_REPLAY_URL));
+        var urlVars                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(urlVars);
         
         // Post Game Data
@@ -90,11 +90,11 @@ class Replay
         _loader.load(req);
     }
     
-    private function replayLoadComplete(e : Event) : Void
+    private function replayLoadComplete(e                             : Dynamic) : Void
     {
         removeLoaderListeners();
-        var site_data : Dynamic = haxe.Json.parse(e.target.data);
-        if (site_data.result != 1)
+        var site_data                             : Dynamic= haxe.Json.parse(e.target.data);
+        if (as3hx.Compat.truthy(site_data.result != 1))
         {
             parseReplay(site_data);
         }
@@ -104,24 +104,24 @@ class Replay
         }
     }
     
-    private function replayLoadError(e : Event) : Void
+    private function replayLoadError(e                             : Dynamic) : Void
     {
         removeLoaderListeners();
     }
     
-    public function parseReplay(data : Dynamic, loadUser : Bool = true) : Void
+    public function parseReplay(data                             : Dynamic, loadUser                             : Dynamic= true) : Void
     {
-        if (data == null)
+        if (as3hx.Compat.truthy(data == null))
         {
             return;
         }
         
-        var jsonSettings : Dynamic;
+        var jsonSettings                             : Dynamic= null;
         
         //- Level Details
         this.user = new User(loadUser, false, data.userid);
         this.user.addEventListener(GlobalVariables.LOAD_COMPLETE, userLoad);
-        if (!loadUser)
+        if (as3hx.Compat.truthy(!loadUser))
         {
             this.user.siteId = data.userid;
         }
@@ -129,7 +129,7 @@ class Replay
         this.timestamp = data.timestamp;
         
         //- Score Data
-        var tempScore : Array<Dynamic> = data.replayscore.split("|");
+        var tempScore                             : Dynamic= data.replayscore.split("|");
         this.score = tempScore[0];
         this.perfect = tempScore[1];
         this.good = tempScore[2];
@@ -140,24 +140,24 @@ class Replay
         this.score = (perfect * 50) + (good * 25) + (average * 5) - (miss * 10) - (boo * 5);
         
         //- Settings
-        var tempSettings : Dynamic = data.replaysettings;
+        var tempSettings                             : Dynamic= data.replaysettings;
         
         // Legacy / Velo
-        var mirrorIndex : Int = -1;
-        if (data.replayversion == "FFR")
+        var mirrorIndex                             : Dynamic= -1;
+        if (as3hx.Compat.truthy(data.replayversion == "FFR"))
         {
             tempSettings = tempSettings.split("|");
             jsonSettings = (_gvars.playerUser.isGuest) ? new User().settings : _gvars.playerUser.settings;
-            jsonSettings.speed = as3hx.Compat.parseFloat(Reflect.field(tempSettings, Std.string(0)));
-            jsonSettings.direction = cleanScrollDirection(Reflect.field(tempSettings, Std.string(2)));
+            jsonSettings.speed = as3hx.Compat.parseFloat(as3hx.Compat.field(tempSettings, 0));
+            jsonSettings.direction = cleanScrollDirection(as3hx.Compat.field(tempSettings, 2));
             jsonSettings.songRate = 1;
-            if (tempSettings.length >= 12)
+            if (as3hx.Compat.truthy(tempSettings.length >= 12))
             {
-                if (Reflect.field(tempSettings, Std.string(11)) == "Mirror")
+                if (as3hx.Compat.truthy(as3hx.Compat.field(tempSettings, 11) == "Mirror"))
                 {
                     jsonSettings.visual.push("mirror");
                 }
-                else if ((mirrorIndex = jsonSettings.visual.indexOf("mirror")) >= 0)
+                else if (as3hx.Compat.truthy((mirrorIndex = jsonSettings.visual.indexOf("mirror")) >= 0))
                 {
                     jsonSettings.visual.splice(mirrorIndex, 1);
                 }
@@ -167,70 +167,70 @@ class Replay
             jsonSettings.judgeOffset = 0;
             this.settings = jsonSettings;
         }
-        else if (data.replayversion == "R^2")
+        else if (as3hx.Compat.truthy(data.replayversion == "R^2"))
         {
             tempSettings = tempSettings.split(",");
             for (ss in 0...tempSettings.length)
             {
-                Reflect.setField(tempSettings, Std.string(ss), Reflect.field(tempSettings, Std.string(ss)).split("|"));
+                Reflect.setField(tempSettings, Std.string(ss), as3hx.Compat.field(tempSettings, ss).split("|"));
             }
             jsonSettings = (_gvars.playerUser.isGuest) ? new User().settings : _gvars.playerUser.settings;
-            jsonSettings.speed = as3hx.Compat.parseFloat(Reflect.field(Reflect.field(tempSettings, Std.string(0)), Std.string(1)));
-            jsonSettings.direction = cleanScrollDirection(Reflect.field(Reflect.field(tempSettings, Std.string(0)), Std.string(0)));
+            jsonSettings.speed = as3hx.Compat.parseFloat(Reflect.field(as3hx.Compat.field(tempSettings, 0), Std.string(1)));
+            jsonSettings.direction = cleanScrollDirection(Reflect.field(as3hx.Compat.field(tempSettings, 0), Std.string(0)));
             jsonSettings.songRate = 1;
-            if (Reflect.field(Reflect.field(tempSettings, Std.string(0)), Std.string(2)) == "true")
+            if (as3hx.Compat.truthy(Reflect.field(as3hx.Compat.field(tempSettings, 0), Std.string(2)) == "true"))
             {
                 jsonSettings.visual.push("mirror");
             }
-            else if ((mirrorIndex = jsonSettings.visual.indexOf("mirror")) >= 0)
+            else if (as3hx.Compat.truthy((mirrorIndex = jsonSettings.visual.indexOf("mirror")) >= 0))
             {
                 jsonSettings.visual.splice(mirrorIndex, 1);
             }
-            jsonSettings.gap = as3hx.Compat.parseFloat(Reflect.field(Reflect.field(tempSettings, Std.string(2)), Std.string(0)));
-            jsonSettings.noteskin = as3hx.Compat.parseFloat(Reflect.field(Reflect.field(tempSettings, Std.string(2)), Std.string(3)));
+            jsonSettings.gap = as3hx.Compat.parseFloat(Reflect.field(as3hx.Compat.field(tempSettings, 2), Std.string(0)));
+            jsonSettings.noteskin = as3hx.Compat.parseFloat(Reflect.field(as3hx.Compat.field(tempSettings, 2), Std.string(3)));
             jsonSettings.viewOffset = 0;
             jsonSettings.visualDelay = 0;
             jsonSettings.judgeOffset = 0;
             this.settings = jsonSettings;
         }
         // R^3 Replay JSON
-        else if (data.replayversion == "R^3")
+        else if (as3hx.Compat.truthy(data.replayversion == "R^3"))
         {
             this.settings = haxe.Json.parse(data.replaysettings);
         }
         
         //- Frames
-        var tempReplay : String = data.replayframes;
+        var tempReplay                             : Dynamic= data.replayframes;
         replayData = [];
         
         //- Clean up
         // Legacy Replay Format ((LDUR),(FRAME)|), Handled in the Velo Converter
-        if (tempReplay.indexOf(",") > -1)
+        if (as3hx.Compat.truthy(tempReplay.indexOf(",") > -1))
         {
             tempReplay = new as3hx.Compat.Regex(',', "g").replace(tempReplay, "");
         }
         
         //- Conversion
         // Velocity Replay Format ((LDUR)(FRAME)|)
-        if (tempReplay.indexOf("|") > -1)
+        if (as3hx.Compat.truthy(tempReplay.indexOf("|") > -1))
         {
             parseVelocityReplay(tempReplay);
         }
         // R^2/3 Replay Format ((WXYZ)(FRAME))
-        else if (tempReplay.charCodeAt(0) >= 87 && tempReplay.charCodeAt(0) <= 90)
+        else if (as3hx.Compat.truthy(tempReplay.charCodeAt(0) >= 87 && tempReplay.charCodeAt(0) <= 90))
         {
             parserRCubedReplay(tempReplay, data.replayversion);
         }
     }
     
-    private function parseReplayPack(data : ReplayPacked, loadUser : Bool = true) : Void
+    private function parseReplayPack(data                             : Dynamic, loadUser                             : Dynamic= true) : Void
     {
-        if (data == null)
+        if (as3hx.Compat.truthy(data == null))
         {
             return;
         }
         
-        if (data.error != null)
+        if (as3hx.Compat.truthy(data.error != null))
         {
             Alert.add(data.error, 120, Alert.RED);
             return;
@@ -244,25 +244,25 @@ class Replay
         this.timestamp = data.timestamp;
         
         //- Score Data
-        this.perfect = (data.judgements["perfect"] + data.judgements["amazing"]);
-        this.good = data.judgements["good"];
-        this.average = data.judgements["average"];
-        this.miss = data.judgements["miss"];
-        this.boo = data.judgements["boo"];
-        this.maxcombo = data.judgements["maxcombo"];
+        this.perfect = (as3hx.Compat.field(data.judgements, "perfect") + as3hx.Compat.field(data.judgements, "amazing"));
+        this.good = as3hx.Compat.field(data.judgements, "good");
+        this.average = as3hx.Compat.field(data.judgements, "average");
+        this.miss = as3hx.Compat.field(data.judgements, "miss");
+        this.boo = as3hx.Compat.field(data.judgements, "boo");
+        this.maxcombo = as3hx.Compat.field(data.judgements, "maxcombo");
         this.score = (perfect * 50) + (good * 25) + (average * 5) - (miss * 10) - (boo * 5);
         
         this.settings = data.settings;
         
         //- Replay
         this.replayData = [];
-        for (item/* AS3HX WARNING could not determine type for var: item exp: EField(EIdent(data),rep_boos) type: null */ in data.rep_boos)
+        for (item/* AS3HX WARNING could not determine type for var: item exp: EField(EIdent(data),rep_boos) type: null */ in as3hx.Compat.iter(data.rep_boos))
         {
             this.replayData[replayData.length] = new ReplayNote(item.direction, -2, item.time);
         }
         
         //- Edited Check
-        if (data.checksum != data.rechecksum)
+        if (as3hx.Compat.truthy(data.checksum != data.rechecksum))
         {
             isEdited = true;
         }
@@ -274,38 +274,38 @@ class Replay
     }
     
     //// Parsers
-    private function parseVelocityReplay(_input : String) : Void
+    private function parseVelocityReplay(_input                             : Dynamic) : Void
     {
-        var tempReplay : Array<Dynamic> = _input.split("|");
+        var tempReplay                             : Dynamic= _input.split("|");
         for (x in 0...tempReplay.length)
         {
-            var dir : String = tempReplay[x].charAt(0);
-            var frame : Float = as3hx.Compat.parseInt("0x" + tempReplay[x].substr(1));
+            var dir                             : Dynamic= tempReplay[x].charAt(0);
+            var frame                             : Dynamic= as3hx.Compat.parseInt("0x" + tempReplay[x].substr(1));
             this.replayData[replayData.length] = new ReplayNote(dir, frame - 30);
         }
     }
     
-    private function parserRCubedReplay(_input : String, _version : String) : Void
+    private function parserRCubedReplay(_input                             : Dynamic, _version                             : Dynamic) : Void
     {
-        var offsetf : Int = ((_version == "R^2") ? 30 : 0);
-        var totalReplay : Int = 0;
-        var lastFrame : Int = 0;
-        var noteVal : String = "";
-        var noteDir : String = "";
-        var game_curChar : String;
-        var game_nexChar : String;
+        var offsetf                             : Dynamic= ((_version == "R^2") ? 30 : 0);
+        var totalReplay                             : Dynamic= 0;
+        var lastFrame                             : Dynamic= 0;
+        var noteVal                             : Dynamic= "";
+        var noteDir                             : Dynamic= "";
+        var game_curChar                             : Dynamic= null;
+        var game_nexChar                             : Dynamic= null;
         for (x in 0..._input.length)
         {
             game_curChar = _input.charAt(x);
             game_nexChar = _input.charAt(x + 1);
-            if (game_nexChar == false || game_nexChar == "" || game_nexChar == "W" || game_nexChar == "X" || game_nexChar == "Y" || game_nexChar == "Z")
+            if (as3hx.Compat.truthy(game_nexChar == false || game_nexChar == "" || game_nexChar == "W" || game_nexChar == "X" || game_nexChar == "Y" || game_nexChar == "Z"))
             {
-                var dir : String = getDirCol(noteDir);
-                var frame : Int = as3hx.Compat.parseInt(as3hx.Compat.parseInt("0x" + noteVal + game_curChar) + lastFrame);
+                var dir                             : Dynamic= getDirCol(noteDir);
+                var frame                             : Dynamic= as3hx.Compat.parseInt(as3hx.Compat.parseInt("0x" + noteVal + game_curChar) + lastFrame);
                 this.replayData[replayData.length] = new ReplayNote(dir, frame - offsetf);
                 lastFrame = frame;
             }
-            else if (game_curChar == "W" || game_curChar == "X" || game_curChar == "Y" || game_curChar == "Z")
+            else if (as3hx.Compat.truthy(game_curChar == "W" || game_curChar == "X" || game_curChar == "Y" || game_curChar == "Z"))
             {
                 noteDir = game_curChar;
                 noteVal = "";
@@ -325,16 +325,16 @@ class Replay
     
     public function loadSongInfo() : Void
     {
-        if (settings.arc_engine) {
-if (settings.arc_engine.engineID == "fileloader")
+        if (as3hx.Compat.truthy(settings.arc_engine)) {
+if (as3hx.Compat.truthy(settings.arc_engine.engineID == "fileloader"))
             {
                 cacheID = settings.arc_engine.cacheID;
-                chartPath = FileLoader.cache.findKey(function(entry : Dynamic) : Dynamic
+                chartPath = FileLoader.cache.findKey(function(entry                             : Dynamic) : Dynamic
                                 {
                                     return Reflect.field(entry, "id") == settings.arc_engine.cacheID;
                                 });
                 
-                if (chartPath == null)
+                if (as3hx.Compat.truthy(chartPath == null))
                 {
                     return;
                 }
@@ -350,7 +350,7 @@ if (settings.arc_engine.engineID == "fileloader")
         song = Playlist.instanceCanon.getSongInfo(level);
     }
     
-    private function getDirCol(noteDir : String) : String
+    private function getDirCol(noteDir                             : Dynamic) : String
     {
         switch (noteDir)
         {
@@ -368,7 +368,7 @@ if (settings.arc_engine.engineID == "fileloader")
         return noteDir;
     }
     
-    private function userLoad(e : Event) : Void
+    private function userLoad(e                             : Dynamic) : Void
     {
         this.user.removeEventListener(GlobalVariables.LOAD_COMPLETE, userLoad);
         this.user.settings = this.settings;
@@ -390,22 +390,22 @@ if (settings.arc_engine.engineID == "fileloader")
     }
     
     /////
-    public function getPress(index : Int) : ReplayNote
+    public function getPress(index                             : Dynamic) : ReplayNote
     {
         return replayData[index];
     }
     
-    public function getEncode(onlyBinReplay : Bool = false) : String
+    public function getEncode(onlyBinReplay                             : Dynamic= false) : String
     {
-        if (replayBin != null)
+        if (as3hx.Compat.truthy(replayBin != null))
         {
             return ReplayPack.MAGIC + "|" + Base64.encode(replayBin);
         }
         
-        if (!onlyBinReplay)
+        if (as3hx.Compat.truthy(!onlyBinReplay))
         {
-            var sT : Float = (perfect * 550) + (good * 275) + (average * 55) + (maxcombo * 1000) - (miss * 310) - (boo * 20);
-            var o : Dynamic = { };
+            var sT                             : Dynamic= (perfect * 550) + (good * 275) + (average * 55) + (maxcombo * 1000) - (miss * 310) - (boo * 20);
+            var o                             : Dynamic= { };
             o.userid = this.user.siteId;
             o.replaylevelid = this.level;
             o.replaysettings = haxe.Json.stringify(this.settings);
@@ -414,28 +414,28 @@ if (settings.arc_engine.engineID == "fileloader")
             o.replayversion = "R^3";
             o.timestamp = timestamp;
             
-            var outJson : String = haxe.Json.stringify(o);
+            var outJson                             : Dynamic= haxe.Json.stringify(o);
             return (outJson + "|" + MD5.hash(outJson + "|" + MD5.hash(outJson)));
         }
         
         return null;
     }
     
-    public function parseEncode(str : String, loadUser : Bool = true) : Void
+    public function parseEncode(str                             : Dynamic, loadUser                             : Dynamic= true) : Void
     {
         try
         {
-            if (str.substr(0, 4) == ReplayPack.MAGIC)
+            if (as3hx.Compat.truthy(str.substr(0, 4) == ReplayPack.MAGIC))
             {
                 parseReplayPack(ReplayPack.readReplay(Base64.decode(str.substr(5))), loadUser);
             }
             else
             {
-                if (str.charAt(str.length - 33) == "|")
+                if (as3hx.Compat.truthy(str.charAt(str.length - 33) == "|"))
                 {
-                    var md5 : String = str.substr(str.length - 32);
+                    var md5                             : Dynamic= str.substr(str.length - 32);
                     str = str.substr(0, str.length - 33);
-                    if (md5 != MD5.hash(str + "|" + MD5.hash(str)))
+                    if (as3hx.Compat.truthy(md5 != MD5.hash(str + "|" + MD5.hash(str))))
                     {
                         isEdited = true;
                     }
@@ -458,37 +458,37 @@ if (settings.arc_engine.engineID == "fileloader")
         return replayData != null;
     }
     
-    public static function getReplayString(replay : Dynamic) : String
+    public static function getReplayString(replay                             : Dynamic) : String
     // Build Replay String
     {
         
-        var noteObj : ReplayNote;
-        var lastDifference : Int = 0;
-        var replayString : String = "";
+        var noteObj                             : Dynamic= null;
+        var lastDifference                             : Dynamic= 0;
+        var replayString                             : Dynamic= "";
         for (x in 0...replay.length)
         {
-            noteObj = Reflect.field(replay, Std.string(x));
+            noteObj = as3hx.Compat.field(replay, x);
             replayString += getReplayChar(noteObj.direction) + Std.string(noteObj.frame - lastDifference).toUpperCase();
             lastDifference = noteObj.frame;
         }
         return replayString;
     }
     
-    public static function getReplayChar(dir : String) : String
+    public static function getReplayChar(dir                             : Dynamic) : String
     {
-        if (dir == "L")
+        if (as3hx.Compat.truthy(dir == "L"))
         {
             return "W";
         }
-        if (dir == "D")
+        if (as3hx.Compat.truthy(dir == "D"))
         {
             return "X";
         }
-        if (dir == "U")
+        if (as3hx.Compat.truthy(dir == "U"))
         {
             return "Y";
         }
-        if (dir == "R")
+        if (as3hx.Compat.truthy(dir == "R"))
         {
             return "Z";
         }
@@ -501,7 +501,7 @@ if (settings.arc_engine.engineID == "fileloader")
      * @param dir
      * @return
      */
-    public static function cleanScrollDirection(dir : String) : String
+    public static function cleanScrollDirection(dir                             : Dynamic) : String
     {
         dir = dir.toLowerCase();
         

@@ -12,7 +12,7 @@ import openfl.errors.Error;
 
 class ZipError extends Error
 {
-    public function new(message : String = "", id : Int = 0)
+    public function new(message                            : Dynamic= "", id                            : Dynamic= 0)
     {
         super(message, id);
     }

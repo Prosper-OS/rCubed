@@ -11,33 +11,33 @@ import popups.filebrowser.FileFolder;
 
 class FileBrowserList extends Sprite
 {
-    public var doScroll(get, never) : Bool;
-    public var scrollFactorVertical(get, never) : Float;
-    public var scrollVertical(never, set) : Float;
+    public var doScroll(get, never)                       : Dynamic;
+    public var scrollFactorVertical(get, never)                       : Dynamic;
+    public var scrollVertical(never, set)                       : Dynamic;
 
-    private static var LAST_SCROLL : Float = 0;
+    private static var LAST_SCROLL                       : Dynamic= 0;
     
-    private var _pane : Sprite;
+    private var _pane                       : Dynamic;
     
-    private var _width : Float = 531;
-    private var _height : Float = 400;
+    private var _width                       : Dynamic= 531;
+    private var _height                       : Dynamic= 400;
     
-    private var sourceElements : Array<Dynamic>;
+    private var sourceElements                       : Dynamic;
     
-    private var _vscroll : ScrollBar;
-    private var songButtons : Array<FileBrowserItem> = new Array<FileBrowserItem>();
-    private var renderElements : Array<FileFolder> = new Array<FileFolder>();
-    private var renderCount : Int = 0;
+    private var _vscroll                       : Dynamic;
+    private var songButtons                       : Dynamic= new Array<FileBrowserItem>();
+    private var renderElements                       : Dynamic= new Array<FileFolder>();
+    private var renderCount                       : Dynamic= 0;
     
-    private var filter : FileBrowserFilter;
-    private var filterLastTerm : String;
+    private var filter                       : Dynamic;
+    private var filterLastTerm                       : Dynamic;
     
-    private var _scrollY : Float = 0;
-    private var _calcHeight : Int = 0;
+    private var _scrollY                       : Dynamic= 0;
+    private var _calcHeight                       : Dynamic= 0;
     
-    public var activeIndex : Int = 0;
+    public var activeIndex                       : Dynamic= 0;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, filter : FileBrowserFilter = null)
+    public function new(parent                       : Dynamic= null, xpos                       : Dynamic= 0, ypos                       : Dynamic= 0, filter                       : Dynamic= null)
     {
         super();
         tabChildren = tabEnabled = false;
@@ -46,7 +46,7 @@ class FileBrowserList extends Sprite
         this.y = ypos;
         this.filter = filter;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -80,7 +80,7 @@ class FileBrowserList extends Sprite
      * Sets the data for the Song Selector to use as a reference for drawing.
      * @param list Array on EngineLevel Items to use.
      */
-    public function setRenderList(list : Array<Dynamic>) : Void
+    public function setRenderList(list                       : Dynamic) : Void
     {
         sourceElements = list;
         
@@ -89,39 +89,39 @@ class FileBrowserList extends Sprite
     
     public function updateList() : Void
     {
-        if (sourceElements == null || sourceElements.length <= 0)
+        if (as3hx.Compat.truthy(sourceElements == null || sourceElements.length <= 0))
         {
             return;
         }
         
         clearButtons(true);
         
-        var i : Int;
-        var filterList : Array<Dynamic>;
+        var i                       : Dynamic= null;
+        var filterList                       : Dynamic= null;
         
-        if (filter.type != null && filter.term != null && filter.term.length >= 2)
+        if (as3hx.Compat.truthy(filter.type != null && filter.term != null && filter.term.length >= 2))
         {
-            filterLastTerm = filter.term.toLocaleLowerCase();
+            filterLastTerm = filter.term.toLowerCase();
             
-            if (filter.type == "any")
+            if (as3hx.Compat.truthy(filter.type == "any"))
             {
                 filterList = sourceElements.filter(_filterAny);
             }
-            else if (filter.type == "author")
+            else if (as3hx.Compat.truthy(filter.type == "author"))
             {
                 filterList = sourceElements.filter(_filterAuthor);
             }
-            else if (filter.type == "name")
+            else if (as3hx.Compat.truthy(filter.type == "name"))
             {
                 filterList = sourceElements.filter(_filterName);
             }
-            else if (filter.type == "stepauthor")
+            else if (as3hx.Compat.truthy(filter.type == "stepauthor"))
             {
                 filterList = sourceElements.filter(_filterStepauthor);
             }
         }
         
-        if (filterList == null)
+        if (as3hx.Compat.truthy(filterList == null))
         {
             filterList = sourceElements;
         }
@@ -150,27 +150,27 @@ class FileBrowserList extends Sprite
      */
     public function updateChildrenVisibility() : Void
     {
-        if (renderElements == null || renderElements.length == 0)
+        if (as3hx.Compat.truthy(renderElements == null || renderElements.length == 0))
         {
             return;
         }
         
-        var i : Int;
+        var i                       : Dynamic= null;
         
-        var songButton : FileBrowserItem;
-        var _y : Float;
-        var _inBounds : Bool;
-        var songObject : FileFolder;
+        var songButton                       : Dynamic= null;
+        var _y                       : Dynamic= null;
+        var _inBounds                       : Dynamic= null;
+        var songObject                       : Dynamic= null;
         
-        var GAP : Int = as3hx.Compat.parseInt(FileBrowserItem.FIXED_HEIGHT + 5);
-        var startingIndex : Int = as3hx.Compat.parseInt(Math.max(0, Math.floor((_scrollY * -1) / GAP) - 1));
-        var lastIndex : Int = Math.min(renderCount, startingIndex + (Math.ceil(_height / GAP)) + 4);
-        var START_POINT : Int = as3hx.Compat.parseInt(_scrollY);
+        var GAP                       : Dynamic= as3hx.Compat.parseInt(FileBrowserItem.FIXED_HEIGHT + 5);
+        var startingIndex                       : Dynamic= as3hx.Compat.parseInt(Math.max(0, Math.floor((_scrollY * -1) / GAP) - 1));
+        var lastIndex                       : Dynamic= Math.min(renderCount, startingIndex + (Math.ceil(_height / GAP)) + 4);
+        var START_POINT                       : Dynamic= as3hx.Compat.parseInt(_scrollY);
         
         // Update Existing
-        var len : Int = as3hx.Compat.parseInt(songButtons.length - 1);
+        var len                       : Dynamic= as3hx.Compat.parseInt(songButtons.length - 1);
         i = len;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             songButton = songButtons[i];
             songButton.isStale = true;
@@ -179,7 +179,7 @@ class FileBrowserList extends Sprite
             _inBounds = (_y > -GAP && _y < _height);
             
             // Unlink SongButton no longer on stage.
-            if (!_inBounds)
+            if (as3hx.Compat.truthy(!_inBounds))
             {
                 removeSongButton(songButton);
             }
@@ -198,7 +198,7 @@ class FileBrowserList extends Sprite
             songObject = renderElements[i];
             
             // Check for Existing Button
-            if (findSongButton(songObject) != null)
+            if (as3hx.Compat.truthy(findSongButton(songObject) != null))
             {
                 continue;
             }
@@ -207,13 +207,13 @@ class FileBrowserList extends Sprite
             _y = START_POINT + i * GAP;
             _inBounds = (_y > -GAP && _y < height);
             
-            if (_inBounds)
+            if (as3hx.Compat.truthy(_inBounds))
             {
                 songButton = getSongButton();
                 songButton.index = i;
                 songButton.setData(songObject);
                 
-                if (i == activeIndex)
+                if (as3hx.Compat.truthy(i == activeIndex))
                 {
                     songButton.highlight = true;
                 }
@@ -227,10 +227,10 @@ class FileBrowserList extends Sprite
         // Remove Old Song Buttons
         len = as3hx.Compat.parseInt(songButtons.length - 1);
         i = len;
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
             songButton = songButtons[i];
-            if (songButton.isStale)
+            if (as3hx.Compat.truthy(songButton.isStale))
             {
                 removeSongButton(songButton);
             }
@@ -244,7 +244,7 @@ class FileBrowserList extends Sprite
      * @param _y
      * @param btn
      */
-    public function moveSongButton(_y : Int, btn : FileBrowserItem) : Void
+    public function moveSongButton(_y                       : Dynamic, btn                       : Dynamic) : Void
     {
         btn.y = _y;
         btn.isStale = false;
@@ -255,17 +255,17 @@ class FileBrowserList extends Sprite
      * @param level FileFolder to look for.
      * @return If a FileBrowserItem exist already for this level.
      */
-    public function findSongButton(level : FileFolder) : FileBrowserItem
+    public function findSongButton(level                       : Dynamic) : FileBrowserItem
     {
-        if (songButtons.length == 0)
+        if (as3hx.Compat.truthy(songButtons.length == 0))
         {
             return null;
         }
         
-        var len : Int = as3hx.Compat.parseInt(songButtons.length - 1);
-        while (len >= 0)
+        var len                       : Dynamic= as3hx.Compat.parseInt(songButtons.length - 1);
+        while (as3hx.Compat.truthy(len >= 0))
         {
-            if (songButtons[len].songData == level)
+            if (as3hx.Compat.truthy(songButtons[len].songData == level))
             {
                 return songButtons[len];
             }
@@ -279,17 +279,17 @@ class FileBrowserList extends Sprite
      * @param level FileFolder to look for.
      * @return If a FileBrowserItem exist already for this level.
      */
-    public function findSongButtonByIndex(index : Int) : FileBrowserItem
+    public function findSongButtonByIndex(index                       : Dynamic) : FileBrowserItem
     {
-        if (songButtons.length == 0)
+        if (as3hx.Compat.truthy(songButtons.length == 0))
         {
             return null;
         }
         
-        var len : Int = as3hx.Compat.parseInt(songButtons.length - 1);
-        while (len >= 0)
+        var len                       : Dynamic= as3hx.Compat.parseInt(songButtons.length - 1);
+        while (as3hx.Compat.truthy(len >= 0))
         {
-            if (songButtons[len].index == index)
+            if (as3hx.Compat.truthy(songButtons[len].index == index))
             {
                 return songButtons[len];
             }
@@ -303,10 +303,10 @@ class FileBrowserList extends Sprite
      * back into the object pool.
      * @param btn SongButton to remove.
      */
-    public function removeSongButton(btn : FileBrowserItem) : Void
+    public function removeSongButton(btn                       : Dynamic) : Void
     {
-        var idx : Int = Lambda.indexOf(songButtons, btn);
-        if (idx >= 0)
+        var idx                       : Dynamic= Lambda.indexOf(songButtons, btn);
+        if (as3hx.Compat.truthy(idx >= 0))
         {
             songButtons.splice(idx, 1);
         }
@@ -333,16 +333,16 @@ class FileBrowserList extends Sprite
      * Removes all SongButtons from the stage.
      * @param force Force Remove, regardless of sweep value.
      */
-    public function clearButtons(force : Bool = false) : Void
+    public function clearButtons(force                       : Dynamic= false) : Void
     {
-        var songButton : FileBrowserItem;
+        var songButton                       : Dynamic= null;
         
         // Remove Old Song Buttons
-        var len : Int = as3hx.Compat.parseInt(songButtons.length - 1);
-        while (len >= 0)
+        var len                       : Dynamic= as3hx.Compat.parseInt(songButtons.length - 1);
+        while (as3hx.Compat.truthy(len >= 0))
         {
             songButton = songButtons[len];
-            if (songButton.isStale || force)
+            if (as3hx.Compat.truthy(songButton.isStale || force))
             {
                 removeSongButton(songButton);
             }
@@ -373,10 +373,10 @@ class FileBrowserList extends Sprite
      */
     private function get_scrollFactorVertical() : Float
     {
-        return Math.max(Math.min(_height / _calcHeight, 1), 0) || 0;
+        return as3hx.Compat.parseFloat(as3hx.Compat.orValue(Math.max(Math.min(_height / _calcHeight, 1), 0), 0));
     }
     
-    private function set_scrollVertical(val : Float) : Float
+    private function set_scrollVertical(val                       : Dynamic) : Float
     {
         _scrollY = -((_calcHeight - _height) * Math.max(Math.min(val, 1), 0));
         LAST_SCROLL = val;
@@ -384,49 +384,49 @@ class FileBrowserList extends Sprite
         return val;
     }
     
-    private function e_scrollWheel(e : MouseEvent) : Void
+    private function e_scrollWheel(e                       : Dynamic) : Void
     {
-        if (doScroll)
+        if (as3hx.Compat.truthy(doScroll))
         {
             _vscroll.scrollTo(_vscroll.scroll + (scrollFactorVertical / 2) * ((e.delta > 1) ? -1 : 1));
             scrollVertical = _vscroll.scroll;
         }
     }
     
-    private function e_scrollVerticalUpdate(e : Event) : Void
+    private function e_scrollVerticalUpdate(e                       : Dynamic) : Void
     {
         scrollVertical = _vscroll.scroll;
     }
     
-    private function _filterAny(item : FileFolder, index : Int, arr : Array<Dynamic>) : Bool
+    private function _filterAny(item                       : Dynamic, index                       : Dynamic, arr                       : Dynamic) : Bool
     {
-        return item.name.toLocaleLowerCase().indexOf(filterLastTerm) >= 0 || item.author.toLocaleLowerCase().indexOf(filterLastTerm) >= 0 || item.stepauthor.toLocaleLowerCase().indexOf(filterLastTerm) >= 0;
+        return item.name.toLowerCase().indexOf(filterLastTerm) >= 0 || item.author.toLowerCase().indexOf(filterLastTerm) >= 0 || item.stepauthor.toLowerCase().indexOf(filterLastTerm) >= 0;
     }
     
-    private function _filterAuthor(item : FileFolder, index : Int, arr : Array<Dynamic>) : Bool
+    private function _filterAuthor(item                       : Dynamic, index                       : Dynamic, arr                       : Dynamic) : Bool
     {
-        return item.author.toLocaleLowerCase().indexOf(filterLastTerm) >= 0;
+        return item.author.toLowerCase().indexOf(filterLastTerm) >= 0;
     }
     
-    private function _filterName(item : FileFolder, index : Int, arr : Array<Dynamic>) : Bool
+    private function _filterName(item                       : Dynamic, index                       : Dynamic, arr                       : Dynamic) : Bool
     {
-        return item.name.toLocaleLowerCase().indexOf(filterLastTerm) >= 0;
+        return item.name.toLowerCase().indexOf(filterLastTerm) >= 0;
     }
     
-    private function _filterStepauthor(item : FileFolder, index : Int, arr : Array<Dynamic>) : Bool
+    private function _filterStepauthor(item                       : Dynamic, index                       : Dynamic, arr                       : Dynamic) : Bool
     {
-        return item.stepauthor.toLocaleLowerCase().indexOf(filterLastTerm) >= 0;
+        return item.stepauthor.toLowerCase().indexOf(filterLastTerm) >= 0;
     }
     
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /** SongButton Pool Vector */
-    private static var __vectorSongButton : Array<FileBrowserItem> = new Array<FileBrowserItem>();
+    private static var __vectorSongButton                       : Dynamic= new Array<FileBrowserItem>();
     
     /** Retrieves a SongButton instance from the pool. */
     public static function getSongButton() : FileBrowserItem
     {
-        if (__vectorSongButton.length == 0)
+        if (as3hx.Compat.truthy(__vectorSongButton.length == 0))
         {
             return new FileBrowserItem();
         }
@@ -438,9 +438,9 @@ class FileBrowserList extends Sprite
     
     /** Stores a SongButton instance in the pool.
      *  Don't keep any references to the object after moving it to the pool! */
-    public static function putSongButton(songbutton : FileBrowserItem) : Void
+    public static function putSongButton(songbutton                       : Dynamic) : Void
     {
-        if (songbutton != null)
+        if (as3hx.Compat.truthy(songbutton != null))
         {
             songbutton.highlight = false;
             __vectorSongButton[__vectorSongButton.length] = songbutton;

@@ -16,28 +16,28 @@ interface ICrypto
 {
 
     
-    function checkDecrypt(entry : ZipEntry) : Bool
+    function checkDecrypt(entry                            : Dynamic) : Bool
     ;
     /**
 		 *   initialize decrypto
 		 */
-    function initDecrypt(password : ByteArray, header : ZipHeader) : Void
+    function initDecrypt(password                            : Dynamic, header                            : Dynamic) : Void
     ;
     /**
 		 *   decrypto
 		 */
-    function decrypt(data : ByteArray) : ByteArray
+    function decrypt(data                            : Dynamic) : ByteArray
     ;
     
     /**
 		 *   initialize encrypto
 		 */
-    function initEncrypt(password : ByteArray, header : ZipHeader) : Void
+    function initEncrypt(password                            : Dynamic, header                            : Dynamic) : Void
     ;
     
     /**
 		 *  encrypto
 		 */
-    function encrypt(data : ByteArray) : ByteArray
+    function encrypt(data                            : Dynamic) : ByteArray
     ;
 }

@@ -11,12 +11,12 @@ import openfl.geom.Matrix;
 
 class ReplayHistoryEntry extends Sprite
 {
-    public static inline var ENTRY_HEIGHT : Int = 50;
+    public static inline var ENTRY_HEIGHT                       : Dynamic= 50;
     
-    private static var SCORE_BG_MATRIX : Matrix = new Matrix();
+    private static var SCORE_BG_MATRIX                       : Dynamic= new Matrix();
     
     
-    private static var SCORE_BG : Array<Dynamic> = [[0xbfecff, 75],   // Score  
+    private static var SCORE_BG                       : Dynamic= [[0xbfecff, 75],   // Score  
         [0x12ff00, 45],   // Perfect  
         [0x00ad0f, 45],   // Good  
         [0xff9a00, 45],   // Average  
@@ -25,21 +25,21 @@ class ReplayHistoryEntry extends Sprite
         [0x858585, 55]  // Combo  
     ];
     
-    public var replay : Replay;
-    public var info : SongInfo;
+    public var replay                       : Dynamic;
+    public var info                       : Dynamic;
     
-    private var title : Text;
-    private var rate : Text;
-    private var engine : Text;
+    private var title                       : Dynamic;
+    private var rate                       : Dynamic;
+    private var engine                       : Dynamic;
     
-    private var field_plane : Sprite;
-    private var fields : Array<Text>;
+    private var field_plane                       : Dynamic;
+    private var fields                       : Dynamic;
     
-    public var btn_play : SimpleBoxButton;
-    public var btn_copy : SimpleBoxButton;
+    public var btn_play                       : Dynamic;
+    public var btn_copy                       : Dynamic;
     
-    public var index : Int = 0;
-    public var isStale : Bool = true;
+    public var index                       : Dynamic= 0;
+    public var isStale                       : Dynamic= true;
     
     public function new()
     {
@@ -54,7 +54,7 @@ class ReplayHistoryEntry extends Sprite
         
         this.graphics.lineStyle(0, 0xFFFFFF, 0);
         
-        var copyIcon : IconCopy = new IconCopy();
+        var copyIcon                       : Dynamic= new IconCopy();
         copyIcon.scaleX = copyIcon.scaleY = (17 / copyIcon.width);
         copyIcon.x = 564;
         copyIcon.y = (ENTRY_HEIGHT / 2) + 1;
@@ -66,13 +66,13 @@ class ReplayHistoryEntry extends Sprite
         field_plane.y = ENTRY_HEIGHT - 20;
         this.addChild(field_plane);
         
-        var field_txt : Text;
+        var field_txt                       : Dynamic= null;
         fields = new Array<Text>();
         
-        var X_OFF : Float = 0;
+        var X_OFF                       : Dynamic= 0;
         for (index in 0...SCORE_BG.length)
         {
-            var score_field : Array<Dynamic> = SCORE_BG[index];
+            var score_field                       : Dynamic= SCORE_BG[index];
             
             field_plane.graphics.beginGradientFill(GradientType.LINEAR, [score_field[0], score_field[0], score_field[0]], [0.15, 0.22, 0.32], [0x00, 0x77, 0xFF], SCORE_BG_MATRIX);
             field_plane.graphics.drawRect(X_OFF, 0, score_field[1], 20);
@@ -105,16 +105,16 @@ class ReplayHistoryEntry extends Sprite
         this.addChild(btn_copy);
     }
     
-    public function setData(item : Replay) : Void
+    public function setData(item                       : Dynamic) : Void
     {
         replay = item;
         info = item.song;
         
         title.text = info.name;
         
-        if (info.engine != null)
+        if (as3hx.Compat.truthy(info.engine != null))
         {
-            if (info.engine.name == null)
+            if (as3hx.Compat.truthy(info.engine.name == null))
             {
                 engine.text = Std.string(info.engine.id).toUpperCase();
             }
@@ -130,7 +130,7 @@ class ReplayHistoryEntry extends Sprite
             engine.visible = false;
         }
         
-        if (item.settings.songRate != 1)
+        if (as3hx.Compat.truthy(item.settings.songRate != 1))
         {
             rate.text = "x" + item.settings.songRate;
             rate.visible = true;

@@ -3,12 +3,12 @@ package classes.replay;
 
 class ReplayNote
 {
-    public var direction : String;
-    public var frame : Float;
-    public var time : Float;
-    public var score : Float;
+    public var direction                             : Dynamic;
+    public var frame                             : Dynamic;
+    public var time                             : Dynamic;
+    public var score                             : Dynamic;
     
-    public function new(direction : String, frame : Float = -1, time : Float = -1, score : Float = 0)
+    public function new(direction                             : Dynamic, frame                             : Dynamic= -1, time                             : Dynamic= -1, score                             : Dynamic= 0)
     {
         this.direction = direction;
         this.frame = frame;
@@ -23,7 +23,7 @@ class ReplayNote
      * @param b ReplayNote B
      * @return Number
      */
-    public static function sortFunction(a : ReplayNote, b : ReplayNote) : Float
+    public static function sortFunction(a                             : Dynamic, b                             : Dynamic) : Float
     {
         return a.frame - b.frame;
     }

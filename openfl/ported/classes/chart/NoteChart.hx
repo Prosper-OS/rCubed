@@ -6,17 +6,17 @@ import classes.chart.parse.*;
 class NoteChart
 {
     /** Legacy Mode */
-    public static inline var FFR_LEGACY : String = "ChartFFRSWF";
+    public static inline var FFR_LEGACY                             : Dynamic= "ChartFFRSWF";
     
     /** SWF MP3 + Beatbox Extraction */
-    public static inline var FFR_MP3 : String = "ChartFFRMP3";
+    public static inline var FFR_MP3                             : Dynamic= "ChartFFRMP3";
     
-    public var type : String;
-    public var Notes : Array<Note> = [];
-    public var chartData : Dynamic;
-    public var framerate : Int = 60;
+    public var type                             : Dynamic;
+    public var Notes                             : Dynamic= [];
+    public var chartData                             : Dynamic;
+    public var framerate                             : Dynamic= 60;
     
-    public function new(inData : Dynamic = null, framerate : Int = 60)
+    public function new(inData                             : Dynamic= null, framerate                             : Dynamic= 60)
     {
         this.chartData = inData;
         this.framerate = framerate;
@@ -32,7 +32,7 @@ class NoteChart
      * @return	NoteChart of the type expected.
      */
     
-    public static function parseChart(type : String, songInfo : SongInfo, inData : Dynamic, framerate : Int = 60) : NoteChart
+    public static function parseChart(type                             : Dynamic, songInfo                             : Dynamic, inData                             : Dynamic, framerate                             : Dynamic= 60) : NoteChart
     {
         switch (type)
         {
@@ -48,15 +48,15 @@ class NoteChart
      *
      * @return String representation of the notechart.
      */
-    public function toString(type : String = null) : String
+    public function toString(type                             : Dynamic= null) : String
     {
-        if (Notes.length == 0)
+        if (as3hx.Compat.truthy(Notes.length == 0))
         {
             return "No Notes...";
         }
         
-        var returnVal : String = "";
-        var note : Note = Notes[0];
+        var returnVal                             : Dynamic= "";
+        var note                             : Dynamic= Notes[0];
         
         // Build Output
         for (i in 0...Notes.length)

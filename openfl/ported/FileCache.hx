@@ -2,20 +2,20 @@ import openfl.errors.Error;
 
 class FileCache
 {
-    public var cacheFound(get, never) : Bool;
-    public var keys(get, never) : Array<String>;
-    public var cache(get, never) : Dynamic;
+    public var cacheFound(get, never)                              : Dynamic;
+    public var keys(get, never)                              : Dynamic;
+    public var cache(get, never)                              : Dynamic;
 
-    private var CACHE : Dynamic;
+    private var CACHE                              : Dynamic;
     
-    private var CACHE_FILE_NAME : String;
-    private var CACHE_FILE_VERSION : Int = 1;
+    private var CACHE_FILE_NAME                              : Dynamic;
+    private var CACHE_FILE_VERSION                              : Dynamic= 1;
     
-    private var _cacheFound : Bool = false;
-    private var _didLoad : Bool = false;
-    private var _isDirty : Bool = false;
+    private var _cacheFound                              : Dynamic= false;
+    private var _didLoad                              : Dynamic= false;
+    private var _isDirty                              : Dynamic= false;
     
-    public function new(cache_name : String, cache_version : Float)
+    public function new(cache_name                              : Dynamic, cache_version                              : Dynamic)
     {
         CACHE_FILE_NAME = cache_name;
         CACHE_FILE_VERSION = as3hx.Compat.parseInt(cache_version);
@@ -26,22 +26,22 @@ class FileCache
     
     public function load() : Void
     {
-        if (_didLoad)
+        if (as3hx.Compat.truthy(_didLoad))
         {
             return;
         }
         
         _didLoad = true;
         
-        var data : String = AirContext.readTextFile(AirContext.getAppFile(CACHE_FILE_NAME));
-        if (data != null && data.length > 2)
+        var data                              : Dynamic= AirContext.readTextFile(AirContext.getAppFile(CACHE_FILE_NAME));
+        if (as3hx.Compat.truthy(data != null && data.length > 2))
         {
             try
             {
-                var FILE_CACHE : Dynamic = haxe.Json.parse(data);
+                var FILE_CACHE                              : Dynamic= haxe.Json.parse(data);
                 
                 // valid cache & version
-                if (((Reflect.field(FILE_CACHE, "cache_version") || 0) == CACHE_FILE_VERSION) && Reflect.field(FILE_CACHE, "keys") != null)
+                if (as3hx.Compat.truthy((as3hx.Compat.orValue(Reflect.field(FILE_CACHE, "cache_version"), 0) == CACHE_FILE_VERSION) && Reflect.field(FILE_CACHE, "keys") != null))
                 {
                     CACHE = FILE_CACHE;
                     _cacheFound = true;
@@ -61,7 +61,7 @@ class FileCache
     
     public function save() : Void
     {
-        if (_isDirty)
+        if (as3hx.Compat.truthy(_isDirty))
         {
             AirContext.writeTextFile(AirContext.getAppFile(CACHE_FILE_NAME), haxe.Json.stringify(CACHE));
             _isDirty = false;
@@ -74,11 +74,11 @@ class FileCache
         }
     }
     
-    public function findKey(condition : Dynamic) : String
+    public function findKey(condition                              : Dynamic) : String
     {
-        for (key in Reflect.fields(Reflect.field(CACHE, "keys")))
+        for (key in as3hx.Compat.iter(Reflect.fields(Reflect.field(CACHE, "keys"))))
         {
-            if (condition(Reflect.field(Reflect.field(CACHE, "keys"), key)))
+            if (as3hx.Compat.truthy(condition(Reflect.field(Reflect.field(CACHE, "keys"), key))))
             {
                 return key;
             }
@@ -87,11 +87,11 @@ class FileCache
         return null;
     }
     
-    public function findValue(condition : Dynamic) : Dynamic
+    public function findValue(condition                              : Dynamic) : Dynamic
     {
-        for (entry/* AS3HX WARNING could not determine type for var: entry exp: EArray(EIdent(CACHE),EConst(CString(keys))) type: Dynamic */ in Reflect.field(CACHE, "keys"))
+        for (entry/* AS3HX WARNING could not determine type for var: entry exp: EArray(EIdent(CACHE),EConst(CString(keys))) type: Dynamic */ in as3hx.Compat.iter(Reflect.field(CACHE, "keys")))
         {
-            if (condition(entry))
+            if (as3hx.Compat.truthy(condition(entry)))
             {
                 return entry;
             }
@@ -100,23 +100,23 @@ class FileCache
         return null;
     }
     
-    public function findValues(condition : Dynamic) : Dynamic
+    public function findValues(condition                              : Dynamic) : Dynamic
     {
         return Reflect.field(CACHE, "keys").filter(condition);
     }
     
-    public function getValue(path : String) : Dynamic
+    public function getValue(path                              : Dynamic) : Dynamic
     {
         return Reflect.field(Reflect.field(CACHE, "keys"), path) || null;
     }
     
-    public function setValue(path : String, value : Dynamic) : Void
+    public function setValue(path                              : Dynamic, value                              : Dynamic) : Void
     {
         Reflect.setField(Reflect.field(CACHE, "keys"), path, value);
         _isDirty = true;
     }
     
-    public function deleteKey(path : String) : Void
+    public function deleteKey(path                              : Dynamic) : Void
     {
         Reflect.deleteField(Reflect.field(CACHE, "keys"), path);
         _isDirty = true;
@@ -135,9 +135,9 @@ class FileCache
     
     private function get_keys() : Array<String>
     {
-        var v : Array<String> = [];
+        var v                              : Dynamic= [];
         
-        for (key in Reflect.fields(Reflect.field(CACHE, "keys")))
+        for (key in as3hx.Compat.iter(Reflect.fields(Reflect.field(CACHE, "keys"))))
         {
             v[v.length] = key;
         }

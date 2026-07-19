@@ -7,11 +7,11 @@ import openfl.events.Event;
 
 class MPRoomRawEvent extends Event
 {
-    public var room : MPRoom;
-    public var user : MPUser;
-    public var command : MPSocketDataRaw;
+    public var room                             : Dynamic;
+    public var user                             : Dynamic;
+    public var command                             : Dynamic;
     
-    public function new(type : String, command : MPSocketDataRaw, room : MPRoom, user : MPUser = null)
+    public function new(type                             : Dynamic, command                             : Dynamic, room                             : Dynamic, user                             : Dynamic= null)
     {
         super(type);
         

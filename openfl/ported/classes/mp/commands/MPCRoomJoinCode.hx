@@ -3,9 +3,9 @@ package classes.mp.commands;
 
 class MPCRoomJoinCode implements IMPCommand
 {
-    public var code : String;
+    public var code                             : Dynamic;
     
-    public function new(code : String)
+    public function new(code                             : Dynamic)
     {
         this.code = code;
     }

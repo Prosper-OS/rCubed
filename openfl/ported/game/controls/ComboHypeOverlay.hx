@@ -12,71 +12,71 @@ import openfl.geom.Rectangle;
 
 class ComboHypeOverlay extends Sprite
 {
-    public static inline var MODE_FULL : String = "full";
-    public static inline var MODE_REDUCED : String = "reduced";
-    public static inline var MODE_OFF : String = "off";
+    public static inline var MODE_FULL                       : Dynamic= "full";
+    public static inline var MODE_REDUCED                       : Dynamic= "reduced";
+    public static inline var MODE_OFF                       : Dynamic= "off";
     
-    private static inline var MAX_PARTICLES : Int = 120;
-    private static inline var MAX_PARTICLES_REDUCED : Int = 44;
-    private static inline var LANE_TOP_SCALE : Float = 0.70;
-    private static inline var LANE_BOTTOM_SCALE : Float = 1.00;
-    private static inline var RGB_TABLE_SIZE : Int = 256;
-    private static var RGB_TABLE : Array<Int> = buildRgbTable();
+    private static inline var MAX_PARTICLES                       : Dynamic= 120;
+    private static inline var MAX_PARTICLES_REDUCED                       : Dynamic= 44;
+    private static inline var LANE_TOP_SCALE                       : Dynamic= 0.70;
+    private static inline var LANE_BOTTOM_SCALE                       : Dynamic= 1.00;
+    private static inline var RGB_TABLE_SIZE                       : Dynamic= 256;
+    private static var RGB_TABLE                       : Dynamic= buildRgbTable();
     
-    private var _combo : Int = 0;
-    private var _score : Int = 0;
-    private var _level : Float = 0;
-    private var _pulse : Float = 0;
-    private var _phase : Float = 0;
-    private var _hitFlash : Float = 0;
-    private var _impactBurst : Float = 0;
-    private var _impactFlash : Float = 0;
-    private var _hitColor : Int = 0xFFFFFF;
-    private var _mode : String = MODE_FULL;
-    private var _laneX : Float = 0;
-    private var _laneY : Float = 0;
-    private var _laneWidth : Float = 0;
-    private var _laneHeight : Float = 0;
-    private var _laneEdges : Array<Float> = new Array<Float>();
-    private var _hasLaneEdges : Bool = false;
-    private var _hasJudgeBounds : Bool = false;
-    private var _judgeX : Float = 0;
-    private var _judgeY : Float = 0;
-    private var _judgeWidth : Float = 0;
-    private var _judgeHeight : Float = 0;
+    private var _combo                       : Dynamic= 0;
+    private var _score                       : Dynamic= 0;
+    private var _level                       : Dynamic= 0;
+    private var _pulse                       : Dynamic= 0;
+    private var _phase                       : Dynamic= 0;
+    private var _hitFlash                       : Dynamic= 0;
+    private var _impactBurst                       : Dynamic= 0;
+    private var _impactFlash                       : Dynamic= 0;
+    private var _hitColor                       : Dynamic= 0xFFFFFF;
+    private var _mode                       : Dynamic= MODE_FULL;
+    private var _laneX                       : Dynamic= 0;
+    private var _laneY                       : Dynamic= 0;
+    private var _laneWidth                       : Dynamic= 0;
+    private var _laneHeight                       : Dynamic= 0;
+    private var _laneEdges                       : Dynamic= new Array<Float>();
+    private var _hasLaneEdges                       : Dynamic= false;
+    private var _hasJudgeBounds                       : Dynamic= false;
+    private var _judgeX                       : Dynamic= 0;
+    private var _judgeY                       : Dynamic= 0;
+    private var _judgeWidth                       : Dynamic= 0;
+    private var _judgeHeight                       : Dynamic= 0;
     
-    private var _glassLayer : Sprite;
-    private var _vectorLayer : Sprite;
-    private var _flashLayer : Sprite;
-    private var _particleLayer : Sprite;
-    private var _laneGeometryDirty : Bool = true;
-    private var _lastGlassAlpha : Float = -1;
+    private var _glassLayer                       : Dynamic;
+    private var _vectorLayer                       : Dynamic;
+    private var _flashLayer                       : Dynamic;
+    private var _particleLayer                       : Dynamic;
+    private var _laneGeometryDirty                       : Dynamic= true;
+    private var _lastGlassAlpha                       : Dynamic= -1;
     
-    private var _particleSprites : Array<Sprite> = [];
-    private var _particleActive : Array<Bool> = new Array<Bool>();
-    private var _particleActiveIndices : Array<Int> = [];
-    private var _particleX : Array<Float> = new Array<Float>();
-    private var _particleY : Array<Float> = new Array<Float>();
-    private var _particleVX : Array<Float> = new Array<Float>();
-    private var _particleVY : Array<Float> = new Array<Float>();
-    private var _particleLife : Array<Float> = new Array<Float>();
-    private var _particleDecay : Array<Float> = new Array<Float>();
-    private var _particleSize : Array<Float> = new Array<Float>();
-    private var _activeParticles : Int = 0;
-    private var _particleCursor : Int = 0;
-    private var _colorTransform : ColorTransform = new ColorTransform();
-    private var _rgbGradientColors : Array<Dynamic> = [0, 0, 0, 0, 0];
-    private var _rgbGradientAlphas : Array<Dynamic> = [1, 1, 1, 1, 1];
-    private var _rgbGradientRatios : Array<Dynamic> = [0, 64, 128, 192, 255];
-    private var _rgbGradientMatrix : Matrix = new Matrix();
+    private var _particleSprites                       : Dynamic= [];
+    private var _particleActive                       : Dynamic= new Array<Bool>();
+    private var _particleActiveIndices                       : Dynamic= [];
+    private var _particleX                       : Dynamic= new Array<Float>();
+    private var _particleY                       : Dynamic= new Array<Float>();
+    private var _particleVX                       : Dynamic= new Array<Float>();
+    private var _particleVY                       : Dynamic= new Array<Float>();
+    private var _particleLife                       : Dynamic= new Array<Float>();
+    private var _particleDecay                       : Dynamic= new Array<Float>();
+    private var _particleSize                       : Dynamic= new Array<Float>();
+    private var _activeParticles                       : Dynamic= 0;
+    private var _particleCursor                       : Dynamic= 0;
+    private var _colorTransform                       : Dynamic= new ColorTransform();
+    private var _rgbGradientColors                       : Dynamic= [0, 0, 0, 0, 0];
+    private var _rgbGradientAlphas                       : Dynamic= [1, 1, 1, 1, 1];
+    private var _rgbGradientRatios                       : Dynamic= [0, 64, 128, 192, 255];
+    private var _rgbGradientMatrix                       : Dynamic= new Matrix();
     
-    public var shakeX : Float = 0;
-    public var shakeY : Float = 0;
+    public var shakeX                       : Dynamic= 0;
+    public var shakeY                       : Dynamic= 0;
     
-    public function new(parent : Sprite, mode : String = "full")
+    public function new(parent                       : Dynamic, mode                       : Dynamic= "full")
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -90,16 +90,16 @@ class ComboHypeOverlay extends Sprite
         setMode(mode);
     }
     
-    public function setMode(mode : String) : Void
+    public function setMode(mode                       : Dynamic) : Void
     {
-        if (mode != MODE_REDUCED && mode != MODE_OFF)
+        if (as3hx.Compat.truthy(mode != MODE_REDUCED && mode != MODE_OFF))
         {
             mode = MODE_FULL;
         }
         
         _mode = mode;
         visible = _mode != MODE_OFF;
-        if (_mode == MODE_OFF)
+        if (as3hx.Compat.truthy(_mode == MODE_OFF))
         {
             clearParticles();
             _pulse = 0;
@@ -117,12 +117,12 @@ class ComboHypeOverlay extends Sprite
         }
     }
     
-    public function setLaneBounds(xPos : Float, yPos : Float, laneWidth : Float, laneHeight : Float) : Void
+    public function setLaneBounds(xPos                       : Dynamic, yPos                       : Dynamic, laneWidth                       : Dynamic, laneHeight                       : Dynamic) : Void
     {
-        var newX : Float = Math.round(xPos * 2) / 2;
-        var newY : Float = Math.round(yPos * 2) / 2;
-        var newWidth : Float = Math.max(64, Math.round(laneWidth * 2) / 2);
-        var newHeight : Float = Math.max(64, Math.round(laneHeight * 2) / 2);
+        var newX                       : Dynamic= Math.round(xPos * 2) / 2;
+        var newY                       : Dynamic= Math.round(yPos * 2) / 2;
+        var newWidth                       : Dynamic= Math.max(64, Math.round(laneWidth * 2) / 2);
+        var newHeight                       : Dynamic= Math.max(64, Math.round(laneHeight * 2) / 2);
         
         if (Math.abs(_laneX - newX) <= 0.25 &&
             Math.abs(_laneY - newY) <= 0.25 &&
@@ -139,11 +139,11 @@ class ComboHypeOverlay extends Sprite
         _laneGeometryDirty = true;
     }
     
-    public function setLaneEdges(edges : Array<Float>) : Void
+    public function setLaneEdges(edges                       : Dynamic) : Void
     {
-        if (edges == null || edges.length < 5)
+        if (as3hx.Compat.truthy(edges == null || edges.length < 5))
         {
-            if (_hasLaneEdges)
+            if (as3hx.Compat.truthy(_hasLaneEdges))
             {
                 _laneGeometryDirty = true;
             }
@@ -152,12 +152,12 @@ class ComboHypeOverlay extends Sprite
             return;
         }
         
-        var changed : Bool = !_hasLaneEdges;
-        var value : Float;
+        var changed                       : Dynamic= !_hasLaneEdges;
+        var value                       : Dynamic= null;
         for (i in 0...5)
         {
             value = Math.round(edges[i] * 2) / 2;
-            if (Math.abs(_laneEdges[i] - value) > 0.25)
+            if (as3hx.Compat.truthy(Math.abs(_laneEdges[i] - value) > 0.25))
             {
                 changed = true;
             }
@@ -166,15 +166,15 @@ class ComboHypeOverlay extends Sprite
         }
         
         _hasLaneEdges = true;
-        if (changed)
+        if (as3hx.Compat.truthy(changed))
         {
             _laneGeometryDirty = true;
         }
     }
     
-    public function setJudgeBounds(bounds : Rectangle) : Void
+    public function setJudgeBounds(bounds                       : Dynamic) : Void
     {
-        if (bounds == null)
+        if (as3hx.Compat.truthy(bounds == null))
         {
             _hasJudgeBounds = false;
             return;
@@ -187,33 +187,33 @@ class ComboHypeOverlay extends Sprite
         _judgeHeight = bounds.height;
     }
     
-    public function onJudge(combo : Int, score : Int, dir : String = null, impactArrows : Int = 1) : Void
+    public function onJudge(combo                       : Dynamic, score                       : Dynamic, dir                       : Dynamic= null, impactArrows                       : Dynamic= 1) : Void
     {
         _combo = Math.max(0, combo);
         _score = score;
-        if (impactArrows < 1)
+        if (as3hx.Compat.truthy(impactArrows < 1))
         {
             impactArrows = 1;
         }
-        else if (impactArrows > 4)
+        else if (as3hx.Compat.truthy(impactArrows > 4))
         {
             impactArrows = 4;
         }
         
-        if (_mode == MODE_OFF)
+        if (as3hx.Compat.truthy(_mode == MODE_OFF))
         {
             return;
         }
         
-        if (score > 0)
+        if (as3hx.Compat.truthy(score > 0))
         {
-            var scale : Float = modeScale();
-            var impact : Float = impactLevel(impactArrows);
-            var comboBoost : Float = 1 + Math.min(0.7, _combo / 520);
+            var scale                       : Dynamic= modeScale();
+            var impact                       : Dynamic= impactLevel(impactArrows);
+            var comboBoost                       : Dynamic= 1 + Math.min(0.7, _combo / 520);
             _pulse = Math.min(1, _pulse + (0.13 + Math.min(0.32, _combo / 900) + impact * 0.14) * scale);
             _hitFlash = Math.min(1, _hitFlash + (0.44 + impact * 0.34) * scale);
             _impactBurst = Math.min(1.2, Math.max(_impactBurst, impact * comboBoost * scale));
-            if (impactArrows >= 3)
+            if (as3hx.Compat.truthy(impactArrows >= 3))
             {
                 _impactFlash = Math.min(1, Math.max(_impactFlash, ((impactArrows == 4) ? 0.92 : 0.54) * comboBoost * scale));
             }
@@ -224,7 +224,7 @@ class ComboHypeOverlay extends Sprite
             _hitColor = scoreColor(score);
             spawnBurstParticles(score, dir, impactArrows);
         }
-        else if (score == -10)
+        else if (as3hx.Compat.truthy(score == -10))
         {
             _pulse = 0;
             _hitFlash = Math.min(1, _hitFlash + 0.35 * modeScale());
@@ -234,9 +234,9 @@ class ComboHypeOverlay extends Sprite
         }
     }
     
-    public function tick(frame : Int) : Void
+    public function tick(frame                       : Dynamic) : Void
     {
-        if (_mode == MODE_OFF)
+        if (as3hx.Compat.truthy(_mode == MODE_OFF))
         {
             shakeX = 0;
             shakeY = 0;
@@ -245,7 +245,7 @@ class ComboHypeOverlay extends Sprite
         
         _phase = frame * 0.055;
         
-        var target : Float = hypeLevel(_combo) * modeScale();
+        var target                       : Dynamic= hypeLevel(_combo) * modeScale();
         _level += (target - _level) * 0.085;
         _pulse *= ((_mode == MODE_FULL) ? 0.9 : 0.84);
         _hitFlash *= ((_mode == MODE_FULL) ? 0.78 : 0.66);
@@ -253,11 +253,11 @@ class ComboHypeOverlay extends Sprite
         _impactFlash *= ((_mode == MODE_FULL) ? 0.6 : 0.48);
         updateParticles();
         
-        var visibleLevel : Float = Math.max(Math.max(Math.max(Math.max(_level, _pulse * 0.62), _hitFlash * 0.34), _impactBurst * 0.46), _impactFlash * 0.42);
-        visible = visibleLevel >= 0.015 || _activeParticles > 0;
+        var visibleLevel                       : Dynamic= Math.max(Math.max(Math.max(Math.max(_level, _pulse * 0.62), _hitFlash * 0.34), _impactBurst * 0.46), _impactFlash * 0.42);
+        visible = as3hx.Compat.orValue(visibleLevel >= 0.015, _activeParticles > 0);
         updateShake(visibleLevel);
         
-        if (visibleLevel < 0.015 && _activeParticles == 0)
+        if (as3hx.Compat.truthy(visibleLevel < 0.015 && _activeParticles == 0))
         {
             _glassLayer.graphics.clear();
             _vectorLayer.graphics.clear();
@@ -283,7 +283,7 @@ class ComboHypeOverlay extends Sprite
         
         for (i in 0...MAX_PARTICLES)
         {
-            var particle : Sprite = new Sprite();
+            var particle                       : Dynamic= new Sprite();
             particle.graphics.beginFill(0xFFFFFF, 0.82);
             particle.graphics.drawRect(-1.8, -7, 3.6, 14);
             particle.graphics.endFill();
@@ -302,7 +302,7 @@ class ComboHypeOverlay extends Sprite
     
     private function createLayer() : Sprite
     {
-        var layer : Sprite = new Sprite();
+        var layer                       : Dynamic= new Sprite();
         layer.mouseEnabled = false;
         layer.mouseChildren = false;
         layer.blendMode = BlendMode.ADD;
@@ -319,24 +319,24 @@ class ComboHypeOverlay extends Sprite
         return (_mode == MODE_REDUCED) ? MAX_PARTICLES_REDUCED : MAX_PARTICLES;
     }
     
-    private function hypeLevel(combo : Int) : Float
+    private function hypeLevel(combo                       : Dynamic) : Float
     {
-        if (combo < 12)
+        if (as3hx.Compat.truthy(combo < 12))
         {
             return 0;
         }
         
-        if (combo < 64)
+        if (as3hx.Compat.truthy(combo < 64))
         {
             return 0.08 + ((combo - 12) / 52 * 0.2);
         }
         
-        if (combo < 160)
+        if (as3hx.Compat.truthy(combo < 160))
         {
             return 0.28 + ((combo - 64) / 96 * 0.22);
         }
         
-        if (combo < 320)
+        if (as3hx.Compat.truthy(combo < 320))
         {
             return 0.5 + ((combo - 160) / 160 * 0.28);
         }
@@ -344,7 +344,7 @@ class ComboHypeOverlay extends Sprite
         return Math.min(1, 0.78 + ((combo - 320) / 560 * 0.22));
     }
     
-    private function impactLevel(impactArrows : Int) : Float
+    private function impactLevel(impactArrows                       : Dynamic) : Float
     {
         switch (impactArrows)
         {
@@ -359,31 +359,31 @@ class ComboHypeOverlay extends Sprite
         }
     }
     
-    private function updateShake(level : Float) : Void
+    private function updateShake(level                       : Dynamic) : Void
     {
-        var maxShake : Float = (_mode == MODE_FULL) ? 7.5 : 2.25;
-        var impactShake : Float = _impactBurst * ((_mode == MODE_FULL) ? 10.5 : 3.1);
-        var amount : Float = (Math.max(0, level - 0.18) * maxShake) + (_hitFlash * ((_mode == MODE_FULL) ? 3.2 : 1.15)) + impactShake;
-        if (amount < 0.08)
+        var maxShake                       : Dynamic= (_mode == MODE_FULL) ? 7.5 : 2.25;
+        var impactShake                       : Dynamic= _impactBurst * ((_mode == MODE_FULL) ? 10.5 : 3.1);
+        var amount                       : Dynamic= (Math.max(0, level - 0.18) * maxShake) + (_hitFlash * ((_mode == MODE_FULL) ? 3.2 : 1.15)) + impactShake;
+        if (as3hx.Compat.truthy(amount < 0.08))
         {
             shakeX = 0;
             shakeY = 0;
             return;
         }
         
-        var bang : Float = _impactBurst * _impactBurst;
+        var bang                       : Dynamic= _impactBurst * _impactBurst;
         shakeX = Math.sin(_phase * 15.7) * amount + Math.sin(_phase * 37.1) * amount * (0.2 + bang * 0.18);
         shakeY = Math.cos(_phase * 13.3) * amount * (0.56 + bang * 0.2) + Math.sin(_phase * 29.8) * amount * 0.18;
     }
     
-    private function drawOverlay(level : Float) : Void
+    private function drawOverlay(level                       : Dynamic) : Void
     {
-        var pulseLevel : Float = Math.min(1, level + _pulse + _hitFlash * 0.38);
-        var beat : Float = (Math.sin(_phase * 3) + 1) * 0.5;
+        var pulseLevel                       : Dynamic= Math.min(1, level + _pulse + _hitFlash * 0.38);
+        var beat                       : Dynamic= (Math.sin(_phase * 3) + 1) * 0.5;
         
         drawLaneGlass(_glassLayer.graphics, pulseLevel);
         
-        var g : Graphics = _vectorLayer.graphics;
+        var g                       : Dynamic= _vectorLayer.graphics;
         g.clear();
         drawLaneEdges(g, 3 + (pulseLevel * 11), 0.12 + (pulseLevel * 0.36), 0.1 + (pulseLevel * 0.3), pulseLevel, beat);
         
@@ -392,16 +392,16 @@ class ComboHypeOverlay extends Sprite
         drawHitFlash(g);
     }
     
-    private function drawLaneGlass(g : Graphics, level : Float) : Void
+    private function drawLaneGlass(g                       : Dynamic, level                       : Dynamic) : Void
     {
-        if (!hasLaneBounds())
+        if (as3hx.Compat.truthy(!hasLaneBounds()))
         {
             g.clear();
             return;
         }
         
-        var a : Float = ((_mode == MODE_FULL) ? 0.028 : 0.012) + level * ((_mode == MODE_FULL) ? 0.06 : 0.022);
-        if (!_laneGeometryDirty && Math.abs(a - _lastGlassAlpha) < 0.006)
+        var a                       : Dynamic= ((_mode == MODE_FULL) ? 0.028 : 0.012) + level * ((_mode == MODE_FULL) ? 0.06 : 0.022);
+        if (as3hx.Compat.truthy(!_laneGeometryDirty && Math.abs(a - _lastGlassAlpha) < 0.006))
         {
             return;
         }
@@ -410,8 +410,8 @@ class ComboHypeOverlay extends Sprite
         _lastGlassAlpha = a;
         _laneGeometryDirty = false;
         
-        var top : Float = _laneY;
-        var bottom : Float = _laneY + _laneHeight;
+        var top                       : Dynamic= _laneY;
+        var bottom                       : Dynamic= _laneY + _laneHeight;
         
         g.beginFill(0xBDEBFF, a);
         g.moveTo(laneEdgeX(0, top, 14), top);
@@ -429,17 +429,17 @@ class ComboHypeOverlay extends Sprite
         g.lineTo(laneEdgeX(0, top + 1, 14), top + 1);
     }
     
-    private function drawLaneEdges(g : Graphics, thickness : Float, edgeAlpha : Float, pillAlpha : Float, level : Float, beat : Float) : Void
+    private function drawLaneEdges(g                       : Dynamic, thickness                       : Dynamic, edgeAlpha                       : Dynamic, pillAlpha                       : Dynamic, level                       : Dynamic, beat                       : Dynamic) : Void
     {
-        if (!hasLaneBounds())
+        if (as3hx.Compat.truthy(!hasLaneBounds()))
         {
             return;
         }
         
-        var top : Float = _laneY;
-        var heightValue : Float = _laneHeight;
-        var bottom : Float = top + heightValue;
-        var i : Int;
+        var top                       : Dynamic= _laneY;
+        var heightValue                       : Dynamic= _laneHeight;
+        var bottom                       : Dynamic= top + heightValue;
+        var i                       : Dynamic= null;
         
         drawRgbEdgeLine(g, 0, top, bottom, Math.max(2, thickness * 1.85), edgeAlpha * 0.72, _phase, thickness * 1.3);
         drawRgbEdgeLine(g, 4, top, bottom, Math.max(1, thickness * 0.62), edgeAlpha * 1.08, _phase + 0.85, thickness * 0.28);
@@ -456,21 +456,21 @@ class ComboHypeOverlay extends Sprite
         drawEdgeSheen(g, 0, top, bottom, Math.max(1, thickness * 0.32), pillAlpha * 0.45, thickness * 0.18);
         drawEdgeSheen(g, 4, top, bottom, Math.max(1, thickness * 0.32), pillAlpha * 0.45, thickness * 0.18);
         
-        if (level > 0.55)
+        if (as3hx.Compat.truthy(level > 0.55))
         {
-            var capAlpha : Float = (level - 0.55) * 0.32;
-            var capTop : Float = top + 16;
-            var capBottom : Float = top + heightValue - 16;
+            var capAlpha                       : Dynamic= (level - 0.55) * 0.32;
+            var capTop                       : Dynamic= top + 16;
+            var capBottom                       : Dynamic= top + heightValue - 16;
             drawRgbHorizontalLine(g, capTop, 2 + level * 4, capAlpha, _phase + 3);
             drawRgbHorizontalLine(g, capBottom, 2 + level * 4, capAlpha, _phase + 4.4);
         }
     }
     
-    private function drawRgbEdgeLine(g : Graphics, edgeIndex : Int, top : Float, bottom : Float, thickness : Float, alphaValue : Float, phaseOffset : Float, gutter : Float) : Void
+    private function drawRgbEdgeLine(g                       : Dynamic, edgeIndex                       : Dynamic, top                       : Dynamic, bottom                       : Dynamic, thickness                       : Dynamic, alphaValue                       : Dynamic, phaseOffset                       : Dynamic, gutter                       : Dynamic) : Void
     {
-        var xTop : Float = laneEdgeX(edgeIndex, top, gutter);
-        var xBottom : Float = laneEdgeX(edgeIndex, bottom, gutter);
-        var midX : Float = (xTop + xBottom) * 0.5;
+        var xTop                       : Dynamic= laneEdgeX(edgeIndex, top, gutter);
+        var xBottom                       : Dynamic= laneEdgeX(edgeIndex, bottom, gutter);
+        var midX                       : Dynamic= (xTop + xBottom) * 0.5;
         setupRgbGradient(phaseOffset, alphaValue, midX - 48, top, 96, Math.max(1, bottom - top), Math.PI / 2);
         g.lineStyle(thickness, 0xFFFFFF, alphaValue, true, "normal", CapsStyle.NONE);
         g.lineGradientStyle(GradientType.LINEAR, _rgbGradientColors, _rgbGradientAlphas, _rgbGradientRatios, _rgbGradientMatrix);
@@ -478,17 +478,17 @@ class ComboHypeOverlay extends Sprite
         g.lineTo(xBottom, bottom);
     }
     
-    private function drawEdgeSheen(g : Graphics, edgeIndex : Int, top : Float, bottom : Float, thickness : Float, alphaValue : Float, gutter : Float) : Void
+    private function drawEdgeSheen(g                       : Dynamic, edgeIndex                       : Dynamic, top                       : Dynamic, bottom                       : Dynamic, thickness                       : Dynamic, alphaValue                       : Dynamic, gutter                       : Dynamic) : Void
     {
         g.lineStyle(thickness, 0xFFFFFF, alphaValue, true, "normal", CapsStyle.NONE);
         g.moveTo(laneEdgeX(edgeIndex, top, gutter), top);
         g.lineTo(laneEdgeX(edgeIndex, bottom, gutter), bottom);
     }
     
-    private function drawRgbHorizontalLine(g : Graphics, yPos : Float, thickness : Float, alphaValue : Float, phaseOffset : Float) : Void
+    private function drawRgbHorizontalLine(g                       : Dynamic, yPos                       : Dynamic, thickness                       : Dynamic, alphaValue                       : Dynamic, phaseOffset                       : Dynamic) : Void
     {
-        var left : Float = laneEdgeX(0, yPos);
-        var right : Float = laneEdgeX(4, yPos);
+        var left                       : Dynamic= laneEdgeX(0, yPos);
+        var right                       : Dynamic= laneEdgeX(4, yPos);
         setupRgbGradient(phaseOffset, alphaValue, left, yPos - 24, Math.max(1, right - left), 48, 0);
         g.lineStyle(thickness, 0xFFFFFF, alphaValue, true, "normal", CapsStyle.NONE);
         g.lineGradientStyle(GradientType.LINEAR, _rgbGradientColors, _rgbGradientAlphas, _rgbGradientRatios, _rgbGradientMatrix);
@@ -496,7 +496,7 @@ class ComboHypeOverlay extends Sprite
         g.lineTo(right, yPos);
     }
     
-    private function setupRgbGradient(phaseOffset : Float, alphaValue : Float, xPos : Float, yPos : Float, widthValue : Float, heightValue : Float, rotation : Float) : Void
+    private function setupRgbGradient(phaseOffset                       : Dynamic, alphaValue                       : Dynamic, xPos                       : Dynamic, yPos                       : Dynamic, widthValue                       : Dynamic, heightValue                       : Dynamic, rotation                       : Dynamic) : Void
     {
         _rgbGradientColors[0] = rgbColor(phaseOffset);
         _rgbGradientColors[1] = rgbColor(phaseOffset + 1.15);
@@ -513,33 +513,33 @@ class ComboHypeOverlay extends Sprite
         _rgbGradientMatrix.createGradientBox(widthValue, heightValue, rotation, xPos, yPos);
     }
     
-    private function drawHitFlash(g : Graphics) : Void
+    private function drawHitFlash(g                       : Dynamic) : Void
     {
-        var flashPower : Float = Math.max(_hitFlash, _impactFlash);
-        if (flashPower < 0.02 || !hasLaneBounds() || !_hasJudgeBounds)
+        var flashPower                       : Dynamic= Math.max(_hitFlash, _impactFlash);
+        if (as3hx.Compat.truthy(flashPower < 0.02 || !hasLaneBounds() || !_hasJudgeBounds))
         {
             return;
         }
         
-        var centerY : Float = _judgeY + _judgeHeight * 0.12;
-        var band : Float = Math.max(18, Math.min(58, _judgeHeight * 0.78 + _hitFlash * 10 + _impactFlash * 18));
-        var left : Float = laneEdgeX(0, centerY, 16);
-        var right : Float = laneEdgeX(4, centerY, 16);
-        var textPad : Float = Math.min(_laneWidth * 0.14, 34);
-        var textLeft : Float = _judgeX - textPad;
-        var textRight : Float = _judgeX + _judgeWidth + textPad;
-        var minWidth : Float = Math.min(_laneWidth * 0.88, Math.max(_judgeWidth * 1.16, _laneWidth * 0.42));
-        var centerX : Float = _judgeX + _judgeWidth * 0.5;
-        var flashLeft : Float = Math.max(left, Math.min(textLeft, centerX - minWidth * 0.5));
-        var flashRight : Float = Math.min(right, Math.max(textRight, centerX + minWidth * 0.5));
-        var lineAlpha : Float = flashPower * ((_mode == MODE_FULL) ? 0.32 : 0.11);
-        var fillAlpha : Float = flashPower * ((_mode == MODE_FULL) ? 0.18 : 0.06);
+        var centerY                       : Dynamic= _judgeY + _judgeHeight * 0.12;
+        var band                       : Dynamic= Math.max(18, Math.min(58, _judgeHeight * 0.78 + _hitFlash * 10 + _impactFlash * 18));
+        var left                       : Dynamic= laneEdgeX(0, centerY, 16);
+        var right                       : Dynamic= laneEdgeX(4, centerY, 16);
+        var textPad                       : Dynamic= Math.min(_laneWidth * 0.14, 34);
+        var textLeft                       : Dynamic= _judgeX - textPad;
+        var textRight                       : Dynamic= _judgeX + _judgeWidth + textPad;
+        var minWidth                       : Dynamic= Math.min(_laneWidth * 0.88, Math.max(_judgeWidth * 1.16, _laneWidth * 0.42));
+        var centerX                       : Dynamic= _judgeX + _judgeWidth * 0.5;
+        var flashLeft                       : Dynamic= Math.max(left, Math.min(textLeft, centerX - minWidth * 0.5));
+        var flashRight                       : Dynamic= Math.min(right, Math.max(textRight, centerX + minWidth * 0.5));
+        var lineAlpha                       : Dynamic= flashPower * ((_mode == MODE_FULL) ? 0.32 : 0.11);
+        var fillAlpha                       : Dynamic= flashPower * ((_mode == MODE_FULL) ? 0.18 : 0.06);
         
-        if (_impactFlash > 0.03)
+        if (as3hx.Compat.truthy(_impactFlash > 0.03))
         {
-            var bangAlpha : Float = _impactFlash * ((_mode == MODE_FULL) ? 0.2 : 0.07);
-            var bangLeft : Float = laneEdgeX(0, centerY, 22);
-            var bangRight : Float = laneEdgeX(4, centerY, 22);
+            var bangAlpha                       : Dynamic= _impactFlash * ((_mode == MODE_FULL) ? 0.2 : 0.07);
+            var bangLeft                       : Dynamic= laneEdgeX(0, centerY, 22);
+            var bangRight                       : Dynamic= laneEdgeX(4, centerY, 22);
             drawLensBang(g, centerX, centerY, bangLeft, bangRight, band, bangAlpha);
         }
         
@@ -562,13 +562,13 @@ class ComboHypeOverlay extends Sprite
         g.lineTo(flashRight - 4, centerY + band * 0.34);
     }
     
-    private function drawLensBang(g : Graphics, centerX : Float, centerY : Float, left : Float, right : Float, band : Float, alphaValue : Float) : Void
+    private function drawLensBang(g                       : Dynamic, centerX                       : Dynamic, centerY                       : Dynamic, left                       : Dynamic, right                       : Dynamic, band                       : Dynamic, alphaValue                       : Dynamic) : Void
     {
-        var widthValue : Float = Math.max(1, right - left);
-        var flare : Float = _impactFlash;
-        var coreWidth : Float = widthValue * (0.18 + flare * 0.1);
-        var coreHeight : Float = band * (0.2 + flare * 0.12);
-        var streakAlpha : Float = alphaValue * (1 + flare * 0.35);
+        var widthValue                       : Dynamic= Math.max(1, right - left);
+        var flare                       : Dynamic= _impactFlash;
+        var coreWidth                       : Dynamic= widthValue * (0.18 + flare * 0.1);
+        var coreHeight                       : Dynamic= band * (0.2 + flare * 0.12);
+        var streakAlpha                       : Dynamic= alphaValue * (1 + flare * 0.35);
         
         g.beginFill(0xFFFFFF, alphaValue * 0.62);
         g.drawEllipse(centerX - coreWidth * 0.5, centerY - coreHeight * 0.5, coreWidth, coreHeight);
@@ -604,10 +604,10 @@ class ComboHypeOverlay extends Sprite
         g.endFill();
     }
     
-    private function drawGlint(g : Graphics, xPos : Float, yPos : Float, size : Float, alphaValue : Float, color : Int) : Void
+    private function drawGlint(g                       : Dynamic, xPos                       : Dynamic, yPos                       : Dynamic, size                       : Dynamic, alphaValue                       : Dynamic, color                       : Dynamic) : Void
     {
-        var half : Float = size * 0.5;
-        var small : Float = size * 0.22;
+        var half                       : Dynamic= size * 0.5;
+        var small                       : Dynamic= size * 0.22;
         
         g.lineStyle(Math.max(1, size * 0.04), color, alphaValue, true);
         g.moveTo(xPos - half, yPos);
@@ -626,33 +626,33 @@ class ComboHypeOverlay extends Sprite
         g.endFill();
     }
     
-    private function spawnBurstParticles(score : Int, dir : String, impactArrows : Int = 1) : Void
+    private function spawnBurstParticles(score                       : Dynamic, dir                       : Dynamic, impactArrows                       : Dynamic= 1) : Void
     {
-        if (!hasLaneBounds())
+        if (as3hx.Compat.truthy(!hasLaneBounds()))
         {
             return;
         }
         
-        var impact : Float = impactLevel(impactArrows);
-        var count : Int = as3hx.Compat.parseInt(((_mode == MODE_FULL) ? 8 : 3) + impactArrows * ((_mode == MODE_FULL) ? 4 : 1));
-        if (_combo > 96)
+        var impact                       : Dynamic= impactLevel(impactArrows);
+        var count                       : Dynamic= as3hx.Compat.parseInt(((_mode == MODE_FULL) ? 8 : 3) + impactArrows * ((_mode == MODE_FULL) ? 4 : 1));
+        if (as3hx.Compat.truthy(_combo > 96))
         {
             count += (_mode == MODE_FULL) ? 7 : 2;
         }
-        if (_combo > 260)
+        if (as3hx.Compat.truthy(_combo > 260))
         {
             count += (_mode == MODE_FULL) ? 7 : 2;
         }
         
-        var laneCenter : Float = laneCenterForDir(dir);
-        var y : Float = _laneY + _laneHeight * 0.5;
-        var left : Float = laneEdgeX(0, y);
-        var right : Float = laneEdgeX(4, y);
-        var color : Int = scoreColor(score);
+        var laneCenter                       : Dynamic= laneCenterForDir(dir);
+        var y                       : Dynamic= _laneY + _laneHeight * 0.5;
+        var left                       : Dynamic= laneEdgeX(0, y);
+        var right                       : Dynamic= laneEdgeX(4, y);
+        var color                       : Dynamic= scoreColor(score);
         for (i in 0...count)
         {
-            var side : Float = ((i % 2 == 0)) ? -1 : 1;
-            var originX : Float = (impactArrows >= 3) ? left + Math.random() * (right - left) : laneCenter + (Math.random() - 0.5) * (_laneWidth * (0.12 + impact * 0.08));
+            var side                       : Dynamic= ((i % 2 == 0)) ? -1 : 1;
+            var originX                       : Dynamic= (impactArrows >= 3) ? left + Math.random() * (right - left) : laneCenter + (Math.random() - 0.5) * (_laneWidth * (0.12 + impact * 0.08));
             spawnParticle(originX, 
                     y + (Math.random() - 0.5) * (_laneHeight * (0.14 + impact * 0.12)), 
                     side * (2.1 + Math.random() * (4.2 + impact * 3.8)), 
@@ -665,10 +665,10 @@ class ComboHypeOverlay extends Sprite
         }
     }
     
-    private function spawnParticle(xPos : Float, yPos : Float, vx : Float, vy : Float, life : Float, decay : Float, size : Float, color : Int) : Void
+    private function spawnParticle(xPos                       : Dynamic, yPos                       : Dynamic, vx                       : Dynamic, vy                       : Dynamic, life                       : Dynamic, decay                       : Dynamic, size                       : Dynamic, color                       : Dynamic) : Void
     {
-        var idx : Int = nextParticleIndex();
-        if (_particleActive[idx] == null)
+        var idx                       : Dynamic= nextParticleIndex();
+        if (as3hx.Compat.truthy(_particleActive[idx] == null))
         {
             _activeParticles++;
             _particleActiveIndices[_particleActiveIndices.length] = idx;
@@ -683,7 +683,7 @@ class ComboHypeOverlay extends Sprite
         _particleDecay[idx] = decay;
         _particleSize[idx] = size;
         
-        var particle : Sprite = _particleSprites[idx];
+        var particle                       : Dynamic= _particleSprites[idx];
         particle.visible = true;
         particle.x = xPos;
         particle.y = yPos;
@@ -694,12 +694,12 @@ class ComboHypeOverlay extends Sprite
     
     private function nextParticleIndex() : Int
     {
-        var max : Int = maxParticlesForMode();
-        var idx : Int;
+        var max                       : Dynamic= maxParticlesForMode();
+        var idx                       : Dynamic= null;
         for (i in 0...max)
         {
             idx = as3hx.Compat.parseInt((_particleCursor + i) % max);
-            if (_particleActive[idx] == null)
+            if (as3hx.Compat.truthy(_particleActive[idx] == null))
             {
                 _particleCursor = as3hx.Compat.parseInt((idx + 1) % max);
                 return idx;
@@ -713,16 +713,16 @@ class ComboHypeOverlay extends Sprite
     
     private function updateParticles() : Void
     {
-        if (_activeParticles <= 0)
+        if (as3hx.Compat.truthy(_activeParticles <= 0))
         {
             return;
         }
         
-        var listIndex : Int = as3hx.Compat.parseInt(_particleActiveIndices.length - 1);
-        while (listIndex >= 0)
+        var listIndex                       : Dynamic= as3hx.Compat.parseInt(_particleActiveIndices.length - 1);
+        while (as3hx.Compat.truthy(listIndex >= 0))
         {
-            var i : Int = _particleActiveIndices[listIndex];
-            if (_particleActive[i] == null)
+            var i                       : Dynamic= _particleActiveIndices[listIndex];
+            if (as3hx.Compat.truthy(_particleActive[i] == null))
             {
                 {listIndex--;continue;
                 }
@@ -734,8 +734,8 @@ class ComboHypeOverlay extends Sprite
             _particleVY[i] *= 0.97;
             _particleLife[i] -= _particleDecay[i];
             
-            var particle : Sprite = _particleSprites[i];
-            if (_particleLife[i] <= 0)
+            var particle                       : Dynamic= _particleSprites[i];
+            if (as3hx.Compat.truthy(_particleLife[i] <= 0))
             {
                 _particleActive[i] = false;
                 particle.visible = false;
@@ -764,10 +764,10 @@ class ComboHypeOverlay extends Sprite
         as3hx.Compat.setArrayLength(_particleActiveIndices, 0);
     }
     
-    private function removeActiveParticleIndex(index : Int) : Void
+    private function removeActiveParticleIndex(index                       : Dynamic) : Void
     {
-        var last : Int = as3hx.Compat.parseInt(_particleActiveIndices.length - 1);
-        if (index != last)
+        var last                       : Dynamic= as3hx.Compat.parseInt(_particleActiveIndices.length - 1);
+        if (as3hx.Compat.truthy(index != last))
         {
             _particleActiveIndices[index] = _particleActiveIndices[last];
         }
@@ -775,9 +775,9 @@ class ComboHypeOverlay extends Sprite
         as3hx.Compat.setArrayLength(_particleActiveIndices, last);
     }
     
-    private function laneCenterForDir(dir : String) : Float
+    private function laneCenterForDir(dir                       : Dynamic) : Float
     {
-        var idx : Int = 1;
+        var idx                       : Dynamic= 1;
         switch (dir)
         {
             case "L":
@@ -798,28 +798,28 @@ class ComboHypeOverlay extends Sprite
         return _laneWidth > 0 && _laneHeight > 0;
     }
     
-    private function laneEdgeX(index : Int, yPos : Float, gutter : Float = 0) : Float
+    private function laneEdgeX(index                       : Dynamic, yPos                       : Dynamic, gutter                       : Dynamic= 0) : Float
     {
-        if (!_hasLaneEdges)
+        if (as3hx.Compat.truthy(!_hasLaneEdges))
         {
             return lanePerspectiveX(index / 4, yPos, gutter);
         }
         
-        if (index < 0)
+        if (as3hx.Compat.truthy(index < 0))
         {
             index = 0;
         }
-        else if (index > 4)
+        else if (as3hx.Compat.truthy(index > 4))
         {
             index = 4;
         }
         
-        var gutterOffset : Float = 0;
-        if (index == 0)
+        var gutterOffset                       : Dynamic= 0;
+        if (as3hx.Compat.truthy(index == 0))
         {
             gutterOffset = -gutter;
         }
-        else if (index == 4)
+        else if (as3hx.Compat.truthy(index == 4))
         {
             gutterOffset = gutter;
         }
@@ -827,19 +827,19 @@ class ComboHypeOverlay extends Sprite
         return laneDepthX(_laneEdges[index], yPos, gutterOffset);
     }
     
-    private function laneRatioX(ratio : Float, yPos : Float, gutter : Float = 0) : Float
+    private function laneRatioX(ratio                       : Dynamic, yPos                       : Dynamic, gutter                       : Dynamic= 0) : Float
     {
-        if (!_hasLaneEdges)
+        if (as3hx.Compat.truthy(!_hasLaneEdges))
         {
             return lanePerspectiveX(ratio, yPos, gutter);
         }
         
-        var gutterOffset : Float = 0;
-        if (ratio < 0.5)
+        var gutterOffset                       : Dynamic= 0;
+        if (as3hx.Compat.truthy(ratio < 0.5))
         {
             gutterOffset = -gutter;
         }
-        else if (ratio > 0.5)
+        else if (as3hx.Compat.truthy(ratio > 0.5))
         {
             gutterOffset = gutter;
         }
@@ -847,43 +847,43 @@ class ComboHypeOverlay extends Sprite
         return laneDepthX(_laneEdges[0] + (_laneEdges[4] - _laneEdges[0]) * ratio, yPos, gutterOffset);
     }
     
-    private function laneDepthX(rawX : Float, yPos : Float, gutterOffset : Float = 0) : Float
+    private function laneDepthX(rawX                       : Dynamic, yPos                       : Dynamic, gutterOffset                       : Dynamic= 0) : Float
     {
-        var center : Float = (_laneEdges[0] + _laneEdges[4]) * 0.5;
-        var t : Float = (yPos - _laneY) / Math.max(1, _laneHeight);
-        if (t < 0)
+        var center                       : Dynamic= (_laneEdges[0] + _laneEdges[4]) * 0.5;
+        var t                       : Dynamic= (yPos - _laneY) / Math.max(1, _laneHeight);
+        if (as3hx.Compat.truthy(t < 0))
         {
             t = 0;
         }
-        else if (t > 1)
+        else if (as3hx.Compat.truthy(t > 1))
         {
             t = 1;
         }
         
-        var scale : Float = LANE_TOP_SCALE + (LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * t;
+        var scale                       : Dynamic= LANE_TOP_SCALE + (LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * t;
         return center + ((rawX - center + gutterOffset) * scale);
     }
     
-    private function lanePerspectiveX(ratio : Float, yPos : Float, gutter : Float = 0) : Float
+    private function lanePerspectiveX(ratio                       : Dynamic, yPos                       : Dynamic, gutter                       : Dynamic= 0) : Float
     {
-        var center : Float = _laneX + _laneWidth * 0.5;
-        var t : Float = (yPos - _laneY) / Math.max(1, _laneHeight);
-        if (t < 0)
+        var center                       : Dynamic= _laneX + _laneWidth * 0.5;
+        var t                       : Dynamic= (yPos - _laneY) / Math.max(1, _laneHeight);
+        if (as3hx.Compat.truthy(t < 0))
         {
             t = 0;
         }
-        else if (t > 1)
+        else if (as3hx.Compat.truthy(t > 1))
         {
             t = 1;
         }
         
-        var scale : Float = LANE_TOP_SCALE + (LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * t;
-        var gutterOffset : Float = 0;
-        if (ratio < 0.5)
+        var scale                       : Dynamic= LANE_TOP_SCALE + (LANE_BOTTOM_SCALE - LANE_TOP_SCALE) * t;
+        var gutterOffset                       : Dynamic= 0;
+        if (as3hx.Compat.truthy(ratio < 0.5))
         {
             gutterOffset = -gutter;
         }
-        else if (ratio > 0.5)
+        else if (as3hx.Compat.truthy(ratio > 0.5))
         {
             gutterOffset = gutter;
         }
@@ -891,13 +891,13 @@ class ComboHypeOverlay extends Sprite
         return center + ((_laneWidth * (ratio - 0.5) + gutterOffset) * scale);
     }
     
-    private function tintSprite(sprite : Sprite, color : Int) : Void
+    private function tintSprite(sprite                       : Dynamic, color                       : Dynamic) : Void
     {
         _colorTransform.color = color;
         sprite.transform.colorTransform = _colorTransform;
     }
     
-    private function scoreColor(score : Int) : Int
+    private function scoreColor(score                       : Dynamic) : Int
     {
         switch (score)
         {
@@ -917,10 +917,10 @@ class ComboHypeOverlay extends Sprite
         return 0xFFFFFF;
     }
     
-    private function rgbColor(t : Float) : Int
+    private function rgbColor(t                       : Dynamic) : Int
     {
-        var idx : Int = as3hx.Compat.parseInt(as3hx.Compat.parseInt(t * 24) % RGB_TABLE_SIZE);
-        if (idx < 0)
+        var idx                       : Dynamic= as3hx.Compat.parseInt(as3hx.Compat.parseInt(t * 24) % RGB_TABLE_SIZE);
+        if (as3hx.Compat.truthy(idx < 0))
         {
             idx += RGB_TABLE_SIZE;
         }
@@ -930,13 +930,13 @@ class ComboHypeOverlay extends Sprite
     
     private static function buildRgbTable() : Array<Int>
     {
-        var table : Array<Int> = new Array<Int>();
+        var table                       : Dynamic= new Array<Int>();
         for (i in 0...RGB_TABLE_SIZE)
         {
-            var t : Float = i / 24;
-            var r : Int = Math.round((Math.sin(t) * 0.5 + 0.5) * 255);
-            var g : Int = Math.round((Math.sin(t + 2.094) * 0.5 + 0.5) * 255);
-            var b : Int = Math.round((Math.sin(t + 4.188) * 0.5 + 0.5) * 255);
+            var t                       : Dynamic= i / 24;
+            var r                       : Dynamic= Math.round((Math.sin(t) * 0.5 + 0.5) * 255);
+            var g                       : Dynamic= Math.round((Math.sin(t + 2.094) * 0.5 + 0.5) * 255);
+            var b                       : Dynamic= Math.round((Math.sin(t + 4.188) * 0.5 + 0.5) * 255);
             table[i] = (r << 16) | (g << 8) | b;
         }
         return table;

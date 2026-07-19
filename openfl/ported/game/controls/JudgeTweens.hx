@@ -7,7 +7,7 @@ class JudgeTweens
     // lengths above 0 are considered tweens
     // framelook is a relative value where a tween looks ahead to find it's end values.
     
-    public static var judge_indexes : Dynamic = {
+    public static var judge_indexes                       : Dynamic= {
             "100" : {
                 "0" : [0.6, 0, 0, 1, 1, 1, 18],
                 "18" : [0, 0, 0, 2.147, 1.907, 0, 1]
@@ -48,7 +48,7 @@ class JudgeTweens
         };
     
     
-    public static var judge_indexes_static : Dynamic = {
+    public static var judge_indexes_static                       : Dynamic= {
             "100" : {
                 "0" : [0, 0, 0, 1, 1, 1, 0],
                 "18" : [0, 0, 0, 1, 1, 0, 1]

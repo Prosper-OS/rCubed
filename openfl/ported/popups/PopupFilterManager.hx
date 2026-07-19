@@ -27,39 +27,39 @@ import menu.MenuSongSelection;
 
 class PopupFilterManager extends MenuPanel
 {
-    private var pG(get, never) : Graphics;
+    private var pG(get, never)                       : Dynamic;
 
-    public static inline var TAB_FILTER : Int = 0;
-    public static inline var TAB_LIST : Int = 1;
-    public static inline var INDENT_GAP : Int = 29;
+    public static inline var TAB_FILTER                       : Dynamic= 0;
+    public static inline var TAB_LIST                       : Dynamic= 1;
+    public static inline var INDENT_GAP                       : Dynamic= 29;
     
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
     //- Background
-    private var box : Box;
-    private var bmd : BitmapData;
-    private var bmp : Bitmap;
+    private var box                       : Dynamic;
+    private var bmd                       : Dynamic;
+    private var bmp                       : Dynamic;
     
-    private var tabLabel : Text;
-    private var filterNameInput : BoxText;
+    private var tabLabel                       : Dynamic;
+    private var filterNameInput                       : Dynamic;
     
-    private var importFilterButton : BoxButton;
-    private var addSavedFilterButton : BoxButton;
-    private var clearFilterButton : BoxButton;
-    private var filterListButton : BoxButton;
-    private var closeButton : BoxButton;
+    private var importFilterButton                       : Dynamic;
+    private var addSavedFilterButton                       : Dynamic;
+    private var clearFilterButton                       : Dynamic;
+    private var filterListButton                       : Dynamic;
+    private var closeButton                       : Dynamic;
     
-    private var scrollpane : ScrollPane;
-    private var scrollbar : ScrollBar;
+    private var scrollpane                       : Dynamic;
+    private var scrollbar                       : Dynamic;
     
-    private var typeSelector : Sprite;
+    private var typeSelector                       : Dynamic;
     
-    private var SELECTED_FILTER : EngineLevelFilter;
+    private var SELECTED_FILTER                       : Dynamic;
     
-    public var DRAW_TAB : Int = TAB_FILTER;
+    public var DRAW_TAB                       : Dynamic= TAB_FILTER;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
     }
@@ -73,7 +73,7 @@ class PopupFilterManager extends MenuPanel
         
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, 20, 20, false, false);
+        var bgbox                       : Dynamic= new Box(this, 20, 20, false, false);
         bgbox.setSize(Main.GAME_WIDTH - 40, Main.GAME_HEIGHT - 40);
         bgbox.color = GameBackgroundColor.BG_POPUP;
         bgbox.normalAlpha = 0.5;
@@ -123,12 +123,12 @@ class PopupFilterManager extends MenuPanel
         typeSelector.graphics.drawRect(Main.GAME_WIDTH / 2 - 200, -1, 400, Main.GAME_HEIGHT + 2);
         typeSelector.graphics.endFill();
         
-        var typeSelectorTitle : Text = new Text(typeSelector, Main.GAME_WIDTH / 2 - 200, 5, _lang.string("filter_editor_add_filter"));
+        var typeSelectorTitle                       : Dynamic= new Text(typeSelector, Main.GAME_WIDTH / 2 - 200, 5, _lang.string("filter_editor_add_filter"));
         typeSelectorTitle.width = 400;
         typeSelectorTitle.align = Text.CENTER;
         
-        var typeButton : BoxButton;
-        var typeOptions : Array<Dynamic> = EngineLevelFilter.createOptions(EngineLevelFilter.FILTERS, "type");
+        var typeButton                       : Dynamic= null;
+        var typeOptions                       : Dynamic= EngineLevelFilter.createOptions(EngineLevelFilter.FILTERS, "type");
         for (i in 0...typeOptions.length)
         {
             typeButton = new BoxButton(typeSelector, (Main.GAME_WIDTH / 2 - 200) + 10 + (195 * (i % 2)), 30 + (Math.floor(i / 2) * 35), 185, 25, Reflect.field(typeOptions[i], "label"), 12, e_addFilterSelection);
@@ -148,11 +148,11 @@ class PopupFilterManager extends MenuPanel
         pG.clear();
         
         // Active Filter Editor
-        if (DRAW_TAB == TAB_FILTER)
+        if (as3hx.Compat.truthy(DRAW_TAB == TAB_FILTER))
         {
             filterListButton.text = _lang.string("popup_filter_saved_filters");
             importFilterButton.visible = false;
-            if (_gvars.activeFilter != null)
+            if (as3hx.Compat.truthy(_gvars.activeFilter != null))
             {
                 addSavedFilterButton.visible = tabLabel.visible = false;
                 filterNameInput.visible = clearFilterButton.visible = true;
@@ -168,16 +168,16 @@ class PopupFilterManager extends MenuPanel
             }
         }
         // Saved Filters List
-        else if (DRAW_TAB == TAB_LIST)
+        else if (as3hx.Compat.truthy(DRAW_TAB == TAB_LIST))
         {
             tabLabel.text = _lang.string("popup_filter_saved_filters");
             filterListButton.text = _lang.string("popup_filter_active_filter");
             filterNameInput.visible = clearFilterButton.visible = false;
             addSavedFilterButton.visible = tabLabel.visible = true;
             importFilterButton.visible = true;
-            var yPos : Float = -40;
-            var savedFilterButton : SavedFilterButton;
-            for (item/* AS3HX WARNING could not determine type for var: item exp: EField(EField(EIdent(_gvars),activeUser),filters) type: null */ in _gvars.activeUser.filters)
+            var yPos                       : Dynamic= -40;
+            var savedFilterButton                       : Dynamic= null;
+            for (item/* AS3HX WARNING could not determine type for var: item exp: EField(EField(EIdent(_gvars),activeUser),filters) type: null */ in as3hx.Compat.iter(_gvars.activeUser.filters))
             {
                 savedFilterButton = new SavedFilterButton(scrollpane.content, 0, yPos += 40, item, this);
             }
@@ -194,9 +194,9 @@ class PopupFilterManager extends MenuPanel
      * @param	yPos Starting Y-Position on the scrollpane.
      * @return Bottom Y-Position of the draw filter.
      */
-    private function drawFilter(filter : EngineLevelFilter, indent : Int = 0, yPos : Float = 0) : Float
+    private function drawFilter(filter                       : Dynamic, indent                       : Dynamic= 0, yPos                       : Dynamic= 0) : Float
     {
-        var xPos : Float = INDENT_GAP * indent;
+        var xPos                       : Dynamic= INDENT_GAP * indent;
         pG.lineStyle(1, 0xFFFFFF, 0.55);
         var _sw1_ = (filter.type);        
 
@@ -204,19 +204,19 @@ class PopupFilterManager extends MenuPanel
         {
             case EngineLevelFilter.FILTER_AND, EngineLevelFilter.FILTER_OR:
                 // Render AND / OR Label
-                if (indent > 0) {
+                if (as3hx.Compat.truthy(indent > 0)) {
 pG.moveTo(xPos - 4, yPos + 14);
                     pG.lineTo(xPos - INDENT_GAP + 10, yPos + 14);
                     
                     // Remove Filter Button
-                    var removeFilter : BoxButton = new BoxButton(scrollpane.content, xPos, yPos, 23, 23, "?", 10, e_removeFilter);
+                    var removeFilter                       : Dynamic= new BoxButton(scrollpane.content, xPos, yPos, 23, 23, "?", 10, e_removeFilter);
                     removeFilter.tag = filter;
                     removeFilter.color = 0xFF0000;
                     removeFilter.normalAlpha = 0.35;
                     removeFilter.activeAlpha = 0.45;
                     
                     // AND / OR Label
-                    var type_text : Text = new Text(scrollpane.content, xPos + 29, yPos + 2, _lang.string("filter_type_" + filter.type));
+                    var type_text                       : Dynamic= new Text(scrollpane.content, xPos + 29, yPos + 2, _lang.string("filter_type_" + filter.type));
                     
                     yPos -= 8;
                 }
@@ -225,7 +225,7 @@ pG.moveTo(xPos - 4, yPos + 14);
                     yPos -= 40;
                 }
                 
-                var topYPos : Float = yPos + 46;  // Store Starting y Position for Line later.  
+                var topYPos                       : Dynamic= yPos + 46;  // Store Starting y Position for Line later.  
                 
                 // Render Filters
                 for (i in 0...filter.filters.length)
@@ -237,7 +237,7 @@ pG.moveTo(xPos - 4, yPos + 14);
                 pG.moveTo(xPos + INDENT_GAP - 4, yPos + 57);
                 pG.lineTo(xPos + 10, yPos + 57);
                 
-                var addFilter : BoxButton = new BoxButton(scrollpane.content, xPos + INDENT_GAP, yPos += 44, 23, 23, "+", 14, e_addFilter);
+                var addFilter                       : Dynamic= new BoxButton(scrollpane.content, xPos + INDENT_GAP, yPos += 44, 23, 23, "+", 14, e_addFilter);
                 addFilter.tag = filter;
                 addFilter.color = 0x27D200;
                 addFilter.normalAlpha = 0.35;
@@ -259,84 +259,84 @@ pG.moveTo(xPos - 4, yPos + 14);
         return scrollpane.content.graphics;
     }
     
-    private function mouseWheelHandler(e : MouseEvent) : Void
+    private function mouseWheelHandler(e                       : Dynamic) : Void
     {
-        if (scrollbar.draggerVisibility)
+        if (as3hx.Compat.truthy(scrollbar.draggerVisibility))
         {
-            var dist : Float = scrollbar.scroll + (scrollpane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+            var dist                       : Dynamic= scrollbar.scroll + (scrollpane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
             scrollpane.scrollTo(dist);
             scrollbar.scrollTo(dist);
         }
     }
     
-    private function e_scrollBarMoved(e : Event) : Void
+    private function e_scrollBarMoved(e                       : Dynamic) : Void
     {
         scrollpane.scrollTo(scrollbar.scroll);
     }
     
-    private function e_filterNameUpdate(e : Event) : Void
+    private function e_filterNameUpdate(e                       : Dynamic) : Void
     {
         _gvars.activeFilter.name = filterNameInput.text;
     }
     
-    private function e_closeButton(e : Event) : Void
+    private function e_closeButton(e                       : Dynamic) : Void
     {
         removePopup();
-        if (_gvars.activeUser == _gvars.playerUser)
+        if (as3hx.Compat.truthy(_gvars.activeUser == _gvars.playerUser))
         {
             _gvars.activeUser.saveLocal();
             _gvars.activeUser.save();
         }
         
-        if (_gvars.gameMain.activePanel != null && Std.is(_gvars.gameMain.activePanel, MainMenu))
+        if (as3hx.Compat.truthy(_gvars.gameMain.activePanel != null && Std.is(_gvars.gameMain.activePanel, MainMenu)))
         {
-            var mmmenu : MainMenu = (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
+            var mmmenu                       : Dynamic= (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
             mmmenu.buildMenuItems();
             
-            if (mmmenu.panel != null && (Std.is(mmmenu.panel, MenuSongSelection)))
+            if (as3hx.Compat.truthy(mmmenu.panel != null && (Std.is(mmmenu.panel, MenuSongSelection))))
             {
-                var msmenu : MenuSongSelection = (try cast(mmmenu.panel, MenuSongSelection) catch(e:Dynamic) null);
+                var msmenu                       : Dynamic= (try cast(mmmenu.panel, MenuSongSelection) catch(e:Dynamic) null);
                 msmenu.buildPlayList();
                 msmenu.buildInfoBox();
             }
         }
     }
     
-    private function e_toggleTabButton(e : Event) : Void
+    private function e_toggleTabButton(e                       : Dynamic) : Void
     {
         DRAW_TAB = ((DRAW_TAB == TAB_FILTER) ? TAB_LIST : TAB_FILTER);
         draw();
     }
     
-    private function e_clearFilterButton(e : Event) : Void
+    private function e_clearFilterButton(e                       : Dynamic) : Void
     {
         _gvars.activeFilter = null;
         draw();
     }
     
-    private function e_addSavedFilterButton(e : Event) : Void
+    private function e_addSavedFilterButton(e                       : Dynamic) : Void
     {
         _gvars.activeUser.filters.push(new EngineLevelFilter(true));
         
-        if (DRAW_TAB == TAB_FILTER)
+        if (as3hx.Compat.truthy(DRAW_TAB == TAB_FILTER))
         {
-            _gvars.activeFilter = _gvars.activeUser.filters[_gvars.activeUser.filters.length - 1];
+            _gvars.activeFilter = _gvars.activeUser.filters[as3hx.Compat.parseInt(_gvars.activeUser.filters.length - 1)];
         }
         
         draw();
     }
     
-    private function e_importFilterButton(e : Event) : Void
+    private function e_importFilterButton(e                       : Dynamic) : Void
     {
         new PromptInput(box.parent, _lang.string("popup_filter_filter_single_import"), _lang.string("popup_filter_import"), e_importFilter);
     }
     
-    private function e_importFilter(filterJSON : String) : Void
+    private function e_importFilter(filterJSON                       : Dynamic) : Void
     {
         try
         {
-            var item : Dynamic = haxe.Json.parse(filterJSON);
-            var filter : EngineLevelFilter = new EngineLevelFilter();
+            var item                       : Dynamic= haxe.Json.parse(filterJSON);
+            var filter                       : Dynamic= new EngineLevelFilter();
             filter.setup(item);
             filter.is_default = false;
             _gvars.activeUser.filters.push(filter);
@@ -347,16 +347,17 @@ pG.moveTo(xPos - 4, yPos + 14);
         }
     }
     
-    private function e_addFilter(e : Event) : Void
+    private function e_addFilter(e                       : Dynamic) : Void
     {
-        SELECTED_FILTER = (try cast(e.target, BoxButton) catch(e:Dynamic) null).tag;
+        var filterButton                      : Dynamic= (try cast(e.target, BoxButton) catch(e:Dynamic) null);
+        SELECTED_FILTER = (filterButton != null) ? filterButton.tag : null;
         addChild(typeSelector);
     }
     
-    private function e_addFilterSelection(e : Event) : Void
+    private function e_addFilterSelection(e                       : Dynamic) : Void
     {
         removeChild(typeSelector);
-        var newFilter : EngineLevelFilter = new EngineLevelFilter();
+        var newFilter                       : Dynamic= new EngineLevelFilter();
         newFilter.type = e.target.tag;
         newFilter.parent_filter = SELECTED_FILTER;
         
@@ -364,10 +365,11 @@ pG.moveTo(xPos - 4, yPos + 14);
         draw();
     }
     
-    private function e_removeFilter(e : Event) : Void
+    private function e_removeFilter(e                       : Dynamic) : Void
     {
-        var filter : EngineLevelFilter = (try cast(e.target, BoxButton) catch(e:Dynamic) null).tag;
-        if (ArrayUtil.remove(filter, filter.parent_filter.filters))
+        var removeFilterButton                    : Dynamic= (try cast(e.target, BoxButton) catch(e:Dynamic) null);
+        var filter                     : Dynamic= (removeFilterButton != null) ? removeFilterButton.tag : null;
+        if (as3hx.Compat.truthy(ArrayUtil.remove(filter, filter.parent_filter.filters)))
         {
             draw();
         }

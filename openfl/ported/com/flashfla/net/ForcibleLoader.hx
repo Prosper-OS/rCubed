@@ -43,8 +43,8 @@ import openfl.utils.Endian;
  *
  * Usage:
  * <pre>
- * var loader:Loader = Loader(addChild(new Loader()));
- * var fLoader:ForcibleLoader = new ForcibleLoader(loader);
+ * var loader                           : Dynamic= Loader(addChild(new Loader()));
+ * var fLoader                           : Dynamic= new ForcibleLoader(loader);
  * fLoader.load(new URLRequest('swf7.swf'));
  * </pre>
  *
@@ -54,10 +54,10 @@ import openfl.utils.Endian;
  */
 class ForcibleLoader
 {
-    public var loader(get, set) : Loader;
+    public var loader(get, set)                            : Dynamic;
 
     
-    public function new(loader : Loader)
+    public function new(loader                            : Dynamic)
     {
         this.loader = loader;
         
@@ -68,51 +68,51 @@ class ForcibleLoader
         _stream.addEventListener(ProgressEvent.PROGRESS, progressHandler);
     }
     
-    private var _loader : Loader;
-    private var _stream : URLStream;
+    private var _loader                            : Dynamic;
+    private var _stream                            : Dynamic;
     
-    public var inputBytes : ByteArray;
+    public var inputBytes                            : Dynamic;
     
     private function get_loader() : Loader
     {
         return _loader;
     }
     
-    private function set_loader(value : Loader) : Loader
+    private function set_loader(value                            : Dynamic) : Loader
     {
         _loader = value;
         return value;
     }
     
-    public function load(request : URLRequest) : Void
+    public function load(request                            : Dynamic) : Void
     {
         _stream.load(request);
     }
     
-    private function completeHandler(event : Event) : Void
+    private function completeHandler(event                            : Dynamic) : Void
     {
         inputBytes = new ByteArray();
         _stream.readBytes(inputBytes);
         _stream.close();
         inputBytes.endian = Endian.LITTLE_ENDIAN;
         
-        if (inputBytes.length <= 3)
+        if (as3hx.Compat.truthy(inputBytes.length <= 3))
         {
             return;
         }
         
-        if (isCompressed(inputBytes))
+        if (as3hx.Compat.truthy(isCompressed(inputBytes)))
         {
             uncompress(inputBytes);
         }
         
-        var version : Int = as3hx.Compat.parseInt(inputBytes[3]);
+        var version                            : Dynamic= as3hx.Compat.parseInt(inputBytes[3]);
         
-        if (version < 9)
+        if (as3hx.Compat.truthy(version < 9))
         {
             updateVersion(inputBytes, 9);
         }
-        if (version > 7)
+        if (as3hx.Compat.truthy(version > 7))
         {
             flagSWF9Bit(inputBytes);
         }
@@ -123,14 +123,14 @@ class ForcibleLoader
         loader.loadBytes(inputBytes, AirContext.getLoaderContext());
     }
     
-    private function isCompressed(bytes : ByteArray) : Bool
+    private function isCompressed(bytes                            : Dynamic) : Bool
     {
         return bytes[0] == 0x43;
     }
     
-    private function uncompress(bytes : ByteArray) : Void
+    private function uncompress(bytes                            : Dynamic) : Void
     {
-        var cBytes : ByteArray = new ByteArray();
+        var cBytes                            : Dynamic= new ByteArray();
         cBytes.writeBytes(bytes, 8);
         bytes.length = 8;
         bytes.position = 8;
@@ -140,15 +140,15 @@ class ForcibleLoader
         cBytes.length = 0;
     }
     
-    private function getBodyPosition(bytes : ByteArray) : Int
+    private function getBodyPosition(bytes                            : Dynamic) : Int
     {
-        var result : Int = 0;
+        var result                            : Dynamic= 0;
         
         result += 3;  // FWS/CWS  
         result += 1;  // version(byte)  
         result += 4;  // length(32bit-uint)  
         
-        var rectNBits : Int = bytes[result] >>> 3;
+        var rectNBits                            : Dynamic= bytes[result] >>> 3;
         result += as3hx.Compat.parseInt((5 + rectNBits * 4) / 8);  // stage(rect)  
         
         result += 2;
@@ -159,22 +159,22 @@ class ForcibleLoader
         return result;
     }
     
-    private function findFileAttributesPosition(offset : Int, bytes : ByteArray) : Int
+    private function findFileAttributesPosition(offset                            : Dynamic, bytes                            : Dynamic) : Int
     {
         bytes.position = offset;
         
         try
         {
-            while (true)
+            while (as3hx.Compat.truthy(true))
             {
-                var byte : Int = bytes.readShort();
-                var tag : Int = byte >>> 6;
-                if (tag == 69)
+                var byte                            : Dynamic= bytes.readShort();
+                var tag                            : Dynamic= byte >>> 6;
+                if (as3hx.Compat.truthy(tag == 69))
                 {
                     return as3hx.Compat.parseInt(bytes.position - 2);
                 }
-                var length : Int = byte & 0x3f;
-                if (length == 0x3f)
+                var length                            : Dynamic= byte & 0x3f;
+                if (as3hx.Compat.truthy(length == 0x3f))
                 {
                     length = bytes.readInt();
                 }
@@ -188,10 +188,10 @@ class ForcibleLoader
         return -1;
     }
     
-    private function flagSWF9Bit(bytes : ByteArray) : Void
+    private function flagSWF9Bit(bytes                            : Dynamic) : Void
     {
-        var pos : Int = findFileAttributesPosition(getBodyPosition(bytes), bytes);
-        if (pos != -1)
+        var pos                            : Dynamic= findFileAttributesPosition(getBodyPosition(bytes), bytes);
+        if (as3hx.Compat.truthy(pos != -1))
         {
             bytes[pos + 2] = bytes[pos + 2] | 0x08;
         }
@@ -201,10 +201,10 @@ class ForcibleLoader
         }
     }
     
-    private function insertFileAttributesTag(bytes : ByteArray) : Void
+    private function insertFileAttributesTag(bytes                            : Dynamic) : Void
     {
-        var pos : Int = getBodyPosition(bytes);
-        var afterBytes : ByteArray = new ByteArray();
+        var pos                            : Dynamic= getBodyPosition(bytes);
+        var afterBytes                            : Dynamic= new ByteArray();
         afterBytes.writeBytes(bytes, pos);
         bytes.length = pos;
         bytes.position = pos;
@@ -218,22 +218,22 @@ class ForcibleLoader
         afterBytes.length = 0;
     }
     
-    private function updateVersion(bytes : ByteArray, version : Int) : Void
+    private function updateVersion(bytes                            : Dynamic, version                            : Dynamic) : Void
     {
         bytes[3] = version;
     }
     
-    private function ioErrorHandler(event : IOErrorEvent) : Void
+    private function ioErrorHandler(event                            : Dynamic) : Void
     {
         loader.dispatchEvent(event.clone());
     }
     
-    private function securityErrorHandler(event : SecurityErrorEvent) : Void
+    private function securityErrorHandler(event                            : Dynamic) : Void
     {
         loader.dispatchEvent(event.clone());
     }
     
-    private function progressHandler(event : ProgressEvent) : Void
+    private function progressHandler(event                            : Dynamic) : Void
     {
         loader.dispatchEvent(event.clone());
     }

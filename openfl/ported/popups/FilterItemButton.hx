@@ -15,19 +15,19 @@ import openfl.events.Event;
 
 class FilterItemButton extends Box
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _avars : ArcGlobals = ArcGlobals.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _avars                       : Dynamic= ArcGlobals.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var updater : PopupFilterManager;
-    private var filter : EngineLevelFilter;
+    private var updater                       : Dynamic;
+    private var filter                       : Dynamic;
     
-    private var combo_stat : ComboBox;
-    private var input_box : BoxText;
-    private var combo_compare : ComboBox;
-    private var remove_button : BoxButton;
+    private var combo_stat                       : Dynamic;
+    private var input_box                       : Dynamic;
+    private var combo_compare                       : Dynamic;
+    private var remove_button                       : Dynamic;
     
-    public function new(parent : DisplayObjectContainer, xpos : Float, ypos : Float, filter : EngineLevelFilter, updater : PopupFilterManager)
+    public function new(parent                       : Dynamic, xpos                       : Dynamic, ypos                       : Dynamic, filter                       : Dynamic, updater                       : Dynamic)
     {
         this.filter = filter;
         this.updater = updater;
@@ -37,15 +37,15 @@ class FilterItemButton extends Box
         init();
     }
     
-    private function init() : Void
+    public function init() : Void
     {
         remove_button = new BoxButton(this, -23, 0, 23, height, "?", 10, e_clickRemovefilter);
         remove_button.color = 0xFF0000;
         remove_button.normalAlpha = 0.35;
         remove_button.activeAlpha = 0.45;
         
-        var typeText : Text;
-        var xOff : Float = 0;
+        var typeText                       : Dynamic= null;
+        var xOff                       : Dynamic= 0;
         
         var _sw0_ = (filter.type);        
 
@@ -104,7 +104,7 @@ class FilterItemButton extends Box
                 
                 xOff += combo_compare.width + 10;
                 
-                var playableText : Text = new Text(this, xOff, 6, _lang.string("filter_setting_playable"));
+                var playableText                       : Dynamic= new Text(this, xOff, 6, _lang.string("filter_setting_playable"));
             
             case EngineLevelFilter.FILTER_AAA_EQUIV:
                 typeText = new Text(this, 8, 8, _lang.string("filter_type_" + filter.type));
@@ -119,14 +119,14 @@ class FilterItemButton extends Box
                 
                 xOff += combo_compare.width + 10;
                 
-                var improvementText : Text = new Text(this, xOff, 6, _lang.string("filter_setting_possible"));
+                var improvementText                       : Dynamic= new Text(this, xOff, 6, _lang.string("filter_setting_possible"));
                 
-                if (_avars.configLegacy != null)
+                if (as3hx.Compat.truthy(_avars.configLegacy != null))
                 {
                     this.alpha = 0.5;
                     this.color = 0xBBBBBB;
                     
-                    var altEngineText : Text = new Text(this, 0, 6, "altengine_setting_ignored");
+                    var altEngineText                       : Dynamic= new Text(this, 0, 6, "altengine_setting_ignored");
                     altEngineText.x = this.width - altEngineText.width - 5;
                     altEngineText.fontColor = "#FF0000";
                     altEngineText.alpha = 2;
@@ -216,11 +216,11 @@ class FilterItemButton extends Box
         }
     }
     
-    private function e_valueBooleanCompareChange(e : Event) : Void
+    private function e_valueBooleanCompareChange(e                       : Dynamic) : Void
     {
-        var item : Dynamic = e.target.selectedItem;
+        var item                       : Dynamic= e.target.selectedItem;
         
-        if (item.exists("data"))
+        if (as3hx.Compat.truthy(item.exists("data")))
         {
             filter.inverse = as3hx.Compat.parseFloat(item.data) >= 1;
         }
@@ -230,11 +230,11 @@ class FilterItemButton extends Box
         }
     }
     
-    private function e_valueComboNumberChange(e : Event) : Void
+    private function e_valueComboNumberChange(e                       : Dynamic) : Void
     {
-        var item : Dynamic = e.target.selectedItem;
+        var item                       : Dynamic= e.target.selectedItem;
         
-        if (item.exists("data"))
+        if (as3hx.Compat.truthy(item.exists("data")))
         {
             filter.input_number = as3hx.Compat.parseFloat(item.data);
         }
@@ -244,11 +244,11 @@ class FilterItemButton extends Box
         }
     }
     
-    private function e_valueStatChange(e : Dynamic) : Void
+    private function e_valueStatChange(e                       : Dynamic) : Void
     {
-        var item : Dynamic = e.target.selectedItem;
+        var item                       : Dynamic= e.target.selectedItem;
         
-        if (item.exists("data"))
+        if (as3hx.Compat.truthy(item.exists("data")))
         {
             filter.input_stat = item.data;
         }
@@ -258,11 +258,11 @@ class FilterItemButton extends Box
         }
     }
     
-    private function e_valueCompareChange(e : Event) : Void
+    private function e_valueCompareChange(e                       : Dynamic) : Void
     {
-        var item : Dynamic = e.target.selectedItem;
+        var item                       : Dynamic= e.target.selectedItem;
         
-        if (item.exists("data"))
+        if (as3hx.Compat.truthy(item.exists("data")))
         {
             filter.comparison = item.data;
         }
@@ -272,19 +272,19 @@ class FilterItemButton extends Box
         }
     }
     
-    private function e_valueStringChange(e : Event) : Void
+    private function e_valueStringChange(e                       : Dynamic) : Void
     {
         filter.input_string = input_box.text;
     }
     
-    private function e_valueNumberChange(e : Event) : Void
+    private function e_valueNumberChange(e                       : Dynamic) : Void
     {
         filter.input_number = (try cast(input_box, ValidatedText) catch(e:Dynamic) null).validate(0);
     }
     
-    private function e_clickRemovefilter(e : Event) : Void
+    private function e_clickRemovefilter(e                       : Dynamic) : Void
     {
-        if (ArrayUtil.remove(filter, filter.parent_filter.filters))
+        if (as3hx.Compat.truthy(ArrayUtil.remove(filter, filter.parent_filter.filters)))
         {
             updater.draw();
         }

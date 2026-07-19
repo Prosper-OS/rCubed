@@ -3,11 +3,11 @@ package com.flashfla.utils;
 
 class Average
 {
-    public var deviation(get, never) : Float;
+    public var deviation(get, never)                            : Dynamic;
 
-    private var size : Int;
-    public var value : Float;
-    public var valueDeviation : Float;
+    private var size                            : Dynamic;
+    public var value                            : Dynamic;
+    public var valueDeviation                            : Dynamic;
     
     public function new()
     {
@@ -16,7 +16,7 @@ class Average
         size = 0;
     }
     
-    public function addValue(value : Int) : Void
+    public function addValue(value                            : Dynamic) : Void
     {
         this.value = (this.value * size + value) / (size + 1);
         value -= this.value;

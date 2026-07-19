@@ -34,26 +34,26 @@ import game.GameMultiplayerWait;
 
 class GameMultiplayerWait extends MenuPanel
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _score : ScoreHandler = ScoreHandler.instance;
+    private static var _gvars                         : Dynamic= GlobalVariables.instance;
+    private static var _lang                         : Dynamic= Language.instance;
+    private static var _mp                         : Dynamic= Multiplayer.instance;
+    private static var _score                         : Dynamic= ScoreHandler.instance;
     
-    public var userResult : GameScoreResult;
-    public var textWaiting : Text;
+    public var userResult                         : Dynamic;
+    public var textWaiting                         : Dynamic;
     
-    public var startTime : Float = 0;
-    public var chartLength : Float = 0;
-    public var updateTimer : Timer;
+    public var startTime                         : Dynamic= 0;
+    public var chartLength                         : Dynamic= 0;
+    public var updateTimer                         : Dynamic;
     
-    public var background : GameResultBackground;
-    public var resultsDisplay : MPWaitBackground;
-    public var throbber : Throbber;
+    public var background                         : Dynamic;
+    public var resultsDisplay                         : Dynamic;
+    public var throbber                         : Dynamic;
     
-    public var gotoResults : BoxButton;
-    public var userDisplay : UserDisplayGroup;
+    public var gotoResults                         : Dynamic;
+    public var userDisplay                         : Dynamic;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                         : Dynamic)
     {
         super(myParent);
     }
@@ -62,9 +62,9 @@ class GameMultiplayerWait extends MenuPanel
     // Get Local Results
     {
         
-        if (_gvars.songResults.length > 0)
+        if (as3hx.Compat.truthy(_gvars.songResults.length > 0))
         {
-            userResult = _gvars.songResults[_gvars.songResults.length - 1];
+            userResult = _gvars.songResults[as3hx.Compat.parseInt(_gvars.songResults.length - 1)];
             
             // Update Judge Offset
             updateJudgeOffset(userResult);
@@ -97,9 +97,9 @@ class GameMultiplayerWait extends MenuPanel
         textWaiting = new Text(this, 20, 10, _lang.string("mp_room_ffr_match_wait"), 16, "#E2FEFF");
         textWaiting.setAreaParams(Main.GAME_WIDTH - 10, 26, "center");
         
-        if (Std.is(_mp.GAME_ROOM, MPRoomFFR))
+        if (as3hx.Compat.truthy(Std.is(_mp.GAME_ROOM, MPRoomFFR)))
         {
-            var ffrRoom : MPRoomFFR = try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
+            var ffrRoom                         : Dynamic= try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
             
             ffrRoom.lastMatchScorePersonal = userResult;
             
@@ -114,22 +114,22 @@ class GameMultiplayerWait extends MenuPanel
             gotoResults = new BoxButton(this, 22, 428, 732, 40, _lang.string("mp_room_ffr_match_wait_skip"), 12, e_skipToResults);  // TODO Language  
             
             // Figure out waiting time.
-            var lowestRate : Float = Math.POSITIVE_INFINITY;
-            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EField(EIdent(ffrRoom),activeMatch),users) type: null */ in ffrRoom.activeMatch.users)
+            var lowestRate                         : Dynamic= Math.POSITIVE_INFINITY;
+            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EField(EIdent(ffrRoom),activeMatch),users) type: null */ in as3hx.Compat.iter(ffrRoom.activeMatch.users))
             {
-                if (user.rate < lowestRate)
+                if (as3hx.Compat.truthy(as3hx.Compat.parseFloat(user.rate) < as3hx.Compat.parseFloat(lowestRate)))
                 {
                     lowestRate = user.rate;
                 }
             }
             
-            chartLength = Math.ceil(userResult.song.chart.Notes[userResult.song.chart.Notes.length - 1].time) * 1000;
+            chartLength = as3hx.Compat.parseInt(Math.ceil(userResult.song.chart.Notes[as3hx.Compat.parseInt(userResult.song.chart.Notes.length - 1)].time)) * 1000;
             startTime = ffrRoom.activeMatch.startTime + 1500;
             
-            var eclipsedTime : Float = Math.round(haxe.Timer.stamp() * 1000) - startTime;
-            var remainingTime : Float = Math.ceil(chartLength / lowestRate) - eclipsedTime;
+            var eclipsedTime                         : Dynamic= Math.round(haxe.Timer.stamp() * 1000) - startTime;
+            var remainingTime                         : Dynamic= Math.ceil(chartLength / lowestRate) - eclipsedTime;
             
-            if (usersStillPlaying() > 0 && remainingTime >= 3)
+            if (as3hx.Compat.truthy(usersStillPlaying() > 0 && remainingTime >= 3))
             {
                 userDisplay = new UserDisplayGroup(this, ffrRoom);
                 userDisplay.x = 34;
@@ -161,17 +161,17 @@ class GameMultiplayerWait extends MenuPanel
         _mp.removeEventListener(MPEvent.ROOM_LEAVE_OK, e_onMPDestroy);
         _mp.removeEventListener(MPEvent.ROOM_DELETE_OK, e_onMPDestroy);
         
-        if (updateTimer != null)
+        if (as3hx.Compat.truthy(updateTimer != null))
         {
             updateTimer.stop();
         }
         
-        if (throbber != null)
+        if (as3hx.Compat.truthy(throbber != null))
         {
             throbber.stop();
         }
         
-        if (Std.is(_mp.GAME_ROOM, MPRoomFFR))
+        if (as3hx.Compat.truthy(Std.is(_mp.GAME_ROOM, MPRoomFFR)))
         {
             _mp.removeEventListener(MPEvent.FFR_GAME_STATE, e_gameState);
             _mp.removeEventListener(MPEvent.FFR_MATCH_END, e_onFFRResults);
@@ -180,13 +180,13 @@ class GameMultiplayerWait extends MenuPanel
     
     private function usersStillPlaying() : Float
     {
-        var ffrRoom : MPRoomFFR = try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
+        var ffrRoom                         : Dynamic= try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
         
-        var count : Float = 0;
+        var count                         : Dynamic= 0;
         
-        for (player/* AS3HX WARNING could not determine type for var: player exp: EField(EField(EIdent(ffrRoom),activeMatch),users) type: null */ in ffrRoom.activeMatch.users)
+        for (player/* AS3HX WARNING could not determine type for var: player exp: EField(EField(EIdent(ffrRoom),activeMatch),users) type: null */ in as3hx.Compat.iter(ffrRoom.activeMatch.users))
         {
-            if (player.user != _mp.currentUser && ffrRoom.getPlayerState(player.user) == "game")
+            if (as3hx.Compat.truthy(player.user != _mp.currentUser && ffrRoom.getPlayerState(player.user) == "game"))
             {
                 count++;
             }
@@ -195,32 +195,32 @@ class GameMultiplayerWait extends MenuPanel
         return count;
     }
     
-    private function e_timerCountdown(e : TimerEvent) : Void
+    private function e_timerCountdown(e                         : Dynamic) : Void
     {
         userDisplay.update();
     }
     
-    private function e_skipToResults(e : MouseEvent) : Void
+    private function e_skipToResults(e                         : Dynamic) : Void
     {
-        var ffrRoom : MPRoomFFR = try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
+        var ffrRoom                         : Dynamic= try cast(_mp.GAME_ROOM, MPRoomFFR) catch(e:Dynamic) null;
         ffrRoom.lastMatchIndex = -2;
         switchTo(GameMenu.GAME_MP_RESULTS);
     }
     
-    private function e_gameState(e : MPRoomEvent) : Void
+    private function e_gameState(e                         : Dynamic) : Void
     {
-        if (e.room == _mp.GAME_ROOM)
+        if (as3hx.Compat.truthy(e.room == _mp.GAME_ROOM))
         {
             userDisplay.update();
         }
     }
     
-    private function e_onFFRResults(e : MPRoomEvent) : Void
+    private function e_onFFRResults(e                         : Dynamic) : Void
     {
         switchTo(GameMenu.GAME_MP_RESULTS);
     }
     
-    private function e_onMPDestroy(e : MPEvent) : Void
+    private function e_onMPDestroy(e                         : Dynamic) : Void
     {
         switchTo(Main.GAME_MENU_PANEL);
     }
@@ -234,7 +234,7 @@ class GameMultiplayerWait extends MenuPanel
      * the user settings. This is called when scores are saved successfully.
      * @param result GameScoreResult
      */
-    private function updateJudgeOffset(result : GameScoreResult) : Void
+    private function updateJudgeOffset(result                         : Dynamic) : Void
     {
         if (_gvars.activeUser.AUTO_JUDGE_OFFSET &&  // Auto Judge Offset enabled  
             (result.amazing + result.perfect + result.good + result.average >= 50) &&  // Accuracy data is reliable  
@@ -253,15 +253,15 @@ class GameMultiplayerWait extends MenuPanel
 
 class UserDisplayGroup extends Sprite
 {
-    public var panel : GameMultiplayerWait;
-    public var room : MPRoomFFR;
-    public var displays : Array<Dynamic> = [];
+    public var panel                         : Dynamic;
+    public var room                         : Dynamic;
+    public var displays                         : Dynamic= [];
     
-    public var pane : ScrollPane;
-    private var scrollbar : ScrollBar;
+    public var pane                         : Dynamic;
+    private var scrollbar                         : Dynamic;
     
     @:allow(game)
-    private function new(panel : GameMultiplayerWait, room : MPRoomFFR)
+    private function new(panel                         : Dynamic, room                         : Dynamic)
     {
         super();
         this.panel = panel;
@@ -271,9 +271,9 @@ class UserDisplayGroup extends Sprite
         pane = new ScrollPane(this, 0, 0, 710, 349, e_mouseWheelHandler);
         scrollbar = new ScrollBar(this, 719, 0, 15, 349, null, null, e_scrollbarUpdater);
         
-        for (player/* AS3HX WARNING could not determine type for var: player exp: EField(EField(EIdent(room),activeMatch),users) type: null */ in room.activeMatch.users)
+        for (player/* AS3HX WARNING could not determine type for var: player exp: EField(EField(EIdent(room),activeMatch),users) type: null */ in as3hx.Compat.iter(room.activeMatch.users))
         {
-            var display : UserDisplay = new UserDisplay(panel, room, player);
+            var display                         : Dynamic= new UserDisplay(panel, room, player);
             pane.content.addChild(display);
             displays.push(display);
         }
@@ -286,19 +286,18 @@ class UserDisplayGroup extends Sprite
     
     public function position() : Void
     {
-        displays.sortOn(["weight", "name"], [Array.DESCENDING | Array.NUMERIC, Array.CASEINSENSITIVE]);
-        
-        var total : Int = displays.length;
-        var rowMax : Int = 6;
-        var rowIndex : Int = 0;
-        var startX : Int = 0;
-        var startY : Int = ((total <= rowMax * 2)) ? (80 * (1 - Math.max(0, Math.floor(total / rowMax))) + 20) : 0;
+        as3hx.Compat.sortOn(displays, ["weight", "name"], [as3hx.Compat.ARRAY_DESCENDING | as3hx.Compat.ARRAY_NUMERIC, as3hx.Compat.ARRAY_CASEINSENSITIVE]);
+        var total                         : Dynamic= displays.length;
+        var rowMax                         : Dynamic= 6;
+        var rowIndex                         : Dynamic= 0;
+        var startX                         : Dynamic= 0;
+        var startY                         : Dynamic= ((total <= rowMax * 2)) ? (80 * (1 - Math.max(0, Math.floor(total / rowMax))) + 20) : 0;
         
         for (i in 0...total)
         {
-            var display : UserDisplay = displays[i];
+            var display                         : Dynamic= displays[i];
             
-            if ((i % rowMax) == 0)
+            if (as3hx.Compat.truthy((i % rowMax) == 0))
             {
                 startX = as3hx.Compat.parseInt((pane.width / 2) - (Math.min(rowMax, total - i) * 60));
                 rowIndex = 0;
@@ -314,7 +313,7 @@ class UserDisplayGroup extends Sprite
     
     public function update() : Void
     {
-        for (display in displays)
+        for (display in as3hx.Compat.iter(displays))
         {
             display.update();
         }
@@ -325,22 +324,22 @@ class UserDisplayGroup extends Sprite
      * Moves the scroll pane based on the scroll delta direction.
      * @param e
      */
-    private function e_mouseWheelHandler(e : MouseEvent) : Void
+    private function e_mouseWheelHandler(e                         : Dynamic) : Void
     // Sanity
     {
         
-        if (!scrollbar.draggerVisibility)
+        if (as3hx.Compat.truthy(!scrollbar.draggerVisibility))
         {
             return;
         }
         
         // Scroll
-        var newScrollPosition : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var newScrollPosition                         : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(newScrollPosition);
         scrollbar.scrollTo(newScrollPosition);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                         : Dynamic) : Void
     {
         pane.scrollTo(e.target.scroll);
     }
@@ -348,21 +347,21 @@ class UserDisplayGroup extends Sprite
 
 class UserDisplay extends Sprite
 {
-    public var remainingTime(get, never) : Float;
-    public var weight(get, never) : Float;
+    public var remainingTime(get, never)                         : Dynamic;
+    public var weight(get, never)                         : Dynamic;
 
-    private static var _lang : Language = Language.instance;
+    private static var _lang                         : Dynamic= Language.instance;
     
-    public var panel : GameMultiplayerWait;
-    public var room : MPRoomFFR;
-    public var player : MPMatchFFRUser;
+    public var panel                         : Dynamic;
+    public var room                         : Dynamic;
+    public var player                         : Dynamic;
     
-    public var textName : Text;
-    public var textState : Text;
-    public var avatar : Sprite;
+    public var textName                         : Dynamic;
+    public var textState                         : Dynamic;
+    public var avatar                         : Dynamic;
     
     @:allow(game)
-    private function new(panel : GameMultiplayerWait, room : MPRoomFFR, player : MPMatchFFRUser)
+    private function new(panel                         : Dynamic, room                         : Dynamic, player                         : Dynamic)
     {
         super();
         this.panel = panel;
@@ -387,7 +386,7 @@ class UserDisplay extends Sprite
     
     public function update() : Void
     {
-        if (room.getPlayerState(player.user) != "game")
+        if (as3hx.Compat.truthy(room.getPlayerState(player.user) != "game"))
         {
             textState.text = _lang.string("mp_room_ffr_match_wait_finished");
         }
@@ -411,7 +410,7 @@ class UserDisplay extends Sprite
     
     private function get_weight() : Float
     {
-        if (room.getPlayerState(player.user) == "game")
+        if (as3hx.Compat.truthy(room.getPlayerState(player.user) == "game"))
         {
             return remainingTime;
         }

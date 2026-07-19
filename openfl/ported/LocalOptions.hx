@@ -3,19 +3,19 @@ import r3.air.filesystem.File;
 
 class LocalOptions
 {
-    private static inline var FILE_NAME : String = "options.json";
+    private static inline var FILE_NAME                              : Dynamic= "options.json";
     
-    private static var SO_OBJECT : Dynamic = { };
+    private static var SO_OBJECT                              : Dynamic= { };
     
     public static function init() : Void
     {
-        var json_file : File = File.applicationStorageDirectory.resolvePath(FILE_NAME);
+        var json_file                              : Dynamic= File.applicationStorageDirectory.resolvePath(FILE_NAME);
         
         // Use JSON first
-        if (json_file.exists)
+        if (as3hx.Compat.truthy(json_file.exists))
         {
-            var json_str : String = AirContext.readTextFile(json_file);
-            if (json_str != null)
+            var json_str                              : Dynamic= AirContext.readTextFile(json_file);
+            if (as3hx.Compat.truthy(json_str != null))
             {
                 try
                 {
@@ -40,8 +40,8 @@ class LocalOptions
      */
     public static function getAllVariables() : Dynamic
     {
-        var out : Dynamic = { };
-        for (key in Reflect.fields(SO_OBJECT))
+        var out                              : Dynamic= { };
+        for (key in as3hx.Compat.iter(Reflect.fields(SO_OBJECT)))
         {
             Reflect.setField(out, key, Reflect.field(SO_OBJECT, key));
         }
@@ -53,9 +53,9 @@ class LocalOptions
      * @param key Variable Key
      * @param defaultValue Default Value
      */
-    public static function getVariable(key : String, defaultValue : Dynamic) : Dynamic
+    public static function getVariable(key                              : Dynamic, defaultValue                              : Dynamic) : Dynamic
     {
-        if (Reflect.field(SO_OBJECT, key) != null)
+        if (as3hx.Compat.truthy(Reflect.field(SO_OBJECT, key) != null))
         {
             return Reflect.field(SO_OBJECT, key);
         }
@@ -68,7 +68,7 @@ class LocalOptions
      * @param value Value
      * @param minDiskSize Minimum Local Store Size
      */
-    public static function setVariable(key : String, value : Dynamic) : Void
+    public static function setVariable(key                              : Dynamic, value                              : Dynamic) : Void
     {
         Reflect.setField(SO_OBJECT, key, value);
     }
@@ -77,7 +77,7 @@ class LocalOptions
      * Deletes a variable from the local store.
      * @param key Variable Key
      */
-    public static function deleteVariable(key : String) : Void
+    public static function deleteVariable(key                              : Dynamic) : Void
     {
         Reflect.deleteField(SO_OBJECT, key);
     }
@@ -86,9 +86,9 @@ class LocalOptions
      * Writes shared object to file.
      * @param minDiskSize Minimum Local Store Size
      */
-    public static function flush(minDiskSize : Int = 0) : Void
+    public static function flush(minDiskSize                              : Dynamic= 0) : Void
     {
-        AirContext.writeTextFile(File.applicationStorageDirectory.resolvePath(FILE_NAME), haxe.Json.stringify(SO_OBJECT, null, 2));
+        AirContext.writeTextFile(File.applicationStorageDirectory.resolvePath(FILE_NAME), haxe.Json.stringify(SO_OBJECT, null, "  "));
     }
     
     public static function importFromLocalStore() : Void

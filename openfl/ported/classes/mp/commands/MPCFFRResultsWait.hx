@@ -4,9 +4,9 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRResultsWait implements IMPCommand
 {
-    public var room : MPRoomFFR;
+    public var room                             : Dynamic;
     
-    public function new(room : MPRoomFFR)
+    public function new(room                             : Dynamic)
     {
         this.room = room;
     }

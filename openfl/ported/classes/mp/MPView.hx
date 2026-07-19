@@ -8,13 +8,13 @@ import openfl.events.KeyboardEvent;
 
 class MPView extends Sprite
 {
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    public var _gvars                             : Dynamic= GlobalVariables.instance;
+    public var _mp                             : Dynamic= Multiplayer.instance;
+    public var _lang                             : Dynamic= Language.instance;
     
-    private var _lock : UILockWait;
+    public var _lock                             : Dynamic;
     
-    public function new(parent : DisplayObjectContainer, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                             : Dynamic, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         super();
         this.x = xpos;
@@ -31,7 +31,7 @@ class MPView extends Sprite
     {
     }
     
-    public function onKeyInput(e : KeyboardEvent) : Void
+    public function onKeyInput(e                             : Dynamic) : Void
     {
     }
     
@@ -43,13 +43,13 @@ class MPView extends Sprite
     {
     }
     
-    public function setBlocker(enabled : Bool) : Void
+    public function setBlocker(enabled                             : Dynamic) : Void
     {
-        if (enabled && _lock == null)
+        if (as3hx.Compat.truthy(enabled && _lock == null))
         {
             _lock = new UILockWait(parent.stage, true);
         }
-        else if (!enabled && _lock != null)
+        else if (as3hx.Compat.truthy(!enabled && _lock != null))
         {
             _lock.remove();
             _lock = null;

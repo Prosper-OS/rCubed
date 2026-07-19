@@ -8,21 +8,21 @@ import openfl.utils.ByteArray;
 
 class SongPlayerBytes
 {
-    public var sound : Sound;
-    public var soundChannel : SoundChannel;
+    public var sound                              : Dynamic;
+    public var soundChannel                              : Dynamic;
     
-    public var isPlaying : Bool = false;
-    public var userPaused : Bool = false;
-    public var userStopped : Bool = false;
+    public var isPlaying                              : Dynamic= false;
+    public var userPaused                              : Dynamic= false;
+    public var userStopped                              : Dynamic= false;
     
-    private var pausePosition : Int = 0;
-    private var _noRepeat : Bool;
+    private var pausePosition                              : Dynamic= 0;
+    private var _noRepeat                              : Dynamic;
     
-    public function new(swfBytes : ByteArray, isMP3File : Bool = false, noRepeat : Bool = false)
+    public function new(swfBytes                              : Dynamic, isMP3File                              : Dynamic= false, noRepeat                              : Dynamic= false)
     {
-        if (swfBytes != null && swfBytes.length > 0)
+        if (as3hx.Compat.truthy(swfBytes != null && swfBytes.length > 0))
         {
-            if (!isMP3File)
+            if (as3hx.Compat.truthy(!isMP3File))
             {
                 swfBytes = MP3Extraction.extractSound(swfBytes);
             }
@@ -36,7 +36,7 @@ class SongPlayerBytes
     
     public function start() : Void
     {
-        if (sound == null || userPaused)
+        if (as3hx.Compat.truthy(sound == null || userPaused))
         {
             return;
         }
@@ -48,11 +48,11 @@ class SongPlayerBytes
         isPlaying = true;
     }
     
-    private function onComplete(e : Event) : Void
+    private function onComplete(e                              : Dynamic) : Void
     {
         cast((e.target), SoundChannel).removeEventListener(e.type, onComplete);
         pausePosition = 0;
-        if (_noRepeat)
+        if (as3hx.Compat.truthy(_noRepeat))
         {
             isPlaying = false;
         }
@@ -64,7 +64,7 @@ class SongPlayerBytes
     
     public function stop() : Void
     {
-        if (soundChannel != null)
+        if (as3hx.Compat.truthy(soundChannel != null))
         {
             soundChannel.stop();
             soundChannel.removeEventListener(Event.SOUND_COMPLETE, onComplete);

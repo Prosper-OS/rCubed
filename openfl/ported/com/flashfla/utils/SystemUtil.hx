@@ -8,11 +8,11 @@ import openfl.system.System;
 
 class SystemUtil
 {
-    public static var versionArray : Array<Dynamic>;
-    public static var OS : String;
-    public static var flashMajorVersion : Int;
-    public static var flashMinorVersion : Int;
-    public static var flashBuildVersion : Int;
+    public static var versionArray                           : Dynamic;
+    public static var OS                           : Dynamic;
+    public static var flashMajorVersion                           : Dynamic;
+    public static var flashMinorVersion                           : Dynamic;
+    public static var flashBuildVersion                           : Dynamic;
     
     
     
@@ -31,7 +31,7 @@ class SystemUtil
         System.gc();
     }
     
-    public static function setClipboard(value : String) : Bool
+    public static function setClipboard(value                           : Dynamic) : Bool
     // FP10+
     {
         

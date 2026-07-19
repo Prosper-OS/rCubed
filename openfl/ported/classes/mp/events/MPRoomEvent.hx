@@ -6,10 +6,10 @@ import classes.mp.room.MPRoom;
 
 class MPRoomEvent extends MPEvent
 {
-    public var room : MPRoom;
-    public var user : MPUser;
+    public var room                             : Dynamic;
+    public var user                             : Dynamic;
     
-    public function new(type : String, command : MPSocketDataText, room : MPRoom, user : MPUser = null)
+    public function new(type                             : Dynamic, command                             : Dynamic, room                             : Dynamic, user                             : Dynamic= null)
     {
         super(type, command);
         

@@ -5,10 +5,10 @@ import openfl.events.MouseEvent;
 
 class SimpleBoxButton extends Sprite
 {
-    private var _width : Float;
-    private var _height : Float;
+    private var _width                             : Dynamic;
+    private var _height                             : Dynamic;
     
-    public function new(width : Float, height : Float)
+    public function new(width                             : Dynamic, height                             : Dynamic)
     {
         super();
         this._height = height;
@@ -24,19 +24,19 @@ class SimpleBoxButton extends Sprite
         addEventListener(MouseEvent.MOUSE_OVER, e_mouseOver);
     }
     
-    private function e_mouseOver(e : MouseEvent) : Void
+    private function e_mouseOver(e                             : Dynamic) : Void
     {
         addEventListener(MouseEvent.MOUSE_OUT, e_mouseOut);
         drawBox(true);
     }
     
-    private function e_mouseOut(e : MouseEvent) : Void
+    private function e_mouseOut(e                             : Dynamic) : Void
     {
         removeEventListener(MouseEvent.MOUSE_OUT, e_mouseOut);
         drawBox(false);
     }
     
-    private function drawBox(doHover : Bool) : Void
+    private function drawBox(doHover                             : Dynamic) : Void
     {
         graphics.clear();
         graphics.lineStyle(0, 0, 0);

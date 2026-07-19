@@ -44,50 +44,52 @@ import popups.filebrowser.FileFolderItem;
 
 class PopupFileBrowser extends MenuPanel
 {
-    public var lockUI(never, set) : Bool;
+    private static var e_bannerLoaded                  : Dynamic;
+    private static var e_timerComplete                    : Dynamic;
+    public var lockUI(never, set)                       : Dynamic;
 
-    private static var _gvars : GlobalVariables = GlobalVariables.instance;
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _gvars                       : Dynamic= GlobalVariables.instance;
+    private static var _lang                       : Dynamic= Language.instance;
+    private static var _mp                       : Dynamic= Multiplayer.instance;
     
-    public var lc : LoaderContext = new LoaderContext();
+    public var lc                       : Dynamic= new LoaderContext();
     
-    public static var rootFolder : File;
-    public static var lastSelectedIndex : Int = 0;
-    public static var listFilter : FileBrowserFilter = new FileBrowserFilter();
+    public static var rootFolder                       : Dynamic;
+    public static var lastSelectedIndex                       : Dynamic= 0;
+    public static var listFilter                       : Dynamic= new FileBrowserFilter();
     
-    public static var pathList : Array<String> = [];
+    public static var pathList                       : Dynamic= [];
     
     //- Background
-    private var box : Box;
-    private var bmd : BitmapData;
-    private var bmp : Bitmap;
-    private var dividers : Sprite;
+    private var box                       : Dynamic;
+    private var bmd                       : Dynamic;
+    private var bmp                       : Dynamic;
+    private var dividers                       : Dynamic;
     
-    private var refreshAllFolder : BoxIcon;
-    private var displayFolderPath : Text;
-    private var selectFolder : BoxIcon;
-    private var closeWindow : BoxIcon;
+    private var refreshAllFolder                       : Dynamic;
+    private var displayFolderPath                       : Dynamic;
+    private var selectFolder                       : Dynamic;
+    private var closeWindow                       : Dynamic;
     
-    private var searchInput : BoxText;
-    private var searchPlaceholder : Text;
-    private var searchTypeBox : ComboBox;
+    private var searchInput                       : Dynamic;
+    private var searchPlaceholder                       : Dynamic;
+    private var searchTypeBox                       : Dynamic;
     
-    private var lastSelectedItem : FileBrowserItem;
-    private var songBrowser : FileBrowserList;
-    private var songDetails : Sprite;
-    private var songDetailsWidth : Float = 0;
-    private var songDifficulties : Array<Dynamic> = [];
+    private var lastSelectedItem                       : Dynamic;
+    private var songBrowser                       : Dynamic;
+    private var songDetails                       : Dynamic;
+    private var songDetailsWidth                       : Dynamic= 0;
+    private var songDifficulties                       : Dynamic= [];
     
-    private var _isLocked : Bool = false;
-    private var uiLock : Sprite;
-    private var loadingPathIndex : Text;
-    private var loadingPathFolder : Text;
-    private var loadingPathSong : Text;
-    private var loadingCancelButton : BoxButton;
-    private var cancelRequested : Bool = false;
+    private var _isLocked                       : Dynamic= false;
+    private var uiLock                       : Dynamic;
+    private var loadingPathIndex                       : Dynamic;
+    private var loadingPathFolder                       : Dynamic;
+    private var loadingPathSong                       : Dynamic;
+    private var loadingCancelButton                       : Dynamic;
+    private var cancelRequested                       : Dynamic= false;
     
-    public function new(myParent : MenuPanel)
+    public function new(myParent                       : Dynamic)
     {
         super(myParent);
     }
@@ -101,7 +103,7 @@ class PopupFileBrowser extends MenuPanel
         
         this.addChild(bmp);
         
-        var bgbox : Box = new Box(this, -1, -1, false, false);
+        var bgbox                       : Dynamic= new Box(this, -1, -1, false, false);
         bgbox.setSize(Main.GAME_WIDTH + 2, Main.GAME_HEIGHT + 2);
         bgbox.color = 0x000000;
         bgbox.normalAlpha = 0.7;
@@ -153,7 +155,7 @@ class PopupFileBrowser extends MenuPanel
         searchInput.addEventListener(Event.CHANGE, e_searchChange);
         
         // Search Type
-        var searchTypeBoxItems : Array<Dynamic> = [{
+        var searchTypeBoxItems                       : Dynamic= [{
             label : _lang.stringSimple("song_selection_search_any"),
             data : "any"
         }, 
@@ -200,7 +202,7 @@ class PopupFileBrowser extends MenuPanel
         uiLock.graphics.drawRect(0, 0, 780, 480);
         uiLock.graphics.endFill();
         
-        var lockUIText : Text = new Text(uiLock, 0, 200, _lang.string("file_loader_loading_files"), 24);
+        var lockUIText                       : Dynamic= new Text(uiLock, 0, 200, _lang.string("file_loader_loading_files"), 24);
         lockUIText.setAreaParams(780, 30, "center");
         
         loadingPathIndex = new Text(uiLock, 0, 340, "", 20);
@@ -212,11 +214,11 @@ class PopupFileBrowser extends MenuPanel
         
         loadingCancelButton = new BoxButton(uiLock, 390 - 40, 440, 80, 30, _lang.string("menu_cancel"), 12, clickHandler);
         
-        if (rootFolder != null && pathList == null)
+        if (as3hx.Compat.truthy(rootFolder != null && pathList == null))
         {
             refreshFolder();
         }
-        else if (rootFolder != null && pathList != null)
+        else if (as3hx.Compat.truthy(rootFolder != null && pathList != null))
         {
             displayFolderPath.text = rootFolder.nativePath;
             buildFileList();
@@ -236,13 +238,13 @@ class PopupFileBrowser extends MenuPanel
     
     public function buildFileList() : Void
     {
-        var renderList : Array<Dynamic> = [];
-        var cacheValue : Dynamic;
+        var renderList                       : Dynamic= [];
+        var cacheValue                       : Dynamic= null;
         
         // List Building
-        var path : String;
-        var endOfFolder : Float;
-        var arLen : Float = pathList.length;
+        var path                       : Dynamic= null;
+        var endOfFolder                       : Dynamic= null;
+        var arLen                       : Dynamic= pathList.length;
         for (i in 0...arLen)
         {
             cacheValue = FileLoader.cache.getValue(pathList[i]);
@@ -252,19 +254,20 @@ class PopupFileBrowser extends MenuPanel
         }
         
         // Folder Merging
-        var elm1 : FileFolder;
-        var elm2 : FileFolder;
-        var n : Int;
-        renderList.sortOn(["folder", "ext"], [Array.CASEINSENSITIVE, Array.CASEINSENSITIVE]);
-        for (i in 0...arLen - 1)
+        var elm1                       : Dynamic= null;
+        var elm2                       : Dynamic= null;
+        var n                       : Dynamic= null;
+        as3hx.Compat.sortOn(renderList, ["folder", "ext"], [as3hx.Compat.ARRAY_CASEINSENSITIVE, as3hx.Compat.ARRAY_CASEINSENSITIVE]);
+        for (i in 0...as3hx.Compat.parseInt(arLen - 1))
         {
             elm1 = renderList[i];
-            for (n in i + 1...arLen)
+            n = as3hx.Compat.parseInt(i + 1);
+            while (as3hx.Compat.truthy(n < arLen))
             {
                 elm2 = renderList[n];
-                if (elm1.folder == elm2.folder && elm1.ext == elm2.ext)
+                if (as3hx.Compat.truthy(elm1.folder == elm2.folder && elm1.ext == elm2.ext))
                 {
-                    while (elm2.data.length > 0)
+                    while (as3hx.Compat.truthy(elm2.data.length > 0))
                     {
                         elm1.data.push(elm2.data.pop());
                     }
@@ -277,6 +280,7 @@ class PopupFileBrowser extends MenuPanel
                 {
                     break;
                 }
+                n++;
             }
         }
         
@@ -289,21 +293,20 @@ class PopupFileBrowser extends MenuPanel
             elm1.stepauthor = elm1.data[0].info.stepauthor;
             elm1.banner = elm1.data[0].info.banner;
         }
-        renderList.sortOn(["name", "author"], [Array.CASEINSENSITIVE, Array.CASEINSENSITIVE]);
-        
+        as3hx.Compat.sortOn(renderList, ["name", "author"], [as3hx.Compat.ARRAY_CASEINSENSITIVE, as3hx.Compat.ARRAY_CASEINSENSITIVE]);
         // Display
         songBrowser.setRenderList(renderList);
         
         // Set Active Item
-        if (renderList.length > 0)
+        if (as3hx.Compat.truthy(renderList.length > 0))
         {
             selectedItem(songBrowser.findSongButtonByIndex(lastSelectedIndex));
         }
     }
     
-    private function dirSelected(e : Event) : Void
+    private function dirSelected(e                       : Dynamic) : Void
     {
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
             stage.focus = null;
         }
@@ -312,36 +315,36 @@ class PopupFileBrowser extends MenuPanel
         refreshFolder();
     }
     
-    private function clickHandler(e : MouseEvent) : Void
+    private function clickHandler(e                       : Dynamic) : Void
     {
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
             stage.focus = null;
         }
         
-        if (e.target == refreshAllFolder)
+        if (as3hx.Compat.truthy(e.target == refreshAllFolder))
         {
             refreshCache();
         }
-        else if (e.target == selectFolder || e.target == displayFolderPath)
+        else if (as3hx.Compat.truthy(e.target == selectFolder || e.target == displayFolderPath))
         {
-            var tempFolder : File = new File();
+            var tempFolder                       : Dynamic= new File();
             tempFolder.addEventListener(Event.SELECT, dirSelected);
             tempFolder.browseForDirectory(_lang.stringSimple("file_loader_select_a_directory"));
         }
-        else if (e.target == loadingCancelButton)
+        else if (as3hx.Compat.truthy(e.target == loadingCancelButton))
         {
             cancelRequested = true;
         }
-        else if (e.target == closeWindow)
+        else if (as3hx.Compat.truthy(e.target == closeWindow))
         {
             removePopup();
         }
     }
     
-    private function searchTypeSelect(e : Event) : Void
+    private function searchTypeSelect(e                       : Dynamic) : Void
     {
-        listFilter.type = e.target.selectedItem["data"];
+        listFilter.type = Reflect.field(e.target.selectedItem, "data");
     }
     
     
@@ -349,17 +352,17 @@ class PopupFileBrowser extends MenuPanel
     {
         lockUI = true;
         
-        var paths : Array<String> = FileLoader.cache.keys;
-        var fileQueue : Array<File> = [];
-        var file : File;
+        var paths                       : Dynamic= FileLoader.cache.keys;
+        var fileQueue                       : Dynamic= [];
+        var file                       : Dynamic= null;
         
         as3hx.Compat.setArrayLength(pathList, 0);
         
-        for (path in paths)
+        for (path in as3hx.Compat.iter(paths))
         {
             file = new File(path);
             
-            if (file.isHidden || !file.exists)
+            if (as3hx.Compat.truthy(file.isHidden || !file.exists))
             {
                 FileLoader.cache.deleteKey(path);
             }
@@ -372,7 +375,7 @@ class PopupFileBrowser extends MenuPanel
     
     private function refreshFolder() : Void
     {
-        if (rootFolder == null)
+        if (as3hx.Compat.truthy(rootFolder == null))
         {
             return;
         }
@@ -386,14 +389,14 @@ class PopupFileBrowser extends MenuPanel
         
         lockUI = true;
         
-        var loadTimer : Timer;
+        var loadTimer                       : Dynamic= null;
         
         // File Searching
-        var dirQueue : Array<FileDirectoryQueue> = [new FileDirectoryQueue(rootFolder, 0)];
-        var fileQueue : Array<File> = [];
-        var activeDirQueue : FileDirectoryQueue;
-        var maxDepth : Int = 2;
-        var validExt : Array<Dynamic> = ExternalChartBase.VALID_CHART_EXTENSIONS;
+        var dirQueue                       : Dynamic= [new FileDirectoryQueue(rootFolder, 0)];
+        var fileQueue                       : Dynamic= [];
+        var activeDirQueue                       : Dynamic= null;
+        var maxDepth                       : Dynamic= 2;
+        var validExt                       : Dynamic= ExternalChartBase.VALID_CHART_EXTENSIONS;
         
         loadingPathIndex.text = _lang.string("file_loader_scanning");
         loadingPathFolder.text = "";
@@ -403,18 +406,18 @@ class PopupFileBrowser extends MenuPanel
         loadTimer.addEventListener(TimerEvent.TIMER_COMPLETE, e_timerComplete);
         loadTimer.start();
         
-        var e_timerComplete : TimerEvent->Void = function(e : TimerEvent) : Void
+        e_timerComplete = function(e                       : Dynamic) : Void
         {
-            var startTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-            var isDelay : Bool = false;
+            var startTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+            var isDelay                       : Dynamic= false;
             
             // File Loop
-            var found : Array<Dynamic>;
-            var len : Int;
-            var file : File;
-            var i : Int;
+            var found                       : Dynamic= null;
+            var len                       : Dynamic= null;
+            var file                       : Dynamic= null;
+            var i                       : Dynamic= null;
             
-            while (dirQueue.length > 0)
+            while (as3hx.Compat.truthy(dirQueue.length > 0))
             {
                 activeDirQueue = dirQueue.pop();
                 
@@ -425,32 +428,32 @@ class PopupFileBrowser extends MenuPanel
                 {
                     file = found[i];
                     
-                    if (file.isHidden || !file.exists)
+                    if (as3hx.Compat.truthy(file.isHidden || !file.exists))
                     {
                         continue;
                     }
-                    else if (file.isDirectory)
+                    else if (as3hx.Compat.truthy(file.isDirectory))
                     {
-                        if (activeDirQueue.level < maxDepth)
+                        if (as3hx.Compat.truthy(activeDirQueue.level < maxDepth))
                         {
                             dirQueue.push(new FileDirectoryQueue(file, activeDirQueue.level + 1));
                         }
                     }
-                    else if (file.extension != null && Lambda.indexOf(validExt, file.extension.toLowerCase()) != -1)
+                    else if (as3hx.Compat.truthy(file.extension != null && Lambda.indexOf(validExt, file.extension.toLowerCase()) != -1))
                     {
                         fileQueue.push(file);
                     }
                 }
                 
-                var endTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-                if (endTimer - startTimer > 200)
+                var endTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+                if (as3hx.Compat.truthy(endTimer - startTimer > 200))
                 {
                     isDelay = true;
                     break;
                 }
             }
             
-            if (cancelRequested)
+            if (as3hx.Compat.truthy(cancelRequested))
             {
                 as3hx.Compat.setArrayLength(dirQueue, 0);
                 as3hx.Compat.setArrayLength(fileQueue, 0);
@@ -462,7 +465,7 @@ class PopupFileBrowser extends MenuPanel
                             });
             
             // Loaded All Files
-            if (dirQueue.length == 0)
+            if (as3hx.Compat.truthy(dirQueue.length == 0))
             {
                 loadTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, e_timerComplete);
                 _parseFileQueue(fileQueue);
@@ -470,23 +473,23 @@ class PopupFileBrowser extends MenuPanel
             }
             
             // Not Finished, Continue next frame.
-            if (isDelay && dirQueue.length > 0)
+            if (as3hx.Compat.truthy(isDelay && dirQueue.length > 0))
             {
                 loadTimer.start();
             }
         }
     }
     
-    private function _parseFileQueue(fileQueue : Array<File>) : Void
+    private function _parseFileQueue(fileQueue                       : Dynamic) : Void
     {
-        var loadTimer : Timer;
+        var loadTimer                       : Dynamic= null;
         
         // File Loading
-        var rootFolderPath : String = (rootFolder != null) ? rootFolder.nativePath : "";
-        var pathIndex : Int;
-        var pathTotal : Int;
+        var rootFolderPath                       : Dynamic= (rootFolder != null) ? rootFolder.nativePath : "";
+        var pathIndex                       : Dynamic= null;
+        var pathTotal                       : Dynamic= null;
         
-        if (fileQueue.length <= 0)
+        if (as3hx.Compat.truthy(fileQueue.length <= 0))
         {
             lockUI = false;
             buildFileList();
@@ -504,25 +507,25 @@ class PopupFileBrowser extends MenuPanel
         loadTimer.addEventListener(TimerEvent.TIMER_COMPLETE, e_timerComplete);
         loadTimer.start();
         
-        var e_timerComplete : TimerEvent->Void = function(e : TimerEvent) : Void
+        e_timerComplete = function(e                       : Dynamic) : Void
         {
-            var chartFile : File;
-            var stringPath : String;
-            var startTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-            var isDelay : Bool = false;
-            var cacheObj : Dynamic;
+            var chartFile                       : Dynamic= null;
+            var stringPath                       : Dynamic= null;
+            var startTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+            var isDelay                       : Dynamic= false;
+            var cacheObj                       : Dynamic= null;
             
-            while (pathIndex < pathTotal)
+            while (as3hx.Compat.truthy(pathIndex < pathTotal))
             {
                 chartFile = fileQueue[pathIndex];
                 stringPath = chartFile.nativePath;
                 
                 cacheObj = FileLoader.cache.getValue(stringPath);
-                var needUpdate : Bool = cacheObj == null || chartFile.modificationDate.getTime() != Reflect.field(cacheObj, "date");
+                var needUpdate                       : Dynamic= cacheObj == null || chartFile.modificationDate.getTime() != Reflect.field(cacheObj, "date");
                 
-                if (!needUpdate)
+                if (as3hx.Compat.truthy(!needUpdate))
                 {
-                    if (cacheObj.valid == 1)
+                    if (as3hx.Compat.truthy(cacheObj.valid == 1))
                     {
                         pathList.push(stringPath);
                     }
@@ -531,7 +534,7 @@ class PopupFileBrowser extends MenuPanel
                 {
                     loadingPathIndex.text = pathIndex + " / " + pathTotal;
                     
-                    if (chartFile.parent.parent.nativePath == rootFolderPath)
+                    if (as3hx.Compat.truthy(chartFile.parent.parent.nativePath == rootFolderPath))
                     {
                         loadingPathFolder.text = chartFile.parent.name;
                         loadingPathSong.text = "";
@@ -546,14 +549,14 @@ class PopupFileBrowser extends MenuPanel
                     
                     FileLoader.cache.setValue(stringPath, cacheObj);
                     
-                    if (cacheObj.valid == 1)
+                    if (as3hx.Compat.truthy(cacheObj.valid == 1))
                     {
                         pathList.push(stringPath);
                     }
                 }
                 pathIndex++;
                 
-                if (cancelRequested)
+                if (as3hx.Compat.truthy(cancelRequested))
                 {
                     pathIndex = 0;
                     pathTotal = 0;
@@ -561,8 +564,8 @@ class PopupFileBrowser extends MenuPanel
                     as3hx.Compat.setArrayLength(pathList, 0);
                 }
                 
-                var endTimer : Float = Math.round(haxe.Timer.stamp() * 1000);
-                if (endTimer - startTimer > 200)
+                var endTimer                       : Dynamic= Math.round(haxe.Timer.stamp() * 1000);
+                if (as3hx.Compat.truthy(endTimer - startTimer > 200))
                 {
                     isDelay = true;
                     break;
@@ -570,7 +573,7 @@ class PopupFileBrowser extends MenuPanel
             }
             
             // Loaded All Files
-            if (pathIndex >= pathTotal)
+            if (as3hx.Compat.truthy(pathIndex >= pathTotal))
             {
                 loadTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, e_timerComplete);
                 FileLoader.cache.save();
@@ -581,21 +584,21 @@ class PopupFileBrowser extends MenuPanel
             }
             
             // Not Finished, Continue next frame.
-            if (isDelay && pathIndex < pathTotal)
+            if (as3hx.Compat.truthy(isDelay && pathIndex < pathTotal))
             {
                 loadTimer.start();
             }
         }
     }
     
-    private function selectedItem(item : FileBrowserItem) : Void
+    private function selectedItem(item                       : Dynamic) : Void
     {
-        if (item == null)
+        if (as3hx.Compat.truthy(item == null))
         {
             return;
         }
         
-        if (lastSelectedItem != null)
+        if (as3hx.Compat.truthy(lastSelectedItem != null))
         {
             lastSelectedItem.highlight = false;
         }
@@ -607,9 +610,9 @@ class PopupFileBrowser extends MenuPanel
         songBrowser.activeIndex = item.index;
     }
     
-    private function e_searchChange(e : Event) : Void
+    private function e_searchChange(e                       : Dynamic) : Void
     {
-        if (_isLocked)
+        if (as3hx.Compat.truthy(_isLocked))
         {
             return;
         }
@@ -620,68 +623,81 @@ class PopupFileBrowser extends MenuPanel
         selectedItem(songBrowser.findSongButtonByIndex(lastSelectedIndex));
     }
     
-    private function e_songListClick(e : MouseEvent) : Void
+    private function e_songListClick(e                       : Dynamic) : Void
     {
-        if (Std.is(e.target, FileBrowserItem))
+        if (as3hx.Compat.truthy(Std.is(e.target, FileBrowserItem)))
         {
             selectedItem(try cast(e.target, FileBrowserItem) catch(e:Dynamic) null);
         }
     }
     
-    public function setInfoBox(info : FileFolder) : Void
+    public function setInfoBox(info                       : Dynamic) : Void
     {
         songDetails.removeChildren();
         as3hx.Compat.setArrayLength(songDifficulties, 0);
         
-        var infoTitle : Text;
-        var infoDetails : Text;
-        var tY : Int = 83;
+        var infoTitle                       : Dynamic= null;
+        var infoDetails                       : Dynamic= null;
+        var tY                       : Dynamic= 83;
         
         // Create Holder Sprite
-        var sr : Sprite = drawInfoBannerSprite(0, 0.3);
+        var sr                       : Dynamic= drawInfoBannerSprite(0, 0.3);
         sr.x = 10;
         sr.y = 10;
         songDetails.addChild(sr);
         
         // Mask
-        var srm : Sprite = drawInfoBannerSprite(0, 1);
+        var srm                       : Dynamic= drawInfoBannerSprite(0, 1);
         sr.addChild(srm);
         sr.mask = srm;
         
         // Border
-        var srb : Sprite = drawInfoBannerSprite(0.35, 0);
+        var srb                       : Dynamic= drawInfoBannerSprite(0.35, 0);
         srb.x = 10;
         srb.y = 10;
         songDetails.addChild(srb);
         
         // Banner
-        if (info.banner != "") {
-var bannerExt : String = info.banner.substr(info.banner.lastIndexOf(".") + 1).toLowerCase();
-            if (bannerExt == "jpg" || bannerExt == "png" || bannerExt == "gif" || bannerExt == "jpeg")
+        if (as3hx.Compat.truthy(info.banner != "")) {
+var bannerExt                       : Dynamic= info.banner.substr(info.banner.lastIndexOf(".") + 1).toLowerCase();
+            if (as3hx.Compat.truthy(bannerExt == "jpg" || bannerExt == "png" || bannerExt == "gif" || bannerExt == "jpeg"))
             {
-                var path : String = "file:///" + info.folder + info.banner;
-                var imageLoader : Loader = new Loader();
+                var path                       : Dynamic= "file:///" + info.folder + info.banner;
+                var imageLoader         : Dynamic= new Loader();
+                var e_bannerLoaded         : Dynamic= null;
+                var e_bannerLoaded          : Dynamic= null;
+                var e_bannerLoaded           : Dynamic= null;
+                var e_bannerLoaded            : Dynamic= null;
+                var e_bannerLoaded             : Dynamic= null;
+                var e_bannerLoaded              : Dynamic= null;
+                var e_bannerLoaded               : Dynamic= null;
+                var e_bannerLoaded                : Dynamic= null;
+                var e_bannerLoaded                 : Dynamic= null;
+                var e_bannerLoaded                  : Dynamic= null;
+                var e_bannerLoaded                   : Dynamic= null;
+                var e_bannerLoaded                    : Dynamic= null;
+                var e_bannerLoaded                     : Dynamic= null;
                 imageLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, e_bannerLoaded);
                 imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, e_bannerLoaded);
                 imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, e_bannerLoaded);
                 imageLoader.load(new URLRequest(path), lc);
                 
-                function e_bannerLoaded(e : Event) : Void
+                e_bannerLoaded = function(e                       : Dynamic) : Void
                 // Position Loaded Banner Image
                 {
                     
-                    if (e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null)
+                    if (as3hx.Compat.truthy(e.type == Event.COMPLETE && e.target != null && ((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content) != null))
                     {
-                        var bmp : Bitmap = try cast(((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content), Bitmap) catch(e:Dynamic) null;
+                        var bmp                       : Dynamic= try cast(((try cast(e.target, LoaderInfo) catch(e:Dynamic) null).content), Bitmap) catch(e:Dynamic) null;
                         bmp.smoothing = true;
                         bmp.pixelSnapping = "always";
                         sr.addChildAt(bmp, 1);
                         
-                        var imageScale : Float = 214 / bmp.width;
+                        var imageScale                       : Dynamic= 214 / bmp.width;
                         
                         bmp.scaleX = bmp.scaleY = imageScale;
                         
-                        if (bmp.height < 70)
+                        if (as3hx.Compat.truthy(bmp.height < 70))
                         {
                             bmp.scaleX = bmp.scaleY = 1;
                             imageScale = 70 / bmp.height;
@@ -698,36 +714,38 @@ var bannerExt : String = info.banner.substr(info.banner.lastIndexOf(".") + 1).to
         }
         
         // Reload File
-        var reloadCache : BoxButton = new BoxButton(songDetails, 209, 3, 22, 22, "R", 12, e_reloadCache);
+        var reloadCache                       : Dynamic= new BoxButton(songDetails, 209, 3, 22, 22, "R", 12, e_reloadCache);
         
         // Print Song Info
-        var infoDisplay : Array<Dynamic> = [[Reflect.field(info, "data")[0]["info"]["name"], 14], [Reflect.field(info, "data")[0]["info"]["author"], 12]];
-        for (item in Reflect.fields(infoDisplay)) {
-infoDetails = new Text(songDetails, 5, tY, Reflect.field(infoDisplay, item)[0], Reflect.field(infoDisplay, item)[1]);
+        var infoData                     : Dynamic= as3hx.Compat.field(info, "data");
+        var infoZero                     : Dynamic= as3hx.Compat.field(infoData, 0);
+        var infoInfo                     : Dynamic= as3hx.Compat.field(infoZero, "info");
+        var infoDisplay                     : Dynamic= [[as3hx.Compat.field(infoInfo, "name"), 14], [as3hx.Compat.field(infoInfo, "author"), 12]];
+        for (item in as3hx.Compat.iter(Reflect.fields(infoDisplay))) {
+infoDetails = new Text(songDetails, 5, tY, as3hx.Compat.field(as3hx.Compat.field(infoDisplay, item), 0), as3hx.Compat.field(as3hx.Compat.field(infoDisplay, item), 1));
             infoDetails.setAreaParams(songDetailsWidth - 10, 23, "center");
             tY += 23;
         }
         
         // Build UI
-        var sources : Array<FileFolderItem> = info.data;
+        var sources                       : Dynamic= info.data;
         for (s in 0...sources.length)
         {
-            var charts : Array<Dynamic> = sources[s].info.chart;
+            var charts                       : Dynamic= sources[s].info.chart;
             for (i in 0...charts.length)
             {
-                var chartSelectButton : FileBrowserDifficultyItem = new FileBrowserDifficultyItem(i, sources[s]);
+                var chartSelectButton                       : Dynamic= new FileBrowserDifficultyItem(i, sources[s]);
                 chartSelectButton.addEventListener(MouseEvent.CLICK, e_difficultySelect, false, 0, true);
                 songDetails.addChild(chartSelectButton);
                 songDifficulties.push(chartSelectButton);
             }
         }
         
-        songDifficulties.sortOn("sorting_key", Array.NUMERIC);
-        
+        as3hx.Compat.sortOn(songDifficulties, "sorting_key", as3hx.Compat.ARRAY_NUMERIC);
         // Place UI
         tY = 0;
-        i = songDifficulties.length - 1;
-        while (i >= 0)
+        var i                      : Dynamic= songDifficulties.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
             songDifficulties[i].x = 9;
             songDifficulties[i].y = 405 - tY;
@@ -736,9 +754,9 @@ infoDetails = new Text(songDetails, 5, tY, Reflect.field(infoDisplay, item)[0], 
         }
     }
     
-    public function drawInfoBannerSprite(border : Float, bg : Float) : Sprite
+    public function drawInfoBannerSprite(border                       : Dynamic, bg                       : Dynamic) : Sprite
     {
-        var srm : Sprite = new Sprite();
+        var srm                       : Dynamic= new Sprite();
         srm.graphics.lineStyle(2, 0xffffff, border, true);
         srm.graphics.beginFill(0, bg);
         srm.graphics.drawRoundRect(0, 0, 215, 70, 25, 25);
@@ -746,39 +764,39 @@ infoDetails = new Text(songDetails, 5, tY, Reflect.field(infoDisplay, item)[0], 
         return srm;
     }
     
-    private function e_difficultySelect(e : MouseEvent) : Void
+    private function e_difficultySelect(e                       : Dynamic) : Void
     {
-        var tar : FileBrowserDifficultyItem = try cast(e.target, FileBrowserDifficultyItem) catch(e:Dynamic) null;
-        var info : FileFolderItem = tar.cache_info;
-        var id : Int = tar.chart_id;
+        var tar                       : Dynamic= try cast(e.target, FileBrowserDifficultyItem) catch(e:Dynamic) null;
+        var info                       : Dynamic= tar.cache_info;
+        var id                       : Dynamic= tar.chart_id;
         
         removePopup();
         
-        if (_mp.inGameRoom)
+        if (as3hx.Compat.truthy(_mp.inGameRoom))
         {
             _mp.ffrSelectSong(FileLoader.buildSongInfo(info.loc, id, true));
             
-            if (Std.is(_gvars.gameMain.activePanel, MainMenu))
+            if (as3hx.Compat.truthy(Std.is(_gvars.gameMain.activePanel, MainMenu)))
             {
                 _gvars.gameMain.activePanel.switchTo(MainMenu.MENU_MULTIPLAYER);
             }
         }
         else
         {
-            Flags.VALUES[Flags.FILE_LOADER_OPEN] = true;
+            Reflect.setField(Flags.VALUES, Flags.FILE_LOADER_OPEN, true);
             FileLoader.loadLocalFile(info.loc, id);
         }
     }
     
-    private function e_reloadCache(e : Event) : Void
+    private function e_reloadCache(e                       : Dynamic) : Void
     {
-        var chartFile : File;
-        var emb : ExternalChartBase;
-        var cacheObj : Dynamic;
+        var chartFile                       : Dynamic= null;
+        var emb                       : Dynamic= null;
+        var cacheObj                       : Dynamic= null;
         
-        var file : FileFolder = lastSelectedItem.songData;
-        var fileList : Array<FileFolderItem> = file.data;
-        for (chartItem in fileList)
+        var file                       : Dynamic= lastSelectedItem.songData;
+        var fileList                       : Dynamic= file.data;
+        for (chartItem in as3hx.Compat.iter(fileList))
         {
             chartFile = new File(chartItem.loc);
             cacheObj = FileLoader.buildCacheObject(chartFile);
@@ -789,15 +807,15 @@ infoDetails = new Text(songDetails, 5, tY, Reflect.field(infoDisplay, item)[0], 
         buildFileList();
     }
     
-    private function set_lockUI(val : Bool) : Bool
+    private function set_lockUI(val                       : Dynamic) : Bool
     {
         _isLocked = val;
         cancelRequested = false;
-        if (val)
+        if (as3hx.Compat.truthy(val))
         {
             this.addChild(uiLock);
         }
-        else if (this.contains(uiLock))
+        else if (as3hx.Compat.truthy(this.contains(uiLock)))
         {
             this.removeChild(uiLock);
         }
@@ -809,11 +827,13 @@ infoDetails = new Text(songDetails, 5, tY, Reflect.field(infoDisplay, item)[0], 
 
 class FileDirectoryQueue
 {
-    public var dir : File;
-    public var level : Int;
+    private static var e_bannerLoaded                  : Dynamic;
+    private static var e_timerComplete                    : Dynamic;
+    public var dir                       : Dynamic;
+    public var level                       : Dynamic;
     
     @:allow(popups)
-    private function new(dir : File, level : Int)
+    private function new(dir                       : Dynamic, level                       : Dynamic)
     {
         this.dir = dir;
         this.level = level;

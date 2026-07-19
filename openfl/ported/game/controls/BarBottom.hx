@@ -10,19 +10,20 @@ import game.GameOptions;
 
 class BarBottom extends GameControl
 {
-    public var type(never, set) : Float;
+    private static var e_changeHandler                    : Dynamic;
+    public var type(never, set)                       : Dynamic;
 
-    private var options : GameOptions;
+    private var options                       : Dynamic;
     
-    public var lastType : Int = 0;
+    public var lastType                       : Dynamic= 0;
     
-    public var type0 : BarBottomNormal;
-    public var type1 : BarBottomSideways;
+    public var type0                       : Dynamic;
+    public var type1                       : Dynamic;
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -33,11 +34,11 @@ class BarBottom extends GameControl
         type1 = new BarBottomSideways();
     }
     
-    private function set_type(val : Float) : Float
+    private function set_type(val                       : Dynamic) : Float
     {
         this.removeChildren();
         
-        if (val == 1)
+        if (as3hx.Compat.truthy(val == 1))
         {
             addChild(type1);
             lastType = 1;
@@ -57,19 +58,19 @@ class BarBottom extends GameControl
     
     override public function getEditorInterface() : GameControlEditor
     {
-        var self : BarBottom = this;
+        var self                       : Dynamic= this;
         
-        var out : GameControlEditor = super.getEditorInterface();
+        var out                       : Dynamic= super.getEditorInterface();
         
         new Text(out, 10, out.cy, _lang.string("editor_component_alt_layout"));
-        var checkLayout : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 22, e_changeHandler);
+        var checkLayout                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 22, e_changeHandler);
         checkLayout.checked = (lastType == 1);
         
         out.cy += 42;
         
-        var e_changeHandler : Event->Void = function(e : Event) : Void
+        e_changeHandler = function(e                       : Dynamic) : Void
         {
-            if (e.target == checkLayout)
+            if (as3hx.Compat.truthy(e.target == checkLayout))
             {
                 checkLayout.checked = !checkLayout.checked;
                 Reflect.setField(editorLayout, "type", (checkLayout.checked) ? 1 : 0);

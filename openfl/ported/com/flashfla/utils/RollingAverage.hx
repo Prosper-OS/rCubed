@@ -3,13 +3,13 @@ package com.flashfla.utils;
 
 class RollingAverage
 {
-    public var value(get, never) : Int;
+    public var value(get, never)                           : Dynamic;
 
-    private var size : Int;
-    private var data : Array<Int>;
-    private var dataValue : Int;
+    private var size                           : Dynamic;
+    private var data                           : Dynamic;
+    private var dataValue                           : Dynamic;
     
-    public function new(size : Int, value : Int = 0)
+    public function new(size                           : Dynamic, value                           : Dynamic= 0)
     {
         this.size = size;
         this.dataValue = value * size;
@@ -22,13 +22,13 @@ class RollingAverage
         }
     }
     
-    public function addValue(value : Int) : Void
+    public function addValue(value                           : Dynamic) : Void
     {
         dataValue += as3hx.Compat.parseInt(value - data.pop());
         data.unshift(value);
     }
     
-    public function reset(value : Int = 0) : Void
+    public function reset(value                           : Dynamic= 0) : Void
     {
         dataValue = as3hx.Compat.parseInt(value * size);
         for (i in 0...size)

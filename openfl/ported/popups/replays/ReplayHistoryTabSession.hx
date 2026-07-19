@@ -9,12 +9,12 @@ import openfl.events.Event;
 
 class ReplayHistoryTabSession extends ReplayHistoryTabBase
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var btn_import : BoxButton;
+    private var btn_import                       : Dynamic;
     
-    public function new(replayWindow : ReplayHistoryWindow)
+    public function new(replayWindow                       : Dynamic)
     {
         super(replayWindow);
     }
@@ -28,7 +28,7 @@ class ReplayHistoryTabSession extends ReplayHistoryTabBase
     // Add UI Elements
     {
         
-        if (btn_import == null)
+        if (as3hx.Compat.truthy(btn_import == null))
         {
             btn_import = new BoxButton(null, 5, 410, 162, 29, _lang.string("popup_replay_import"), 12, e_importClick);
         }
@@ -42,15 +42,15 @@ class ReplayHistoryTabSession extends ReplayHistoryTabBase
     
     override public function setValues() : Void
     {
-        var render_list : Array<Dynamic> = [];
-        for (r/* AS3HX WARNING could not determine type for var: r exp: EField(EIdent(_gvars),replayHistory) type: null */ in _gvars.replayHistory)
+        var render_list                       : Dynamic= [];
+        for (r/* AS3HX WARNING could not determine type for var: r exp: EField(EIdent(_gvars),replayHistory) type: null */ in as3hx.Compat.iter(_gvars.replayHistory))
         {
-            if (r.song == null)
+            if (as3hx.Compat.truthy(r.song == null))
             {
                 continue;
             }
             
-            if (parent.searchText.length >= 1 && r.song.name.toLowerCase().indexOf(parent.searchText) == -1)
+            if (as3hx.Compat.truthy(parent.searchText.length >= 1 && r.song.name.toLowerCase().indexOf(parent.searchText) == -1))
             {
                 continue;
             }
@@ -61,20 +61,20 @@ class ReplayHistoryTabSession extends ReplayHistoryTabBase
         parent.updateScrollPane();
     }
     
-    private function e_importClick(e : Event) : Void
+    private function e_importClick(e                       : Dynamic) : Void
     {
         new PromptInput(parent, _lang.string("popup_replay_import_window_title"), _lang.string("popup_replay_import"), e_importReplay);
     }
     
-    private function e_importReplay(replayString : String) : Void
+    private function e_importReplay(replayString                       : Dynamic) : Void
     {
-        var r : Replay = new Replay(Date.now().getTime());
+        var r                       : Dynamic= new Replay(Date.now().getTime());
         r.parseEncode(replayString);
-        if (r.isEdited)
+        if (as3hx.Compat.truthy(r.isEdited))
         {
             Alert.add(_lang.string("popup_replay_import_edited"), 180);
         }
-        if (r.isValid())
+        if (as3hx.Compat.truthy(r.isValid()))
         {
             r.loadSongInfo();
             _gvars.replayHistory.unshift(r);

@@ -6,47 +6,47 @@ import openfl.utils.Dictionary;
 
 class MPMatchFFR
 {
-    public var room : MPRoomFFR;
+    public var room                             : Dynamic;
     
-    public var teams : Array<MPMatchFFRTeam> = [];
-    public var teams_map : Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>(true);
+    public var teams                             : Dynamic= [];
+    public var teams_map                             : Dynamic= new Dictionary<Dynamic, Dynamic>(true);
     
-    public var users : Array<MPMatchFFRUser> = [];
-    public var users_map : Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>(true);
+    public var users                             : Dynamic= [];
+    public var users_map                             : Dynamic= new Dictionary<Dynamic, Dynamic>(true);
     
-    public var startTime : Float;
+    public var startTime                             : Dynamic;
     
-    public function new(room : MPRoomFFR)
+    public function new(room                             : Dynamic)
     {
         this.room = room;
     }
     
-    public function build(data : Dynamic) : Void
+    public function build(data                             : Dynamic) : Void
     {
-        var s_users : Dynamic = data.users;
-        var s_teams : Array<Dynamic> = data.teams;
+        var s_users                             : Dynamic= data.users;
+        var s_teams                             : Dynamic= data.teams;
         
         for (t in 0...s_teams.length)
         {
-            var teamData : Dynamic = s_teams[t];
+            var teamData                             : Dynamic= s_teams[t];
             
-            var matchTeam : MPMatchFFRTeam = new MPMatchFFRTeam();
+            var matchTeam                             : Dynamic= new MPMatchFFRTeam();
             matchTeam.update(teamData);
             teams.push(matchTeam);
             teams_map[matchTeam.id] = matchTeam;
             
-            var scores : Array<Dynamic> = teamData.scores;
+            var scores                             : Dynamic= teamData.scores;
             for (s in 0...scores.length)
             {
-                var scoreData : Dynamic = scores[s];
-                var scoreUser : MPUser = room.getUser(scoreData.uid);
+                var scoreData                             : Dynamic= scores[s];
+                var scoreUser                             : Dynamic= room.getUser(scoreData.uid);
                 
-                if (scoreUser == null)
+                if (as3hx.Compat.truthy(scoreUser == null))
                 {
                     scoreUser = new MPUser();
-                    if (Reflect.field(s_users, Std.string(scoreUser.uid)) != null)
+                    if (as3hx.Compat.truthy(as3hx.Compat.field(s_users, scoreUser.uid) != null))
                     {
-                        scoreUser.update(Reflect.field(s_users, Std.string(scoreUser.uid)));
+                        scoreUser.update(as3hx.Compat.field(s_users, scoreUser.uid));
                     }
                     else
                     {
@@ -57,7 +57,7 @@ class MPMatchFFR
                     }
                 }
                 
-                var matchUser : MPMatchFFRUser = new MPMatchFFRUser(room, scoreUser);
+                var matchUser                             : Dynamic= new MPMatchFFRUser(room, scoreUser);
                 matchUser.update(scoreData);
                 matchUser.rate = room.getPlayerSongRate(scoreUser);
                 
@@ -71,28 +71,28 @@ class MPMatchFFR
         startTime = Math.round(haxe.Timer.stamp() * 1000);
     }
     
-    public function update(data : Dynamic) : Void
+    public function update(data                             : Dynamic) : Void
     // Not Built
     {
         
-        if (teams.length == 0)
+        if (as3hx.Compat.truthy(teams.length == 0))
         {
             return;
         }
         
-        var s_teams : Array<Dynamic> = data.teams;
+        var s_teams                             : Dynamic= data.teams;
         
         for (t in 0...s_teams.length)
         {
-            var teamData : Dynamic = s_teams[t];
-            var matchTeam : MPMatchFFRTeam = teams_map[teamData.id];
+            var teamData                             : Dynamic= s_teams[t];
+            var matchTeam                             : Dynamic= teams_map[teamData.id];
             matchTeam.update(teamData);
             
-            var scores : Array<Dynamic> = teamData.scores;
+            var scores                             : Dynamic= teamData.scores;
             for (s in 0...scores.length)
             {
-                var scoreData : Dynamic = scores[s];
-                var matchUser : MPMatchFFRUser = users_map[scoreData.uid];
+                var scoreData                             : Dynamic= scores[s];
+                var matchUser                             : Dynamic= users_map[scoreData.uid];
                 matchUser.update(scoreData);
             }
         }

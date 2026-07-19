@@ -20,17 +20,17 @@ package com.worlize.websocket;
 @:final class WebSocketOpcode
 {
     // non-control opcodes
-    public static inline var CONTINUATION : Int = 0x00;
-    public static inline var TEXT_FRAME : Int = 0x01;
-    public static inline var BINARY_FRAME : Int = 0x02;
-    public static inline var EXT_DATA : Int = 0x03;
+    public static inline var CONTINUATION                          : Dynamic= 0x00;
+    public static inline var TEXT_FRAME                          : Dynamic= 0x01;
+    public static inline var BINARY_FRAME                          : Dynamic= 0x02;
+    public static inline var EXT_DATA                          : Dynamic= 0x03;
     // 0x04 - 0x07 = Reserved for further control frames
     
     // Control opcodes
-    public static inline var CONNECTION_CLOSE : Int = 0x08;
-    public static inline var PING : Int = 0x09;
-    public static inline var PONG : Int = 0x0A;
-    public static inline var EXT_CONTROL : Int = 0x0B;
+    public static inline var CONNECTION_CLOSE                          : Dynamic= 0x08;
+    public static inline var PING                          : Dynamic= 0x09;
+    public static inline var PONG                          : Dynamic= 0x0A;
+    public static inline var EXT_CONTROL                          : Dynamic= 0x0B;
 
     public function new()
     {

@@ -23,33 +23,33 @@ import openfl.ui.Keyboard;
 
 class MPViewChatLogUser extends Sprite
 {
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
     
-    private static inline var HISTORY_LIMIT : Int = 200;
+    private static inline var HISTORY_LIMIT                             : Dynamic= 200;
     
-    private var _width : Float = 0;
-    private var _height : Float = 0;
+    private var _width                             : Dynamic= 0;
+    private var _height                             : Dynamic= 0;
     
-    public var history : MPUserChatHistory;
-    public var user : MPUser;
+    public var history                             : Dynamic;
+    public var user                             : Dynamic;
     
-    public var displayName : String;
+    public var displayName                             : Dynamic;
     
-    private var messagePlaceholderLeft : Text;
-    private var messagePlaceholderRight : Text;
-    private var messageText : BoxText;
-    private var _last_message_text : String = "";
+    private var messagePlaceholderLeft                             : Dynamic;
+    private var messagePlaceholderRight                             : Dynamic;
+    private var messageText                             : Dynamic;
+    private var _last_message_text                             : Dynamic= "";
     
-    private var pane : ScrollPane;
-    private var lastEntry : MPChatLogEntry;
+    private var pane                             : Dynamic;
+    private var lastEntry                             : Dynamic;
     
-    private var scrollbarWidth(default, never) : Float = 15;
-    private var scrollbar : ScrollBar;
+    private var scrollbarWidth(default, never)                             : Dynamic= 15;
+    private var scrollbar                             : Dynamic;
     
-    private var _cachePositions : Array<MPViewChatLogUserCLItemCache> = [];
+    private var _cachePositions                             : Dynamic= [];
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, wid : Float = 0, hei : Float = 0)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, wid                             : Dynamic= 0, hei                             : Dynamic= 0)
     {
         super();
         this.x = xpos;
@@ -58,7 +58,7 @@ class MPViewChatLogUser extends Sprite
         this._width = wid;
         this._height = hei;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -66,7 +66,7 @@ class MPViewChatLogUser extends Sprite
         build();
     }
     
-    public function setHistory(history : MPUserChatHistory) : Void
+    public function setHistory(history                             : Dynamic) : Void
     {
         this.history = history;
         this.user = history.user;
@@ -132,9 +132,9 @@ class MPViewChatLogUser extends Sprite
         this.graphics.lineTo(_width - scrollbarWidth - 1, _height - 30);
     }
     
-    public function onKeyInput(e : KeyboardEvent) : Void
+    public function onKeyInput(e                             : Dynamic) : Void
     {
-        if (e.keyCode == Keyboard.ENTER && e.target == messageText.field)
+        if (as3hx.Compat.truthy(e.keyCode == Keyboard.ENTER && e.target == messageText.field))
         {
             _mp.sendCommand(new MPCUserMessage(user, _last_message_text));
             _last_message_text = "";
@@ -143,20 +143,20 @@ class MPViewChatLogUser extends Sprite
         }
     }
     
-    public function update(e : MPUserEvent) : Void
+    public function update(e                             : Dynamic) : Void
     {
-        if (history == null || history.messages.length <= 0 || e.user.sid != history.user.sid)
+        if (as3hx.Compat.truthy(history == null || history.messages.length <= 0 || e.user.sid != history.user.sid))
         {
             return;
         }
         
         // Find newest rendered message.
-        var found : Bool = false;
-        var i : Int;
+        var found                             : Dynamic= false;
+        var i                             : Dynamic= null;
         i = as3hx.Compat.parseInt(history.messages.length - 1);
-        while (i >= 0)
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            if (history.messages[i] == lastEntry)
+            if (as3hx.Compat.truthy(history.messages[i] == lastEntry))
             {
                 found = true;
                 break;
@@ -165,16 +165,18 @@ class MPViewChatLogUser extends Sprite
         }
         
         // Add all newest messages.
-        for (i in (found) ? i + 1 : 0...history.messages.length)
+        i = (found) ? i + 1 : 0;
+        while (as3hx.Compat.truthy(i < history.messages.length))
         {
-            addItem(history.messages[i]);
+            addItem(history.messages[as3hx.Compat.parseInt(i)]);
+            i++;
         }
         
         history.newMessage = false;
         _mp.dispatchEvent(new MPUserEvent(MPEvent.USER_MESSAGE_READ, null, e.user));
     }
     
-    private function e_onMessageType(e : Event) : Void
+    private function e_onMessageType(e                             : Dynamic) : Void
     {
         _last_message_text = messageText.text;
         messagePlaceholderRight.visible = messagePlaceholderLeft.visible = (_last_message_text.length <= 0);
@@ -186,12 +188,12 @@ class MPViewChatLogUser extends Sprite
         
         as3hx.Compat.setArrayLength(_cachePositions, 0);
         
-        var startY : Int = 5;
-        var endY : Int;
+        var startY                             : Dynamic= 5;
+        var endY                             : Dynamic= null;
         
         for (i in 0...history.messages.length)
         {
-            var entry : MPChatLogEntry = history.messages[i];
+            var entry                             : Dynamic= history.messages[i];
             
             entry.build(pane.width - 1);
             
@@ -204,22 +206,22 @@ class MPViewChatLogUser extends Sprite
             startY = endY;
         }
         
-        lastEntry = _cachePositions[_cachePositions.length - 1].entry;
+        lastEntry = _cachePositions[as3hx.Compat.parseInt(_cachePositions.length - 1)].entry;
         
         pane.update();
         scrollbar.draggerVisibility = startY > pane.height;
         scrollbar.scrollTo((scrollbar.draggerVisibility) ? 1 : 0);
     }
     
-    public function addItem(entry : MPChatLogEntry) : Void
+    public function addItem(entry                             : Dynamic) : Void
     // Build Item Elements
     {
         
         entry.build(pane.width - 1);
         
         // Get Start and End Y Positions
-        var startY : Int = _cachePositions[_cachePositions.length - 1].endY;
-        var endY : Int = as3hx.Compat.parseInt(startY + entry.height);
+        var startY                             : Dynamic= _cachePositions[as3hx.Compat.parseInt(_cachePositions.length - 1)].endY;
+        var endY                             : Dynamic= as3hx.Compat.parseInt(startY + entry.height);
         _cachePositions.push(new MPViewChatLogUserCLItemCache(entry, startY, endY));
         
         // Add to Pane
@@ -230,16 +232,16 @@ class MPViewChatLogUser extends Sprite
         scrollbar.draggerVisibility = endY > pane.height;
     }
     
-    private function addPaneChild(entry : MPChatLogEntry) : Void
+    private function addPaneChild(entry                             : Dynamic) : Void
     {
-        var lastScrollPosition : Float = scrollbar.scroll;
-        var lastCacheItem : MPViewChatLogUserCLItemCache = _cachePositions[_cachePositions.length - 1];
-        var shouldScrollStart : Bool = lastCacheItem.startY < pane.height && lastCacheItem.endY > pane.height;  // Item crosses height bounds.  
-        var yShiftValue : Int = 0;
+        var lastScrollPosition                             : Dynamic= scrollbar.scroll;
+        var lastCacheItem                             : Dynamic= _cachePositions[as3hx.Compat.parseInt(_cachePositions.length - 1)];
+        var shouldScrollStart                             : Dynamic= lastCacheItem.startY < pane.height && lastCacheItem.endY > pane.height;  // Item crosses height bounds.  
+        var yShiftValue                             : Dynamic= 0;
         
-        if (_cachePositions.length > HISTORY_LIMIT)
+        if (as3hx.Compat.truthy(_cachePositions.length > HISTORY_LIMIT))
         {
-            while (_cachePositions.length > HISTORY_LIMIT)
+            while (as3hx.Compat.truthy(_cachePositions.length > HISTORY_LIMIT))
             {
                 pane.content.removeChild(_cachePositions[0].entry);
                 _cachePositions.shift();
@@ -248,8 +250,8 @@ class MPViewChatLogUser extends Sprite
             yShiftValue = _cachePositions[0].startY;
             
             // Reposition All Items
-            var historyItem : MPViewChatLogUserCLItemCache;
-            var lastY : Int = 0;
+            var historyItem                             : Dynamic= null;
+            var lastY                             : Dynamic= 0;
             for (i in 0...HISTORY_LIMIT)
             {
                 historyItem = _cachePositions[i];
@@ -264,7 +266,7 @@ class MPViewChatLogUser extends Sprite
         pane.content.addChild(entry);
         
         // Scroll Newest if near bottom, or scroll has started.
-        if (lastScrollPosition > 0.99 || shouldScrollStart)
+        if (as3hx.Compat.truthy(lastScrollPosition > 0.99 || shouldScrollStart))
         {
             pane.update();
             
@@ -278,7 +280,7 @@ class MPViewChatLogUser extends Sprite
             {
                 pane.content.y += yShiftValue;
                 
-                if (pane.content.y > 0)
+                if (as3hx.Compat.truthy(pane.content.y > 0))
                 {
                     pane.content.y = 0;
                 }
@@ -295,22 +297,22 @@ class MPViewChatLogUser extends Sprite
      * Moves the scroll pane based on the scroll delta direction.
      * @param e
      */
-    private function e_mouseWheelHandler(e : MouseEvent) : Void
+    private function e_mouseWheelHandler(e                             : Dynamic) : Void
     // Sanity
     {
         
-        if (!scrollbar.draggerVisibility)
+        if (as3hx.Compat.truthy(!scrollbar.draggerVisibility))
         {
             return;
         }
         
         // Scroll
-        var newScrollPosition : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var newScrollPosition                             : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(newScrollPosition);
         scrollbar.scrollTo(newScrollPosition);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                             : Dynamic) : Void
     {
         pane.scrollTo(e.target.scroll);
     }
@@ -320,12 +322,12 @@ class MPViewChatLogUser extends Sprite
 
 class MPViewChatLogUserCLItemCache
 {
-    public var startY : Float;
-    public var endY : Float;
-    public var entry : MPChatLogEntry;
+    public var startY                             : Dynamic;
+    public var endY                             : Dynamic;
+    public var entry                             : Dynamic;
     
     @:allow(classes.mp.components)
-    private function new(entry : MPChatLogEntry, startY : Float, endY : Float)
+    private function new(entry                             : Dynamic, startY                             : Dynamic, endY                             : Dynamic)
     {
         this.startY = startY;
         this.endY = endY;

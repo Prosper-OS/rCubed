@@ -14,23 +14,24 @@ import game.GameOptions;
 
 class Combo extends GameControl
 {
-    public var alignment(never, set) : String;
+    private static var e_changeHandler                    : Dynamic;
+    public var alignment(never, set)                       : Dynamic;
 
-    private var options : GameOptions;
+    private var options                       : Dynamic;
     
-    private var colors : Array<Float>;
-    private var colors_dark : Array<Float>;
-    private var colors_enabled : Array<Bool>;
+    private var colors                       : Dynamic;
+    private var colors_dark                       : Dynamic;
+    private var colors_enabled                       : Dynamic;
     
-    private var field : TextField;
-    private var fieldShadow : TextField;
+    private var field                       : Dynamic;
+    private var fieldShadow                       : Dynamic;
     
-    private var lastText : String;
+    private var lastText                       : Dynamic;
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -79,14 +80,14 @@ class Combo extends GameControl
         
         lastText = field.text;
         
-        if (options != null && options.isAutoplay && !options.isEditor)
+        if (as3hx.Compat.truthy(options != null && options.isAutoplay && !options.isEditor))
         {
             field.textColor = 0xD00000;
             fieldShadow.textColor = 0x5B0000;
         }
     }
     
-    public function update(combo : Int, amazing : Int = 0, perfect : Int = 0, good : Int = 0, average : Int = 0, miss : Int = 0, boo : Int = 0, raw_goods : Float = 0) : Void
+    public function update(combo                       : Dynamic, amazing                       : Dynamic= 0, perfect                       : Dynamic= 0, good                       : Dynamic= 0, average                       : Dynamic= 0, miss                       : Dynamic= 0, boo                       : Dynamic= 0, raw_goods                       : Dynamic= 0) : Void
     {
         field.text = Std.string(combo);
         fieldShadow.text = Std.string(combo);
@@ -105,51 +106,51 @@ class Combo extends GameControl
            [8] = Raw Goods
          */
         
-        if (options != null && (!options.isAutoplay || options.isEditor))
+        if (as3hx.Compat.truthy(options != null && (!options.isAutoplay || options.isEditor)))
         {
-            if (colors_enabled[2] != null && good + average + boo + miss == 0) {
+            if (as3hx.Compat.truthy(colors_enabled[2] != null && good + average + boo + miss == 0)) {
 {
                     field.textColor = colors[2];
                     fieldShadow.textColor = colors_dark[2];
                 }
             }
-            else if (colors_enabled[6] != null && boo == 1 && good + average + miss == 0) {
+            else if (as3hx.Compat.truthy(colors_enabled[6] != null && boo == 1 && good + average + miss == 0)) {
 {
                     field.textColor = colors[6];
                     fieldShadow.textColor = colors_dark[6];
                 }
             }
-            else if (colors_enabled[4] != null && good == 1 && average + boo + miss == 0) {
+            else if (as3hx.Compat.truthy(colors_enabled[4] != null && good == 1 && average + boo + miss == 0)) {
 {
                     field.textColor = colors[4];
                     fieldShadow.textColor = colors_dark[4];
                 }
             }
-            else if (colors_enabled[5] != null && average == 1 && good + boo + miss == 0) {
+            else if (as3hx.Compat.truthy(colors_enabled[5] != null && average == 1 && good + boo + miss == 0)) {
 {
                     field.textColor = colors[5];
                     fieldShadow.textColor = colors_dark[5];
                 }
             }
-            else if (colors_enabled[7] != null && miss == 1 && good + average + boo == 0) {
+            else if (as3hx.Compat.truthy(colors_enabled[7] != null && miss == 1 && good + average + boo == 0)) {
 {
                     field.textColor = colors[7];
                     fieldShadow.textColor = colors_dark[7];
                 }
             }
-            else if (colors_enabled[8] != null && raw_goods >= options.rawGoodTracker) {
+            else if (as3hx.Compat.truthy(colors_enabled[8] != null && raw_goods >= options.rawGoodTracker)) {
 {
                     field.textColor = colors[8];
                     fieldShadow.textColor = colors_dark[8];
                 }
             }
-            else if (colors_enabled[3] != null && raw_goods < 10) {
+            else if (as3hx.Compat.truthy(colors_enabled[3] != null && raw_goods < 10)) {
 {
                     field.textColor = colors[3];
                     fieldShadow.textColor = colors_dark[3];
                 }
             }
-            else if (colors_enabled[1] != null && miss == 0) {
+            else if (as3hx.Compat.truthy(colors_enabled[1] != null && miss == 0)) {
 {
                     field.textColor = colors[1];
                     fieldShadow.textColor = colors_dark[1];
@@ -167,7 +168,7 @@ class Combo extends GameControl
         }
     }
     
-    private function set_alignment(value : String) : String
+    private function set_alignment(value                       : Dynamic) : String
     {
         field.htmlText = "";
         field.autoSize = TextFieldAutoSize.NONE;
@@ -187,45 +188,45 @@ class Combo extends GameControl
     
     override public function getEditorInterface() : GameControlEditor
     {
-        var self : Combo = this;
+        var self                       : Dynamic= this;
         
-        var out : GameControlEditor = super.getEditorInterface();
+        var out                       : Dynamic= super.getEditorInterface();
         
         new Text(out, 10, out.cy, _lang.string("editor_component_alignment"));
         out.cy += 24;
         
-        var checkAlignLeft : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
+        var checkAlignLeft                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
         checkAlignLeft.checked = (field.autoSize == "left");
         new Text(out, 30, out.cy, _lang.string("editor_component_left"));
         out.cy += 22;
         
-        var checkAlignCenter : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
+        var checkAlignCenter                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
         checkAlignCenter.checked = (field.autoSize == "center");
         new Text(out, 30, out.cy, _lang.string("editor_component_center"));
         out.cy += 22;
         
-        var checkAlignRight : BoxCheck = new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
+        var checkAlignRight                       : Dynamic= new BoxCheck(out, 10 + 3, out.cy + 3, e_changeHandler);
         checkAlignRight.checked = (field.autoSize == "right");
         new Text(out, 30, out.cy, _lang.string("editor_component_right"));
         out.cy += 22;
         
-        var e_changeHandler : Event->Void = function(e : Event) : Void
+        e_changeHandler = function(e                       : Dynamic) : Void
         {
-            if (e.target == checkAlignLeft)
+            if (as3hx.Compat.truthy(e.target == checkAlignLeft))
             {
                 checkAlignLeft.checked = true;
                 checkAlignCenter.checked = checkAlignRight.checked = false;
                 Reflect.setField(editorLayout, "alignment", "left");
                 self.alignment = Reflect.field(editorLayout, "alignment");
             }
-            if (e.target == checkAlignCenter)
+            if (as3hx.Compat.truthy(e.target == checkAlignCenter))
             {
                 checkAlignCenter.checked = true;
                 checkAlignLeft.checked = checkAlignRight.checked = false;
                 Reflect.setField(editorLayout, "alignment", "center");
                 self.alignment = Reflect.field(editorLayout, "alignment");
             }
-            if (e.target == checkAlignRight)
+            if (as3hx.Compat.truthy(e.target == checkAlignRight))
             {
                 checkAlignRight.checked = true;
                 checkAlignLeft.checked = checkAlignCenter.checked = false;

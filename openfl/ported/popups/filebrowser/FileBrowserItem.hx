@@ -8,41 +8,41 @@ import popups.filebrowser.FileFolder;
 
 class FileBrowserItem extends Sprite
 {
-    public var highlight(get, set) : Bool;
+    public var highlight(get, set)                       : Dynamic;
 
-    public static inline var FIXED_WIDTH : Int = 500;
-    public static inline var FIXED_HEIGHT : Int = 42;
+    public static inline var FIXED_WIDTH                       : Dynamic= 500;
+    public static inline var FIXED_HEIGHT                       : Dynamic= 42;
     
-    private static var COLUMN_COLORS : Array<Dynamic> = [null, "c1ffff", "e3ffcc", "edddff", "ffffff", "67c7f7", "1ddb00", "ffb600", "f40202", "ac00e5", "7641f2"];
-    private static var EXT_COLORS : Dynamic = {
+    private static var COLUMN_COLORS                       : Dynamic= [null, "c1ffff", "e3ffcc", "edddff", "ffffff", "67c7f7", "1ddb00", "ffb600", "f40202", "ac00e5", "7641f2"];
+    private static var EXT_COLORS                       : Dynamic= {
             sm : 0x0f78ad,
             ssc : 0xce4f00,
             osu : 0xdd73d6,
             qua : 0xa168c9
         };
     
-    private var COLUMN_COUNTS : Array<Int> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    private var COLUMN_COUNTS                       : Dynamic= [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     
     /** Index in Vector */
-    public var index : Int = 0;
+    public var index                       : Dynamic= 0;
     
     /** Marks the Button as in-use to avoid removal in song selector. */
-    public var isStale : Bool = true;
+    public var isStale                       : Dynamic= true;
     
-    public var songData : FileFolder;
+    public var songData                       : Dynamic;
     
-    private var _color : Int = 0x000000;
-    private var _highcolor : Int = 0x000000;
+    private var _color                       : Dynamic= 0x000000;
+    private var _highcolor                       : Dynamic= 0x000000;
     
-    private var _over : Bool = false;
-    private var _highlight : Bool = false;
+    private var _over                       : Dynamic= false;
+    private var _highlight                       : Dynamic= false;
     
-    private var _lblSongName : Text;
-    private var _lblAuthorName : Text;
-    private var _lblType : Text;
-    private var _lblColumnType : Text;
+    private var _lblSongName                       : Dynamic;
+    private var _lblAuthorName                       : Dynamic;
+    private var _lblType                       : Dynamic;
+    private var _lblColumnType                       : Dynamic;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                       : Dynamic= null, xpos                       : Dynamic= 0, ypos                       : Dynamic= 0)
     {
         super();
         COLUMN_COUNTS.fixed = true;
@@ -55,7 +55,7 @@ class FileBrowserItem extends Sprite
         this.useHandCursor = true;
         this.mouseChildren = false;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -85,7 +85,7 @@ class FileBrowserItem extends Sprite
     {
         this.graphics.clear();
         this.graphics.lineStyle(1, 0xFFFFFF, 0.35, true);
-        if (highlight)
+        if (as3hx.Compat.truthy(highlight))
         {
             this.graphics.beginFill(0x777777, 0.5);
         }
@@ -96,7 +96,7 @@ class FileBrowserItem extends Sprite
         this.graphics.drawRect(0, 0, FIXED_WIDTH, FIXED_HEIGHT);
         this.graphics.endFill();
         
-        var textWidth : Int = _lblType.textfield.textWidth;
+        var textWidth                       : Dynamic= _lblType.textfield.textWidth;
         this.graphics.lineStyle(0, 0, 0, true);
         this.graphics.beginFill(_color, 0.75);
         this.graphics.drawRoundRectComplex(FIXED_WIDTH - textWidth - 10, 1, textWidth + 10, 17, 0, 0, 5, 0);
@@ -112,11 +112,11 @@ class FileBrowserItem extends Sprite
     // public methods
     ///////////////////////////////////
     
-    private var chartLookIndex : Int;
-    private var chartLookChartIndex : Int;
-    private var chartLookData : Array<Dynamic>;
+    private var chartLookIndex                       : Dynamic;
+    private var chartLookChartIndex                       : Dynamic;
+    private var chartLookData                       : Dynamic;
     
-    public function setData(songData : FileFolder) : Void
+    public function setData(songData                       : Dynamic) : Void
     {
         this.songData = songData;
         _lblSongName.text = songData.name;
@@ -135,23 +135,23 @@ class FileBrowserItem extends Sprite
             chartLookData = songData.data[chartLookIndex].info.chart;
             for (chartLookChartIndex in 0...chartLookData.length)
             {
-                Reflect.field(COLUMN_COUNTS, Std.string(Reflect.field(chartLookData[chartLookChartIndex], "type")))++;
+                Reflect.setField(COLUMN_COUNTS, Std.string(Reflect.field(chartLookData[chartLookChartIndex], "type")), as3hx.Compat.parseInt(as3hx.Compat.field(COLUMN_COUNTS, Reflect.field(chartLookData[chartLookChartIndex], "type"))) + 1);
             }
         }
         
         // Build
-        var columnString : String = "";
+        var columnString                       : Dynamic= "";
         for (chartLookIndex in 4...COLUMN_COUNTS.length)
         {
-            if (COLUMN_COUNTS[chartLookIndex] > 0)
+            if (as3hx.Compat.truthy(COLUMN_COUNTS[chartLookIndex] > 0))
             {
-                columnString += "<font color=\"#" + (COLUMN_COLORS[chartLookIndex] || "ffffff") + "\">" + chartLookIndex + "K</font>  ";
+                columnString += "<font color=\"#" + (as3hx.Compat.orValue(COLUMN_COLORS[chartLookIndex], "ffffff")) + "\">" + chartLookIndex + "K</font>  ";
             }
         }
         
         _lblColumnType.text = columnString.substring(0, columnString.length - 2);
         
-        _color = (Reflect.field(EXT_COLORS, Std.string(songData.ext)) || 0) ? 1 : 0;
+        _color = as3hx.Compat.parseInt(as3hx.Compat.orValue(as3hx.Compat.field(EXT_COLORS, songData.ext), 0));
         
         drawBox();
     }
@@ -164,7 +164,7 @@ class FileBrowserItem extends Sprite
      * Internal mouseOver handler.
      * @param event The MouseEvent passed by the system.
      */
-    private function onMouseOver(event : MouseEvent) : Void
+    public function onMouseOver(event                       : Dynamic) : Void
     {
         _over = true;
         addEventListener(MouseEvent.ROLL_OUT, onMouseOut);
@@ -175,7 +175,7 @@ class FileBrowserItem extends Sprite
      * Internal mouseOut handler.
      * @param event The MouseEvent passed by the system.
      */
-    private function onMouseOut(event : MouseEvent) : Void
+    public function onMouseOut(event                       : Dynamic) : Void
     {
         _over = false;
         removeEventListener(MouseEvent.ROLL_OUT, onMouseOut);
@@ -190,7 +190,7 @@ class FileBrowserItem extends Sprite
         return _highlight || _over;
     }
     
-    private function set_highlight(val : Bool) : Bool
+    private function set_highlight(val                       : Dynamic) : Bool
     {
         _highlight = val;
         drawBox();

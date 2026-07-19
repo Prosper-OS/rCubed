@@ -6,13 +6,13 @@ import game.GameOptions;
 
 class NoteMod
 {
-    private var song : Song;
-    private var notes : Array<Note>;
-    private var shuffle : Array<Dynamic>;
-    private var lastChord : Dynamic;
+    private var song                             : Dynamic;
+    private var notes                             : Dynamic;
+    private var shuffle                             : Dynamic;
+    private var lastChord                             : Dynamic;
     
-    private var DIRECTIONS(default, never) : Array<Dynamic> = ["L", "D", "U", "R"];
-    private var HALF_COLOR(default, never) : Dynamic = {
+    private var DIRECTIONS(default, never)                             : Dynamic= ["L", "D", "U", "R"];
+    private var HALF_COLOR(default, never)                             : Dynamic= {
             red : "red",
             blue : "red",
             purple : "purple",
@@ -23,31 +23,30 @@ class NoteMod
             green : "orange",
             white : "white"
         };
-    private var COLUMN_COLOR(default, never) : Array<Dynamic> = ["red", "blue", "yellow", "green"];
+    private var COLUMN_COLOR(default, never)                             : Dynamic= ["red", "blue", "yellow", "green"];
     
-    public var options : GameOptions;
+    public var options                             : Dynamic;
     
-    public var modDark : Bool;
-    public var modHidden : Bool;
-    public var modMirror : Bool;
-    public var modRandom : Bool;
-    public var modScramble : Bool;
-    public var modShuffle : Bool;
-    public var modReverse : Bool;
-    public var modColumnColor : Bool;
-    public var modHalfTime : Bool;
-    public var modNoBackground : Bool;
-    public var modIsolation : Bool;
-    public var modOffset : Bool;
-    public var modRate : Bool;
-    public var modJudgeWindow : Bool;
+    public var modDark                             : Dynamic;
+    public var modHidden                             : Dynamic;
+    public var modMirror                             : Dynamic;
+    public var modRandom                             : Dynamic;
+    public var modScramble                             : Dynamic;
+    public var modShuffle                             : Dynamic;
+    public var modReverse                             : Dynamic;
+    public var modColumnColor                             : Dynamic;
+    public var modHalfTime                             : Dynamic;
+    public var modNoBackground                             : Dynamic;
+    public var modIsolation                             : Dynamic;
+    public var modOffset                             : Dynamic;
+    public var modRate                             : Dynamic;
+    public var modJudgeWindow                             : Dynamic;
     
-    private var reverseLastFrame : Int;
-    private var reverseLastPos : Float;
+    private var reverseLastFrame                             : Dynamic;
+    private var reverseLastPos                             : Dynamic;
     
-    public function new(song : Song, options : GameOptions)
+    public function new(song                             : Dynamic, options                             : Dynamic)
     {
-        super();
         this.song = song;
         this.options = options;
         
@@ -75,19 +74,19 @@ class NoteMod
         reverseLastPos = -1;
     }
     
-    public function start(options : GameOptions) : Void
+    public function start(options                             : Dynamic) : Void
     {
         this.options = options;
         
         updateMods();
         
-        if (modShuffle)
+        if (as3hx.Compat.truthy(modShuffle))
         {
             shuffle = new Array<Dynamic>();
             for (i in 0...4)
             {
-                var map : Int;
-                while (Lambda.indexOf(shuffle, map = as3hx.Compat.parseInt(Math.random() * 4)) >= 0)
+                var map                             : Dynamic= null;
+                while (as3hx.Compat.truthy(Lambda.indexOf(shuffle, map = as3hx.Compat.parseInt(Math.random() * 4)) >= 0))
                 {
                 }
                 shuffle.push(map);
@@ -104,19 +103,19 @@ class NoteMod
                 };
     }
     
-    private function valueOfDirection(direction : String) : Int
+    private function valueOfDirection(direction                             : Dynamic) : Int
     {
         return Lambda.indexOf(DIRECTIONS, direction.charAt(0));
     }
     
-    private function directionOfValue(value : Int) : String
+    private function directionOfValue(value                             : Dynamic) : String
     {
         return Std.string(DIRECTIONS[value]);
     }
     
-    public static function noteModRequired(options : GameOptions) : Bool
+    public static function noteModRequired(options                             : Dynamic) : Bool
     {
-        var mod : NoteMod = new NoteMod(null, options);
+        var mod                             : Dynamic= new NoteMod(null, options);
         return mod.required();
     }
     
@@ -125,89 +124,89 @@ class NoteMod
         return modIsolation || modRandom || modScramble || modShuffle || modColumnColor || modHalfTime || modMirror || modOffset || modRate;
     }
     
-    public function transformNote(index : Int) : Note
+    public function transformNote(index                             : Dynamic) : Note
     {
-        if (modIsolation)
+        if (as3hx.Compat.truthy(modIsolation))
         {
             index += options.isolationOffset;
         }
         
-        if (modReverse)
+        if (as3hx.Compat.truthy(modReverse))
         {
             index = as3hx.Compat.parseInt(notes.length - 1 - index);
-            if (reverseLastFrame < 0)
+            if (as3hx.Compat.truthy(reverseLastFrame < 0))
             {
-                reverseLastFrame = as3hx.Compat.parseInt(notes[notes.length - 1].frame - song.musicStartFrames * 2);
-                reverseLastPos = notes[notes.length - 1].time - ((song.musicStartFrames * 2) / 30);
+                reverseLastFrame = as3hx.Compat.parseInt(notes[as3hx.Compat.parseInt(notes.length - 1)].frame - song.musicStartFrames * 2);
+                reverseLastPos = notes[as3hx.Compat.parseInt(notes.length - 1)].time - ((song.musicStartFrames * 2) / 30);
             }
         }
         
-        var note : Note = notes[index];
-        if (note == null)
+        var note                           : Dynamic= notes[as3hx.Compat.parseInt(index)];
+        if (as3hx.Compat.truthy(note == null))
         {
             return null;
         }
         
-        var pos : Float = note.time;
-        var color : String = note.color;
-        var frame : Float = note.frame;
-        var dir : Int = valueOfDirection(note.direction);
+        var pos                             : Dynamic= note.time;
+        var color                             : Dynamic= note.color;
+        var frame                             : Dynamic= note.frame;
+        var dir                             : Dynamic= valueOfDirection(note.direction);
         
         frame -= song.musicStartFrames;
         pos -= (song.musicStartFrames / 30);
         
-        if (modReverse)
+        if (as3hx.Compat.truthy(modReverse))
         {
             frame = reverseLastFrame - frame + song.mp3Frame + 60;
             pos = reverseLastPos - pos + (song.mp3Frame + 60) / 30;
         }
         
-        if (modRate)
+        if (as3hx.Compat.truthy(modRate))
         {
             pos /= options.songRate;
             frame /= options.songRate;
         }
         
-        if (modOffset)
+        if (as3hx.Compat.truthy(modOffset))
         {
-            var goffset : Int = Math.round(options.chartOffset);
+            var goffset                             : Dynamic= Math.round(options.chartOffset);
             frame += goffset;
             pos += goffset / 30;
         }
         
-        if (modMirror)
+        if (as3hx.Compat.truthy(modMirror))
         {
             dir = as3hx.Compat.parseInt(-dir + 3);
         }
         
-        if (modShuffle)
+        if (as3hx.Compat.truthy(modShuffle))
         {
             dir = shuffle[dir];
         }
         
-        if (modRandom || modScramble)
+        if (as3hx.Compat.truthy(modRandom || modScramble))
         {
-            if (lastChord.frame != as3hx.Compat.parseInt(frame))
+            if (as3hx.Compat.truthy(lastChord.frame != as3hx.Compat.parseInt(frame)))
             {
                 lastChord.frame = as3hx.Compat.parseInt(frame);
                 lastChord.previousValues = lastChord.values;
                 lastChord.values = [];
                 lastChord.notes = [];
             }
-            var value : Dynamic = lastChord.values[lastChord.notes.indexOf(note)];
-            if (value != null)
+            var value                             : Dynamic= lastChord.values[lastChord.notes.indexOf(note)];
+            if (as3hx.Compat.truthy(value != null))
             {
                 dir = as3hx.Compat.parseInt(value);
             }
             else
             {
-                while (lastChord.values.indexOf(dir = as3hx.Compat.parseInt(Math.random() * 4)) != -1)
+                while (as3hx.Compat.truthy(lastChord.values.indexOf(dir = as3hx.Compat.parseInt(Math.random() * 4)) != -1))
                 {
                 }
-                var i : Int = 0;
-                while (i < 3 && modScramble && lastChord.previousValues.indexOf(dir) != -1)
+                var i                             : Dynamic= 0;
+                while (as3hx.Compat.truthy(i < 3 && modScramble && lastChord.previousValues.indexOf(dir) != -1))
                 {
-                    while (lastChord.values.indexOf(dir = as3hx.Compat.parseInt(Math.random() * 4)) != -1)
+                    while (as3hx.Compat.truthy(lastChord.values.indexOf(dir = as3hx.Compat.parseInt(Math.random() * 4)) != -1))
                     {
                     }
                     i++;
@@ -217,14 +216,14 @@ class NoteMod
             }
         }
         
-        if (modColumnColor)
+        if (as3hx.Compat.truthy(modColumnColor))
         {
-            color = COLUMN_COLOR[dir % 4];
+            color = COLUMN_COLOR[as3hx.Compat.parseInt(dir % 4)];
         }
         
-        if (modHalfTime)
+        if (as3hx.Compat.truthy(modHalfTime))
         {
-            color = Reflect.field(HALF_COLOR, color) || color;
+            color = as3hx.Compat.orValue(Reflect.field(HALF_COLOR, color), color);
         }
         
         return new Note(directionOfValue(dir), pos, color, as3hx.Compat.parseInt(frame));
@@ -232,20 +231,20 @@ class NoteMod
     
     public function transformTotalNotes() : Int
     {
-        if (notes == null)
+        if (as3hx.Compat.truthy(notes == null))
         {
             return 0;
         }
         
-        if (modIsolation)
+        if (as3hx.Compat.truthy(modIsolation))
         {
-            if (options.isolationLength > 0)
+            if (as3hx.Compat.truthy(options.isolationLength > 0))
             {
-                return Math.min(options.isolationLength, Math.max(1, notes.length - options.isolationOffset));
+                return as3hx.Compat.parseInt(Math.min(options.isolationLength, Math.max(1, notes.length - options.isolationOffset)));
             }
             else
             {
-                return Math.max(1, notes.length - options.isolationOffset);
+                return as3hx.Compat.parseInt(Math.max(1, notes.length - options.isolationOffset));
             }
         }
         return notes.length;
@@ -253,32 +252,32 @@ class NoteMod
     
     public function transformSongLength() : Float
     {
-        if (notes == null || notes.length <= 0)
+        if (as3hx.Compat.truthy(notes == null || notes.length <= 0))
         {
             return 0;
         }
         
-        var firstNote : Note;
-        var lastNote : Note = notes[notes.length - 1];
-        var time : Float = lastNote.time;
+        var firstNote                             : Dynamic= null;
+        var lastNote                             : Dynamic= notes[as3hx.Compat.parseInt(notes.length - 1)];
+        var time                             : Dynamic= lastNote.time;
         
-        if (modIsolation)
+        if (as3hx.Compat.truthy(modIsolation))
         {
-            if (options.isolationLength > 0)
+            if (as3hx.Compat.truthy(options.isolationLength > 0))
             {
-                firstNote = notes[Math.min(notes.length - 1, options.isolationOffset)];
-                lastNote = notes[Math.min(notes.length - 1, options.isolationOffset + options.isolationLength)];
+                firstNote = notes[as3hx.Compat.parseInt(Math.min(notes.length - 1, options.isolationOffset))];
+                lastNote = notes[as3hx.Compat.parseInt(Math.min(notes.length - 1, options.isolationOffset + options.isolationLength))];
                 time = lastNote.time - firstNote.time;
             }
             else
             {
-                firstNote = notes[Math.min(notes.length - 1, options.isolationOffset)];
+                firstNote = notes[as3hx.Compat.parseInt(Math.min(notes.length - 1, options.isolationOffset))];
                 time = lastNote.time - firstNote.time;
             }
         }
         
         // Rates after everything.
-        if (modRate)
+        if (as3hx.Compat.truthy(modRate))
         {
             time /= options.songRate;
         }

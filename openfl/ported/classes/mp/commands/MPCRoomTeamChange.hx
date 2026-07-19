@@ -5,10 +5,10 @@ import classes.mp.room.MPRoom;
 
 class MPCRoomTeamChange implements IMPCommand
 {
-    public var room : MPRoom;
-    public var team : MPTeam;
+    public var room                             : Dynamic;
+    public var team                             : Dynamic;
     
-    public function new(room : MPRoom, team : MPTeam)
+    public function new(room                             : Dynamic, team                             : Dynamic)
     {
         this.room = room;
         this.team = team;
@@ -16,7 +16,7 @@ class MPCRoomTeamChange implements IMPCommand
     
     public function toJSON() : String
     {
-        var data : Dynamic = {
+        var data                             : Dynamic= {
             uid : room.uid,
             team : team.uid
         };

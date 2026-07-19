@@ -49,55 +49,55 @@ import popups.settings.SettingsWindow;
 
 class Main extends MenuPanel
 {
-    public static inline var GAME_WIDTH : Int = 780;
-    public static inline var GAME_HEIGHT : Int = 480;
-    public static var VSYNC_SUPPORT : Bool = false;
-    public static var window : NativeWindow;
+    public static inline var GAME_WIDTH                              : Dynamic= 780;
+    public static inline var GAME_HEIGHT                              : Dynamic= 480;
+    public static var VSYNC_SUPPORT                              : Dynamic= false;
+    public static var window                              : Dynamic;
     
-    public static inline var GAME_LOGIN_PANEL : String = "GameLoginPanel";
-    public static inline var GAME_MENU_PANEL : String = "GameMenuPanel";
-    public static inline var GAME_PLAY_PANEL : String = "GamePlayPanel";
-    public static inline var POPUP_OPTIONS : String = "PopupOptions";
-    public static inline var POPUP_HELP : String = "PopupHelp";
-    public static inline var POPUP_REPLAY_HISTORY : String = "PopupReplayHistory";
-    public static inline var EVENT_PANEL_SWITCHED : String = "MainEventSwitched";
+    public static inline var GAME_LOGIN_PANEL                              : Dynamic= "GameLoginPanel";
+    public static inline var GAME_MENU_PANEL                              : Dynamic= "GameMenuPanel";
+    public static inline var GAME_PLAY_PANEL                              : Dynamic= "GamePlayPanel";
+    public static inline var POPUP_OPTIONS                              : Dynamic= "PopupOptions";
+    public static inline var POPUP_HELP                              : Dynamic= "PopupHelp";
+    public static inline var POPUP_REPLAY_HISTORY                              : Dynamic= "PopupReplayHistory";
+    public static inline var EVENT_PANEL_SWITCHED                              : Dynamic= "MainEventSwitched";
     
-    public static var WINDOW_WIDTH_EXTRA : Float = 0;
-    public static var WINDOW_HEIGHT_EXTRA : Float = 0;
+    public static var WINDOW_WIDTH_EXTRA                              : Dynamic= 0;
+    public static var WINDOW_HEIGHT_EXTRA                              : Dynamic= 0;
     
-    public var _lang : Language = Language.instance;
-    public var _gvars : GlobalVariables = GlobalVariables.instance;
-    public var _site : Site = Site.instance;
-    public var _playlist : Playlist = Playlist.instance;
-    public var _noteskins : Noteskins = Noteskins.instance;
+    public var _lang                              : Dynamic= Language.instance;
+    public var _gvars                              : Dynamic= GlobalVariables.instance;
+    public var _site                              : Dynamic= Site.instance;
+    public var _playlist                              : Dynamic= Playlist.instance;
+    public var _noteskins                              : Dynamic= Noteskins.instance;
     
-    public var loadTimer : Int = 0;
-    public var preloader : ProgressBar;
-    public var loadScripts : Int = 0;
-    public var loadTotal : Int;
-    public var isLoginLoad : Bool = false;
-    public var loadComplete : Bool = false;
-    public var retryLoadButton : BoxButton;
-    public var disablePopups : Bool = false;
-    public var ignoreWindowChanges : Bool = false;
+    public var loadTimer                              : Dynamic= 0;
+    public var preloader                              : Dynamic;
+    public var loadScripts                              : Dynamic= 0;
+    public var loadTotal                              : Dynamic;
+    public var isLoginLoad                              : Dynamic= false;
+    public var loadComplete                              : Dynamic= false;
+    public var retryLoadButton                              : Dynamic;
+    public var disablePopups                              : Dynamic= false;
+    public var ignoreWindowChanges                              : Dynamic= false;
     
-    private var popupQueue : Array<Dynamic> = [];
-    private var lastPanel : MenuPanel;
-    public var activePanel : MenuPanel;
+    private var popupQueue                              : Dynamic= [];
+    private var lastPanel                              : Dynamic;
+    public var activePanel                              : Dynamic;
     
-    public var activePanelName : String;
+    public var activePanelName                              : Dynamic;
     
-    public var loadStatus : TextField;
-    public var epilepsyWarning : TextField;
+    public var loadStatus                              : Dynamic;
+    public var epilepsyWarning                              : Dynamic;
     
-    public var ver : Text;
-    public var bg : GameBackgroundColor;
+    public var ver                              : Dynamic;
+    public var bg                              : Dynamic;
     
     // Application Info
-    public static var SWF_FILE : File;
-    public static var SWF_PATH : String;
-    public static var SWF_VERSION : String;
-    public static var EXE_PATH : String;
+    public static var SWF_FILE                              : Dynamic;
+    public static var SWF_PATH                              : Dynamic;
+    public static var SWF_VERSION                              : Dynamic;
+    public static var EXE_PATH                              : Dynamic;
     
     ///- Constructor
     public function new()
@@ -107,7 +107,7 @@ class Main extends MenuPanel
         //- Set GlobalVariables Stage
         _gvars.gameMain = this;
         
-        if (stage)
+        if (as3hx.Compat.truthy(stage))
         {
             gameInit();
         }
@@ -117,11 +117,11 @@ class Main extends MenuPanel
         }
     }
     
-    private function gameInit(e : Event = null) : Void
+    private function gameInit(e                              : Dynamic= null) : Void
     //- Remove Stage Listener
     {
         
-        if (e != null)
+        if (as3hx.Compat.truthy(e != null))
         {
             this.removeEventListener(Event.ADDED_TO_STAGE, gameInit);
         }
@@ -130,7 +130,7 @@ class Main extends MenuPanel
         SWF_FILE = new File(new File(loaderInfo.loaderURL).nativePath);
         SWF_PATH = SWF_FILE.nativePath;
         SWF_VERSION = MD5.hashBytes(AirContext.readFile(SWF_FILE));
-        VSYNC_SUPPORT = stage.exists("vsyncEnabled");
+        VSYNC_SUPPORT = false;
         
         //- Static Class Init
         Logger.init();
@@ -161,17 +161,17 @@ class Main extends MenuPanel
         WINDOW_HEIGHT_EXTRA = window.height - GAME_HEIGHT;
         
         ignoreWindowChanges = true;
-        if (_gvars.air_saveWindowPosition)
+        if (as3hx.Compat.truthy(_gvars.air_saveWindowPosition))
         {
             window.x = _gvars.air_windowProperties.x;
             window.y = _gvars.air_windowProperties.y;
         }
-        if (_gvars.air_saveWindowSize)
+        if (as3hx.Compat.truthy(_gvars.air_saveWindowSize))
         {
             window.width = Math.max(100, _gvars.air_windowProperties.width + WINDOW_WIDTH_EXTRA);
             window.height = Math.max(100, _gvars.air_windowProperties.height + WINDOW_HEIGHT_EXTRA);
         }
-        if (_gvars.air_useFullScreen)
+        if (as3hx.Compat.truthy(_gvars.air_useFullScreen))
         {
             _gvars.toggleFullScreen();
         }
@@ -208,27 +208,27 @@ class Main extends MenuPanel
                 });
         
         //- Add Debug Tracking
-        ver = new Text(this, stage.width - 5, 2, Capabilities.version.replace(new as3hx.Compat.Regex(',', "g"), ".") + " - Build " + "9999-12-31" + " - " + Constant.AIR_VERSION);
+        ver = new Text(this, stage.width - 5, 2, new as3hx.Compat.Regex(',', "g").replace(Capabilities.version, ".") + " - Build " + "9999-12-31" + " - " + Constant.AIR_VERSION);
         ver.alpha = 0.15;
         ver.align = Text.RIGHT;
         ver.mouseEnabled = false;
         ver.cacheAsBitmap = true;
         
         // Holidays!
-        var d : Date = Date.now();
-        if (d.getMonth() == 0 && d.getDate() == 1)
+        var d                              : Dynamic= Date.now();
+        if (as3hx.Compat.truthy(d.getMonth() == 0 && d.getDate() == 1))
         {
             ver.text = "Happy New Year! - " + ver.text;
         }
-        if (d.getMonth() == 9 && d.getDate() == 31)
+        if (as3hx.Compat.truthy(d.getMonth() == 9 && d.getDate() == 31))
         {
             ver.text = "Happy Halloween! - " + ver.text;
         }
-        if (d.getMonth() == 11 && d.getDate() == 25)
+        if (as3hx.Compat.truthy(d.getMonth() == 11 && d.getDate() == 25))
         {
             ver.text = "Merry Christmas! - " + ver.text;
         }
-        if (d.getMonth() == 10 && d.getDate() == 6)
+        if (as3hx.Compat.truthy(d.getMonth() == 10 && d.getDate() == 6))
         {
             ver.text = "Happy Birthday Velocity! - " + ver.text;
         }
@@ -256,15 +256,15 @@ class Main extends MenuPanel
     //- Backup Menu incase
     {
         
-        var cm : ContextMenu = new ContextMenu();
+        var cm                              : Dynamic= new ContextMenu();
         
         //- Toggle Fullscreen
-        var fscmi : ContextMenuItem = new ContextMenuItem(_lang.stringSimple("show_menu"));
+        var fscmi                              : Dynamic= new ContextMenuItem(_lang.stringSimple("show_menu"));
         fscmi.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, toggleContextPopup);
         cm.customItems.push(fscmi);
         
         //- Assign Menu Context
-        this.contextMenu = cm;
+        Reflect.setField(this, "contextMenu", cm);
         
         //- Profiler
         SWFProfiler.init(stage, this);
@@ -275,36 +275,36 @@ class Main extends MenuPanel
     }
     
     ///- Window Methods
-    private function e_onNativeShutdown(e : Event) : Void
+    private function e_onNativeShutdown(e                              : Dynamic) : Void
     {
         Logger.destroy();
         LocalOptions.flush();
         _gvars.onNativeProcessClose(e);
     }
     
-    private function e_onNativeWindowClosing(e : Event) : Void
+    private function e_onNativeWindowClosing(e                              : Dynamic) : Void
     {
-        _gvars.air_windowProperties["width"] = window.width - Main.WINDOW_WIDTH_EXTRA;
-        _gvars.air_windowProperties["height"] = window.height - Main.WINDOW_HEIGHT_EXTRA;
-        _gvars.air_windowProperties["x"] = window.x;
-        _gvars.air_windowProperties["y"] = window.y;
+        Reflect.setField(_gvars.air_windowProperties, "width", window.width - Main.WINDOW_WIDTH_EXTRA);
+        Reflect.setField(_gvars.air_windowProperties, "height", window.height - Main.WINDOW_HEIGHT_EXTRA);
+        Reflect.setField(_gvars.air_windowProperties, "x", window.x);
+        Reflect.setField(_gvars.air_windowProperties, "y", window.y);
         LocalOptions.setVariable("window_properties", _gvars.air_windowProperties);
     }
     
-    private function e_onNativeWindowPropertyChange(e : NativeWindowBoundsEvent) : Void
+    private function e_onNativeWindowPropertyChange(e                              : Dynamic) : Void
     {
-        if (ignoreWindowChanges)
+        if (as3hx.Compat.truthy(ignoreWindowChanges))
         {
             return;
         }
         
-        _gvars.air_windowProperties["width"] = e.afterBounds.width - Main.WINDOW_WIDTH_EXTRA;
-        _gvars.air_windowProperties["height"] = e.afterBounds.height - Main.WINDOW_HEIGHT_EXTRA;
-        _gvars.air_windowProperties["x"] = e.afterBounds.x;
-        _gvars.air_windowProperties["y"] = e.afterBounds.y;
+        Reflect.setField(_gvars.air_windowProperties, "width", e.afterBounds.width - Main.WINDOW_WIDTH_EXTRA);
+        Reflect.setField(_gvars.air_windowProperties, "height", e.afterBounds.height - Main.WINDOW_HEIGHT_EXTRA);
+        Reflect.setField(_gvars.air_windowProperties, "x", e.afterBounds.x);
+        Reflect.setField(_gvars.air_windowProperties, "y", e.afterBounds.y);
     }
     
-    private function e_uncaughtErrorHandler(e : UncaughtErrorEvent) : Void
+    private function e_uncaughtErrorHandler(e                              : Dynamic) : Void
     {
         Logger.enableLogger();
         Logger.error("UNCAUGHT_ERROR", e.error);
@@ -318,17 +318,17 @@ class Main extends MenuPanel
      * This is even called in Air 26, when the actual event doesn't exist yet in the SDK
      * but is dispatched if you hardcode the event name.
      */
-    public function e_onVsyncStateChangeAvailability(event : Dynamic) : Void
+    public function e_onVsyncStateChangeAvailability(event                              : Dynamic) : Void
     {
-        if (VSYNC_SUPPORT)
+        if (as3hx.Compat.truthy(VSYNC_SUPPORT))
         {
-            if (event.available)
+            if (as3hx.Compat.truthy(event.available))
             {
-                stage.vsyncEnabled = _gvars.air_useVSync;
+                // vsyncEnabled is AIR-only; OpenFL uses the window FPS cap.
             }
             else
             {
-                stage.vsyncEnabled = true;
+                // vsyncEnabled is AIR-only; OpenFL uses the window FPS cap.
             }
         }
     }
@@ -358,17 +358,17 @@ class Main extends MenuPanel
     }
     
     ///- Game Data
-    private static var LOAD_ATTEMPTS : Int = 0;
+    private static var LOAD_ATTEMPTS                              : Dynamic= 0;
     
     public function loadSiteData() : Void
     {
-        if (isLoginLoad)
+        if (as3hx.Compat.truthy(isLoginLoad))
         {
             loadGameData(false);
             return;
         }
         
-        if (LOAD_ATTEMPTS < 2)
+        if (as3hx.Compat.truthy(LOAD_ATTEMPTS < 2))
         {
             _site.addEventListener(GlobalVariables.LOAD_COMPLETE, gameDataScriptLoad);
             _site.addEventListener(GlobalVariables.LOAD_ERROR, gameDataScriptLoadError);
@@ -381,7 +381,7 @@ class Main extends MenuPanel
         }
     }
     
-    private function gameDataScriptLoad(e : Event = null) : Void
+    private function gameDataScriptLoad(e                              : Dynamic= null) : Void
     {
         e.target.removeEventListener(GlobalVariables.LOAD_COMPLETE, gameDataScriptLoad);
         e.target.removeEventListener(GlobalVariables.LOAD_ERROR, gameDataScriptLoadError);
@@ -390,13 +390,13 @@ class Main extends MenuPanel
         loadGameData();
     }
     
-    private function gameDataScriptLoadError(e : Event = null) : Void
+    private function gameDataScriptLoadError(e                              : Dynamic= null) : Void
     {
         e.target.removeEventListener(GlobalVariables.LOAD_COMPLETE, gameDataScriptLoad);
         e.target.removeEventListener(GlobalVariables.LOAD_ERROR, gameDataScriptLoadError);
         
         // Fallback to http
-        if (LOAD_ATTEMPTS == 1)
+        if (as3hx.Compat.truthy(LOAD_ATTEMPTS == 1))
         {
             URLs.protocol = "http";
         }
@@ -404,7 +404,7 @@ class Main extends MenuPanel
         loadSiteData();
     }
     
-    public function loadGameData(skipSite : Bool = true) : Void
+    public function loadGameData(skipSite                              : Dynamic= true) : Void
     {
         loadTotal = ((!isLoginLoad)) ? 5 : 3;
         
@@ -417,14 +417,14 @@ class Main extends MenuPanel
         _playlist.addEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
         _playlist.load();
         
-        if (!skipSite)
+        if (as3hx.Compat.truthy(!skipSite))
         {
             _site.addEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
             _site.addEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
             _site.load();
         }
         
-        if (!isLoginLoad)
+        if (as3hx.Compat.truthy(!isLoginLoad))
         {
             _lang.addEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
             _lang.addEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
@@ -435,14 +435,14 @@ class Main extends MenuPanel
         }
     }
     
-    private function gameScriptLoad(e : Event = null) : Void
+    private function gameScriptLoad(e                              : Dynamic= null) : Void
     {
         e.target.removeEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
         e.target.removeEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
         loadScripts++;
     }
     
-    private function gameScriptLoadError(e : Event = null) : Void
+    private function gameScriptLoadError(e                              : Dynamic= null) : Void
     {
         e.target.removeEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
         e.target.removeEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
@@ -450,29 +450,29 @@ class Main extends MenuPanel
     
     private function updateLoaderText() : Void
     {
-        if (loadStatus != null && _gvars.playerUser != null)
+        if (as3hx.Compat.truthy(loadStatus != null && _gvars.playerUser != null))
         {
             loadStatus.htmlText = "Total: " + loadScripts + " / " + loadTotal + "\n" + "Playlist: " + getLoadText(_playlist.isLoaded(), _playlist.isError()) + "\n" + "User Data: " + getLoadText(_gvars.playerUser.isLoaded(), _gvars.playerUser.isError()) + "\n" + "Site Data: " + getLoadText(_site.isLoaded(), _site.isError()) + (((!isLoginLoad)) ? ("\n" + "Noteskin Data: " + getLoadText(_noteskins.isLoaded(), _noteskins.isError()) + "\n" + "Language Data: " + getLoadText(_lang.isLoaded(), _lang.isError())) : "");
         }
     }
     
-    private function getLoadText(isLoaded : Bool, isError : Bool) : String
+    private function getLoadText(isLoaded                              : Dynamic, isError                              : Dynamic) : String
     {
-        if (isError)
+        if (as3hx.Compat.truthy(isError))
         {
             return "<font color=\"#FFC4C4\">Error</font>";
         }
-        if (isLoaded)
+        if (as3hx.Compat.truthy(isLoaded))
         {
             return "<font color=\"#C4FFCD\">Complete</font>";
         }
         
-        var cycle : Int = 35;
+        var cycle                              : Dynamic= 35;
         return "Loading." + (((loadTimer % cycle > cycle / 3)) ? "." : "") + (((loadTimer % cycle > cycle / 1.5)) ? "." : "");
     }
     
     ///- PreloaderHandlers
-    private function updatePreloader(e : Event) : Void
+    private function updatePreloader(e                              : Dynamic) : Void
     // Update Text
     {
         
@@ -480,15 +480,15 @@ class Main extends MenuPanel
         
         loadTimer++;
         preloader.update(loadScripts / loadTotal);
-        if (loadTimer >= 300 && retryLoadButton == null)
+        if (as3hx.Compat.truthy(loadTimer >= 300 && retryLoadButton == null))
         {
             retryLoadButton = new BoxButton(this, Main.GAME_WIDTH - 85, preloader.y - 35, 75, 25, "RELOAD", 12, e_retryClick);
         }
         
-        if (preloader.isComplete)
+        if (as3hx.Compat.truthy(preloader.isComplete))
         {
             loadComplete = true;
-            if (retryLoadButton != null && this.contains(retryLoadButton))
+            if (as3hx.Compat.truthy(retryLoadButton != null && this.contains(retryLoadButton)))
             {
                 removeChild(retryLoadButton);
                 retryLoadButton.dispose();
@@ -503,28 +503,28 @@ class Main extends MenuPanel
             _playlist.updatePublicSongsCount();
             _gvars.loadUserSongData();
             _gvars.playerUser.getUserSkillRatingData();
-            Updater.handle(_site.data["update_version"], _site.data["update_url"]);
+            Updater.handle(Reflect.field(_site.data, "update_version"), Reflect.field(_site.data, "update_url"));
             switchTo((_gvars.playerUser.isGuest) ? GAME_LOGIN_PANEL : GAME_MENU_PANEL);
         }
     }
     
-    private function e_retryClick(e : Event) : Void
+    private function e_retryClick(e                              : Dynamic) : Void
     {
         Alert.add(_lang.string("reload_scripts"));
         
-        if (!_playlist.isLoaded())
+        if (as3hx.Compat.truthy(!_playlist.isLoaded()))
         {
             _playlist.addEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
             _playlist.addEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
             _playlist.load();
         }
-        if (!_site.isLoaded())
+        if (as3hx.Compat.truthy(!_site.isLoaded()))
         {
             _site.addEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
             _site.addEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
             _site.load();
         }
-        if (!_gvars.playerUser || !_gvars.playerUser.isLoaded())
+        if (as3hx.Compat.truthy(!_gvars.playerUser || !_gvars.playerUser.isLoaded()))
         {
             _gvars.playerUser = new User(true, true);
             _gvars.playerUser.addEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
@@ -533,15 +533,15 @@ class Main extends MenuPanel
             _gvars.activeUser = _gvars.playerUser;
         }
         
-        if (!isLoginLoad)
+        if (as3hx.Compat.truthy(!isLoginLoad))
         {
-            if (!_noteskins.isLoaded())
+            if (as3hx.Compat.truthy(!_noteskins.isLoaded()))
             {
                 _noteskins.addEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
                 _noteskins.addEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
                 _noteskins.load();
             }
-            if (!_lang.isLoaded())
+            if (as3hx.Compat.truthy(!_lang.isLoaded()))
             {
                 _lang.addEventListener(GlobalVariables.LOAD_COMPLETE, gameScriptLoad);
                 _lang.addEventListener(GlobalVariables.LOAD_ERROR, gameScriptLoadError);
@@ -554,17 +554,17 @@ class Main extends MenuPanel
     }
     
     ///- Panels
-    override public function switchTo(_panel : String) : Bool
+    override public function switchTo(_panel                              : Dynamic) : Bool
     {
-        var isFound : Bool = false;
-        var nextPanel : MenuPanel;
+        var isFound                              : Dynamic= false;
+        var nextPanel                             : Dynamic= null;
         
-        if (_panel == "none") {
+        if (as3hx.Compat.truthy(_panel == "none")) {
 bg.updateDisplay();
             ver.visible = true;
             
             //- Remove last panel if exist
-            if (activePanel != null)
+            if (as3hx.Compat.truthy(activePanel != null))
             {
                 activePanel.stageRemove();
                 TweenLite.to(activePanel, 0.5, {
@@ -597,7 +597,7 @@ bg.updateDisplay();
                 nextPanel = new MainMenu(this);
                 isFound = true;
                 
-                if (this.contains(epilepsyWarning))
+                if (as3hx.Compat.truthy(this.contains(epilepsyWarning)))
                 {
                     removeChild(epilepsyWarning);
                 }
@@ -608,14 +608,14 @@ bg.updateDisplay();
         }
         
         // Show Background
-        if (_panel != GAME_PLAY_PANEL)
+        if (as3hx.Compat.truthy(_panel != GAME_PLAY_PANEL))
         {
             bg.visible = true;
             ver.visible = true;
         }
         
-        if (isFound) {
-if (activePanel != null)
+        if (as3hx.Compat.truthy(isFound)) {
+if (as3hx.Compat.truthy(activePanel != null))
             {
                 TweenLite.to(activePanel, 0.5, {
                             alpha : 0,
@@ -630,7 +630,7 @@ if (activePanel != null)
             activePanel.alpha = 0;
             
             this.addChildAt(activePanel, 2);
-            if (!activePanel.hasInit)
+            if (as3hx.Compat.truthy(!activePanel.hasInit))
             {
                 activePanel.init();
                 activePanel.hasInit = true;
@@ -641,7 +641,7 @@ if (activePanel != null)
                     });
         }
         
-        if (isFound)
+        if (as3hx.Compat.truthy(isFound))
         {
             this.activePanelName = _panel;
             dispatchEvent(new Event(EVENT_PANEL_SWITCHED));
@@ -650,11 +650,11 @@ if (activePanel != null)
         return isFound;
     }
     
-    private function removeLastPanel(removePanel : MenuPanel) : Void
+    private function removeLastPanel(removePanel                              : Dynamic) : Void
     {
-        if (removePanel != null)
+        if (as3hx.Compat.truthy(removePanel != null))
         {
-            if (removePanel.stage != null)
+            if (as3hx.Compat.truthy(removePanel.stage != null))
             {
                 removePanel.stageRemove();
                 removePanel.parent.removeChild(removePanel);
@@ -666,13 +666,13 @@ if (activePanel != null)
     }
     
     ///- Popups
-    override public function addPopup(_panel : Dynamic, newLayer : Bool = false) : Void
+    override public function addPopup(_panel                              : Dynamic, newLayer                              : Dynamic= false) : Void
     {
-        if (newLayer && Std.is(_panel, MenuPanel))
+        if (as3hx.Compat.truthy(newLayer && Std.is(_panel, MenuPanel)))
         {
             removeChildClass(ObjectUtil.getClass(_panel));
             this.addChild(_panel);
-            if (!_panel.hasInit)
+            if (as3hx.Compat.truthy(!_panel.hasInit))
             {
                 _panel.init();
                 _panel.hasInit = true;
@@ -681,13 +681,13 @@ if (activePanel != null)
         }
         else
         {
-            if (current_popup)
+            if (as3hx.Compat.truthy(current_popup))
             {
                 removePopup();
             }
             
             //- Add Requested Popop
-            if (Std.is(_panel, String))
+            if (as3hx.Compat.truthy(Std.is(_panel, String)))
             {
                 switch (_panel)
                 {
@@ -699,12 +699,12 @@ if (activePanel != null)
                         current_popup = new ReplayHistoryWindow(this);
                 }
             }
-            else if (Std.is(_panel, MenuPanel))
+            else if (as3hx.Compat.truthy(Std.is(_panel, MenuPanel)))
             {
                 current_popup = _panel;
             }
             this.addChildAt(current_popup, 3);
-            if (!current_popup.hasInit)
+            if (as3hx.Compat.truthy(!current_popup.hasInit))
             {
                 current_popup.init();
                 current_popup.hasInit = true;
@@ -713,7 +713,7 @@ if (activePanel != null)
         }
     }
     
-    public function addPopupQueue(_panel : Dynamic, newLayer : Bool = false) : Void
+    public function addPopupQueue(_panel                              : Dynamic, newLayer                              : Dynamic= false) : Void
     {
         popupQueue.push({
                     panel : _panel,
@@ -723,24 +723,24 @@ if (activePanel != null)
     
     public function displayPopupQueue() : Void
     {
-        if (current_popup != null)
+        if (as3hx.Compat.truthy(current_popup != null))
         {
             return;
         }
         
-        if (popupQueue.length > 0)
+        if (as3hx.Compat.truthy(popupQueue.length > 0))
         {
-            var pop : Dynamic = popupQueue.shift();
+            var pop                              : Dynamic= popupQueue.shift();
             addPopup(Reflect.field(pop, "panel"), Reflect.field(pop, "layer"));
         }
     }
     
     override public function removePopup() : Void
     {
-        if (current_popup)
+        if (as3hx.Compat.truthy(current_popup))
         {
             current_popup.stageRemove();
-            if (this.contains(current_popup))
+            if (as3hx.Compat.truthy(this.contains(current_popup)))
             {
                 this.removeChild(current_popup);
             }
@@ -751,11 +751,11 @@ if (activePanel != null)
         displayPopupQueue();
     }
     
-    private function removeChildClass(clazz : Class<Dynamic>) : Void
+    private function removeChildClass(clazz                              : Dynamic) : Void
     {
         for (i in 0...this.numChildren)
         {
-            if (Std.is(this.getChildAt(i), clazz))
+            if (as3hx.Compat.truthy(Std.is(this.getChildAt(i), clazz)))
             {
                 this.removeChildAt(i);
                 break;
@@ -764,26 +764,26 @@ if (activePanel != null)
     }
     
     ///- Fullscreen Handling
-    private function toggleContextPopup(e : Event = null) : Void
+    private function toggleContextPopup(e                              : Dynamic= null) : Void
     {
-        if (Std.is(current_popup, PopupContextMenu))
+        if (as3hx.Compat.truthy(Std.is(current_popup, PopupContextMenu)))
         {
             removePopup();
         }
-        else if (!disablePopups)
+        else if (as3hx.Compat.truthy(!disablePopups))
         {
             addPopup(new PopupContextMenu(this));
         }
     }
     
     ///- Key Handling
-    private function keyboardKeyDown(e : KeyboardEvent) : Void
+    private function keyboardKeyDown(e                              : Dynamic) : Void
     {
-        var keyCode : Int = e.keyCode;
-        if (Flags.VALUES[Flags.ENABLE_GLOBAL_POPUPS] != null) {
-if (keyCode == _gvars.playerUser.keyOptions && (stage.focus == null || !(Std.is(stage.focus, TextField))))
+        var keyCode                              : Dynamic= e.keyCode;
+        if (as3hx.Compat.truthy(as3hx.Compat.field(Flags.VALUES, Flags.ENABLE_GLOBAL_POPUPS) != null)) {
+if (as3hx.Compat.truthy(keyCode == _gvars.playerUser.keyOptions && (stage.focus == null || !(Std.is(stage.focus, TextField)))))
             {
-                if (Std.is(current_popup, SettingsWindow))
+                if (as3hx.Compat.truthy(Std.is(current_popup, SettingsWindow)))
                 {
                     removePopup();
                 }
@@ -793,9 +793,9 @@ if (keyCode == _gvars.playerUser.keyOptions && (stage.focus == null || !(Std.is(
                 }
             }
             // Help Menu
-            else if (keyCode == Keyboard.F1)
+            else if (as3hx.Compat.truthy(keyCode == Keyboard.F1))
             {
-                if (Std.is(current_popup, PopupHelp))
+                if (as3hx.Compat.truthy(Std.is(current_popup, PopupHelp)))
                 {
                     removePopup();
                 }
@@ -805,9 +805,9 @@ if (keyCode == _gvars.playerUser.keyOptions && (stage.focus == null || !(Std.is(
                 }
             }
             // Replay History
-            else if (keyCode == Keyboard.F2)
+            else if (as3hx.Compat.truthy(keyCode == Keyboard.F2))
             {
-                if (Std.is(current_popup, ReplayHistoryWindow))
+                if (as3hx.Compat.truthy(Std.is(current_popup, ReplayHistoryWindow)))
                 {
                     removePopup();
                 }

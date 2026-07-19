@@ -24,31 +24,31 @@ import openfl.utils.IDataOutput;
 
 class WebSocketFrame
 {
-    public var length(get, never) : Int;
+    public var length(get, never)                          : Dynamic;
 
-    public var fin : Bool;
-    public var rsv1 : Bool;
-    public var rsv2 : Bool;
-    public var rsv3 : Bool;
-    public var opcode : Int;
-    public var mask : Bool;
-    public var useNullMask : Bool;
-    private var _length : Int;
-    public var binaryPayload : ByteArray;
-    public var closeStatus : Int;
+    public var fin                          : Dynamic;
+    public var rsv1                          : Dynamic;
+    public var rsv2                          : Dynamic;
+    public var rsv3                          : Dynamic;
+    public var opcode                          : Dynamic;
+    public var mask                          : Dynamic;
+    public var useNullMask                          : Dynamic;
+    private var _length                          : Dynamic;
+    public var binaryPayload                          : Dynamic;
+    public var closeStatus                          : Dynamic;
     
-    public var protocolError : Bool = false;
-    public var frameTooLarge : Bool = false;
-    public var dropReason : String;
+    public var protocolError                          : Dynamic= false;
+    public var frameTooLarge                          : Dynamic= false;
+    public var dropReason                          : Dynamic;
     
-    private static inline var NEW_FRAME : Int = 0;
-    private static inline var WAITING_FOR_16_BIT_LENGTH : Int = 1;
-    private static inline var WAITING_FOR_64_BIT_LENGTH : Int = 2;
-    private static inline var WAITING_FOR_PAYLOAD : Int = 3;
-    private static inline var COMPLETE : Int = 4;
-    private var parseState : Int = 0;  // Initialize as NEW_FRAME  
+    private static inline var NEW_FRAME                          : Dynamic= 0;
+    private static inline var WAITING_FOR_16_BIT_LENGTH                          : Dynamic= 1;
+    private static inline var WAITING_FOR_64_BIT_LENGTH                          : Dynamic= 2;
+    private static inline var WAITING_FOR_PAYLOAD                          : Dynamic= 3;
+    private static inline var COMPLETE                          : Dynamic= 4;
+    private var parseState                          : Dynamic= 0;  // Initialize as NEW_FRAME  
     
-    private static var _tempMaskBytes : Array<Int> = new Array<Int>();
+    private static var _tempMaskBytes                          : Dynamic= new Array<Int>();
     
     private function get_length() : Int
     {
@@ -56,13 +56,13 @@ class WebSocketFrame
     }
     
     // Returns true if frame is complete, false if waiting for more data
-    public function addData(input : IDataInput, fragmentationType : Int, config : WebSocketConfig) : Bool
+    public function addData(input                          : Dynamic, fragmentationType                          : Dynamic, config                          : Dynamic) : Bool
     {
-        if (input.bytesAvailable >= 2) {
-if (parseState == NEW_FRAME)
+        if (as3hx.Compat.truthy(input.bytesAvailable >= 2)) {
+if (as3hx.Compat.truthy(parseState == NEW_FRAME))
             {
-                var firstByte : Int = input.readByte();
-                var secondByte : Int = input.readByte();
+                var firstByte                          : Dynamic= input.readByte();
+                var secondByte                          : Dynamic= input.readByte();
                 
                 fin = cast(firstByte & 0x80, Bool);
                 rsv1 = cast(firstByte & 0x40, Bool);
@@ -72,22 +72,22 @@ if (parseState == NEW_FRAME)
                 opcode = firstByte & 0x0F;
                 _length = secondByte & 0x7F;
                 
-                if (mask)
+                if (as3hx.Compat.truthy(mask))
                 {
                     protocolError = true;
                     dropReason = "Received an illegal masked frame from the server.";
                     return true;
                 }
                 
-                if (opcode > 0x07)
+                if (as3hx.Compat.truthy(opcode > 0x07))
                 {
-                    if (_length > 125)
+                    if (as3hx.Compat.truthy(_length > 125))
                     {
                         protocolError = true;
                         dropReason = "Illegal control frame larger than 125 bytes.";
                         return true;
                     }
-                    if (!fin)
+                    if (as3hx.Compat.truthy(!fin))
                     {
                         protocolError = true;
                         dropReason = "Received illegal fragmented control message.";
@@ -95,11 +95,11 @@ if (parseState == NEW_FRAME)
                     }
                 }
                 
-                if (_length == 126)
+                if (as3hx.Compat.truthy(_length == 126))
                 {
                     parseState = WAITING_FOR_16_BIT_LENGTH;
                 }
-                else if (_length == 127)
+                else if (as3hx.Compat.truthy(_length == 127))
                 {
                     parseState = WAITING_FOR_64_BIT_LENGTH;
                 }
@@ -108,21 +108,21 @@ if (parseState == NEW_FRAME)
                     parseState = WAITING_FOR_PAYLOAD;
                 }
             }
-            if (parseState == WAITING_FOR_16_BIT_LENGTH)
+            if (as3hx.Compat.truthy(parseState == WAITING_FOR_16_BIT_LENGTH))
             {
-                if (input.bytesAvailable >= 2)
+                if (as3hx.Compat.truthy(input.bytesAvailable >= 2))
                 {
                     _length = input.readUnsignedShort();
                     parseState = WAITING_FOR_PAYLOAD;
                 }
             }
-            else if (parseState == WAITING_FOR_64_BIT_LENGTH)
+            else if (as3hx.Compat.truthy(parseState == WAITING_FOR_64_BIT_LENGTH))
             {
-                if (input.bytesAvailable >= 8) {
+                if (as3hx.Compat.truthy(input.bytesAvailable >= 8)) {
 // So we'll just throw away the most significant
                     // 32 bits and hope for the best.
-                    var firstHalf : Int = input.readUnsignedInt();
-                    if (firstHalf > 0)
+                    var firstHalf                          : Dynamic= input.readUnsignedInt();
+                    if (as3hx.Compat.truthy(firstHalf > 0))
                     {
                         frameTooLarge = true;
                         dropReason = "Unsupported 64-bit length frame received.";
@@ -132,9 +132,9 @@ if (parseState == NEW_FRAME)
                     parseState = WAITING_FOR_PAYLOAD;
                 }
             }
-            if (parseState == WAITING_FOR_PAYLOAD)
+            if (as3hx.Compat.truthy(parseState == WAITING_FOR_PAYLOAD))
             {
-                if (_length > config.maxReceivedFrameSize)
+                if (as3hx.Compat.truthy(_length > config.maxReceivedFrameSize))
                 {
                     frameTooLarge = true;
                     dropReason = "Received frame size of " + _length + "exceeds maximum accepted frame size of " + config.maxReceivedFrameSize;
@@ -142,13 +142,13 @@ if (parseState == NEW_FRAME)
                 }
                 else
                 {
-                    if (_length == 0)
+                    if (as3hx.Compat.truthy(_length == 0))
                     {
                         binaryPayload = new ByteArray();
                         parseState = COMPLETE;
                         return true;
                     }
-                    if (input.bytesAvailable >= _length)
+                    if (as3hx.Compat.truthy(input.bytesAvailable >= _length))
                     {
                         binaryPayload = new ByteArray();
                         binaryPayload.endian = Endian.BIG_ENDIAN;
@@ -166,9 +166,9 @@ if (parseState == NEW_FRAME)
         return false;
     }
     
-    private function throwAwayPayload(input : IDataInput) : Void
+    private function throwAwayPayload(input                          : Dynamic) : Void
     {
-        if (input.bytesAvailable >= _length)
+        if (as3hx.Compat.truthy(input.bytesAvailable >= _length))
         {
             for (i in 0..._length)
             {
@@ -178,10 +178,10 @@ if (parseState == NEW_FRAME)
         }
     }
     
-    public function send(output : IDataOutput) : Void
+    public function send(output                          : Dynamic) : Void
     {
-        var maskKey : Int;
-        if (this.mask && !this.useNullMask) {
+        var maskKey                          : Dynamic= null;
+        if (as3hx.Compat.truthy(this.mask && !this.useNullMask)) {
 maskKey = Math.ceil(Math.random() * 0xFFFFFFFF);
             _tempMaskBytes[0] = as3hx.Compat.parseInt(maskKey >> 24) & 0xFF;
             _tempMaskBytes[1] = as3hx.Compat.parseInt(maskKey >> 16) & 0xFF;
@@ -189,39 +189,39 @@ maskKey = Math.ceil(Math.random() * 0xFFFFFFFF);
             _tempMaskBytes[3] = maskKey & 0xFF;
         }
         
-        var data : ByteArray;
+        var data                          : Dynamic= null;
         
-        var firstByte : Int = 0x00;
-        var secondByte : Int = 0x00;
-        if (fin)
+        var firstByte                          : Dynamic= 0x00;
+        var secondByte                          : Dynamic= 0x00;
+        if (as3hx.Compat.truthy(fin))
         {
             firstByte = firstByte | 0x80;
         }
-        if (rsv1)
+        if (as3hx.Compat.truthy(rsv1))
         {
             firstByte = firstByte | 0x40;
         }
-        if (rsv2)
+        if (as3hx.Compat.truthy(rsv2))
         {
             firstByte = firstByte | 0x20;
         }
-        if (rsv3)
+        if (as3hx.Compat.truthy(rsv3))
         {
             firstByte = firstByte | 0x10;
         }
-        if (mask)
+        if (as3hx.Compat.truthy(mask))
         {
             secondByte = secondByte | 0x80;
         }
         
         firstByte = firstByte | as3hx.Compat.parseInt(opcode & 0x0F);
         
-        if (opcode == WebSocketOpcode.CONNECTION_CLOSE)
+        if (as3hx.Compat.truthy(opcode == WebSocketOpcode.CONNECTION_CLOSE))
         {
             data = new ByteArray();
             data.endian = Endian.BIG_ENDIAN;
             data.writeShort(closeStatus);
-            if (binaryPayload != null)
+            if (as3hx.Compat.truthy(binaryPayload != null))
             {
                 binaryPayload.position = 0;
                 data.writeBytes(binaryPayload);
@@ -229,7 +229,7 @@ maskKey = Math.ceil(Math.random() * 0xFFFFFFFF);
             data.position = 0;
             _length = data.length;
         }
-        else if (binaryPayload != null)
+        else if (as3hx.Compat.truthy(binaryPayload != null))
         {
             data = binaryPayload;
             data.endian = Endian.BIG_ENDIAN;
@@ -242,25 +242,25 @@ maskKey = Math.ceil(Math.random() * 0xFFFFFFFF);
             _length = 0;
         }
         
-        if (opcode >= 0x08)
+        if (as3hx.Compat.truthy(opcode >= 0x08))
         {
-            if (_length > 125)
+            if (as3hx.Compat.truthy(_length > 125))
             {
                 throw new Error("Illegal control frame longer than 125 bytes");
             }
-            if (!fin)
+            if (as3hx.Compat.truthy(!fin))
             {
                 throw new Error("Control frames must not be fragmented.");
             }
         }
         
-        if (_length <= 125) {
+        if (as3hx.Compat.truthy(_length <= 125)) {
 secondByte = secondByte | as3hx.Compat.parseInt(_length & 0x7F);
         }
-        else if (_length > 125 && _length <= 0xFFFF) {
+        else if (as3hx.Compat.truthy(_length > 125 && _length <= 0xFFFF)) {
 secondByte = secondByte | 126;
         }
-        else if (_length > 0xFFFF) {
+        else if (as3hx.Compat.truthy(_length > 0xFFFF)) {
 secondByte = secondByte | 127;
         }
         
@@ -268,17 +268,17 @@ secondByte = secondByte | 127;
         output.writeByte(firstByte);
         output.writeByte(secondByte);
         
-        if (_length > 125 && _length <= 0xFFFF) {
+        if (as3hx.Compat.truthy(_length > 125 && _length <= 0xFFFF)) {
 output.writeShort(_length);
         }
-        else if (_length > 0xFFFF) {
+        else if (as3hx.Compat.truthy(_length > 0xFFFF)) {
 output.writeUnsignedInt(0x00000000);
             output.writeUnsignedInt(_length);
         }
         
-        if (this.mask)
+        if (as3hx.Compat.truthy(this.mask))
         {
-            if (this.useNullMask)
+            if (as3hx.Compat.truthy(this.useNullMask))
             {
                 output.writeUnsignedInt(0);
                 output.writeBytes(data, 0, data.length);
@@ -290,15 +290,15 @@ output.writeUnsignedInt(0x00000000);
                 output.writeUnsignedInt(maskKey);
                 // Mask and send the payload
                 
-                var j : Int = 0;
+                var j                          : Dynamic= 0;
                 
-                var remaining : Int = data.bytesAvailable;
-                while (remaining >= 4)
+                var remaining                          : Dynamic= data.bytesAvailable;
+                while (as3hx.Compat.truthy(remaining >= 4))
                 {
                     output.writeUnsignedInt(data.readUnsignedInt() ^ maskKey);
                     remaining -= 4;
                 }
-                while (remaining > 0)
+                while (as3hx.Compat.truthy(remaining > 0))
                 {
                     output.writeByte(data.readByte() ^ _tempMaskBytes[j]);
                     j += 1;

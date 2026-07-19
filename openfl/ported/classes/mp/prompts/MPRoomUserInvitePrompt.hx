@@ -22,28 +22,28 @@ import openfl.events.MouseEvent;
 
 class MPRoomUserInvitePrompt extends Prompt
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var scrollbarWidth(default, never) : Float = 15;
+    private var scrollbarWidth(default, never)                             : Dynamic= 15;
     
-    private var search_field : BoxText;
-    private var search_field_placeholder : Text;
-    private var _search_text : String = "";
+    private var search_field                             : Dynamic;
+    private var search_field_placeholder                             : Dynamic;
+    private var _search_text                             : Dynamic= "";
     
-    public var room : MPRoom;
+    public var room                             : Dynamic;
     
-    private var closeButton : BoxIcon;
-    private var confirmButton : BoxButton;
+    private var closeButton                             : Dynamic;
+    private var confirmButton                             : Dynamic;
     
-    public var userPane : MPUserlistScrollpane;
-    public var userScroll : ScrollBar;
+    public var userPane                             : Dynamic;
+    public var userScroll                             : Dynamic;
     
-    public var invitePane : MPUserlistScrollpane;
-    public var inviteScroll : ScrollBar;
-    public var inviteUserList : Array<Dynamic> = [];
+    public var invitePane                             : Dynamic;
+    public var inviteScroll                             : Dynamic;
+    public var inviteUserList                             : Dynamic= [];
     
-    public function new(room : MPRoom, parent : DisplayObject)
+    public function new(room                             : Dynamic, parent                             : Dynamic)
     {
         super(parent.stage, 530, 370);
         
@@ -98,11 +98,11 @@ class MPRoomUserInvitePrompt extends Prompt
         updateUserList();
     }
     
-    public function onKeyInput(e : KeyboardEvent) : Void
+    public function onKeyInput(e                             : Dynamic) : Void
     {
     }
     
-    private function e_searchChange(e : Event) : Void
+    private function e_searchChange(e                             : Dynamic) : Void
     {
         _search_text = search_field.text.toLowerCase();
         search_field_placeholder.visible = (_search_text.length <= 0);
@@ -112,15 +112,15 @@ class MPRoomUserInvitePrompt extends Prompt
     
     private function updateUserList() : Void
     {
-        var render_list : Array<Dynamic> = [];
-        for (r/* AS3HX WARNING could not determine type for var: r exp: EField(EIdent(_mp),users) type: null */ in _mp.users)
+        var render_list                             : Dynamic= [];
+        for (r/* AS3HX WARNING could not determine type for var: r exp: EField(EIdent(_mp),users) type: null */ in as3hx.Compat.iter(_mp.users))
         {
-            if (_search_text.length >= 1 && r.name.toLowerCase().indexOf(_search_text) == -1)
+            if (as3hx.Compat.truthy(_search_text.length >= 1 && r.name.toLowerCase().indexOf(_search_text) == -1))
             {
                 continue;
             }
             
-            if (r.sid <= 1)
+            if (as3hx.Compat.truthy(r.sid <= 1))
             {
                 continue;
             }
@@ -135,35 +135,35 @@ class MPRoomUserInvitePrompt extends Prompt
         userScroll.draggerVisibility = userPane.doScroll;
     }
     
-    public function e_userWheelHandler(e : MouseEvent) : Void
+    public function e_userWheelHandler(e                             : Dynamic) : Void
     // Sanity
     {
         
-        if (!userScroll.draggerVisibility)
+        if (as3hx.Compat.truthy(!userScroll.draggerVisibility))
         {
             return;
         }
         
         // Scroll
-        var newScrollPosition : Float = userScroll.scroll + (userPane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var newScrollPosition                             : Dynamic= userScroll.scroll + (userPane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         userPane.scrollTo(newScrollPosition);
         userScroll.scrollTo(newScrollPosition);
     }
     
-    private function e_userBarUpdater(e : Event) : Void
+    private function e_userBarUpdater(e                             : Dynamic) : Void
     {
         userPane.scrollTo(e.target.scroll);
     }
     
-    public function e_userEntryClick(e : MouseEvent) : Void
+    public function e_userEntryClick(e                             : Dynamic) : Void
     {
-        if (Std.is(e.target, MPUserListEntry))
+        if (as3hx.Compat.truthy(Std.is(e.target, MPUserListEntry)))
         {
-            var target : MPUserListEntry = try cast(e.target, MPUserListEntry) catch(e:Dynamic) null;
-            var targetUser : MPUser = target.user;
-            var idx : Float = Lambda.indexOf(inviteUserList, targetUser);
+            var target                             : Dynamic= try cast(e.target, MPUserListEntry) catch(e:Dynamic) null;
+            var targetUser                             : Dynamic= target.user;
+            var idx                             : Dynamic= Lambda.indexOf(inviteUserList, targetUser);
             
-            if (idx >= 0)
+            if (as3hx.Compat.truthy(idx >= 0))
             {
                 inviteUserList.splice(idx, 1);
             }
@@ -181,35 +181,35 @@ class MPRoomUserInvitePrompt extends Prompt
         }
     }
     
-    public function e_inviteWheelHandler(e : MouseEvent) : Void
+    public function e_inviteWheelHandler(e                             : Dynamic) : Void
     // Sanity
     {
         
-        if (!inviteScroll.draggerVisibility)
+        if (as3hx.Compat.truthy(!inviteScroll.draggerVisibility))
         {
             return;
         }
         
         // Scroll
-        var newScrollPosition : Float = inviteScroll.scroll + (invitePane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var newScrollPosition                             : Dynamic= inviteScroll.scroll + (invitePane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         invitePane.scrollTo(newScrollPosition);
         inviteScroll.scrollTo(newScrollPosition);
     }
     
-    private function e_inviteBarUpdater(e : Event) : Void
+    private function e_inviteBarUpdater(e                             : Dynamic) : Void
     {
         invitePane.scrollTo(e.target.scroll);
     }
     
-    public function e_inviteEntryClick(e : MouseEvent) : Void
+    public function e_inviteEntryClick(e                             : Dynamic) : Void
     {
-        if (Std.is(e.target, MPUserListEntry))
+        if (as3hx.Compat.truthy(Std.is(e.target, MPUserListEntry)))
         {
-            var target : MPUserListEntry = try cast(e.target, MPUserListEntry) catch(e:Dynamic) null;
-            var targetUser : MPUser = target.user;
-            var idx : Float = Lambda.indexOf(inviteUserList, targetUser);
+            var target                             : Dynamic= try cast(e.target, MPUserListEntry) catch(e:Dynamic) null;
+            var targetUser                             : Dynamic= target.user;
+            var idx                             : Dynamic= Lambda.indexOf(inviteUserList, targetUser);
             
-            if (idx >= 0)
+            if (as3hx.Compat.truthy(idx >= 0))
             {
                 inviteUserList.splice(idx, 1);
             }
@@ -223,9 +223,9 @@ class MPRoomUserInvitePrompt extends Prompt
         }
     }
     
-    private function e_confirmHandler(e : MouseEvent) : Void
+    private function e_confirmHandler(e                             : Dynamic) : Void
     {
-        for (user in inviteUserList)
+        for (user in as3hx.Compat.iter(inviteUserList))
         {
             _mp.sendCommand(new MPCRoomInvite(user, room));
         }
@@ -234,7 +234,7 @@ class MPRoomUserInvitePrompt extends Prompt
         dispatchEvent(new Event(Event.CLOSE));
     }
     
-    private function e_closeHandler(e : MouseEvent) : Void
+    private function e_closeHandler(e                             : Dynamic) : Void
     {
         close();
         dispatchEvent(new Event(Event.CLOSE));

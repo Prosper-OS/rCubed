@@ -30,40 +30,40 @@ import openfl.geom.Rectangle;
 
 class MPViewUserListRoom extends Sprite
 {
-    private static var _lang : Language = Language.instance;
+    private static var _lang                             : Dynamic= Language.instance;
     
-    private var _width : Float = 200;
-    private var _height : Float = 388;
+    private var _width                             : Dynamic= 200;
+    private var _height                             : Dynamic= 388;
     
-    private var room : MPRoom;
-    private var users : Array<MPUser>;
+    private var room                             : Dynamic;
+    private var users                             : Dynamic;
     
-    private var pane : ScrollPane;
+    private var pane                             : Dynamic;
     
-    private var scrollbarWidth(default, never) : Float = 15;
-    private var scrollbar : ScrollBar;
-    private var scrollbarBG : Sprite;
+    private var scrollbarWidth(default, never)                             : Dynamic= 15;
+    private var scrollbar                             : Dynamic;
+    private var scrollbarBG                             : Dynamic;
     
-    private var useTeamView : Bool = false;
+    private var useTeamView                             : Dynamic= false;
     
     // Team Dividers
-    private var labelHeight(default, never) : Float = 27;
-    private var teamLabels : Array<TeamLabel> = [];
-    private var userLabels : Array<MPViewUserListRoomUserLabel> = [];
+    private var labelHeight(default, never)                             : Dynamic= 27;
+    private var teamLabels                             : Dynamic= [];
+    private var userLabels                             : Dynamic= [];
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         super();
         this.x = xpos;
         this.y = ypos;
         
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
     }
     
-    public function setRoom(room : MPRoom) : Void
+    public function setRoom(room                             : Dynamic) : Void
     {
         this.room = room;
         this.users = room.users;
@@ -134,25 +134,25 @@ class MPViewUserListRoom extends Sprite
     {
         useTeamView = room.teams.length > 1;
         
-        var my : Float = 0;
+        var my                             : Dynamic= 0;
         
         // Mark as Stale
         teamLabels.forEach(_markStale);
         userLabels.forEach(_markStale);
         
-        var MPViewUserListRoomUserLabel : MPViewUserListRoomUserLabel;
+        var MPViewUserListRoomUserLabel                             : Dynamic= null;
         
-        var team : MPTeam;
-        var user : MPUser;
+        var team                             : Dynamic= null;
+        var user                             : Dynamic= null;
         
         // Multiple Teams
-        if (room.teams.length > 1)
+        if (as3hx.Compat.truthy(room.teams.length > 1))
         {
-            var teamLabel : TeamLabel;
+            var teamLabel                             : Dynamic= null;
             
-            for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(room),teams) type: null */ in room.teams)
+            for (team/* AS3HX WARNING could not determine type for var: team exp: EField(EIdent(room),teams) type: null */ in as3hx.Compat.iter(room.teams))
             {
-                if (team.spectator)
+                if (as3hx.Compat.truthy(team.spectator))
                 {
                     my += labelHeight;
                 }
@@ -163,7 +163,7 @@ class MPViewUserListRoom extends Sprite
                 
                 my += labelHeight;
                 
-                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(team),users) type: null */ in team.users)
+                for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EIdent(team),users) type: null */ in as3hx.Compat.iter(team.users))
                 {
                     MPViewUserListRoomUserLabel = getUserLabel(user);
                     MPViewUserListRoomUserLabel.team = team;
@@ -175,9 +175,9 @@ class MPViewUserListRoom extends Sprite
             }
         }
         // Spectators Only
-        else if (room.teams.length == 1)
+        else if (as3hx.Compat.truthy(room.teams.length == 1))
         {
-            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EArray(EField(EIdent(room),teams),EConst(CInt(0))),users) type: null */ in room.teams[0].users)
+            for (user/* AS3HX WARNING could not determine type for var: user exp: EField(EArray(EField(EIdent(room),teams),EConst(CInt(0))),users) type: null */ in as3hx.Compat.iter(room.teams[0].users))
             {
                 MPViewUserListRoomUserLabel = getUserLabel(user);
                 MPViewUserListRoomUserLabel.team = team;
@@ -188,7 +188,7 @@ class MPViewUserListRoom extends Sprite
             }
         }
         
-        if (room.type != "lobby")
+        if (as3hx.Compat.truthy(room.type != "lobby"))
         {
             userLabels.forEach(_markRoomOwner);
         }
@@ -196,10 +196,10 @@ class MPViewUserListRoom extends Sprite
         pane.update();
         
         // Check for Change in Scrollbar appearence, recalculate widths if needed.
-        var oldScrollbarVisible : Bool = scrollbar.visible;
+        var oldScrollbarVisible                             : Dynamic= scrollbar.visible;
         scrollbarBG.visible = scrollbar.visible = (pane.content.height > pane.height - 5);
         
-        if (oldScrollbarVisible != scrollbar.visible)
+        if (as3hx.Compat.truthy(oldScrollbarVisible != scrollbar.visible))
         {
             teamLabels.forEach(_setSize);
             userLabels.forEach(_setSize);
@@ -210,26 +210,26 @@ class MPViewUserListRoom extends Sprite
         _removeStale(userLabels);
     }
     
-    private function _markStale(item : BaseLabel, index : Int = 0, vector : Array<Dynamic> = null) : Void
+    private function _markStale(item                             : Dynamic, index                             : Dynamic= 0, vector                             : Dynamic= null) : Void
     {
         item.isStale = true;
     }
     
-    private function _setSize(item : BaseLabel, index : Int = 0, vector : Array<Dynamic> = null) : Void
+    private function _setSize(item                             : Dynamic, index                             : Dynamic= 0, vector                             : Dynamic= null) : Void
     {
         item.setSize(_width - ((scrollbar.visible) ? scrollbarWidth + 1 : 0), labelHeight);
     }
     
-    private function _removeStale(vec : Dynamic) : Void
+    private function _removeStale(vec                             : Dynamic) : Void
     {
-        var _vec : Array<Dynamic> = try cast(vec, Array/*Vector.<T> call?*/) catch(e:Dynamic) null;
+        var _vec                             : Dynamic= try cast(vec, Array<Dynamic>) catch(e:Dynamic) null;
         
-        var i : Float = _vec.length - 1;
-        while (i >= 0)
+        var i                             : Dynamic= _vec.length - 1;
+        while (as3hx.Compat.truthy(i >= 0))
         {
-            var item : BaseLabel = try cast(Reflect.field(_vec, Std.string(i)), BaseLabel) catch(e:Dynamic) null;
+            var item                             : Dynamic= try cast(as3hx.Compat.field(_vec, i), BaseLabel) catch(e:Dynamic) null;
             
-            if (item.isStale)
+            if (as3hx.Compat.truthy(item.isStale))
             {
                 item.parent.removeChild(item);
                 _vec.splice(i, 1)[0];
@@ -238,17 +238,17 @@ class MPViewUserListRoom extends Sprite
         }
     }
     
-    private function _markRoomOwner(item : MPViewUserListRoomUserLabel, index : Int = 0, vector : Array<MPViewUserListRoomUserLabel> = null) : Void
+    private function _markRoomOwner(item                             : Dynamic, index                             : Dynamic= 0, vector                             : Dynamic= null) : Void
     {
         item.setOwnerCrown(room.owner);
     }
     
-    private function e_onUserClick(e : MouseEvent) : Void
+    private function e_onUserClick(e                             : Dynamic) : Void
     {
-        if (Std.is(e.target, MPViewUserListRoomUserLabel))
+        if (as3hx.Compat.truthy(Std.is(e.target, MPViewUserListRoomUserLabel)))
         {
-            var user : MPUser = (try cast(e.target, MPViewUserListRoomUserLabel) catch(e:Dynamic) null).user;
-            if (e.ctrlKey)
+            var user                             : Dynamic= (try cast(e.target, MPViewUserListRoomUserLabel) catch(e:Dynamic) null).user;
+            if (as3hx.Compat.truthy(e.ctrlKey))
             {
                 dispatchEvent(new MPUserEvent(MPEvent.ROOM_USERLIST_SPECTATE, null, user));
             }
@@ -259,21 +259,21 @@ class MPViewUserListRoom extends Sprite
         }
     }
     
-    private function e_scrollMouseWheel(e : MouseEvent) : Void
+    private function e_scrollMouseWheel(e                             : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
         
-        var dist : Float = scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
+        var dist                             : Dynamic= scrollbar.scroll + (pane.scrollFactorVertical / 2) * ((e.delta > 0) ? -1 : 1);
         pane.scrollTo(dist);
         scrollbar.scrollTo(dist);
     }
     
-    private function e_scrollbarUpdater(e : Event) : Void
+    private function e_scrollbarUpdater(e                             : Dynamic) : Void
     {
-        if (!scrollbar.visible)
+        if (as3hx.Compat.truthy(!scrollbar.visible))
         {
             return;
         }
@@ -281,7 +281,7 @@ class MPViewUserListRoom extends Sprite
         pane.scrollTo(e.target.scroll);
     }
     
-    override private function set_width(value : Float) : Float
+    override private function set_width(value                             : Dynamic) : Float
     {
         _width = value;
         redraw();
@@ -293,7 +293,7 @@ class MPViewUserListRoom extends Sprite
         return _width;
     }
     
-    override private function set_height(value : Float) : Float
+    override private function set_height(value                             : Dynamic) : Float
     {
         _height = height;
         redraw();
@@ -309,7 +309,7 @@ class MPViewUserListRoom extends Sprite
     
     public function updateGameStates() : Void
     {
-        for (label in userLabels)
+        for (label in as3hx.Compat.iter(userLabels))
         {
             label.updateGameState();
         }
@@ -317,18 +317,18 @@ class MPViewUserListRoom extends Sprite
     
     // //////
     // Object Pool
-    private function getUserLabel(user : MPUser) : MPViewUserListRoomUserLabel
+    private function getUserLabel(user                             : Dynamic) : MPViewUserListRoomUserLabel
     {
-        for (label in userLabels)
+        for (label in as3hx.Compat.iter(userLabels))
         {
-            if (user == label.user)
+            if (as3hx.Compat.truthy(user == label.user))
             {
                 label.isStale = false;
                 return label;
             }
         }
         
-        var newLabel : MPViewUserListRoomUserLabel = new MPViewUserListRoomUserLabel(room, user);
+        var newLabel                             : Dynamic= new MPViewUserListRoomUserLabel(room, user);
         pane.content.addChild(newLabel);
         userLabels.push(newLabel);
         _setSize(newLabel);
@@ -336,18 +336,18 @@ class MPViewUserListRoom extends Sprite
         return newLabel;
     }
     
-    private function getTeamLabel(team : MPTeam) : TeamLabel
+    private function getTeamLabel(team                             : Dynamic) : TeamLabel
     {
-        for (label in teamLabels)
+        for (label in as3hx.Compat.iter(teamLabels))
         {
-            if (team == label.team)
+            if (as3hx.Compat.truthy(team == label.team))
             {
                 label.isStale = false;
                 return label;
             }
         }
         
-        var newLabel : TeamLabel = new TeamLabel(room, team);
+        var newLabel                             : Dynamic= new TeamLabel(room, team);
         pane.content.addChild(newLabel);
         teamLabels.push(newLabel);
         _setSize(newLabel);
@@ -360,21 +360,21 @@ class MPViewUserListRoom extends Sprite
 
 class BaseLabel extends Sprite
 {
-    private static var _mp : Multiplayer = Multiplayer.instance;
-    private static var _lang : Language = Language.instance;
+    public var _mp                             : Dynamic= Multiplayer.instance;
+    public var _lang                             : Dynamic= Language.instance;
     
-    public var isStale : Bool = false;
+    public var isStale                             : Dynamic= false;
     
-    private var _width : Float = 184;
-    private var _height : Float = 27;
+    public var _width                             : Dynamic= 184;
+    public var _height                             : Dynamic= 27;
     
-    public var room : MPRoom;
-    public var team : MPTeam;
+    public var room                             : Dynamic;
+    public var team                             : Dynamic;
     
-    private var nameText : Text;
+    public var nameText                             : Dynamic;
     
     @:allow(classes.mp.components)
-    private function new(room : MPRoom, team : MPTeam = null)
+    private function new(room                             : Dynamic, team                             : Dynamic= null)
     {
         super();
         this.room = room;
@@ -383,11 +383,11 @@ class BaseLabel extends Sprite
         build();
     }
     
-    private function build() : Void
+    public function build() : Void
     {
     }
     
-    private function draw() : Void
+    public function draw() : Void
     {
         this.graphics.clear();
         this.graphics.lineStyle(1, 0xFFFFFF, 0.35);
@@ -400,14 +400,14 @@ class BaseLabel extends Sprite
         this.graphics.endFill();
     }
     
-    public function setSize(w : Float, h : Float) : Void
+    public function setSize(w                             : Dynamic, h                             : Dynamic) : Void
     {
         _width = w;
         _height = h;
         resize();
     }
     
-    private function resize() : Void
+    public function resize() : Void
     {
         draw();
         scrollRect = new Rectangle(0, 0, _width + 1, _height + 1);
@@ -420,16 +420,16 @@ class BaseLabel extends Sprite
 
 class TeamLabel extends BaseLabel
 {
-    private var joinText : Text;
-    private var _throbber : Throbber;
+    private var joinText                             : Dynamic;
+    private var _throbber                             : Dynamic;
     
     @:allow(classes.mp.components)
-    private function new(room : MPRoom, team : MPTeam)
+    private function new(room                             : Dynamic, team                             : Dynamic)
     {
         super(room, team);
     }
     
-    override private function build() : Void
+    override public function build() : Void
     {
         nameText = new Text(this, 5, 0, "", 11, "#c7c7c7");
         nameText.setAreaParams(_width - 55, _height);
@@ -448,7 +448,7 @@ class TeamLabel extends BaseLabel
         addChild(_throbber);
     }
     
-    override private function resize() : Void
+    override public function resize() : Void
     {
         super.resize();
         joinText.x = _width - 55;
@@ -457,7 +457,7 @@ class TeamLabel extends BaseLabel
     
     override public function update() : Void
     {
-        if (_throbber.visible)
+        if (as3hx.Compat.truthy(_throbber.visible))
         {
             _throbber.stop();
             _throbber.visible = false;
@@ -465,7 +465,7 @@ class TeamLabel extends BaseLabel
         
         joinText.visible = team.canJoin && !team.contains(_mp.currentUser) && team.userCount < team.maxUsers;
         
-        if (team.spectator)
+        if (as3hx.Compat.truthy(team.spectator))
         {
             nameText.text = team.name;
         }
@@ -475,7 +475,7 @@ class TeamLabel extends BaseLabel
         }
     }
     
-    private function e_onTeamJoin(e : MouseEvent) : Void
+    private function e_onTeamJoin(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomTeamChange(room, team));
         _throbber.visible = true;
@@ -485,17 +485,17 @@ class TeamLabel extends BaseLabel
 
 class MPViewUserListRoomUserLabel extends BaseLabel
 {
-    private static var NAME_CROWN : String = " <font color=\"#FDCF53\" face=\"" + Fonts.FONT_AWESOME + "\">\uf521</font>";
+    private static var NAME_CROWN                             : Dynamic= " <font color=\"#FDCF53\" face=\"" + Fonts.FONT_AWESOME + "\">\uf521</font>";
     
-    public var user : MPUser;
+    public var user                             : Dynamic;
     
-    private var canPlay : Bool = false;
-    private var altText : Text;
+    private var canPlay                             : Dynamic= false;
+    private var altText                             : Dynamic;
     
-    private var hover : Sprite;
+    private var hover                             : Dynamic;
     
     @:allow(classes.mp.components)
-    private function new(room : MPRoom, user : MPUser)
+    private function new(room                             : Dynamic, user                             : Dynamic)
     {
         this.user = user;
         this.buttonMode = true;
@@ -503,7 +503,7 @@ class MPViewUserListRoomUserLabel extends BaseLabel
         super(room);
     }
     
-    override private function build() : Void
+    override public function build() : Void
     {
         nameText = new Text(this, 5, 0, user.userLabelHTML, 11, "#FFFFFF");
         nameText.setAreaParams(_width - 11, _height);
@@ -521,7 +521,7 @@ class MPViewUserListRoomUserLabel extends BaseLabel
         this.addEventListener(MouseEvent.ROLL_OUT, e_hideHover);
     }
     
-    override private function resize() : Void
+    override public function resize() : Void
     {
         super.resize();
         altText.x = _width - 50;
@@ -538,15 +538,15 @@ class MPViewUserListRoomUserLabel extends BaseLabel
         draw();
     }
     
-    override private function draw() : Void
+    override public function draw() : Void
     {
         super.draw();
         
-        if (team != null && !team.spectator)
+        if (as3hx.Compat.truthy(team != null && !team.spectator))
         {
             nameText.width = _width - 42;
             
-            var barColor : Int = (canPlay) ? ((room.isPlayerReady(user)) ? 0x8eff6b : 0xfff76b) : 0xff6b6b;
+            var barColor                             : Dynamic= (canPlay) ? ((room.isPlayerReady(user)) ? 0x8eff6b : 0xfff76b) : 0xff6b6b;
             
             this.graphics.lineStyle(0, 0, 0);
             this.graphics.beginFill(barColor, 0.5);
@@ -559,48 +559,48 @@ class MPViewUserListRoomUserLabel extends BaseLabel
         }
     }
     
-    public function setOwnerCrown(owner : MPUser) : Void
+    public function setOwnerCrown(owner                             : Dynamic) : Void
     {
         nameText.text = user.userLabelHTML + ((owner == user) ? NAME_CROWN : "");
     }
     
-    public function setPlayability(state : Bool) : Void
+    public function setPlayability(state                             : Dynamic) : Void
     {
         canPlay = state;
     }
     
     public function updateGameState() : Void
     {
-        if (Std.is(room, MPRoomFFR))
+        if (as3hx.Compat.truthy(Std.is(room, MPRoomFFR)))
         {
-            var castRoom : MPRoomFFR = try cast(room, MPRoomFFR) catch(e:Dynamic) null;
-            var playerState : String = castRoom.getPlayerState(user);
+            var castRoom                             : Dynamic= try cast(room, MPRoomFFR) catch(e:Dynamic) null;
+            var playerState                             : Dynamic= castRoom.getPlayerState(user);
             
-            if (playerState == "menu")
+            if (as3hx.Compat.truthy(playerState == "menu"))
             {
-                var song_rate : Float = castRoom.getPlayerSongRate(user);
-                var rate_text : String = (castRoom.mods.rate.enabled || song_rate != 1) ? "[" + song_rate + "x]" : "";
+                var song_rate                             : Dynamic= castRoom.getPlayerSongRate(user);
+                var rate_text                             : Dynamic= (castRoom.mods.rate.enabled || song_rate != 1) ? "[" + song_rate + "x]" : "";
                 
-                if (castRoom.mods.rate.enabled)
+                if (as3hx.Compat.truthy(castRoom.mods.rate.enabled))
                 {
                     rate_text = "<font color=\"#eda8a8\">" + rate_text;
                 }
                 
                 altText.text = rate_text;
             }
-            else if (playerState == "loading")
+            else if (as3hx.Compat.truthy(playerState == "loading"))
             {
                 altText.text = castRoom.getPlayerLoadingProgress(user) + "%";
             }
-            else if (playerState == "game")
+            else if (as3hx.Compat.truthy(playerState == "game"))
             {
                 altText.text = "[Playing]";
             }
-            else if (playerState == "waiting")
+            else if (as3hx.Compat.truthy(playerState == "waiting"))
             {
                 altText.text = "[Waiting]";
             }
-            else if (playerState == "results")
+            else if (as3hx.Compat.truthy(playerState == "results"))
             {
                 altText.text = "[Results]";
             }
@@ -611,12 +611,12 @@ class MPViewUserListRoomUserLabel extends BaseLabel
         }
     }
     
-    private function e_showHover(e : MouseEvent) : Void
+    private function e_showHover(e                             : Dynamic) : Void
     {
         hover.visible = true;
     }
     
-    private function e_hideHover(e : MouseEvent) : Void
+    private function e_hideHover(e                             : Dynamic) : Void
     {
         hover.visible = false;
     }

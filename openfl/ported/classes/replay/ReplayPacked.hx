@@ -4,26 +4,26 @@ import openfl.utils.ByteArray;
 
 class ReplayPacked
 {
-    public var VERSION(get, never) : Int;
+    public var VERSION(get, never)                             : Dynamic;
 
-    public var MAGIC : String;
-    public var MAJOR_VER : Int;
-    public var MINOR_VER : Int;
-    public var user_id : Int;
-    public var song_id : Int;
-    public var song_rate : Float;
-    public var timestamp : Int;
-    public var judgements : Dynamic;
-    public var raw_judgements : String;
-    public var settings : Dynamic;
-    public var raw_settings : String;
-    public var rep_notes : Array<ReplayBinFrame>;
-    public var rep_boos : Array<ReplayBinFrame>;
-    public var checksum : Int;
-    public var rechecksum : Int;
-    public var replay_bin : ByteArray;
+    public var MAGIC                             : Dynamic;
+    public var MAJOR_VER                             : Dynamic;
+    public var MINOR_VER                             : Dynamic;
+    public var user_id                             : Dynamic;
+    public var song_id                             : Dynamic;
+    public var song_rate                             : Dynamic;
+    public var timestamp                             : Dynamic;
+    public var judgements                             : Dynamic;
+    public var raw_judgements                             : Dynamic;
+    public var settings                             : Dynamic;
+    public var raw_settings                             : Dynamic;
+    public var rep_notes                             : Dynamic;
+    public var rep_boos                             : Dynamic;
+    public var checksum                             : Dynamic;
+    public var rechecksum                             : Dynamic;
+    public var replay_bin                             : Dynamic;
     
-    public var error : String;
+    public var error                             : Dynamic;
     
     private function get_VERSION() : Int
     {
@@ -32,11 +32,11 @@ class ReplayPacked
     
     public function update() : Void
     {
-        var i : Int;
+        var i                             : Dynamic= null;
         
         // 1.0 -> 1.1:
         // Judge ms Inversion
-        if (MAJOR_VER == 1 && MINOR_VER == 0)
+        if (as3hx.Compat.truthy(MAJOR_VER == 1 && MINOR_VER == 0))
         {
             for (i in 0...rep_notes.length)
             {

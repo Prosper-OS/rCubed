@@ -3,18 +3,18 @@ package classes;
 
 class StatTracker
 {
-    public var data(get, never) : Dynamic;
+    public var data(get, never)                              : Dynamic;
 
-    public var raw_score : Float = 0;
-    public var grandtotal : Float = 0;
-    public var restarts : Float = 0;
-    public var amazing : Float = 0;
-    public var perfect : Float = 0;
-    public var good : Float = 0;
-    public var average : Float = 0;
-    public var miss : Float = 0;
-    public var boo : Float = 0;
-    public var credits : Float = 0;
+    public var raw_score                              : Dynamic= 0;
+    public var grandtotal                              : Dynamic= 0;
+    public var restarts                              : Dynamic= 0;
+    public var amazing                              : Dynamic= 0;
+    public var perfect                              : Dynamic= 0;
+    public var good                              : Dynamic= 0;
+    public var average                              : Dynamic= 0;
+    public var miss                              : Dynamic= 0;
+    public var boo                              : Dynamic= 0;
+    public var credits                              : Dynamic= 0;
     
     private function get_data() : Dynamic
     {
@@ -46,7 +46,7 @@ class StatTracker
         credits = 0;
     }
     
-    public function addFromStats(stats : StatTracker) : Void
+    public function addFromStats(stats                              : Dynamic) : Void
     {
         raw_score += stats.raw_score;
         grandtotal += stats.grandtotal;

@@ -13,20 +13,20 @@ import openfl.events.EventDispatcher;
 
 class Client extends EventDispatcher
 {
-    public var id(get, never) : Int;
+    public var id(get, never)                              : Dynamic;
 
     
-    private var _id : Int;
+    private var _id                              : Dynamic;
     
     private function get_id() : Int
     {
         return _id;
     }
     
-    private var closed : Bool;
-    private var clientHandler : IClientHandler;
+    private var closed                              : Dynamic;
+    private var clientHandler                              : Dynamic;
     
-    public function new(id : Int, clientHandler : IClientHandler)
+    public function new(id                              : Dynamic, clientHandler                              : Dynamic)
     {
         super();
         this._id = id;
@@ -36,12 +36,12 @@ class Client extends EventDispatcher
         clientHandler.addEventListener(MessagesAvailableEvent.MESSAGES_AVAILABLE, messagesAvailableHandler, false, 0, true);
     }
     
-    private function messagesAvailableHandler(event : MessagesAvailableEvent) : Void
+    private function messagesAvailableHandler(event                              : Dynamic) : Void
     {
-        while (clientHandler.messagesAvailable)
+        while (as3hx.Compat.truthy(clientHandler.messagesAvailable))
         {
-            var message : Message = clientHandler.readMessage();
-            if (message != null)
+            var message                              : Dynamic= clientHandler.readMessage();
+            if (as3hx.Compat.truthy(message != null))
             {
                 message.senderId = this.id;
                 dispatchEvent(new MessageReceivedEvent(MessageReceivedEvent.MESSAGE_RECEIVED, message));
@@ -49,14 +49,14 @@ class Client extends EventDispatcher
         }
     }
     
-    public function sendMessage(message : Message) : Void
+    public function sendMessage(message                              : Dynamic) : Void
     {
         clientHandler.writeMessage(message);
     }
     
     public function close() : Void
     {
-        if (!closed)
+        if (as3hx.Compat.truthy(!closed))
         {
             closed = true;
             
@@ -68,7 +68,7 @@ class Client extends EventDispatcher
         }
     }
     
-    private function closeHandler(event : Event) : Void
+    private function closeHandler(event                              : Dynamic) : Void
     {
         close();
     }

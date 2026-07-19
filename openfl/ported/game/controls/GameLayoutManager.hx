@@ -7,29 +7,29 @@ import game.GameplayDisplay;
 
 class GameLayoutManager extends Sprite
 {
-    public static inline var LAYOUT_BAR_TOP : String = "bartop";
-    public static inline var LAYOUT_BAR_BOTTOM : String = "barbottom";
-    public static inline var LAYOUT_PROGRESS_BAR : String = "progressbar";
-    public static inline var LAYOUT_PROGRESS_TEXT : String = "progresstext";
-    public static inline var LAYOUT_RECEPTORS : String = "receptors";
-    public static inline var LAYOUT_JUDGE : String = "judge";
-    public static inline var LAYOUT_HEALTH : String = "health";
-    public static inline var LAYOUT_SCORE : String = "score";
-    public static inline var LAYOUT_COMBO : String = "combo";
-    public static inline var LAYOUT_TOTAL : String = "combototal";
-    public static inline var LAYOUT_COMBO_STATIC : String = "combostatic";
-    public static inline var LAYOUT_TOTAL_STATIC : String = "combototalstatic";
-    public static inline var LAYOUT_ACCURACY_BAR : String = "accuracybar";
-    public static inline var LAYOUT_PA : String = "pa";
-    public static inline var LAYOUT_RAWGOODS : String = "rawgoods";
-    public static inline var LAYOUT_RAWGOODS_STATIC : String = "rawgoodsstatic";
-    public static inline var LAYOUT_MP_FFR_SCORE : String = "mpffrscore";
+    public static inline var LAYOUT_BAR_TOP                       : Dynamic= "bartop";
+    public static inline var LAYOUT_BAR_BOTTOM                       : Dynamic= "barbottom";
+    public static inline var LAYOUT_PROGRESS_BAR                       : Dynamic= "progressbar";
+    public static inline var LAYOUT_PROGRESS_TEXT                       : Dynamic= "progresstext";
+    public static inline var LAYOUT_RECEPTORS                       : Dynamic= "receptors";
+    public static inline var LAYOUT_JUDGE                       : Dynamic= "judge";
+    public static inline var LAYOUT_HEALTH                       : Dynamic= "health";
+    public static inline var LAYOUT_SCORE                       : Dynamic= "score";
+    public static inline var LAYOUT_COMBO                       : Dynamic= "combo";
+    public static inline var LAYOUT_TOTAL                       : Dynamic= "combototal";
+    public static inline var LAYOUT_COMBO_STATIC                       : Dynamic= "combostatic";
+    public static inline var LAYOUT_TOTAL_STATIC                       : Dynamic= "combototalstatic";
+    public static inline var LAYOUT_ACCURACY_BAR                       : Dynamic= "accuracybar";
+    public static inline var LAYOUT_PA                       : Dynamic= "pa";
+    public static inline var LAYOUT_RAWGOODS                       : Dynamic= "rawgoods";
+    public static inline var LAYOUT_RAWGOODS_STATIC                       : Dynamic= "rawgoodsstatic";
+    public static inline var LAYOUT_MP_FFR_SCORE                       : Dynamic= "mpffrscore";
     
-    public var gameplay : GameplayDisplay;
-    public var options : GameOptions;
-    public var defaultLayout : Dynamic;
+    public var gameplay                       : Dynamic;
+    public var options                       : Dynamic;
+    public var defaultLayout                       : Dynamic;
     
-    public function new(gameplay : GameplayDisplay, options : GameOptions)
+    public function new(gameplay                       : Dynamic, options                       : Dynamic)
     {
         super();
         buildDefaultLayout();
@@ -43,27 +43,27 @@ class GameLayoutManager extends Sprite
         cleanLayout(options.layout);
     }
     
-    public function interfaceLayout(key : String, defaults : Bool = true) : Dynamic
+    public function interfaceLayout(key                       : Dynamic, defaults                       : Dynamic= true) : Dynamic
     {
-        if (defaults)
+        if (as3hx.Compat.truthy(defaults))
         {
-            var ret : Dynamic = { };
-            var def : Dynamic = Reflect.field(defaultLayout, key);
+            var ret                       : Dynamic= { };
+            var def                       : Dynamic= Reflect.field(defaultLayout, key);
             
-            for (i in Reflect.fields(def))
+            for (i in as3hx.Compat.iter(Reflect.fields(def)))
             {
                 Reflect.setField(ret, i, Reflect.field(def, i));
             }
             
-            var layout : Dynamic = options.layout[key];
-            for (i in Reflect.fields(layout))
+            var layout                       : Dynamic= options.layout[key];
+            for (i in as3hx.Compat.iter(Reflect.fields(layout)))
             {
-                Reflect.setField(ret, Std.string(i), Reflect.field(layout, Std.string(i)));
+                Reflect.setField(ret, Std.string(i), as3hx.Compat.field(layout, i));
             }
             
             return ret;
         }
-        else if (options.layout[key] == null)
+        else if (as3hx.Compat.truthy(options.layout[key] == null))
         {
             options.layout[key] = { };
         }
@@ -71,19 +71,19 @@ class GameLayoutManager extends Sprite
         return options.layout[key];
     }
     
-    public function interfacePosition(sprite : Sprite, key : String) : Void
+    public function interfacePosition(sprite                       : Dynamic, key                       : Dynamic) : Void
     {
-        if (sprite == null)
+        if (as3hx.Compat.truthy(sprite == null))
         {
             return;
         }
         
         try
         {
-            var layout : Dynamic = interfaceLayout(key);
-            for (p in Reflect.fields(layout))
+            var layout                       : Dynamic= interfaceLayout(key);
+            for (p in as3hx.Compat.iter(Reflect.fields(layout)))
             {
-                if (Lambda.has(sprite, p))
+                if (as3hx.Compat.truthy(Lambda.has(sprite, p)))
                 {
                     Reflect.setField(sprite, p, Reflect.field(layout, p));
                 }
@@ -237,38 +237,38 @@ class GameLayoutManager extends Sprite
      * Removes all non-existent components or properties that match the defaults.
      * @param layout
      */
-    public function cleanLayout(layout : Dynamic) : Void
+    public function cleanLayout(layout                       : Dynamic) : Void
     {
-        var key : String;
-        var prop : String;
+        var key                       : Dynamic= null;
+        var prop                       : Dynamic= null;
         
         // Remove non-existent Components
-        for (key in Reflect.fields(layout))
+        for (key in as3hx.Compat.iter(Reflect.fields(layout)))
         {
-            if (!(Lambda.has(defaultLayout, key)))
+            if (as3hx.Compat.truthy(!(Lambda.has(defaultLayout, key))))
             {
                 Reflect.deleteField(layout, key);
             }
         }
         
         // Remove default values.
-        for (key in Reflect.fields(defaultLayout)) {
-if (!(Lambda.has(layout, key)))
+        for (key in as3hx.Compat.iter(Reflect.fields(defaultLayout))) {
+if (as3hx.Compat.truthy(!(Lambda.has(layout, key))))
             {
                 continue;
             }
             
-            var dprop : Dynamic = Reflect.field(defaultLayout, key);
-            var sprop : Dynamic = Reflect.field(layout, key);
+            var dprop                       : Dynamic= Reflect.field(defaultLayout, key);
+            var sprop                       : Dynamic= Reflect.field(layout, key);
             
-            for (prop in Reflect.fields(dprop)) {
-if (!(Lambda.has(sprop, prop)))
+            for (prop in as3hx.Compat.iter(Reflect.fields(dprop))) {
+if (as3hx.Compat.truthy(!(Lambda.has(sprop, prop))))
                 {
                     continue;
                 }
                 
                 // Value matches default, remove.
-                if (Reflect.field(sprop, prop) == Reflect.field(dprop, prop))
+                if (as3hx.Compat.truthy(Reflect.field(sprop, prop) == Reflect.field(dprop, prop)))
                 {
                     Reflect.deleteField(sprop, prop);
                 }
@@ -276,17 +276,17 @@ if (!(Lambda.has(sprop, prop)))
         }
         
         // Remove empty components.
-        for (key in Reflect.fields(layout))
+        for (key in as3hx.Compat.iter(Reflect.fields(layout)))
         {
-            var cprop : Dynamic = Reflect.field(layout, key);
-            var ccount : Float = 0;
+            var cprop                       : Dynamic= Reflect.field(layout, key);
+            var ccount                       : Dynamic= 0;
             
-            for (prop in Reflect.fields(cprop))
+            for (prop in as3hx.Compat.iter(Reflect.fields(cprop)))
             {
                 ccount++;
             }
             
-            if (ccount == 0)
+            if (as3hx.Compat.truthy(ccount == 0))
             {
                 Reflect.deleteField(layout, key);
             }

@@ -5,17 +5,17 @@ import openfl.utils.IDataOutput;
 
 class GamePlaybackSpectatorHit extends GamePlaybackEvent
 {
-    public static inline var ID : Int = 6;
+    public static inline var ID                       : Dynamic= 6;
     
-    public var direction : String;
+    public var direction                       : Dynamic;
     
-    public function new(index : Int, timestamp : Float, direction : String)
+    public function new(index                       : Dynamic, timestamp                       : Dynamic, direction                       : Dynamic)
     {
         super(ID, index, timestamp);
         this.direction = direction;
     }
     
-    override public function writeData(output : IDataOutput) : Void
+    override public function writeData(output                       : Dynamic) : Void
     {
         output.writeByte(ID);
         output.writeByte(4 + 4 + 1);  // Length of everything below this.  
@@ -24,11 +24,11 @@ class GamePlaybackSpectatorHit extends GamePlaybackEvent
         output.writeByte(direction.charCodeAt(0));
     }
     
-    public static function readData(input : IDataInput) : GamePlaybackSpectatorHit
+    public static function readData(input                       : Dynamic) : GamePlaybackSpectatorHit
     {
-        var index : Int = input.readUnsignedInt();
-        var timestamp : Int = input.readUnsignedInt();
-        var direction : String = String.fromCharCode(input.readByte());
+        var index                       : Dynamic= input.readUnsignedInt();
+        var timestamp                       : Dynamic= input.readUnsignedInt();
+        var direction                       : Dynamic= String.fromCharCode(input.readByte());
         
         return new GamePlaybackSpectatorHit(index, timestamp, direction);
     }

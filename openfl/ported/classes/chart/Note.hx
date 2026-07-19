@@ -3,10 +3,10 @@ package classes.chart;
 
 class Note
 {
-    public var direction : String;
-    public var time : Float;
-    public var color : String;
-    public var frame : Float;
+    public var direction                             : Dynamic;
+    public var time                             : Dynamic;
+    public var color                             : Dynamic;
+    public var frame                             : Dynamic;
     
     /**
      * Defines a new Note object.
@@ -15,7 +15,7 @@ class Note
      * @param	color
      * @param	frame
      */
-    public function new(direction : String, time : Float, color : String, frame : Float = -1)
+    public function new(direction                             : Dynamic, time                             : Dynamic, color                             : Dynamic, frame                             : Dynamic= -1)
     {
         this.direction = direction;
         this.time = time;

@@ -6,13 +6,13 @@ import openfl.events.IEventDispatcher;
 interface IClientHandler extends IEventDispatcher
 {
     
-    var messagesAvailable(get, never) : Bool;
+    var messagesAvailable(get, never)                              : Dynamic;
 
     function close() : Void
     ;
     function readMessage() : Message
     ;
-    function writeMessage(messageToWrite : Message) : Void
+    function writeMessage(messageToWrite                              : Dynamic) : Void
     ;
 }
 

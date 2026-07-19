@@ -7,21 +7,21 @@ import game.GameOptions;
 
 class MPGameplayMods
 {
-    public var rate : MPGameplayModNumber = new MPGameplayModNumber("rate");
-    public var hidden : MPGameplayModBoolean = new MPGameplayModBoolean("hidden");
-    public var sudden : MPGameplayModBoolean = new MPGameplayModBoolean("sudden");
-    public var blink : MPGameplayModBoolean = new MPGameplayModBoolean("blink");
-    public var rotating : MPGameplayModBoolean = new MPGameplayModBoolean("rotating");
-    public var rotate_cw : MPGameplayModBoolean = new MPGameplayModBoolean("rotate_cw");
-    public var rotate_ccw : MPGameplayModBoolean = new MPGameplayModBoolean("rotate_ccw");
-    public var wave : MPGameplayModBoolean = new MPGameplayModBoolean("wave");
-    public var drunk : MPGameplayModBoolean = new MPGameplayModBoolean("drunk");
-    public var tornado : MPGameplayModBoolean = new MPGameplayModBoolean("tornado");
-    public var mini_resize : MPGameplayModBoolean = new MPGameplayModBoolean("mini_resize");
-    public var tap_pulse : MPGameplayModBoolean = new MPGameplayModBoolean("tap_pulse");
-    public var nobackground : MPGameplayModBoolean = new MPGameplayModBoolean("nobackground");
+    public var rate                             : Dynamic= new MPGameplayModNumber("rate");
+    public var hidden                             : Dynamic= new MPGameplayModBoolean("hidden");
+    public var sudden                             : Dynamic= new MPGameplayModBoolean("sudden");
+    public var blink                             : Dynamic= new MPGameplayModBoolean("blink");
+    public var rotating                             : Dynamic= new MPGameplayModBoolean("rotating");
+    public var rotate_cw                             : Dynamic= new MPGameplayModBoolean("rotate_cw");
+    public var rotate_ccw                             : Dynamic= new MPGameplayModBoolean("rotate_ccw");
+    public var wave                             : Dynamic= new MPGameplayModBoolean("wave");
+    public var drunk                             : Dynamic= new MPGameplayModBoolean("drunk");
+    public var tornado                             : Dynamic= new MPGameplayModBoolean("tornado");
+    public var mini_resize                             : Dynamic= new MPGameplayModBoolean("mini_resize");
+    public var tap_pulse                             : Dynamic= new MPGameplayModBoolean("tap_pulse");
+    public var nobackground                             : Dynamic= new MPGameplayModBoolean("nobackground");
     
-    public function update(data : Dynamic) : Void
+    public function update(data                             : Dynamic) : Void
     {
         rate.enabled = data.exists(rate.mod);
         rate.value = (rate.enabled) ? data.rate : 1;
@@ -77,70 +77,70 @@ class MPGameplayMods
      * @param options
      * @param song
      */
-    public function apply(options : GameOptions, song : Song) : Void
+    public function apply(options                             : Dynamic, song                             : Dynamic) : Void
     {
-        if (rate.enabled && options.songRate != rate.value)
+        if (as3hx.Compat.truthy(rate.enabled && options.songRate != rate.value))
         {
             options.songRate = rate.value;
             song.isDirty = true;
         }
         
-        if (hidden.enabled)
+        if (as3hx.Compat.truthy(hidden.enabled))
         {
             options.setModBooleanState(hidden.mod, hidden.value);
         }
         
-        if (sudden.enabled)
+        if (as3hx.Compat.truthy(sudden.enabled))
         {
             options.setModBooleanState(sudden.mod, sudden.value);
         }
         
-        if (blink.enabled)
+        if (as3hx.Compat.truthy(blink.enabled))
         {
             options.setModBooleanState(blink.mod, blink.value);
         }
         
-        if (rotating.enabled)
+        if (as3hx.Compat.truthy(rotating.enabled))
         {
             options.setModBooleanState(rotating.mod, rotating.value);
         }
         
-        if (rotate_cw.enabled)
+        if (as3hx.Compat.truthy(rotate_cw.enabled))
         {
             options.setModBooleanState(rotate_cw.mod, rotate_cw.value);
         }
         
-        if (rotate_ccw.enabled)
+        if (as3hx.Compat.truthy(rotate_ccw.enabled))
         {
             options.setModBooleanState(rotate_ccw.mod, rotate_ccw.value);
         }
         
-        if (wave.enabled)
+        if (as3hx.Compat.truthy(wave.enabled))
         {
             options.setModBooleanState(wave.mod, wave.value);
         }
         
-        if (drunk.enabled)
+        if (as3hx.Compat.truthy(drunk.enabled))
         {
             options.setModBooleanState(drunk.mod, drunk.value);
         }
         
-        if (tornado.enabled)
+        if (as3hx.Compat.truthy(tornado.enabled))
         {
             options.setModBooleanState(tornado.mod, tornado.value);
         }
         
-        if (mini_resize.enabled)
+        if (as3hx.Compat.truthy(mini_resize.enabled))
         {
             options.setModBooleanState(mini_resize.mod, mini_resize.value);
         }
         
-        if (tap_pulse.enabled)
+        if (as3hx.Compat.truthy(tap_pulse.enabled))
         {
             options.setModBooleanState(tap_pulse.mod, tap_pulse.value);
         }
         
-        if (nobackground.enabled)
+        if (as3hx.Compat.truthy(nobackground.enabled))
         {
             options.setModBooleanState(nobackground.mod, nobackground.value);
         }

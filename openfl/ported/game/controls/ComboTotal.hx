@@ -5,7 +5,7 @@ import game.GameOptions;
 
 class ComboTotal extends Combo
 {
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super(options, parent);
     }

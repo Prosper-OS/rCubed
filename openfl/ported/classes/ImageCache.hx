@@ -14,15 +14,15 @@ import openfl.net.URLRequest;
 
 class ImageCache
 {
-    public static inline var ALIGN_MIDDLE : Float = 1;
+    public static inline var ALIGN_MIDDLE                              : Dynamic= 1;
     
-    public static var cacheData : Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>();
+    public static var cacheData                              : Dynamic= new Dictionary<Dynamic, Dynamic>();
     
-    public static function getImage(url : String, imageAlign : Float = 0, scaleWidth : Float = Math.NaN, scaleHeight : Float = Math.NaN) : ImageCacheSprite
+    public static function getImage(url                              : Dynamic, imageAlign                              : Dynamic= 0, scaleWidth                              : Dynamic= null, scaleHeight                              : Dynamic= null) : ImageCacheSprite
     {
-        var cache : CacheData = Reflect.field(cacheData, url);
+        var cache                              : Dynamic= Reflect.field(cacheData, url);
         
-        if (cache == null)
+        if (as3hx.Compat.truthy(cache == null))
         {
             cache = new CacheData(url);
             cacheData[cache.url] = cache;
@@ -40,13 +40,13 @@ class ImageCache
 
 class CacheData extends EventDispatcher
 {
-    public var url : String;
-    public var data : BitmapData;
+    public var url                              : Dynamic;
+    public var data                              : Dynamic;
     
-    private var _loader : Loader;
+    private var _loader                              : Dynamic;
     
     @:allow(classes)
-    private function new(url : String)
+    private function new(url                              : Dynamic)
     {
         super();
         this.url = url;
@@ -56,7 +56,7 @@ class CacheData extends EventDispatcher
         _loader.load(new URLRequest(url));
     }
     
-    private function e_onLoad(e : Event) : Void
+    private function e_onLoad(e                              : Dynamic) : Void
     {
         _loader.removeEventListener(Event.COMPLETE, e_onLoad);
         data = (try cast(_loader.content, Bitmap) catch(e:Dynamic) null).bitmapData;
@@ -72,17 +72,17 @@ class CacheData extends EventDispatcher
 
 class ImageCacheSprite extends Sprite
 {
-    public var url : String;
-    public var cache : CacheData;
+    public var url                              : Dynamic;
+    public var cache                              : Dynamic;
     
-    public var imageAlign : Float;
-    public var scaleWidth : Float;
-    public var scaleHeight : Float;
+    public var imageAlign                              : Dynamic;
+    public var scaleWidth                              : Dynamic;
+    public var scaleHeight                              : Dynamic;
     
-    private var useArea : Bool;
+    private var useArea                              : Dynamic;
     
     @:allow(classes)
-    private function new(cache : CacheData, imageAlign : Float = 0, scaleWidth : Float = Math.NaN, scaleHeight : Float = Math.NaN)
+    private function new(cache                              : Dynamic, imageAlign                              : Dynamic= 0, scaleWidth                              : Dynamic= null, scaleHeight                              : Dynamic= null)
     {
         super();
         this.cache = cache;
@@ -92,7 +92,7 @@ class ImageCacheSprite extends Sprite
         
         this.useArea = !Math.isNaN(scaleWidth) && !Math.isNaN(scaleHeight);
         
-        if (cache.data != null)
+        if (as3hx.Compat.truthy(cache.data != null))
         {
             addImage();
         }
@@ -104,20 +104,20 @@ class ImageCacheSprite extends Sprite
     
     private function addImage() : Void
     {
-        var spr : DisplayObject = cache.getSprite();
+        var spr                              : Dynamic= cache.getSprite();
         
-        if (useArea)
+        if (as3hx.Compat.truthy(useArea))
         {
             SpriteUtil.scaleTo(spr, scaleWidth, scaleHeight);
         }
         
-        if (imageAlign == ImageCache.ALIGN_MIDDLE)
+        if (as3hx.Compat.truthy(imageAlign == ImageCache.ALIGN_MIDDLE))
         {
             spr.x = -(scaleWidth >> 1);
             spr.y = -(scaleHeight >> 1);
         }
         
-        if (useArea)
+        if (as3hx.Compat.truthy(useArea))
         {
             spr.x += (scaleWidth - spr.width) / 2;
             spr.y += (scaleHeight - spr.height) / 2;
@@ -126,11 +126,11 @@ class ImageCacheSprite extends Sprite
         addChild(spr);
     }
     
-    private function e_onComplete(e : Event) : Void
+    private function e_onComplete(e                              : Dynamic) : Void
     {
         cache.removeEventListener(Event.COMPLETE, e_onComplete);
         
-        if (cache.data != null)
+        if (as3hx.Compat.truthy(cache.data != null))
         {
             addImage();
         }

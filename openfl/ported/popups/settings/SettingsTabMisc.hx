@@ -31,43 +31,43 @@ import popups.settings.SettingsTabMisc;
 
 class SettingsTabMisc extends SettingsTabBase
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _avars : ArcGlobals = ArcGlobals.instance;
-    private var _playlist : Playlist = Playlist.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _avars                       : Dynamic= ArcGlobals.instance;
+    private var _playlist                       : Dynamic= Playlist.instance;
     
-    private var optionGameLanguages : Array<Dynamic>;
-    private var languageCombo : ComboBox;
-    private var languageComboIgnore : Bool;
+    private var optionGameLanguages                       : Dynamic;
+    private var languageCombo                       : Dynamic;
+    private var languageComboIgnore                       : Dynamic;
     
-    private var useCacheCheckbox : BoxCheck;
-    private var autoSaveLocalCheckbox : BoxCheck;
-    private var useVSyncCheckbox : BoxCheck;
-    private var useWebsocketCheckbox : BoxCheck;
-    private var openWebsocketOverlay : BoxButton;
+    private var useCacheCheckbox                       : Dynamic;
+    private var autoSaveLocalCheckbox                       : Dynamic;
+    private var useVSyncCheckbox                       : Dynamic;
+    private var useWebsocketCheckbox                       : Dynamic;
+    private var openWebsocketOverlay                       : Dynamic;
     
-    private var reloadEngineData : BoxButton;
-    private var switchUserAccount : BoxButton;
+    private var reloadEngineData                       : Dynamic;
+    private var switchUserAccount                       : Dynamic;
     
-    private var engineCombo : ComboBox;
-    private var engineDefaultCombo : ComboBox;
-    private var engineComboIgnore : Bool;
-    private var optionFPS : ValidatedText;
+    private var engineCombo                       : Dynamic;
+    private var engineDefaultCombo                       : Dynamic;
+    private var engineComboIgnore                       : Dynamic;
+    private var optionFPS                       : Dynamic;
     
-    private var windowWidthBox : ValidatedText;
-    private var windowHeightBox : ValidatedText;
-    private var windowSizeSet : BoxButton;
-    private var windowSizeReset : BoxButton;
-    private var windowSaveSizeCheck : BoxCheck;
-    private var windowXBox : ValidatedText;
-    private var windowYBox : ValidatedText;
-    private var windowPositionSet : BoxButton;
-    private var windowPositionReset : BoxButton;
-    private var windowSavePositionCheck : BoxCheck;
-    private var windowFullscreen : BoxCheck;
-    private var windowSaveFullscreen : BoxCheck;
+    private var windowWidthBox                       : Dynamic;
+    private var windowHeightBox                       : Dynamic;
+    private var windowSizeSet                       : Dynamic;
+    private var windowSizeReset                       : Dynamic;
+    private var windowSaveSizeCheck                       : Dynamic;
+    private var windowXBox                       : Dynamic;
+    private var windowYBox                       : Dynamic;
+    private var windowPositionSet                       : Dynamic;
+    private var windowPositionReset                       : Dynamic;
+    private var windowSavePositionCheck                       : Dynamic;
+    private var windowFullscreen                       : Dynamic;
+    private var windowSaveFullscreen                       : Dynamic;
     
-    public function new(settingsWindow : SettingsWindow)
+    public function new(settingsWindow                       : Dynamic)
     {
         super(settingsWindow);
     }
@@ -88,26 +88,26 @@ class SettingsTabMisc extends SettingsTabBase
         container.graphics.moveTo(295, 15);
         container.graphics.lineTo(295, 405);
         
-        var i : Int;
-        var xOff : Int = 15;
-        var yOff : Int = 15;
+        var i                       : Dynamic= null;
+        var xOff                       : Dynamic= 15;
+        var yOff                       : Dynamic= 15;
         
         /// Col 1
         //- Game Languages
         optionGameLanguages = [];
-        var gameLanguageLabel : Text = new Text(container, xOff, yOff, _lang.string("options_game_language"));
+        var gameLanguageLabel                       : Dynamic= new Text(container, xOff, yOff, _lang.string("options_game_language"));
         yOff += 20;
         
-        var selectedLanguage : String = "";
-        for (id in Reflect.fields(_lang.indexed))
+        var selectedLanguage                       : Dynamic= "";
+        for (id in as3hx.Compat.iter(Reflect.fields(_lang.indexed)))
         {
-            var lang : String = _lang.indexed[id];
-            var lang_name : String = _lang.string2Simple("_real_name", lang) + ((_lang.data[lang]["_en_name"] != _lang.data[lang]["_real_name"]) ? (" / " + _lang.string2Simple("_en_name", lang)) : "");
+            var lang                       : Dynamic= _lang.indexed[id];
+            var lang_name                       : Dynamic= _lang.string2Simple("_real_name", lang) + ((as3hx.Compat.field(as3hx.Compat.field(_lang.data, lang), "_en_name") != as3hx.Compat.field(as3hx.Compat.field(_lang.data, lang), "_real_name")) ? (" / " + _lang.string2Simple("_en_name", lang)) : "");
             optionGameLanguages.push({
                         label : lang_name,
                         data : lang
                     });
-            if (lang == _gvars.activeUser.language)
+            if (as3hx.Compat.truthy(lang == _gvars.activeUser.language))
             {
                 selectedLanguage = lang_name;
             }
@@ -188,7 +188,7 @@ class SettingsTabMisc extends SettingsTabBase
         
         new Text(container, xOff + 163, yOff + 4, _lang.string("air_options_use_vsync"));
         useVSyncCheckbox = new BoxCheck(container, xOff + 143, yOff + 7, clickHandler);
-        if (!Main.VSYNC_SUPPORT)
+        if (as3hx.Compat.truthy(!Main.VSYNC_SUPPORT))
         {
             useVSyncCheckbox.alpha = 0.5;
             useVSyncCheckbox.addEventListener(MouseEvent.MOUSE_OVER, e_vsyncMouseOver, false, 0, true);
@@ -256,7 +256,7 @@ class SettingsTabMisc extends SettingsTabBase
         useCacheCheckbox.checked = _gvars.air_useLocalFileCache;
         useWebsocketCheckbox.checked = _gvars.air_useWebsockets;
         
-        if (Main.VSYNC_SUPPORT)
+        if (as3hx.Compat.truthy(Main.VSYNC_SUPPORT))
         {
             useVSyncCheckbox.checked = _gvars.air_useVSync;
         }
@@ -276,27 +276,27 @@ class SettingsTabMisc extends SettingsTabBase
         windowFullscreen.checked = _gvars.isFullScreen();
     }
     
-    override public function clickHandler(e : MouseEvent) : Void
+    override public function clickHandler(e                       : Dynamic) : Void
     // Auto Save Local Replays
     {
         
-        if (e.target == autoSaveLocalCheckbox)
+        if (as3hx.Compat.truthy(e.target == autoSaveLocalCheckbox))
         {
             e.target.checked = !e.target.checked;
             _gvars.air_autoSaveLocalReplays = !_gvars.air_autoSaveLocalReplays;
             LocalOptions.setVariable("auto_save_local_replays", _gvars.air_autoSaveLocalReplays);
         }
         // SWF File Cache
-        else if (e.target == useCacheCheckbox)
+        else if (as3hx.Compat.truthy(e.target == useCacheCheckbox))
         {
             e.target.checked = !e.target.checked;
             _gvars.air_useLocalFileCache = !_gvars.air_useLocalFileCache;
             LocalOptions.setVariable("use_local_file_cache", _gvars.air_useLocalFileCache);
         }
         // Vsync Toggle
-        else if (e.target == useVSyncCheckbox)
+        else if (as3hx.Compat.truthy(e.target == useVSyncCheckbox))
         {
-            if (Main.VSYNC_SUPPORT)
+            if (as3hx.Compat.truthy(Main.VSYNC_SUPPORT))
             {
                 e.target.checked = !e.target.checked;
                 _gvars.gameMain.stage.vsyncEnabled = _gvars.air_useVSync = !_gvars.air_useVSync;
@@ -304,16 +304,16 @@ class SettingsTabMisc extends SettingsTabBase
             }
         }
         // Use HTTP Websockets
-        else if (e.target == useWebsocketCheckbox)
+        else if (as3hx.Compat.truthy(e.target == useWebsocketCheckbox))
         {
-            if (_gvars.air_useWebsockets)
+            if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
             {
                 _gvars.destroyWebsocketServer();
                 _gvars.air_useWebsockets = false;
                 useWebsocketCheckbox.checked = false;
                 LocalOptions.setVariable("use_websockets", _gvars.air_useWebsockets);
             }
-            else if (_gvars.initWebsocketServer())
+            else if (as3hx.Compat.truthy(_gvars.initWebsocketServer()))
             {
                 _gvars.air_useWebsockets = true;
                 useWebsocketCheckbox.checked = true;
@@ -327,129 +327,129 @@ class SettingsTabMisc extends SettingsTabBase
             }
         }
         // HTTP Websockets Instructions
-        else if (e.target == openWebsocketOverlay)
+        else if (as3hx.Compat.truthy(e.target == openWebsocketOverlay))
         {
             flash.Lib.getURL(new URLRequest(Constant.WEBSOCKET_OVERLAY_URL), "_blank");
         }
         //- Engine Reload
-        else if (e.target == reloadEngineData)
+        else if (as3hx.Compat.truthy(e.target == reloadEngineData))
         {
             _gvars.reloadEngineData();
         }
-        else if (e.target == switchUserAccount)
+        else if (as3hx.Compat.truthy(e.target == switchUserAccount))
         {
             _gvars.switchUserAccount();
         }
         // Window Position
-        else if (e.target == windowSavePositionCheck)
+        else if (as3hx.Compat.truthy(e.target == windowSavePositionCheck))
         {
             e.target.checked = !e.target.checked;
             _gvars.air_saveWindowPosition = !_gvars.air_saveWindowPosition;
             LocalOptions.setVariable("save_window_position", _gvars.air_saveWindowPosition);
         }
-        else if (e.target == windowPositionSet)
+        else if (as3hx.Compat.truthy(e.target == windowPositionSet))
         {
             parent.addChild(new WindowSettingConfirm(this, _gvars.air_windowProperties));
             
-            _gvars.air_windowProperties["x"] = windowXBox.validate(Math.round((Capabilities.screenResolutionX - Main.window.width) * 0.5));
-            _gvars.air_windowProperties["y"] = windowYBox.validate(Math.round((Capabilities.screenResolutionY - Main.window.height) * 0.5));
+            Reflect.setField(_gvars.air_windowProperties, "x", windowXBox.validate(Math.round((Capabilities.screenResolutionX - Main.window.width) * 0.5)));
+            Reflect.setField(_gvars.air_windowProperties, "y", windowYBox.validate(Math.round((Capabilities.screenResolutionY - Main.window.height) * 0.5)));
             e_windowSetUpdate();
             windowFullscreen.checked = _gvars.isFullScreen();
         }
-        else if (e.target == windowPositionReset)
+        else if (as3hx.Compat.truthy(e.target == windowPositionReset))
         {
-            _gvars.air_windowProperties["x"] = Math.round((Capabilities.screenResolutionX - Main.window.width) * 0.5);
-            _gvars.air_windowProperties["y"] = Math.round((Capabilities.screenResolutionY - Main.window.height) * 0.5);
+            Reflect.setField(_gvars.air_windowProperties, "x", Math.round((Capabilities.screenResolutionX - Main.window.width) * 0.5));
+            Reflect.setField(_gvars.air_windowProperties, "y", Math.round((Capabilities.screenResolutionY - Main.window.height) * 0.5));
             e_windowSetUpdate();
             windowFullscreen.checked = _gvars.isFullScreen();
         }
         // Window Size
-        else if (e.target == windowSaveSizeCheck)
+        else if (as3hx.Compat.truthy(e.target == windowSaveSizeCheck))
         {
             e.target.checked = !e.target.checked;
             _gvars.air_saveWindowSize = !_gvars.air_saveWindowSize;
             LocalOptions.setVariable("save_window_size", _gvars.air_saveWindowSize);
         }
-        else if (e.target == windowSizeSet)
+        else if (as3hx.Compat.truthy(e.target == windowSizeSet))
         {
             parent.addChild(new WindowSettingConfirm(this, _gvars.air_windowProperties));
             
-            _gvars.air_windowProperties["width"] = windowWidthBox.validate(Main.GAME_WIDTH);
-            _gvars.air_windowProperties["height"] = windowHeightBox.validate(Main.GAME_HEIGHT);
+            Reflect.setField(_gvars.air_windowProperties, "width", windowWidthBox.validate(Main.GAME_WIDTH));
+            Reflect.setField(_gvars.air_windowProperties, "height", windowHeightBox.validate(Main.GAME_HEIGHT));
             e_windowSetUpdate();
             windowFullscreen.checked = _gvars.isFullScreen();
         }
-        else if (e.target == windowSizeReset)
+        else if (as3hx.Compat.truthy(e.target == windowSizeReset))
         {
-            _gvars.air_windowProperties["width"] = Main.GAME_WIDTH;
-            _gvars.air_windowProperties["height"] = Main.GAME_HEIGHT;
+            Reflect.setField(_gvars.air_windowProperties, "width", Main.GAME_WIDTH);
+            Reflect.setField(_gvars.air_windowProperties, "height", Main.GAME_HEIGHT);
             e_windowSetUpdate();
             windowFullscreen.checked = _gvars.isFullScreen();
         }
-        else if (e.target == windowSaveFullscreen)
+        else if (as3hx.Compat.truthy(e.target == windowSaveFullscreen))
         {
             e.target.checked = !e.target.checked;
             _gvars.air_useFullScreen = !_gvars.air_useFullScreen;
             LocalOptions.setVariable("save_usefullscreen", _gvars.air_useFullScreen);
         }
-        else if (e.target == windowFullscreen)
+        else if (as3hx.Compat.truthy(e.target == windowFullscreen))
         {
             _gvars.toggleFullScreen();
             windowFullscreen.checked = _gvars.isFullScreen();
         }
     }
     
-    override public function changeHandler(e : Event) : Void
+    override public function changeHandler(e                       : Dynamic) : Void
     {
-        if (e.target == optionFPS)
+        if (as3hx.Compat.truthy(e.target == optionFPS))
         {
             _gvars.activeUser.frameRate = optionFPS.validate(60);
             _gvars.activeUser.frameRate = Math.max(Math.min(_gvars.activeUser.frameRate, 1000), 10);
         }
     }
     
-    public function e_onKeyDownMenu(e : KeyboardEvent) : Void
+    public function e_onKeyDownMenu(e                       : Dynamic) : Void
     {
-        var keyCode : Int = e.keyCode;
+        var keyCode                       : Dynamic= e.keyCode;
         
-        if (keyCode == Keyboard.ESCAPE)
+        if (as3hx.Compat.truthy(keyCode == Keyboard.ESCAPE))
         {
             windowFullscreen.checked = false;  //ESC exits fullscreen  
             return;
         }
         
-        if (e.ctrlKey && keyCode == Keyboard.S)
+        if (as3hx.Compat.truthy(e.ctrlKey && keyCode == Keyboard.S))
         {
             windowFullscreen.checked = false;  //CTRL+S also exits fullscreen  
             return;
         }
     }
     
-    private function e_windowPropertyChange(e : Event) : Void
+    private function e_windowPropertyChange(e                       : Dynamic) : Void
     {
-        windowWidthBox.text = _gvars.air_windowProperties["width"];
-        windowHeightBox.text = _gvars.air_windowProperties["height"];
+        windowWidthBox.text = as3hx.Compat.field(_gvars.air_windowProperties, "width");
+        windowHeightBox.text = as3hx.Compat.field(_gvars.air_windowProperties, "height");
         
-        windowXBox.text = _gvars.air_windowProperties["x"];
-        windowYBox.text = _gvars.air_windowProperties["y"];
+        windowXBox.text = as3hx.Compat.field(_gvars.air_windowProperties, "x");
+        windowYBox.text = as3hx.Compat.field(_gvars.air_windowProperties, "y");
     }
     
     public function e_windowSetUpdate() : Void
     {
         _gvars.gameMain.ignoreWindowChanges = true;
-        Main.window.x = _gvars.air_windowProperties["x"];
-        Main.window.y = _gvars.air_windowProperties["y"];
-        Main.window.width = _gvars.air_windowProperties["width"] + Main.WINDOW_WIDTH_EXTRA;
-        Main.window.height = _gvars.air_windowProperties["height"] + Main.WINDOW_HEIGHT_EXTRA;
+        Main.window.x = as3hx.Compat.field(_gvars.air_windowProperties, "x");
+        Main.window.y = as3hx.Compat.field(_gvars.air_windowProperties, "y");
+        Main.window.width = as3hx.Compat.field(_gvars.air_windowProperties, "width") + Main.WINDOW_WIDTH_EXTRA;
+        Main.window.height = as3hx.Compat.field(_gvars.air_windowProperties, "height") + Main.WINDOW_HEIGHT_EXTRA;
         _gvars.gameMain.ignoreWindowChanges = false;
     }
     
-    private function e_websocketMouseOver(e : Event = null) : Void
+    private function e_websocketMouseOver(e                       : Dynamic= null) : Void
     {
-        if (_gvars.air_useWebsockets)
+        if (as3hx.Compat.truthy(_gvars.air_useWebsockets))
         {
-            var activePort : Int = _gvars.websocketPortNumber("websocket");
-            if (activePort > 0)
+            var activePort                       : Dynamic= _gvars.websocketPortNumber("websocket");
+            if (as3hx.Compat.truthy(activePort > 0))
             {
                 useWebsocketCheckbox.addEventListener(MouseEvent.MOUSE_OUT, e_websocketMouseOut);
                 displayToolTip(useWebsocketCheckbox.x, useWebsocketCheckbox.y + 22, sprintf(_lang.string("air_options_active_port"), {
@@ -459,7 +459,7 @@ class SettingsTabMisc extends SettingsTabBase
         }
     }
     
-    private function e_websocketMouseOut(e : Event) : Void
+    private function e_websocketMouseOut(e                       : Dynamic) : Void
     {
         useWebsocketCheckbox.removeEventListener(MouseEvent.MOUSE_OUT, e_websocketMouseOut);
         hideTooltip();
@@ -472,18 +472,18 @@ class SettingsTabMisc extends SettingsTabBase
         languageComboIgnore = false;
     }
     
-    private function languageSelect(e : Event) : Void
+    private function languageSelect(e                       : Dynamic) : Void
     {
-        if (!languageComboIgnore)
+        if (as3hx.Compat.truthy(!languageComboIgnore))
         {
             _gvars.activeUser.language = Std.string(e.target.selectedItem.data);
             
             _gvars.gameMain.activePanel.draw();
             _gvars.gameMain.buildContextMenu();
             
-            if (Std.is(_gvars.gameMain.activePanel, MainMenu))
+            if (as3hx.Compat.truthy(Std.is(_gvars.gameMain.activePanel, MainMenu)))
             {
-                var mmpanel : MainMenu = (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
+                var mmpanel                       : Dynamic= (try cast(_gvars.gameMain.activePanel, MainMenu) catch(e:Dynamic) null);
                 mmpanel.updateMenuMusicControls();
             }
             
@@ -492,37 +492,37 @@ class SettingsTabMisc extends SettingsTabBase
         }
     }
     
-    private function engineDefaultSelect(e : Event) : Void
+    private function engineDefaultSelect(e                       : Dynamic) : Void
     {
-        if (!engineComboIgnore)
+        if (as3hx.Compat.truthy(!engineComboIgnore))
         {
             _avars.legacyDefaultEngine = (try cast(e.target, ComboBox) catch(e:Dynamic) null).selectedItem.data;
             _avars.legacyDefaultSave();
         }
     }
     
-    private function e_addEngine(url : String) : Void
+    private function e_addEngine(url                       : Dynamic) : Void
     {
         ChartFFRLegacy.parseEngine(url, engineAdd);
     }
     
-    private function engineSelect(e : Event) : Void
+    private function engineSelect(e                       : Dynamic) : Void
     {
-        var data : Dynamic = engineCombo.selectedItem.data;
+        var data                       : Dynamic= engineCombo.selectedItem.data;
         // Add Engine
-        if (data == this)
+        if (as3hx.Compat.truthy(data == this))
         {
             new PromptInput(parent, _lang.string("custom_engine_url"), _lang.string("custom_engine_add_engine"), e_addEngine);
         }
         // Clears Engines
-        else if (data == engineCombo)
+        else if (as3hx.Compat.truthy(data == engineCombo))
         {
             _avars.legacyEngines = [];
             _avars.legacySave();
             engineRefresh();
         }
         // Change Engine
-        else if (!engineComboIgnore && data != _avars.configLegacy)
+        else if (as3hx.Compat.truthy(!engineComboIgnore && data != _avars.configLegacy))
         {
             _avars.configLegacy = data;
             _playlist.addEventListener(GlobalVariables.LOAD_COMPLETE, _playlist.engineChangeHandler);
@@ -531,21 +531,23 @@ class SettingsTabMisc extends SettingsTabBase
         }
     }
     
-    private function engineAdd(engine : Dynamic) : Void
+    private function engineAdd(engine                       : Dynamic) : Void
     {
         Alert.add(sprintf(_lang.string("custom_engine_loaded"), {
                             name : engine.name
                         }), 80);
-        for (i in 0..._avars.legacyEngines.length)
+        var i                      : Dynamic= 0;
+        while (as3hx.Compat.truthy(i < _avars.legacyEngines.length))
         {
-            if (_avars.legacyEngines[i].id == engine.id)
+            if (as3hx.Compat.truthy(_avars.legacyEngines[i].id == engine.id))
             {
                 engine.level_ranks = _avars.legacyEngines[i].level_ranks;
                 _avars.legacyEngines[i] = engine;
                 break;
             }
+            i++;
         }
-        if (i == _avars.legacyEngines.length)
+        if (as3hx.Compat.truthy(i == _avars.legacyEngines.length))
         {
             _avars.legacyEngines.push(engine);
         }
@@ -570,28 +572,28 @@ class SettingsTabMisc extends SettingsTabBase
                 });
         engineCombo.selectedIndex = 0;
         engineDefaultCombo.selectedIndex = 0;
-        for (engine/* AS3HX WARNING could not determine type for var: engine exp: EField(EIdent(_avars),legacyEngines) type: null */ in _avars.legacyEngines)
+        for (engine/* AS3HX WARNING could not determine type for var: engine exp: EField(EIdent(_avars),legacyEngines) type: null */ in as3hx.Compat.iter(_avars.legacyEngines))
         {
-            var item : Dynamic = {
+            var item                       : Dynamic= {
                 label : engine.name,
                 data : engine
             };
-            if (!ChartFFRLegacy.validURL(Reflect.field(engine, "playlistURL")))
+            if (as3hx.Compat.truthy(!ChartFFRLegacy.validURL(Reflect.field(engine, "playlistURL"))))
             {
                 continue;
             }
-            if (Reflect.field(engine, "config_url") == null)
+            if (as3hx.Compat.truthy(Reflect.field(engine, "config_url") == null))
             {
                 Alert.add("Please re-add " + Reflect.field(engine, "name") + ", missing required information.", 240, Alert.RED);
                 continue;
             }
             engineCombo.addItem(item);
             engineDefaultCombo.addItem(item);
-            if (engine == _avars.configLegacy || (_avars.configLegacy && Reflect.field(engine, "id") == _avars.configLegacy["id"]))
+            if (as3hx.Compat.truthy(engine == _avars.configLegacy || (_avars.configLegacy && Reflect.field(engine, "id") == as3hx.Compat.field(_avars.configLegacy, "id"))))
             {
                 engineCombo.selectedItem = item;
             }
-            if (engine == _avars.legacyDefaultEngine || (_avars.legacyDefaultEngine && Reflect.field(engine, "id") == _avars.legacyDefaultEngine["id"]))
+            if (as3hx.Compat.truthy(engine == _avars.legacyDefaultEngine || (_avars.legacyDefaultEngine && Reflect.field(engine, "id") == as3hx.Compat.field(_avars.legacyDefaultEngine, "id"))))
             {
                 engineDefaultCombo.selectedItem = item;
             }
@@ -600,7 +602,7 @@ class SettingsTabMisc extends SettingsTabBase
                     label : _lang.stringSimple("custom_engine_add_engine"),
                     data : this
                 });
-        if (_avars.legacyEngines.length > 0 && engineCombo.items.length > 2)
+        if (as3hx.Compat.truthy(_avars.legacyEngines.length > 0 && engineCombo.items.length > 2))
         {
             engineCombo.addItem({
                         label : _lang.stringSimple("custom_engine_clear_engines"),
@@ -610,13 +612,13 @@ class SettingsTabMisc extends SettingsTabBase
         engineComboIgnore = false;
     }
     
-    private function e_vsyncMouseOver(e : Event) : Void
+    private function e_vsyncMouseOver(e                       : Dynamic) : Void
     {
         useVSyncCheckbox.addEventListener(MouseEvent.MOUSE_OUT, e_vsyncMouseOut);
         displayToolTip(useVSyncCheckbox.x - 4, useVSyncCheckbox.y, _lang.string("air_options_use_vsync_unavailable"), "right");
     }
     
-    private function e_vsyncMouseOut(e : Event) : Void
+    private function e_vsyncMouseOut(e                       : Dynamic) : Void
     {
         useVSyncCheckbox.removeEventListener(MouseEvent.MOUSE_OUT, e_vsyncMouseOut);
         hideTooltip();
@@ -627,23 +629,23 @@ class SettingsTabMisc extends SettingsTabBase
 
 class WindowSettingConfirm extends Sprite
 {
-    private var _lang : Language = Language.instance;
+    private var _lang                       : Dynamic= Language.instance;
     
-    private var tab : SettingsTabMisc;
-    private var properties : Dynamic;
-    private var previousWidth : Int;
-    private var previousHeight : Int;
-    private var previousX : Int;
-    private var previousY : Int;
+    private var tab                       : Dynamic;
+    private var properties                       : Dynamic;
+    private var previousWidth                       : Dynamic;
+    private var previousHeight                       : Dynamic;
+    private var previousX                       : Dynamic;
+    private var previousY                       : Dynamic;
     
-    private var confirmTimer : Timer;
+    private var confirmTimer                       : Dynamic;
     
-    private var window_text : Text;
-    private var window_timer_text : Text;
-    private var confirm_btn : BoxButton;
+    private var window_text                       : Dynamic;
+    private var window_timer_text                       : Dynamic;
+    private var confirm_btn                       : Dynamic;
     
     @:allow(popups.settings)
-    private function new(tab : SettingsTabMisc, properties : Dynamic)
+    private function new(tab                       : Dynamic, properties                       : Dynamic)
     {
         super();
         this.tab = tab;
@@ -672,17 +674,17 @@ class WindowSettingConfirm extends Sprite
         confirm_btn = new BoxButton(this, Main.GAME_WIDTH / 2 - 50, 400, 100, 30, _lang.string("menu_confirm"), 12, e_confirm);
     }
     
-    private function e_timerTick(e : TimerEvent) : Void
+    private function e_timerTick(e                       : Dynamic) : Void
     {
         window_timer_text.text = Std.string(confirmTimer.repeatCount - confirmTimer.currentCount);
         
-        if (confirmTimer.currentCount >= confirmTimer.repeatCount)
+        if (as3hx.Compat.truthy(confirmTimer.currentCount >= confirmTimer.repeatCount))
         {
             e_cancel();
         }
     }
     
-    private function e_confirm(e : Event) : Void
+    private function e_confirm(e                       : Dynamic) : Void
     {
         confirmTimer.stop();
         this.parent.removeChild(this);

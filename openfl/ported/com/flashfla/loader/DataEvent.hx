@@ -4,9 +4,9 @@ import openfl.events.Event;
 
 class DataEvent extends Event
 {
-    public var data : Dynamic;
+    public var data                            : Dynamic;
     
-    public function new(type : String, data : Dynamic, bubbles : Bool = false, cancelable : Bool = false)
+    public function new(type                            : Dynamic, data                            : Dynamic, bubbles                            : Dynamic= false, cancelable                            : Dynamic= false)
     {
         this.data = data;
         super(type, bubbles, cancelable);

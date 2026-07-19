@@ -5,30 +5,30 @@ import openfl.utils.ByteArray;
 
 class GamePlaybackReader
 {
-    public static function parse(data : ByteArray, initialPosition : Int = 0, output : Array<GamePlaybackEvent> = null) : Array<GamePlaybackEvent>
+    public static function parse(data                       : Dynamic, initialPosition                       : Dynamic= 0, output                       : Dynamic= null) : Array<GamePlaybackEvent>
     {
-        var lastIndex : Int = -1;
+        var lastIndex                       : Dynamic= -1;
         
         // Use new History if not provided.
-        if (output == null)
+        if (as3hx.Compat.truthy(output == null))
         {
             output = [];
         }
-        else if (output.length > 0)
+        else if (as3hx.Compat.truthy(output.length > 0))
         {
-            lastIndex = output[output.length - 1].index;
+            lastIndex = output[as3hx.Compat.parseInt(output.length - 1)].index;
         }
         
         try
         {
             data.position = initialPosition;
             
-            while (data.bytesAvailable > 0)
+            while (as3hx.Compat.truthy(data.bytesAvailable > 0))
             {
-                var TAG : Int = data.readUnsignedByte();
-                var LEN : Int = data.readUnsignedByte();
+                var TAG                       : Dynamic= data.readUnsignedByte();
+                var LEN                       : Dynamic= data.readUnsignedByte();
                 
-                var event : GamePlaybackEvent;
+                var event                       : Dynamic= null;
                 
                 switch (TAG)
                 {
@@ -58,12 +58,12 @@ class GamePlaybackReader
                         data.position += LEN;
                 }
                 
-                if (event == null)
+                if (as3hx.Compat.truthy(event == null))
                 {
                     continue;
                 }
                 
-                if (event.index > lastIndex)
+                if (as3hx.Compat.truthy(event.index > lastIndex))
                 {
                     output.push(event);
                 }

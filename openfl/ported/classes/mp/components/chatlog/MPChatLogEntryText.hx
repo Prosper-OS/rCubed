@@ -7,12 +7,12 @@ import openfl.text.TextFormat;
 
 class MPChatLogEntryText extends MPChatLogEntry
 {
-    private static var FORMAT : TextFormat = new TextFormat(Fonts.BASE_FONT_CJK, 11, 0xFFFFFF, true);
+    private static var FORMAT                             : Dynamic= new TextFormat(Fonts.BASE_FONT_CJK, 11, 0xFFFFFF, true);
     
-    private var field : TextField;
-    public var message : String;
+    private var field                             : Dynamic;
+    public var message                             : Dynamic;
     
-    public function new(message : String)
+    public function new(message                             : Dynamic)
     {
         super();
         this.message = message;
@@ -21,9 +21,9 @@ class MPChatLogEntryText extends MPChatLogEntry
         this.cacheAsBitmap = true;
     }
     
-    override public function build(pane_width : Float) : Void
+    override public function build(pane_width                             : Dynamic) : Void
     {
-        if (built)
+        if (as3hx.Compat.truthy(built))
         {
             return;
         }

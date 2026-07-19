@@ -6,9 +6,9 @@ class EmbedNoteskin1 extends EmbedNoteskinBase
 {
     @:meta(Embed(source="NoteSkin1.swf",mimeType="application/octet-stream"))
 
-    private static var EMBED_SWF : Class<Dynamic>;
+    private static var EMBED_SWF                       : Dynamic;
     
-    private static inline var ID : Int = 1;
+    private static inline var ID                       : Dynamic= 1;
     
     override public function getData() : Dynamic
     {

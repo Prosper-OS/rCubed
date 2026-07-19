@@ -11,18 +11,18 @@ import openfl.geom.ColorTransform;
  */
 class UIIcon extends Sprite
 {
-    public var icon : DisplayObject;
-    private var _sprWidth : Float = 1;
-    private var _sprHeight : Float = 1;
-    private var _width : Float = 0;
-    private var _height : Float = 0;
+    public var icon                            : Dynamic;
+    private var _sprWidth                            : Dynamic= 1;
+    private var _sprHeight                            : Dynamic= 1;
+    private var _width                            : Dynamic= 0;
+    private var _height                            : Dynamic= 0;
     
-    public function new(parent : DisplayObjectContainer = null, sprite : DisplayObject = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                            : Dynamic= null, sprite                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0)
     {
         super();
         mouseChildren = false;
         
-        if (sprite != null)
+        if (as3hx.Compat.truthy(sprite != null))
         {
             icon = sprite;
             _sprWidth = sprite.width;
@@ -32,15 +32,15 @@ class UIIcon extends Sprite
         
         this.x = xpos;
         this.y = ypos;
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
     }
     
-    public function setSize(w : Float, h : Float) : Void
+    public function setSize(w                            : Dynamic, h                            : Dynamic) : Void
     {
-        if (icon != null)
+        if (as3hx.Compat.truthy(icon != null))
         {
             _width = w;
             _height = h;
@@ -55,16 +55,16 @@ class UIIcon extends Sprite
         }
     }
     
-    public function setColor(color : String) : Void
+    public function setColor(color                            : Dynamic) : Void
     {
-        if (icon != null)
+        if (as3hx.Compat.truthy(icon != null))
         {
-            var newColorJ : Float = as3hx.Compat.parseInt("0x" + StringTools.replace(color, "#", ""));
-            if (Math.isNaN(newColorJ) || newColorJ < 0)
+            var newColorJ                            : Dynamic= as3hx.Compat.parseInt("0x" + StringTools.replace(color, "#", ""));
+            if (as3hx.Compat.truthy(Math.isNaN(newColorJ) || newColorJ < 0))
             {
                 newColorJ = 0;
             }
-            var rgb : Dynamic = ColorUtil.hexToRgb(newColorJ);
+            var rgb                            : Dynamic= ColorUtil.hexToRgb(newColorJ);
             
             icon.transform.colorTransform = new ColorTransform((rgb.r / 255), (rgb.g / 255), (rgb.b / 255));
         }

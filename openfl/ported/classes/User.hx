@@ -26,157 +26,159 @@ import game.SkillRating;
 
 class User extends EventDispatcher
 {
-    public var settings(get, set) : Dynamic;
+    private static var avatarLoadComplete                     : Dynamic;
+    private static var mergeIntoArray                     : Dynamic;
+    public var settings(get, set)                             : Dynamic;
 
     //- Constants
-    public static inline var ADMIN_ID : Int = 6;
-    public static inline var DEVELOPER_ID : Int = 83;
-    public static inline var BANNED_ID : Int = 8;
-    public static inline var CHAT_MOD_ID : Int = 24;
-    public static inline var FORUM_MOD_ID : Int = 5;
-    public static inline var MULTI_MOD_ID : Int = 44;
-    public static inline var MUSIC_PRODUCER_ID : Int = 46;
-    public static inline var PROFILE_MOD_ID : Int = 56;
-    public static inline var SIM_AUTHOR_ID : Int = 47;
-    public static inline var VETERAN_ID : Int = 49;
+    public static inline var ADMIN_ID                             : Dynamic= 6;
+    public static inline var DEVELOPER_ID                             : Dynamic= 83;
+    public static inline var BANNED_ID                             : Dynamic= 8;
+    public static inline var CHAT_MOD_ID                             : Dynamic= 24;
+    public static inline var FORUM_MOD_ID                             : Dynamic= 5;
+    public static inline var MULTI_MOD_ID                             : Dynamic= 44;
+    public static inline var MUSIC_PRODUCER_ID                             : Dynamic= 46;
+    public static inline var PROFILE_MOD_ID                             : Dynamic= 56;
+    public static inline var SIM_AUTHOR_ID                             : Dynamic= 47;
+    public static inline var VETERAN_ID                             : Dynamic= 49;
     
     ///- Private Locals
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _playlist : Playlist = Playlist.instance;
-    private var _loader : URLLoader;
-    private var _isLoaded : Bool = false;
-    private var _isLoading : Bool = false;
-    private var _loadError : Bool = false;
+    private var _gvars                             : Dynamic= GlobalVariables.instance;
+    private var _playlist                             : Dynamic= Playlist.instance;
+    private var _loader                             : Dynamic;
+    private var _isLoaded                             : Dynamic= false;
+    private var _isLoading                             : Dynamic= false;
+    private var _loadError                             : Dynamic= false;
     
     //- User Vars
-    public var name : String;
-    public var siteId : Int;
-    public var hash : String;
-    public var groups : Array<Float>;
-    public var language : String = "us";
-    public var playerIdx : Int;
+    public var name                             : Dynamic;
+    public var siteId                             : Dynamic;
+    public var hash                             : Dynamic;
+    public var groups                             : Dynamic;
+    public var language                             : Dynamic= "us";
+    public var playerIdx                             : Dynamic;
     
-    public var userLevel : Int;
-    public var userClass : Int;
-    public var userColor : Int;
-    public var userStatus : Int;
+    public var userLevel                             : Dynamic;
+    public var userClass                             : Dynamic;
+    public var userColor                             : Dynamic;
+    public var userStatus                             : Dynamic;
     
-    public var joinDate : String;
-    public var skillLevel : Float;
-    public var skillRating : Float;
-    public var gameRank : Float;
-    public var gamesPlayed : Float;
-    public var grandTotal : Float;
-    public var credits : Float;
-    public var purchased : Array<Bool>;
-    public var averageRank : Float;
-    public var level_ranks : Dynamic = { };
-    public var skill_rating_top_count : Int = 50;
-    public var skill_rating_levelranks : Array<Dynamic> = [];
-    public var avatar : DisplayObject;
-    public var loggedIn : Bool;
+    public var joinDate                             : Dynamic;
+    public var skillLevel                             : Dynamic;
+    public var skillRating                             : Dynamic;
+    public var gameRank                             : Dynamic;
+    public var gamesPlayed                             : Dynamic;
+    public var grandTotal                             : Dynamic;
+    public var credits                             : Dynamic;
+    public var purchased                             : Dynamic;
+    public var averageRank                             : Dynamic;
+    public var level_ranks                             : Dynamic= { };
+    public var skill_rating_top_count                             : Dynamic= 50;
+    public var skill_rating_levelranks                             : Dynamic= [];
+    public var avatar                             : Dynamic;
+    public var loggedIn                             : Dynamic;
     
-    public var songQueues : Array<Dynamic> = [];
-    public var filters : Array<EngineLevelFilter> = [];
-    public var songRatings : Dynamic = { };
+    public var songQueues                             : Dynamic= [];
+    public var filters                             : Dynamic= [];
+    public var songRatings                             : Dynamic= { };
     
-    public var DISPLAY_LEGACY_SONGS : Bool = false;
-    public var DISPLAY_UNRANKED_SONGS : Bool = true;
-    public var DISPLAY_EXPLICIT_SONGS : Bool = true;
-    public var DISPLAY_GENRE_FLAG : Bool = true;
-    public var DISPLAY_SONG_FLAG : Bool = true;
-    public var DISPLAY_SONG_NOTE : Bool = true;
+    public var DISPLAY_LEGACY_SONGS                             : Dynamic= false;
+    public var DISPLAY_UNRANKED_SONGS                             : Dynamic= true;
+    public var DISPLAY_EXPLICIT_SONGS                             : Dynamic= true;
+    public var DISPLAY_GENRE_FLAG                             : Dynamic= true;
+    public var DISPLAY_SONG_FLAG                             : Dynamic= true;
+    public var DISPLAY_SONG_NOTE                             : Dynamic= true;
     
     //- Game Data
-    public var GLOBAL_OFFSET : Float = 0;
-    public var VISUAL_DELAY : Float = 0;
-    public var JUDGE_OFFSET : Float = 0;
-    public var AUTO_JUDGE_OFFSET : Bool = false;
-    public var DISPLAY_JUDGE : Bool = true;
-    public var DISPLAY_JUDGE_ANIMATIONS : Bool = true;
-    public var DISPLAY_RECEPTOR_ANIMATIONS : Bool = true;
-    public var DISPLAY_HEALTH : Bool = true;
-    public var DISPLAY_GAME_TOP_BAR : Bool = true;
-    public var DISPLAY_GAME_BOTTOM_BAR : Bool = true;
-    public var DISPLAY_SCORE : Bool = true;
-    public var DISPLAY_COMBO : Bool = true;
-    public var DISPLAY_PACOUNT : Bool = true;
-    public var DISPLAY_ACCURACY_BAR : Bool = true;
-    public var DISPLAY_AMAZING : Bool = true;
-    public var DISPLAY_PERFECT : Bool = true;
-    public var DISPLAY_TOTAL : Bool = true;
-    public var DISPLAY_SCREENCUT : Bool = false;
-    public var DISPLAY_SONGPROGRESS : Bool = true;
-    public var DISPLAY_SONGPROGRESS_TEXT : Bool = false;
-    public var DISPLAY_MULTIPLAYER_SCORES : Bool = true;
-    public var DISPLAY_RAWGOODS : Bool = false;
+    public var GLOBAL_OFFSET                             : Dynamic= 0;
+    public var VISUAL_DELAY                             : Dynamic= 0;
+    public var JUDGE_OFFSET                             : Dynamic= 0;
+    public var AUTO_JUDGE_OFFSET                             : Dynamic= false;
+    public var DISPLAY_JUDGE                             : Dynamic= true;
+    public var DISPLAY_JUDGE_ANIMATIONS                             : Dynamic= true;
+    public var DISPLAY_RECEPTOR_ANIMATIONS                             : Dynamic= true;
+    public var DISPLAY_HEALTH                             : Dynamic= true;
+    public var DISPLAY_GAME_TOP_BAR                             : Dynamic= true;
+    public var DISPLAY_GAME_BOTTOM_BAR                             : Dynamic= true;
+    public var DISPLAY_SCORE                             : Dynamic= true;
+    public var DISPLAY_COMBO                             : Dynamic= true;
+    public var DISPLAY_PACOUNT                             : Dynamic= true;
+    public var DISPLAY_ACCURACY_BAR                             : Dynamic= true;
+    public var DISPLAY_AMAZING                             : Dynamic= true;
+    public var DISPLAY_PERFECT                             : Dynamic= true;
+    public var DISPLAY_TOTAL                             : Dynamic= true;
+    public var DISPLAY_SCREENCUT                             : Dynamic= false;
+    public var DISPLAY_SONGPROGRESS                             : Dynamic= true;
+    public var DISPLAY_SONGPROGRESS_TEXT                             : Dynamic= false;
+    public var DISPLAY_MULTIPLAYER_SCORES                             : Dynamic= true;
+    public var DISPLAY_RAWGOODS                             : Dynamic= false;
     
-    public var DISPLAY_MP_TIMESTAMP : Bool = false;
-    public var judgeColors : Array<Dynamic> = [0x78ef29, 0x12e006, 0x01aa0f, 0xf99800, 0xfe0000, 0x804100];
-    public var comboColors : Array<Dynamic> = [0x0099CC, 0x00AD00, 0xFCC200, 0xC7FB30, 0x6C6C6C, 0xF99800, 0xB06100, 0x990000, 0xDC00C2];  // Normal, FC, AAA, SDG, BlackFlag, AvFlag, BooFlag, MissFlag, RawGood  
-    public var enableComboColors : Array<Bool> = [true, true, true, false, false, false, false, false, false];
-    public var receptorColors : Array<Dynamic> = [0xFFFFFF, 0xFFFFFF, 0x64FF64, 0xFFFF00, 0xBB8500, 0xA80000];
-    public var enableReceptorColors : Array<Bool> = [true, true, true, true, true, false];
-    public var gameColors : Array<Dynamic> = [0x1495BD, 0x033242, 0x0C6A88, 0x074B62, 0x000000];
-    public var noteColors : Array<Dynamic> = ["red", "blue", "purple", "yellow", "pink", "orange", "cyan", "green", "white"];
-    public var rawGoodTracker : Float = 0;
-    public var rawGoodsColor : Float = 0xDC00C2;
+    public var DISPLAY_MP_TIMESTAMP                             : Dynamic= false;
+    public var judgeColors                             : Dynamic= [0x78ef29, 0x12e006, 0x01aa0f, 0xf99800, 0xfe0000, 0x804100];
+    public var comboColors                             : Dynamic= [0x0099CC, 0x00AD00, 0xFCC200, 0xC7FB30, 0x6C6C6C, 0xF99800, 0xB06100, 0x990000, 0xDC00C2];  // Normal, FC, AAA, SDG, BlackFlag, AvFlag, BooFlag, MissFlag, RawGood  
+    public var enableComboColors                             : Dynamic= [true, true, true, false, false, false, false, false, false];
+    public var receptorColors                             : Dynamic= [0xFFFFFF, 0xFFFFFF, 0x64FF64, 0xFFFF00, 0xBB8500, 0xA80000];
+    public var enableReceptorColors                             : Dynamic= [true, true, true, true, true, false];
+    public var gameColors                             : Dynamic= [0x1495BD, 0x033242, 0x0C6A88, 0x074B62, 0x000000];
+    public var noteColors                             : Dynamic= ["red", "blue", "purple", "yellow", "pink", "orange", "cyan", "green", "white"];
+    public var rawGoodTracker                             : Dynamic= 0;
+    public var rawGoodsColor                             : Dynamic= 0xDC00C2;
     
-    public var autofailAmazing : Int = 0;
-    public var autofailPerfect : Int = 0;
-    public var autofailGood : Int = 0;
-    public var autofailAverage : Int = 0;
-    public var autofailMiss : Int = 0;
-    public var autofailBoo : Int = 0;
-    public var autofailRawGoods : Float = 0;
-    public var autofailAaaEquiv : Float = 0;
-    public var autofailRestart : Bool = false;
-    public var personalBestMode : Bool = false;
-    public var personalBestTracker : Bool = false;
+    public var autofailAmazing                             : Dynamic= 0;
+    public var autofailPerfect                             : Dynamic= 0;
+    public var autofailGood                             : Dynamic= 0;
+    public var autofailAverage                             : Dynamic= 0;
+    public var autofailMiss                             : Dynamic= 0;
+    public var autofailBoo                             : Dynamic= 0;
+    public var autofailRawGoods                             : Dynamic= 0;
+    public var autofailAaaEquiv                             : Dynamic= 0;
+    public var autofailRestart                             : Dynamic= false;
+    public var personalBestMode                             : Dynamic= false;
+    public var personalBestTracker                             : Dynamic= false;
     
-    public var keyLeft : Int = Keyboard.LEFT;
-    public var keyDown : Int = Keyboard.DOWN;
-    public var keyUp : Int = Keyboard.UP;
-    public var keyRight : Int = Keyboard.RIGHT;
-    public var keyRestart : Int = Keyboard.SLASH;
-    public var keyQuit : Int = Keyboard.CONTROL;
-    public var keyOptions : Int = 145;  // Scrolllock  
+    public var keyLeft                             : Dynamic= Keyboard.LEFT;
+    public var keyDown                             : Dynamic= Keyboard.DOWN;
+    public var keyUp                             : Dynamic= Keyboard.UP;
+    public var keyRight                             : Dynamic= Keyboard.RIGHT;
+    public var keyRestart                             : Dynamic= Keyboard.SLASH;
+    public var keyQuit                             : Dynamic= Keyboard.CONTROL;
+    public var keyOptions                             : Dynamic= 145;  // Scrolllock  
     
-    public var activeNoteskin : Int = 1;
-    public var activeMods : Array<Dynamic> = [];
-    public var activeVisualMods : Array<Dynamic> = [];
-    public var slideDirection : String = "up";
-    public var judgeSpeed : Float = 1;
-    public var gameSpeed : Float = 1.5;
-    public var receptorGap : Float = 80;
-    public var receptorSpeed : Float = 1;
-    public var judgeScale : Float = 1;
-    public var noteScale : Float = 1;
-    public var gameVolume : Float = 1;
-    public var screencutPosition : Float = 0.5;
-    public var frameRate : Int = 60;
-    public var songRate : Float = 1;
-    public var gameLayout : Dynamic = { };
-    public var accuracyBarFadeFactor : Float = 0.95;
-    public var visualHypeMode : String = "full";
+    public var activeNoteskin                             : Dynamic= 1;
+    public var activeMods                             : Dynamic= [];
+    public var activeVisualMods                             : Dynamic= [];
+    public var slideDirection                             : Dynamic= "up";
+    public var judgeSpeed                             : Dynamic= 1;
+    public var gameSpeed                             : Dynamic= 1.5;
+    public var receptorGap                             : Dynamic= 80;
+    public var receptorSpeed                             : Dynamic= 1;
+    public var judgeScale                             : Dynamic= 1;
+    public var noteScale                             : Dynamic= 1;
+    public var gameVolume                             : Dynamic= 1;
+    public var screencutPosition                             : Dynamic= 0.5;
+    public var frameRate                             : Dynamic= 60;
+    public var songRate                             : Dynamic= 1;
+    public var gameLayout                             : Dynamic= { };
+    public var accuracyBarFadeFactor                             : Dynamic= 0.95;
+    public var visualHypeMode                             : Dynamic= "full";
     
     //- Permissions
-    public var isActiveUser : Bool;
-    public var isGuest : Bool;
-    public var isPlayer : Bool;
-    public var isVeteran : Bool;
-    public var isAdmin : Bool;
-    public var isDeveloper : Bool;
-    public var isForumBanned : Bool;
-    public var isGameBanned : Bool;
-    public var isProfileBanned : Bool;
-    public var isModerator : Bool;
-    public var isForumModerator : Bool;
-    public var isProfileModerator : Bool;
-    public var isChatModerator : Bool;
-    public var isMultiModerator : Bool;
-    public var isMusician : Bool;
-    public var isSimArtist : Bool;
+    public var isActiveUser                             : Dynamic;
+    public var isGuest                             : Dynamic;
+    public var isPlayer                             : Dynamic;
+    public var isVeteran                             : Dynamic;
+    public var isAdmin                             : Dynamic;
+    public var isDeveloper                             : Dynamic;
+    public var isForumBanned                             : Dynamic;
+    public var isGameBanned                             : Dynamic;
+    public var isProfileBanned                             : Dynamic;
+    public var isModerator                             : Dynamic;
+    public var isForumModerator                             : Dynamic;
+    public var isProfileModerator                             : Dynamic;
+    public var isChatModerator                             : Dynamic;
+    public var isMultiModerator                             : Dynamic;
+    public var isMusician                             : Dynamic;
+    public var isSimArtist                             : Dynamic;
     
     ///- Constructor
     /**
@@ -186,15 +188,15 @@ class User extends EventDispatcher
      * @param	isActiveUser Sets the active user flag.
      * @tiptext
      */
-    public function new(loadData : Bool = false, isActiveUser : Bool = false, siteId : Int = -1)
+    public function new(loadData                             : Dynamic= false, isActiveUser                             : Dynamic= false, siteId                             : Dynamic= -1)
     {
         super();
         this.siteId = siteId;
         this.isActiveUser = isActiveUser;
         
-        if (loadData)
+        if (as3hx.Compat.truthy(loadData))
         {
-            if (siteId > -1)
+            if (as3hx.Compat.truthy(siteId > -1))
             {
                 loadUser(siteId);
             }
@@ -215,11 +217,11 @@ class User extends EventDispatcher
     ///- Public
     public function calculateAverageRank() : Void
     {
-        var rankTotal : Int = 0;
-        for (levelRank/* AS3HX WARNING could not determine type for var: levelRank exp: EField(EIdent(this),level_ranks) type: null */ in this.level_ranks)
+        var rankTotal                             : Dynamic= 0;
+        for (levelRank/* AS3HX WARNING could not determine type for var: levelRank exp: EField(EIdent(this),level_ranks) type: null */ in as3hx.Compat.iter(this.level_ranks))
         {
-            var genre : Int = levelRank.genre;
-            if (genre != 10 && genre != 12 && genre != 23)
+            var genre                             : Dynamic= levelRank.genre;
+            if (as3hx.Compat.truthy(genre != 10 && genre != 12 && genre != 23))
             {
                 rankTotal += levelRank.rank;
             }
@@ -230,15 +232,15 @@ class User extends EventDispatcher
     ///- Determine what songs make up the user's Skill Rating
     public function getUserSkillRatingData() : Void
     {
-        for (key in Reflect.fields(this.level_ranks))
+        for (key in as3hx.Compat.iter(Reflect.fields(this.level_ranks)))
         {
-            var levelRank : Dynamic = this.level_ranks[key];
+            var levelRank                             : Dynamic= this.level_ranks[key];
             
             //Calculate the AAA Equiv for the scores on the song if greater than 0
-            if (levelRank.score > 0) {
-var songInfo : SongInfo = _playlist.getSongInfo(as3hx.Compat.parseInt(key));
+            if (as3hx.Compat.truthy(levelRank.score > 0)) {
+var songInfo                             : Dynamic= _playlist.getSongInfo(as3hx.Compat.parseInt(key));
                 
-                if (songInfo == null || songInfo.is_unranked)
+                if (as3hx.Compat.truthy(songInfo == null || songInfo.is_unranked))
                 {
                     continue;
                 }
@@ -247,7 +249,7 @@ var songInfo : SongInfo = _playlist.getSongInfo(as3hx.Compat.parseInt(key));
                 levelRank.equiv = SkillRating.calcSongWeightFromScore(levelRank.rawscore, songInfo);
                 
                 //Add it to the Skill Rating list if it's not 0
-                if (levelRank.equiv > 0)
+                if (as3hx.Compat.truthy(levelRank.equiv > 0))
                 {
                     skill_rating_levelranks.push(levelRank);
                 }
@@ -258,19 +260,19 @@ var songInfo : SongInfo = _playlist.getSongInfo(as3hx.Compat.parseInt(key));
         skill_rating_levelranks.sort(equivSort);
         
         //Dump all but the top X
-        if (skill_rating_levelranks.length > skill_rating_top_count)
+        if (as3hx.Compat.truthy(skill_rating_levelranks.length > skill_rating_top_count))
         {
             as3hx.Compat.setArrayLength(skill_rating_levelranks, skill_rating_top_count);
         }
     }
     
-    public function equivSort(a : Dynamic, b : Dynamic) : Int
+    public function equivSort(a                             : Dynamic, b                             : Dynamic) : Int
     {
-        if (a.equiv < b.equiv)
+        if (as3hx.Compat.truthy(a.equiv < b.equiv))
         {
             return 1;
         }
-        else if (a.equiv > b.equiv)
+        else if (as3hx.Compat.truthy(a.equiv > b.equiv))
         {
             return -1;
         }
@@ -280,16 +282,16 @@ var songInfo : SongInfo = _playlist.getSongInfo(as3hx.Compat.parseInt(key));
         }
     }
     
-    public function updateSRList(newLevelRanks : Dynamic) : Void
+    public function updateSRList(newLevelRanks                             : Dynamic) : Void
     {
-        var worseLevelRank : Dynamic = skill_rating_levelranks[skill_rating_top_count - 1];
-        if (worseLevelRank == null || newLevelRanks.equiv > worseLevelRank.equiv) {
-if (worseLevelRank != null)
+        var worseLevelRank                             : Dynamic= skill_rating_levelranks[as3hx.Compat.parseInt(skill_rating_top_count - 1)];
+        if (as3hx.Compat.truthy(worseLevelRank == null || newLevelRanks.equiv > worseLevelRank.equiv)) {
+if (as3hx.Compat.truthy(worseLevelRank != null))
             {
-                var i : Int = as3hx.Compat.parseInt(skill_rating_levelranks.length - 1);
-                while (i >= 0)
+                var i                             : Dynamic= as3hx.Compat.parseInt(skill_rating_levelranks.length - 1);
+                while (as3hx.Compat.truthy(i >= 0))
                 {
-                    if (skill_rating_levelranks[i].id == newLevelRanks.id) {
+                    if (as3hx.Compat.truthy(skill_rating_levelranks[i].id == newLevelRanks.id)) {
 {
                             skill_rating_levelranks.splice(i, 1);
                             break;
@@ -307,7 +309,7 @@ if (worseLevelRank != null)
             
             // Drop the bottom equiv if we have more than the top X count
             // [won't be necessary for newer players with less than X scores for equiv rating, or if we've improved a score that we already had equiv from]
-            if (skill_rating_levelranks.length > skill_rating_top_count)
+            if (as3hx.Compat.truthy(skill_rating_levelranks.length > skill_rating_top_count))
             {
                 as3hx.Compat.setArrayLength(skill_rating_levelranks, skill_rating_top_count);
             }
@@ -329,7 +331,7 @@ if (worseLevelRank != null)
     // Kill old Loading Stream
     {
         
-        if (_loader != null && _isLoading)
+        if (as3hx.Compat.truthy(_loader != null && _isLoading))
         {
             removeLoaderListeners();
             _loader.close();
@@ -341,8 +343,8 @@ if (worseLevelRank != null)
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_INFO_URL) + "?d=" + Date.now().getTime());
-        var requestVars : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.USER_INFO_URL) + "?d=" + Date.now().getTime());
+        var requestVars                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.session = _gvars.userSession;
         req.data = requestVars;
@@ -351,15 +353,15 @@ if (worseLevelRank != null)
         _isLoading = true;
     }
     
-    public function loadUser(userid : Int) : Void
+    public function loadUser(userid                             : Dynamic) : Void
     {
         Logger.info(this, "Secondary User Load Requested");
         _isLoaded = false;
         _loader = new URLLoader();
         addLoaderListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_INFO_LITE_URL) + "?d=" + Date.now().getTime());
-        var requestVars : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.USER_INFO_LITE_URL) + "?d=" + Date.now().getTime());
+        var requestVars                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.userid = userid;
         req.data = requestVars;
@@ -368,14 +370,14 @@ if (worseLevelRank != null)
         _isLoading = true;
     }
     
-    private function profileLoadComplete(e : Event) : Void
+    private function profileLoadComplete(e                             : Dynamic) : Void
     {
         Logger.success(this, "Profile Load Success");
         removeLoaderListeners();
         
         // Parse Response
-        var _data : Dynamic;
-        var siteDataString : String = e.target.data;
+        var _data                             : Dynamic= null;
+        var siteDataString                             : Dynamic= e.target.data;
         try
         {
             _data = haxe.Json.parse(siteDataString);
@@ -395,7 +397,7 @@ if (worseLevelRank != null)
         
         loadUserData(_data);
         
-        if (isActiveUser)
+        if (as3hx.Compat.truthy(isActiveUser))
         {
             loadLevelRanks();
         }
@@ -406,16 +408,16 @@ if (worseLevelRank != null)
         }
     }
     
-    public function loadUserData(_data : Dynamic) : Void
+    public function loadUserData(_data                             : Dynamic) : Void
     // Private
     {
         
-        if (isActiveUser)
+        if (as3hx.Compat.truthy(isActiveUser))
         {
             this.hash = _data.hash;
             this.credits = _data.credits;
             setPurchasedString(Reflect.field(_data, "purchased"));
-            if (Reflect.field(_data, "song_ratings") != null)
+            if (as3hx.Compat.truthy(Reflect.field(_data, "song_ratings") != null))
             {
                 this.songRatings = Reflect.field(_data, "song_ratings");
             }
@@ -438,7 +440,7 @@ if (worseLevelRank != null)
         loadAvatar();
         
         // Setup Settings from server or local
-        if (Reflect.field(_data, "settings") != null && !this.isGuest)
+        if (as3hx.Compat.truthy(Reflect.field(_data, "settings") != null && !this.isGuest))
         {
             try
             {
@@ -455,7 +457,7 @@ if (worseLevelRank != null)
         }
     }
     
-    public function setPurchasedString(str : String) : Void
+    public function setPurchasedString(str                             : Dynamic) : Void
     {
         this.purchased = [];
         for (x in 1...str.length)
@@ -464,7 +466,7 @@ if (worseLevelRank != null)
         }
     }
     
-    private function profileLoadError(err : ErrorEvent = null) : Void
+    private function profileLoadError(err                             : Dynamic= null) : Void
     {
         Logger.error(this, "Profile Load Failure: " + Logger.event_error(err));
         removeLoaderListeners();
@@ -505,14 +507,14 @@ if (worseLevelRank != null)
     
     public function loadAvatar() : Void
     {
-        var _loader : Loader = new Loader();
+        var _loader                             : Dynamic= new Loader();
         
         _loader.contentLoaderInfo.addEventListener(Event.COMPLETE, avatarLoadComplete);
         _loader.load(new URLRequest(URLs.resolve(URLs.USER_AVATAR_URL) + "?uid=" + this.siteId + "&cHeight=99&cWidth=99"));
         
-        var avatarLoadComplete : Event->Void = function(e : Event) : Void
+        avatarLoadComplete = function(e                             : Dynamic) : Void
         {
-            if (isActiveUser && !isGuest)
+            if (as3hx.Compat.truthy(isActiveUser && !isGuest))
             {
                 LocalStore.setVariable("uAvatar", cast((e.target), LoaderInfo).bytes);
             }
@@ -529,8 +531,8 @@ if (worseLevelRank != null)
         _loader = new URLLoader();
         addLoaderRanksListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_RANKS_URL));
-        var requestVars : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.USER_RANKS_URL));
+        var requestVars                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.session = _gvars.userSession;
         req.data = requestVars;
@@ -538,23 +540,23 @@ if (worseLevelRank != null)
         _loader.load(req);
     }
     
-    private function ranksLoadComplete(e : Event) : Void
+    private function ranksLoadComplete(e                             : Dynamic) : Void
     {
         Logger.success(this, "Ranks Load Success");
         removeLoaderRanksListeners();
         level_ranks = {};
         
         // Check Level ranks for Non-empty
-        if (e.target.data != "")
+        if (as3hx.Compat.truthy(e.target.data != ""))
         {
-            var ranksTemp : Array<Dynamic> = e.target.data.split(",");
-            var rankLength : Int = ranksTemp.length;
+            var ranksTemp                             : Dynamic= e.target.data.split(",");
+            var rankLength                             : Dynamic= ranksTemp.length;
             for (x in 0...rankLength) {
-var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split(":");
+var rankSplit                             : Dynamic= as3hx.Compat.field(ranksTemp, x).split(":");
                 
                 // [0]'perfect' - [1]'good' - [2]'average' - [3]'miss' - [4]'boo' - [5]'maxcombo'
-                var scoreResults : Array<Dynamic> = rankSplit[4].split("-");
-                for (s in Reflect.fields(scoreResults))
+                var scoreResults                             : Dynamic= rankSplit[4].split("-");
+                for (s in as3hx.Compat.iter(Reflect.fields(scoreResults)))
                 {
                     Reflect.setField(scoreResults, s, as3hx.Compat.parseFloat(Reflect.field(scoreResults, s)));
                 }
@@ -583,7 +585,7 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
         this.dispatchEvent(new Event(GlobalVariables.LOAD_COMPLETE));
     }
     
-    private function ranksLoadError(err : ErrorEvent = null) : Void
+    private function ranksLoadError(err                             : Dynamic= null) : Void
     {
         Logger.error(this, "Ranks Load Failure: " + Logger.event_error(err));
         removeLoaderRanksListeners();
@@ -610,353 +612,353 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
         return save(true);
     }
     
-    private function set_settings(_settings : Dynamic) : Dynamic
+    private function set_settings(_settings                             : Dynamic) : Dynamic
     {
-        if (_settings == null)
+        if (as3hx.Compat.truthy(_settings == null))
         {
             return _settings;
         }
         
-        if (_settings.language != null)
+        if (as3hx.Compat.truthy(_settings.language != null))
         {
             this.language = _settings.language;
         }
         
-        if (_settings.viewOffset != null)
+        if (as3hx.Compat.truthy(_settings.viewOffset != null))
         {
             this.GLOBAL_OFFSET = _settings.viewOffset;
         }
         
-        if (_settings.visualDelay != null)
+        if (as3hx.Compat.truthy(_settings.visualDelay != null))
         {
             this.VISUAL_DELAY = _settings.visualDelay;
         }
         
-        if (_settings.judgeOffset != null)
+        if (as3hx.Compat.truthy(_settings.judgeOffset != null))
         {
             this.JUDGE_OFFSET = _settings.judgeOffset;
         }
         
-        if (_settings.autoJudgeOffset != null)
+        if (as3hx.Compat.truthy(_settings.autoJudgeOffset != null))
         {
             this.AUTO_JUDGE_OFFSET = _settings.autoJudgeOffset;
         }
         
-        if (_settings.viewSongFlag != null)
+        if (as3hx.Compat.truthy(_settings.viewSongFlag != null))
         {
             this.DISPLAY_SONG_FLAG = _settings.viewSongFlag;
         }
         
-        if (_settings.viewGenreFlag != null)
+        if (as3hx.Compat.truthy(_settings.viewGenreFlag != null))
         {
             this.DISPLAY_GENRE_FLAG = _settings.viewGenreFlag;
         }
         
-        if (_settings.viewSongNote != null)
+        if (as3hx.Compat.truthy(_settings.viewSongNote != null))
         {
             this.DISPLAY_SONG_NOTE = _settings.viewSongNote;
         }
         
-        if (_settings.viewJudge != null)
+        if (as3hx.Compat.truthy(_settings.viewJudge != null))
         {
             this.DISPLAY_JUDGE = _settings.viewJudge;
         }
         
-        if (_settings.viewJudgeAnimations != null)
+        if (as3hx.Compat.truthy(_settings.viewJudgeAnimations != null))
         {
             this.DISPLAY_JUDGE_ANIMATIONS = _settings.viewJudgeAnimations;
         }
         
-        if (_settings.viewReceptorAnimations != null)
+        if (as3hx.Compat.truthy(_settings.viewReceptorAnimations != null))
         {
             this.DISPLAY_RECEPTOR_ANIMATIONS = _settings.viewReceptorAnimations;
         }
         
-        if (_settings.viewHealth != null)
+        if (as3hx.Compat.truthy(_settings.viewHealth != null))
         {
             this.DISPLAY_HEALTH = _settings.viewHealth;
         }
         
-        if (_settings.viewGameTopBar != null)
+        if (as3hx.Compat.truthy(_settings.viewGameTopBar != null))
         {
             this.DISPLAY_GAME_TOP_BAR = _settings.viewGameTopBar;
         }
         
-        if (_settings.viewGameBottomBar != null)
+        if (as3hx.Compat.truthy(_settings.viewGameBottomBar != null))
         {
             this.DISPLAY_GAME_BOTTOM_BAR = _settings.viewGameBottomBar;
         }
         
-        if (_settings.viewScore != null)
+        if (as3hx.Compat.truthy(_settings.viewScore != null))
         {
             this.DISPLAY_SCORE = _settings.viewScore;
         }
         
-        if (_settings.viewCombo != null)
+        if (as3hx.Compat.truthy(_settings.viewCombo != null))
         {
             this.DISPLAY_COMBO = _settings.viewCombo;
         }
         
-        if (_settings.viewRawGoods != null)
+        if (as3hx.Compat.truthy(_settings.viewRawGoods != null))
         {
             this.DISPLAY_RAWGOODS = _settings.viewRawGoods;
         }
         
-        if (_settings.viewPACount != null)
+        if (as3hx.Compat.truthy(_settings.viewPACount != null))
         {
             this.DISPLAY_PACOUNT = _settings.viewPACount;
         }
         
-        if (_settings.viewAccBar != null)
+        if (as3hx.Compat.truthy(_settings.viewAccBar != null))
         {
             this.DISPLAY_ACCURACY_BAR = _settings.viewAccBar;
         }
         
-        if (_settings.viewAmazing != null)
+        if (as3hx.Compat.truthy(_settings.viewAmazing != null))
         {
             this.DISPLAY_AMAZING = _settings.viewAmazing;
         }
         
-        if (_settings.viewPerfect != null)
+        if (as3hx.Compat.truthy(_settings.viewPerfect != null))
         {
             this.DISPLAY_PERFECT = _settings.viewPerfect;
         }
         
-        if (_settings.viewTotal != null)
+        if (as3hx.Compat.truthy(_settings.viewTotal != null))
         {
             this.DISPLAY_TOTAL = _settings.viewTotal;
         }
         
-        if (_settings.viewScreencut != null)
+        if (as3hx.Compat.truthy(_settings.viewScreencut != null))
         {
             this.DISPLAY_SCREENCUT = _settings.viewScreencut;
         }
         
-        if (_settings.viewSongProgress != null)
+        if (as3hx.Compat.truthy(_settings.viewSongProgress != null))
         {
             this.DISPLAY_SONGPROGRESS = _settings.viewSongProgress;
         }
         
-        if (_settings.viewSongProgressText != null)
+        if (as3hx.Compat.truthy(_settings.viewSongProgressText != null))
         {
             this.DISPLAY_SONGPROGRESS_TEXT = _settings.viewSongProgressText;
         }
         
-        if (_settings.viewMultiplayerScores != null)
+        if (as3hx.Compat.truthy(_settings.viewMultiplayerScores != null))
         {
             this.DISPLAY_MULTIPLAYER_SCORES = _settings.viewMultiplayerScores;
         }
         
-        if (_settings.viewMPTimestamp != null)
+        if (as3hx.Compat.truthy(_settings.viewMPTimestamp != null))
         {
             this.DISPLAY_MP_TIMESTAMP = _settings.viewMPTimestamp;
         }
         
-        if (_settings.viewLegacySongs != null)
+        if (as3hx.Compat.truthy(_settings.viewLegacySongs != null))
         {
             this.DISPLAY_LEGACY_SONGS = _settings.viewLegacySongs;
         }
         
-        if (_settings.viewExplicitSongs != null)
+        if (as3hx.Compat.truthy(_settings.viewExplicitSongs != null))
         {
             this.DISPLAY_EXPLICIT_SONGS = _settings.viewExplicitSongs;
         }
         
-        if (_settings.viewUnrankedSongs != null)
+        if (as3hx.Compat.truthy(_settings.viewUnrankedSongs != null))
         {
             this.DISPLAY_UNRANKED_SONGS = _settings.viewUnrankedSongs;
         }
         
-        if (_settings.keys[0] != null)
+        if (as3hx.Compat.truthy(_settings.keys[0] != null))
         {
             this.keyLeft = _settings.keys[0];
         }
         
-        if (_settings.keys[1] != null)
+        if (as3hx.Compat.truthy(_settings.keys[1] != null))
         {
             this.keyDown = _settings.keys[1];
         }
         
-        if (_settings.keys[2] != null)
+        if (as3hx.Compat.truthy(_settings.keys[2] != null))
         {
             this.keyUp = _settings.keys[2];
         }
         
-        if (_settings.keys[3] != null)
+        if (as3hx.Compat.truthy(_settings.keys[3] != null))
         {
             this.keyRight = _settings.keys[3];
         }
         
-        if (_settings.keys[4] != null)
+        if (as3hx.Compat.truthy(_settings.keys[4] != null))
         {
             this.keyRestart = _settings.keys[4];
         }
         
-        if (_settings.keys[5] != null)
+        if (as3hx.Compat.truthy(_settings.keys[5] != null))
         {
             this.keyQuit = _settings.keys[5];
         }
         
-        if (_settings.keys[6] != null)
+        if (as3hx.Compat.truthy(_settings.keys[6] != null))
         {
             this.keyOptions = _settings.keys[6];
         }
         
-        if (_settings.noteskin != null)
+        if (as3hx.Compat.truthy(_settings.noteskin != null))
         {
             this.activeNoteskin = _settings.noteskin;
         }
         
-        if (_settings.direction != null)
+        if (as3hx.Compat.truthy(_settings.direction != null))
         {
             this.slideDirection = _settings.direction;
         }
         
-        if (_settings.speed != null)
+        if (as3hx.Compat.truthy(_settings.speed != null))
         {
             this.gameSpeed = _settings.speed;
         }
         
-        if (_settings.judgeSpeed != null)
+        if (as3hx.Compat.truthy(_settings.judgeSpeed != null))
         {
             this.judgeSpeed = _settings.judgeSpeed;
         }
         
-        if (_settings.receptorSpeed != null)
+        if (as3hx.Compat.truthy(_settings.receptorSpeed != null))
         {
             this.receptorSpeed = _settings.receptorSpeed;
         }
         
-        if (_settings.judgeScale != null)
+        if (as3hx.Compat.truthy(_settings.judgeScale != null))
         {
             this.judgeScale = _settings.judgeScale;
         }
         
-        if (_settings.gap != null)
+        if (as3hx.Compat.truthy(_settings.gap != null))
         {
             this.receptorGap = _settings.gap;
         }
         
-        if (_settings.noteScale != null)
+        if (as3hx.Compat.truthy(_settings.noteScale != null))
         {
             this.noteScale = _settings.noteScale;
         }
         
-        if (_settings.accuracyBarFadeFactor != null)
+        if (as3hx.Compat.truthy(_settings.accuracyBarFadeFactor != null))
         {
             this.accuracyBarFadeFactor = _settings.accuracyBarFadeFactor;
         }
         
-        if (_settings.visualHypeMode != null)
+        if (as3hx.Compat.truthy(_settings.visualHypeMode != null))
         {
             this.visualHypeMode = _settings.visualHypeMode;
         }
         
-        if (_settings.screencutPosition != null)
+        if (as3hx.Compat.truthy(_settings.screencutPosition != null))
         {
             this.screencutPosition = _settings.screencutPosition;
         }
         
-        if (_settings.frameRate != null)
+        if (as3hx.Compat.truthy(_settings.frameRate != null))
         {
             this.frameRate = _settings.frameRate;
         }
         
-        if (_settings.songRate != null)
+        if (as3hx.Compat.truthy(_settings.songRate != null))
         {
             this.songRate = _settings.songRate;
         }
         
-        if (_settings.autofailRestart != null)
+        if (as3hx.Compat.truthy(_settings.autofailRestart != null))
         {
             this.autofailRestart = _settings.autofailRestart;
         }
         
-        if (_settings.personalBestMode != null)
+        if (as3hx.Compat.truthy(_settings.personalBestMode != null))
         {
             this.personalBestMode = _settings.personalBestMode;
         }
         
-        if (_settings.personalBestTracker != null)
+        if (as3hx.Compat.truthy(_settings.personalBestTracker != null))
         {
             this.personalBestTracker = _settings.personalBestTracker;
         }
         
-        if (_settings.visual != null)
+        if (as3hx.Compat.truthy(_settings.visual != null))
         {
             this.activeVisualMods = _settings.visual;
         }
         
-        if (_settings.judgeColours != null)
+        if (as3hx.Compat.truthy(_settings.judgeColours != null))
         {
             mergeIntoArray(this.judgeColors, _settings.judgeColours);
         }
         
-        if (_settings.comboColours != null)
+        if (as3hx.Compat.truthy(_settings.comboColours != null))
         {
             mergeIntoArray(this.comboColors, _settings.comboColours);
         }
         
-        if (_settings.rawGoodsColor != null)
+        if (as3hx.Compat.truthy(_settings.rawGoodsColor != null))
         {
             this.rawGoodsColor = _settings.rawGoodsColor;
         }
         
-        if (_settings.enableComboColors != null)
+        if (as3hx.Compat.truthy(_settings.enableComboColors != null))
         {
             mergeIntoArray(this.enableComboColors, _settings.enableComboColors);
         }
         
-        if (_settings.receptorColours != null)
+        if (as3hx.Compat.truthy(_settings.receptorColours != null))
         {
             mergeIntoArray(this.receptorColors, _settings.receptorColours);
         }
         
-        if (_settings.enableReceptorColors != null)
+        if (as3hx.Compat.truthy(_settings.enableReceptorColors != null))
         {
             mergeIntoArray(this.enableReceptorColors, _settings.enableReceptorColors);
         }
         
-        if (_settings.gameColours != null)
+        if (as3hx.Compat.truthy(_settings.gameColours != null))
         {
             mergeIntoArray(this.gameColors, _settings.gameColours);
         }
         
-        if (_settings.noteColours != null)
+        if (as3hx.Compat.truthy(_settings.noteColours != null))
         {
             mergeIntoArray(this.noteColors, _settings.noteColours);
         }
         
-        if (_settings.rawGoodTracker != null)
+        if (as3hx.Compat.truthy(_settings.rawGoodTracker != null))
         {
             this.rawGoodTracker = _settings.rawGoodTracker;
         }
         
-        if (_settings.gameVolume != null)
+        if (as3hx.Compat.truthy(_settings.gameVolume != null))
         {
             this.gameVolume = _settings.gameVolume;
         }
         
-        if (_settings.layout != null)
+        if (as3hx.Compat.truthy(_settings.layout != null))
         {
             this.gameLayout = doLayoutImport(_settings.layout);
         }
         
-        if (_settings.filters != null)
+        if (as3hx.Compat.truthy(_settings.filters != null))
         {
             this.filters = doImportFilters(_settings.filters);
         }
         
-        if (_settings.songQueues != null)
+        if (as3hx.Compat.truthy(_settings.songQueues != null))
         {
             this.songQueues = [];
-            for (queueItem/* AS3HX WARNING could not determine type for var: queueItem exp: EField(EIdent(_settings),songQueues) type: null */ in _settings.songQueues)
+            for (queueItem/* AS3HX WARNING could not determine type for var: queueItem exp: EField(EIdent(_settings),songQueues) type: null */ in as3hx.Compat.iter(_settings.songQueues))
             {
                 this.songQueues.push(new SongQueueItem(queueItem.name, queueItem.items));
             }
         }
         
-        if (isActiveUser)
+        if (as3hx.Compat.truthy(isActiveUser))
         {
             SoundMixer.soundTransform = new SoundTransform(this.gameVolume);
             
@@ -969,25 +971,25 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
             (try cast(_gvars.gameMain.getChildAt(0), GameBackgroundColor) catch(e:Dynamic) null).redraw();
         }
         
-        var mergeIntoArray : Dynamic->Dynamic->Void = function(arr1 : Dynamic, arr2 : Dynamic) : Void
+        mergeIntoArray = function(arr1                             : Dynamic, arr2                             : Dynamic) : Void
         {
-            var minArrLen : Int = Math.min(arr1.length, arr2.length);
+            var minArrLen                             : Dynamic= Math.min(arr1.length, arr2.length);
             for (i in 0...minArrLen)
             {
-                Reflect.setField(arr1, Std.string(i), Reflect.field(arr2, Std.string(i)));
+                Reflect.setField(arr1, Std.string(i), as3hx.Compat.field(arr2, i));
             }
         }
         return _settings;
     }
     
-    public function save(returnObject : Bool = false) : Dynamic
+    public function save(returnObject                             : Dynamic= false) : Dynamic
     {
-        if (isGuest && !returnObject)
+        if (as3hx.Compat.truthy(isGuest && !returnObject))
         {
             return { };
         }
         
-        var gameSave : Dynamic = { };
+        var gameSave                             : Dynamic= { };
         gameSave.language = this.language;
         gameSave.viewOffset = this.GLOBAL_OFFSET;
         gameSave.visualDelay = this.VISUAL_DELAY;
@@ -1051,7 +1053,7 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
         gameSave.layout = this.gameLayout;
         gameSave.filters = doExportFilters(this.filters);
         
-        if (returnObject)
+        if (as3hx.Compat.truthy(returnObject))
         {
             return gameSave;
         }
@@ -1060,8 +1062,8 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
         _loader = new URLLoader();
         addLoaderSaveListeners();
         
-        var req : URLRequest = new URLRequest(URLs.resolve(URLs.USER_SAVE_SETTINGS_URL));
-        var requestVars : URLVariables = new URLVariables();
+        var req                             : Dynamic= new URLRequest(URLs.resolve(URLs.USER_SAVE_SETTINGS_URL));
+        var requestVars                             : Dynamic= new URLVariables();
         Constant.addDefaultRequestVariables(requestVars);
         requestVars.session = _gvars.userSession;
         requestVars.settings = haxe.Json.stringify(gameSave);
@@ -1073,14 +1075,14 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
         return { };
     }
     
-    private function settingSaveComplete(e : Event) : Void
+    private function settingSaveComplete(e                             : Dynamic) : Void
     {
         Logger.success(this, "Settings Save Success");
         removeLoaderSaveListeners();
         this.dispatchEvent(new Event(GlobalVariables.LOAD_COMPLETE));
     }
     
-    private function settingLoadError(err : ErrorEvent = null) : Void
+    private function settingLoadError(err                             : Dynamic= null) : Void
     {
         Logger.error(this, "Settings Save Failure: " + Logger.event_error(err));
         removeLoaderSaveListeners();
@@ -1109,8 +1111,8 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
     
     public function loadLocal() : Void
     {
-        var encodedSettings : String = LocalStore.getVariable("sEncode", null);
-        if (encodedSettings != null)
+        var encodedSettings                             : Dynamic= LocalStore.getVariable("sEncode", null);
+        if (as3hx.Compat.truthy(encodedSettings != null))
         {
             try
             {
@@ -1122,14 +1124,14 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
         }
     }
     
-    public function getLevelRank(songInfo : SongInfo) : Dynamic
+    public function getLevelRank(songInfo                             : Dynamic) : Dynamic
     {
-        if (songInfo.engine)
+        if (as3hx.Compat.truthy(songInfo.engine))
         {
             return ArcGlobals.instance.legacyLevelRanksGet(songInfo);
         }
         
-        if (Reflect.field(level_ranks, Std.string(songInfo.level)) == null)
+        if (as3hx.Compat.truthy(as3hx.Compat.field(level_ranks, songInfo.level) == null))
         {
             return {
                 genre : 23,
@@ -1149,22 +1151,22 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
             };
         }
         
-        return Reflect.field(level_ranks, Std.string(songInfo.level));
+        return as3hx.Compat.field(level_ranks, songInfo.level);
     }
     
-    public function getSongRating(songInfo : SongInfo) : Float
+    public function getSongRating(songInfo                             : Dynamic) : Float
     {
-        if (songInfo.engine != null)
+        if (as3hx.Compat.truthy(songInfo.engine != null))
         {
-            var sDetails : UserSongData = UserSongNotes.getSongDetails(songInfo.engine.id, songInfo.level_id);
-            if (sDetails != null)
+            var sDetails                             : Dynamic= UserSongNotes.getSongDetails(songInfo.engine.id, songInfo.level_id);
+            if (as3hx.Compat.truthy(sDetails != null))
             {
                 return sDetails.song_rating;
             }
             
             return 0;
         }
-        return (Reflect.field(songRatings, Std.string(songInfo.level)) != null) ? Reflect.field(songRatings, Std.string(songInfo.level)) : 0;
+        return (as3hx.Compat.field(songRatings, songInfo.level) != null) ? as3hx.Compat.field(songRatings, songInfo.level) : 0;
     }
     
     /**
@@ -1172,24 +1174,24 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
      * @param	filtersIn Array of Filter objects.
      * @return Array of EngineLevelFilters.
      */
-    private function doImportFilters(filtersIn : Array<Dynamic>) : Array<EngineLevelFilter>
+    private function doImportFilters(filtersIn                             : Dynamic) : Array<EngineLevelFilter>
     {
-        if (isActiveUser)
+        if (as3hx.Compat.truthy(isActiveUser))
         {
             _gvars.activeFilter = null;
         }
         
-        var newFilters : Array<EngineLevelFilter> = [];
-        var filter : EngineLevelFilter;
-        for (item in filtersIn)
+        var newFilters                             : Dynamic= [];
+        var filter                             : Dynamic= null;
+        for (item in as3hx.Compat.iter(filtersIn))
         {
             filter = new EngineLevelFilter();
             filter.setup(item);
             newFilters.push(filter);
             
-            if (filter.is_default)
+            if (as3hx.Compat.truthy(filter.is_default))
             {
-                if (_gvars.activeFilter == null && isActiveUser)
+                if (as3hx.Compat.truthy(_gvars.activeFilter == null && isActiveUser))
                 {
                     _gvars.activeFilter = filter;
                 }
@@ -1207,34 +1209,34 @@ var rankSplit : Array<Dynamic> = Reflect.field(ranksTemp, Std.string(x)).split("
      * @param	filtersOut Array of EngineLevelFilter to export.
      * @return	Array of Filter Object.
      */
-    private function doExportFilters(filtersOut : Array<EngineLevelFilter>) : Array<Dynamic>
+    private function doExportFilters(filtersOut                             : Dynamic) : Array<Dynamic>
     {
-        var filters : Array<Dynamic> = [];
-        for (item in filtersOut)
+        var filters                             : Dynamic= [];
+        for (item in as3hx.Compat.iter(filtersOut))
         {
-            var exportFilter : Dynamic = item.export();
-            if (Reflect.field(exportFilter, "filters") != null && Reflect.field(exportFilter, "filters").length > 0) {
+            var exportFilter                             : Dynamic= item.export();
+            if (as3hx.Compat.truthy(Reflect.field(exportFilter, "filters") != null && Reflect.field(exportFilter, "filters").length > 0)) {
 filters.push(exportFilter);
             }
         }
         return filters;
     }
     
-    private function doLayoutImport(data : Dynamic) : Dynamic
+    private function doLayoutImport(data                             : Dynamic) : Dynamic
     {
-        var out : Dynamic = { };
-        var keys : Array<Dynamic> = ["sp", "mp"];
+        var out                             : Dynamic= { };
+        var keys                             : Dynamic= ["sp", "mp"];
         
-        for (key in keys)
+        for (key in as3hx.Compat.iter(keys))
         {
-            if (Reflect.field(data, Std.string(key)) == null)
+            if (as3hx.Compat.truthy(as3hx.Compat.field(data, key) == null))
             {
                 continue;
             }
             
-            if (Std.string(Reflect.field(data, Std.string(key)).constructor).indexOf("Object") != -1)
+            if (as3hx.Compat.truthy(Std.string(as3hx.Compat.field(data, key).constructor).indexOf("Object") != -1))
             {
-                Reflect.setField(out, Std.string(key), Reflect.field(data, Std.string(key)));
+                Reflect.setField(out, Std.string(key), as3hx.Compat.field(data, key));
             }
         }
         

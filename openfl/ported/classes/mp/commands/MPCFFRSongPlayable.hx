@@ -4,14 +4,14 @@ import classes.mp.room.MPRoomFFR;
 
 class MPCFFRSongPlayable implements IMPCommand
 {
-    public var room : MPRoomFFR;
-    public var canPlay : Bool;
+    public var room                             : Dynamic;
+    public var canPlay                             : Dynamic;
     
-    public var id : Int;
-    public var level_id : String;
-    public var engine : Dynamic;
+    public var id                             : Dynamic;
+    public var level_id                             : Dynamic;
+    public var engine                             : Dynamic;
     
-    public function new(room : MPRoomFFR)
+    public function new(room                             : Dynamic)
     {
         this.room = room;
     }

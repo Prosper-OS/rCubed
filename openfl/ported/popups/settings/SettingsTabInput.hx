@@ -12,20 +12,20 @@ import openfl.text.TextFieldAutoSize;
 
 class SettingsTabInput extends SettingsTabBase
 {
-    private var _gvars : GlobalVariables = GlobalVariables.instance;
-    private var _lang : Language = Language.instance;
-    private var _noteskins : Noteskins = Noteskins.instance;
+    private var _gvars                       : Dynamic= GlobalVariables.instance;
+    private var _lang                       : Dynamic= Language.instance;
+    private var _noteskins                       : Dynamic= Noteskins.instance;
     
-    private var gameplayInputs : Array<Dynamic> = ["left", "down", "up", "right"];
-    private var menuInputs : Array<Dynamic> = ["restart", "quit", "options"];
+    private var gameplayInputs                       : Dynamic= ["left", "down", "up", "right"];
+    private var menuInputs                       : Dynamic= ["restart", "quit", "options"];
     
-    private var optionKeyInputs : Array<Dynamic>;
-    private var keyListenerTarget : BoxText;
+    private var optionKeyInputs                       : Dynamic;
+    private var keyListenerTarget                       : Dynamic;
     
-    private var keysHeld : Array<Dynamic> = [];
-    private var keysHeldText : Text;
+    private var keysHeld                       : Dynamic= [];
+    private var keysHeldText                       : Dynamic;
     
-    public function new(settingsWindow : SettingsWindow)
+    public function new(settingsWindow                       : Dynamic)
     {
         super(settingsWindow);
     }
@@ -40,23 +40,23 @@ class SettingsTabInput extends SettingsTabBase
         parent.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandlerDown, true, as3hx.Compat.INT_MAX - 10, true);
         parent.stage.addEventListener(KeyboardEvent.KEY_UP, keyHandlerUp, true, as3hx.Compat.INT_MAX - 10, true);
         
-        var i : Int;
-        var xOff : Int = 15;
-        var yOff : Int = 15;
+        var i                       : Dynamic= null;
+        var xOff                       : Dynamic= 15;
+        var yOff                       : Dynamic= 15;
         
-        var data : Dynamic = _noteskins.getInfo(_gvars.activeUser.activeNoteskin);
-        var hasRotation : Bool = (data.rotation != 0);
+        var data                       : Dynamic= _noteskins.getInfo(_gvars.activeUser.activeNoteskin);
+        var hasRotation                       : Dynamic= (data.rotation != 0);
         
         optionKeyInputs = [];
         
         container.graphics.lineStyle(1, 0xFFFFFF, 0.2);
         
         // gameplay input
-        var keyText : Text;
-        var noteScale : Float = -1;
-        var inputWidth : Int = 60;
-        var receptorSize : Float = 38;
-        var curOffX : Float = 0;
+        var keyText                       : Dynamic= null;
+        var noteScale                       : Dynamic= -1;
+        var inputWidth                       : Dynamic= 60;
+        var receptorSize                       : Dynamic= 38;
+        var curOffX                       : Dynamic= 0;
         
         for (i in 0...gameplayInputs.length)
         {
@@ -70,14 +70,14 @@ class SettingsTabInput extends SettingsTabBase
             container.graphics.endFill();
             
             // Set Image
-            var columnDirectionNote : MovieClip = _noteskins.getReceptor(data.id, "D");
+            var columnDirectionNote                       : Dynamic= _noteskins.getReceptor(data.id, "D");
             
-            if (hasRotation)
+            if (as3hx.Compat.truthy(hasRotation))
             {
                 columnDirectionNote.rotation = data.rotation * receptorRotations[i];
             }
             
-            if (noteScale < 0)
+            if (as3hx.Compat.truthy(noteScale < 0))
             {
                 noteScale = Math.min(1, receptorSize / Math.max(columnDirectionNote.width, columnDirectionNote.height));
             }
@@ -88,7 +88,7 @@ class SettingsTabInput extends SettingsTabBase
             columnDirectionNote.x = curOffX + 10 + (inputWidth / 2);
             columnDirectionNote.y = yOff + (receptorSize / 2) + 33;
             
-            var gameKeyInput : BoxText = new BoxText(container, curOffX + 10, yOff + 80, inputWidth, 20);
+            var gameKeyInput                       : Dynamic= new BoxText(container, curOffX + 10, yOff + 80, inputWidth, 20);
             gameKeyInput.autoSize = TextFieldAutoSize.CENTER;
             gameKeyInput.mouseEnabled = true;
             gameKeyInput.mouseChildren = false;
@@ -109,7 +109,7 @@ class SettingsTabInput extends SettingsTabBase
             
             new Text(container, xOff + 74, yOff + 7, _lang.string("options_scroll_" + menuInputs[i]));
             
-            gameKeyInput = new BoxText(container, xOff + 8, yOff + 7, 60, 19);
+            var gameKeyInput                      : Dynamic= new BoxText(container, xOff + 8, yOff + 7, 60, 19);
             gameKeyInput.autoSize = TextFieldAutoSize.CENTER;
             gameKeyInput.mouseEnabled = true;
             gameKeyInput.mouseChildren = false;
@@ -146,28 +146,28 @@ class SettingsTabInput extends SettingsTabBase
     
     override public function setValues() : Void
     {
-        for (item in optionKeyInputs)
+        for (item in as3hx.Compat.iter(optionKeyInputs))
         {
-            item.text = StringUtil.keyCodeChar(_gvars.activeUser["key" + StringUtil.upperCase(item.key)]).toUpperCase();
+            item.text = StringUtil.keyCodeChar(as3hx.Compat.field(_gvars.activeUser, "key" + StringUtil.upperCase(item.key))).toUpperCase();
         }
     }
     
-    override public function clickHandler(e : MouseEvent) : Void
+    override public function clickHandler(e                       : Dynamic) : Void
     {
         setValues();
         keyListenerTarget = (try cast(e.target, BoxText) catch(e:Dynamic) null);
         keyListenerTarget.htmlText = _lang.string("options_key_pick");
     }
     
-    private function keyHandlerDown(e : KeyboardEvent) : Void
+    private function keyHandlerDown(e                       : Dynamic) : Void
     {
-        if (keyListenerTarget != null)
+        if (as3hx.Compat.truthy(keyListenerTarget != null))
         {
-            var keyCode : Int = e.keyCode;
-            var keyChar : String = StringUtil.keyCodeChar(keyCode);
-            if (keyChar != "")
+            var keyCode                       : Dynamic= e.keyCode;
+            var keyChar                       : Dynamic= StringUtil.keyCodeChar(keyCode);
+            if (as3hx.Compat.truthy(keyChar != ""))
             {
-                _gvars.activeUser["key" + StringUtil.upperCase(keyListenerTarget.key)] = keyCode;
+                Reflect.setField(_gvars.activeUser, "key" + StringUtil.upperCase(keyListenerTarget.key), keyCode);
                 keyListenerTarget = null;
                 setValues();
             }
@@ -175,7 +175,7 @@ class SettingsTabInput extends SettingsTabBase
             return;
         }
         
-        if (Lambda.indexOf(keysHeld, e.keyCode) == -1)
+        if (as3hx.Compat.truthy(Lambda.indexOf(keysHeld, e.keyCode) == -1))
         {
             keysHeld[keysHeld.length] = e.keyCode;
             updateHeldText();
@@ -184,9 +184,9 @@ class SettingsTabInput extends SettingsTabBase
         e.stopImmediatePropagation();
     }
     
-    private function keyHandlerUp(e : KeyboardEvent) : Void
+    private function keyHandlerUp(e                       : Dynamic) : Void
     {
-        if (Lambda.indexOf(keysHeld, e.keyCode) >= 0)
+        if (as3hx.Compat.truthy(Lambda.indexOf(keysHeld, e.keyCode) >= 0))
         {
             keysHeld.splice(Lambda.indexOf(keysHeld, e.keyCode), 1)[0];
             updateHeldText();
@@ -197,11 +197,11 @@ class SettingsTabInput extends SettingsTabBase
     {
         keysHeld.sort();
         
-        var keyText : String = "";
-        for (keyCode in keysHeld)
+        var keyText                       : Dynamic= "";
+        for (keyCode in as3hx.Compat.iter(keysHeld))
         {
-            var keyChar : String = StringUtil.keyCodeChar(keyCode);
-            if (keyChar != "")
+            var keyChar                       : Dynamic= StringUtil.keyCodeChar(keyCode);
+            if (as3hx.Compat.truthy(keyChar != ""))
             {
                 keyText += " " + keyChar + " ";
             }

@@ -38,25 +38,25 @@ import assets.GameBackgroundColor;
 
 class List extends Component
 {
-    public var selectedIndex(get, set) : Int;
-    public var selectedItem(get, set) : Dynamic;
-    public var selectedItemByData(never, set) : Dynamic;
-    public var listItemHeight(get, set) : Float;
-    public var items(get, set) : Array<Dynamic>;
-    public var listItemClass(get, set) : Class<Dynamic>;
-    public var alternateRows(get, set) : Bool;
-    public var autoHideScrollBar(get, set) : Bool;
-    public var reduceUpdates(get, set) : Bool;
+    public var selectedIndex(get, set)                            : Dynamic;
+    public var selectedItem(get, set)                            : Dynamic;
+    public var selectedItemByData(never, set)                            : Dynamic;
+    public var listItemHeight(get, set)                            : Dynamic;
+    public var items(get, set)                            : Dynamic;
+    public var listItemClass(get, set)                            : Dynamic;
+    public var alternateRows(get, set)                            : Dynamic;
+    public var autoHideScrollBar(get, set)                            : Dynamic;
+    public var reduceUpdates(get, set)                            : Dynamic;
 
-    private var _items : Array<Dynamic>;
-    private var _itemHolder : Sprite;
-    private var _panel : Panel;
-    private var _listItemHeight : Float = 20;
-    private var _listItemClass : Class<Dynamic> = ListItem;
-    private var _scrollbar : VScrollBar;
-    private var _selectedIndex : Int = -1;
-    private var _alternateRows : Bool = false;
-    private var _reduceUpdates : Bool = false;
+    public var _items                            : Dynamic;
+    public var _itemHolder                            : Dynamic;
+    public var _panel                            : Dynamic;
+    public var _listItemHeight                            : Dynamic= 20;
+    public var _listItemClass                            : Dynamic= ListItem;
+    public var _scrollbar                            : Dynamic;
+    public var _selectedIndex                            : Dynamic= -1;
+    public var _alternateRows                            : Dynamic= false;
+    public var _reduceUpdates                            : Dynamic= false;
     
     /**
      * Constructor
@@ -65,9 +65,9 @@ class List extends Component
      * @param ypos The y position to place this component.
      * @param items An array of items to display in the list. Either strings or objects with label property.
      */
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, items : Array<Dynamic> = null)
+    public function new(parent                            : Dynamic= null, xpos                            : Dynamic= 0, ypos                            : Dynamic= 0, items                            : Dynamic= null)
     {
-        if (items != null)
+        if (as3hx.Compat.truthy(items != null))
         {
             _items = items;
         }
@@ -81,7 +81,7 @@ class List extends Component
     /**
      * Initilizes the component.
      */
-    override private function init() : Void
+    override public function init() : Void
     {
         super.init();
         setSize(100, 100);
@@ -94,7 +94,7 @@ class List extends Component
     /**
      * Creates and adds the child display objects of this component.
      */
-    override private function addChildren() : Void
+    override public function addChildren() : Void
     {
         super.addChildren();
         _panel = new Panel(this, 0, 0);
@@ -108,17 +108,17 @@ class List extends Component
     /**
      * Creates all the list items based on data.
      */
-    private function makeListItems() : Void
+    public function makeListItems() : Void
     {
-        var item : ListItem;
-        while (_itemHolder.numChildren > 0)
+        var item                            : Dynamic= null;
+        while (as3hx.Compat.truthy(_itemHolder.numChildren > 0))
         {
             item = cast((_itemHolder.getChildAt(0)), ListItem);
             item.removeEventListener(MouseEvent.CLICK, onSelect);
             _itemHolder.removeChildAt(0);
         }
         
-        var numItems : Int = Math.ceil(_height / _listItemHeight);
+        var numItems                            : Dynamic= Math.ceil(_height / _listItemHeight);
         numItems = Math.min(numItems, _items.length);
         numItems = Math.max(numItems, 1);
         for (i in 0...numItems)
@@ -129,15 +129,15 @@ class List extends Component
         }
     }
     
-    private function fillItems() : Void
+    public function fillItems() : Void
     {
-        var offset : Int = _scrollbar.value;
-        var numItems : Int = Math.ceil(_height / _listItemHeight);
+        var offset                            : Dynamic= _scrollbar.value;
+        var numItems                            : Dynamic= Math.ceil(_height / _listItemHeight);
         numItems = Math.min(numItems, _items.length);
         for (i in 0...numItems)
         {
-            var item : ListItem = try cast(_itemHolder.getChildAt(i), ListItem) catch(e:Dynamic) null;
-            if (offset + i < _items.length)
+            var item                            : Dynamic= try cast(_itemHolder.getChildAt(i), ListItem) catch(e:Dynamic) null;
+            if (as3hx.Compat.truthy(offset + i < _items.length))
             {
                 item.data = _items[offset + i];
             }
@@ -145,7 +145,7 @@ class List extends Component
             {
                 item.data = "";
             }
-            if (offset + i == _selectedIndex)
+            if (as3hx.Compat.truthy(offset + i == _selectedIndex))
             {
                 item.selected = true;
             }
@@ -159,16 +159,16 @@ class List extends Component
     /**
      * If the selected item is not in view, scrolls the list to make the selected item appear in the view.
      */
-    private function scrollToSelection() : Void
+    public function scrollToSelection() : Void
     {
-        var numItems : Int = Math.ceil(_height / _listItemHeight);
-        if (_selectedIndex != -1)
+        var numItems                            : Dynamic= Math.ceil(_height / _listItemHeight);
+        if (as3hx.Compat.truthy(_selectedIndex != -1))
         {
-            if (_scrollbar.value > _selectedIndex)
+            if (as3hx.Compat.truthy(_scrollbar.value > _selectedIndex))
             {  //                    _scrollbar.value = _selectedIndex;  
                 
             }
-            else if (_scrollbar.value + numItems < _selectedIndex)
+            else if (as3hx.Compat.truthy(_scrollbar.value + numItems < _selectedIndex))
             {
                 _scrollbar.value = _selectedIndex - numItems + 1;
             }
@@ -202,9 +202,9 @@ class List extends Component
         
         // scrollbar
         _scrollbar.x = _width - 10;
-        var contentHeight : Float = _items.length * _listItemHeight;
+        var contentHeight                            : Dynamic= _items.length * _listItemHeight;
         _scrollbar.setThumbPercent(_height / contentHeight);
-        var pageSize : Float = Math.floor(_height / _listItemHeight);
+        var pageSize                            : Dynamic= Math.floor(_height / _listItemHeight);
         _scrollbar.maximum = Math.max(0, _items.length - pageSize);
         _scrollbar.pageSize = pageSize;
         _scrollbar.height = _height;
@@ -216,7 +216,7 @@ class List extends Component
      * Adds an item to the list.
      * @param item The item to add. Can be a string or an object containing a string property named label.
      */
-    public function addItem(item : Dynamic) : Void
+    public function addItem(item                            : Dynamic) : Void
     {
         _items.push(item);
         invalidate();
@@ -229,7 +229,7 @@ class List extends Component
      * @param item The item to add. Can be a string or an object containing a string property named label.
      * @param index The index at which to add the item.
      */
-    public function addItemAt(item : Dynamic, index : Int) : Void
+    public function addItemAt(item                            : Dynamic, index                            : Dynamic) : Void
     {
         index = Math.max(0, index);
         index = Math.min(_items.length, index);
@@ -243,9 +243,9 @@ class List extends Component
      * Removes the referenced item from the list.
      * @param item The item to remove. If a string, must match the item containing that string. If an object, must be a reference to the exact same object.
      */
-    public function removeItem(item : Dynamic) : Void
+    public function removeItem(item                            : Dynamic) : Void
     {
-        var index : Int = Lambda.indexOf(_items, item);
+        var index                            : Dynamic= Lambda.indexOf(_items, item);
         removeItemAt(index);
     }
     
@@ -253,9 +253,9 @@ class List extends Component
      * Removes the item from the list at the specified index
      * @param index The index of the item to remove.
      */
-    public function removeItemAt(index : Int) : Void
+    public function removeItemAt(index                            : Dynamic) : Void
     {
-        if (index < 0 || index >= _items.length)
+        if (as3hx.Compat.truthy(index < 0 || index >= _items.length))
         {
             return;
         }
@@ -287,18 +287,18 @@ class List extends Component
     /**
      * Called when a user selects an item in the list.
      */
-    private function onSelect(event : Event) : Void
+    public function onSelect(event                            : Dynamic) : Void
     {
-        if (!(Std.is(event.target, ListItem)))
+        if (as3hx.Compat.truthy(!(Std.is(event.target, ListItem))))
         {
             return;
         }
         
-        var offset : Int = _scrollbar.value;
+        var offset                            : Dynamic= _scrollbar.value;
         
         for (i in 0..._itemHolder.numChildren)
         {
-            if (_itemHolder.getChildAt(i) == event.target)
+            if (as3hx.Compat.truthy(_itemHolder.getChildAt(i) == event.target))
             {
                 _selectedIndex = as3hx.Compat.parseInt(i + offset);
             }
@@ -311,7 +311,7 @@ class List extends Component
     /**
      * Called when the user scrolls the scroll bar.
      */
-    private function onScroll(event : Event) : Void
+    public function onScroll(event                            : Dynamic) : Void
     {
         fillItems();
     }
@@ -319,13 +319,13 @@ class List extends Component
     /**
      * Called when the mouse wheel is scrolled over the component.
      */
-    private function onMouseWheel(event : MouseEvent) : Void
+    public function onMouseWheel(event                            : Dynamic) : Void
     {
         _scrollbar.value -= event.delta;
         fillItems();
     }
     
-    private function onResize(event : Event) : Void
+    public function onResize(event                            : Dynamic) : Void
     {
         makeListItems();
         fillItems();
@@ -338,9 +338,9 @@ class List extends Component
     /**
      * Sets / gets the index of the selected list item.
      */
-    private function set_selectedIndex(value : Int) : Int
+    private function set_selectedIndex(value                            : Dynamic) : Int
     {
-        if (value >= 0 && value < _items.length)
+        if (as3hx.Compat.truthy(value >= 0 && value < _items.length))
         {
             _selectedIndex = value;
         }
@@ -361,9 +361,9 @@ class List extends Component
     /**
      * Sets / gets the item in the list, if it exists.
      */
-    private function set_selectedItem(item : Dynamic) : Dynamic
+    private function set_selectedItem(item                            : Dynamic) : Dynamic
     {
-        var index : Int = Lambda.indexOf(_items, item);
+        var index                            : Dynamic= Lambda.indexOf(_items, item);
         //			if(index != -1)
         //			{
         selectedIndex = index;
@@ -374,24 +374,24 @@ class List extends Component
     
     private function get_selectedItem() : Dynamic
     {
-        if (_selectedIndex >= 0 && _selectedIndex < _items.length)
+        if (as3hx.Compat.truthy(_selectedIndex >= 0 && _selectedIndex < _items.length))
         {
             return _items[_selectedIndex];
         }
         return null;
     }
     
-    private function set_selectedItemByData(item : Dynamic) : Dynamic
+    private function set_selectedItemByData(item                            : Dynamic) : Dynamic
     {
         for (i in 0..._items.length)
         {
-            var it : Dynamic = _items[i];
-            if ((Std.is(it, String) || Std.is(it, Float)) && it == item)
+            var it                            : Dynamic= _items[i];
+            if (as3hx.Compat.truthy((Std.is(it, String) || Std.is(it, Float)) && it == item))
             {
                 selectedIndex = i;
                 break;
             }
-            else if (it.exists("data") && it.data == item)
+            else if (as3hx.Compat.truthy(it.exists("data") && it.data == item))
             {
                 selectedIndex = i;
                 break;
@@ -404,7 +404,7 @@ class List extends Component
     /**
      * Sets the height of each list item.
      */
-    private function set_listItemHeight(value : Float) : Float
+    private function set_listItemHeight(value                            : Dynamic) : Float
     {
         _listItemHeight = value;
         makeListItems();
@@ -420,18 +420,18 @@ class List extends Component
     /**
      * Sets / gets the list of items to be shown.
      */
-    private function set_items(value : Array<Dynamic>) : Array<Dynamic>
+    private function set_items(value                            : Dynamic) : Array<Dynamic>
     {
-        var needsRedraw : Bool = true;
-        if (_reduceUpdates)
+        var needsRedraw                            : Dynamic= true;
+        if (as3hx.Compat.truthy(_reduceUpdates))
         {
             needsRedraw = _items.length != value.length;
-            if (!needsRedraw)
+            if (as3hx.Compat.truthy(!needsRedraw))
             {
-                var idx : Int = as3hx.Compat.parseInt(_items.length - 1);
-                while (idx >= 0)
+                var idx                            : Dynamic= as3hx.Compat.parseInt(_items.length - 1);
+                while (as3hx.Compat.truthy(idx >= 0))
                 {
-                    if (_items[idx].label != value[idx].label || _items[idx].data != value[idx].data)
+                    if (as3hx.Compat.truthy(_items[idx].label != value[idx].label || _items[idx].data != value[idx].data))
                     {
                         needsRedraw = true;
                         break;
@@ -441,7 +441,7 @@ class List extends Component
             }
         }
         
-        if (needsRedraw)
+        if (as3hx.Compat.truthy(needsRedraw))
         {
             _items = value;
             invalidate();
@@ -459,7 +459,7 @@ class List extends Component
     /**
      * Sets / gets the class used to render list items. Must extend ListItem.
      */
-    private function set_listItemClass(value : Class<Dynamic>) : Class<Dynamic>
+    private function set_listItemClass(value                            : Dynamic) : Class<Dynamic>
     {
         _listItemClass = value;
         makeListItems();
@@ -475,7 +475,7 @@ class List extends Component
     /**
      * Sets / gets whether or not every other row will be colored with the alternate color.
      */
-    private function set_alternateRows(value : Bool) : Bool
+    private function set_alternateRows(value                            : Dynamic) : Bool
     {
         _alternateRows = value;
         invalidate();
@@ -490,7 +490,7 @@ class List extends Component
     /**
      * Sets / gets whether the scrollbar will auto hide when there is nothing to scroll.
      */
-    private function set_autoHideScrollBar(value : Bool) : Bool
+    private function set_autoHideScrollBar(value                            : Dynamic) : Bool
     {
         _scrollbar.autoHide = value;
         return value;
@@ -504,7 +504,7 @@ class List extends Component
     /**
      * Sets / gets whether the setting a new list directly should check for changes.
      */
-    private function set_reduceUpdates(value : Bool) : Bool
+    private function set_reduceUpdates(value                            : Dynamic) : Bool
     {
         _reduceUpdates = value;
         return value;

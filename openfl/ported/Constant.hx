@@ -6,44 +6,44 @@ import openfl.text.TextFormatAlign;
 
 
 typedef JudgeWindowTypedef = {
-    var t : Dynamic;
-    var s : Int;
-    var f : Dynamic;
+    var t                              : Dynamic;
+    var s                              : Dynamic;
+    var f                              : Dynamic;
 }
 class Constant
 {
     // Engine Brand Name
-    public static inline var BRAND_NAME_LONG : String = "FlashFlashRevolution";
-    public static inline var BRAND_NAME_SHORT : String = "FFR";
-    public static var BRAND_NAME_LONG_UPPER : String = BRAND_NAME_LONG.toLocaleUpperCase();
-    public static var BRAND_NAME_LONG_LOWER : String = BRAND_NAME_LONG.toLocaleLowerCase();
-    public static var BRAND_NAME_SHORT_UPPER : String = BRAND_NAME_SHORT.toLocaleUpperCase();
-    public static var BRAND_NAME_SHORT_LOWER : String = BRAND_NAME_SHORT.toLocaleLowerCase();
+    public static inline var BRAND_NAME_LONG                              : Dynamic= "FlashFlashRevolution";
+    public static inline var BRAND_NAME_SHORT                              : Dynamic= "FFR";
+    public static var BRAND_NAME_LONG_UPPER                              : Dynamic= BRAND_NAME_LONG.toUpperCase();
+    public static var BRAND_NAME_LONG_LOWER                              : Dynamic= BRAND_NAME_LONG.toLowerCase();
+    public static var BRAND_NAME_SHORT_UPPER                              : Dynamic= BRAND_NAME_SHORT.toUpperCase();
+    public static var BRAND_NAME_SHORT_LOWER                              : Dynamic= BRAND_NAME_SHORT.toLowerCase();
     
-    public static inline var AIR_VERSION : String = "0.0.0";
-    public static var AIR_WINDOW_TITLE : String = "FFR" + " R^3 [" + "" + AIR_VERSION + "D" + "]";
-    public static inline var LOCAL_SO_NAME : String = "90579262-509d-4370-9c2e-564667e511d7";
-    public static inline var ENGINE_VERSION : Int = 3;
+    public static inline var AIR_VERSION                              : Dynamic= "0.0.0";
+    public static var AIR_WINDOW_TITLE                              : Dynamic= "FFR" + " R^3 [" + "" + AIR_VERSION + "D" + "]";
+    public static inline var LOCAL_SO_NAME                              : Dynamic= "90579262-509d-4370-9c2e-564667e511d7";
+    public static inline var ENGINE_VERSION                              : Dynamic= 3;
     
     // File Constants
-    public static var MENU_MUSIC_PATH : String = "menu_music.swf";
-    public static var MENU_MUSIC_MP3_PATH : String = "menu_music.mp3";
-    public static var NOTESKIN_PATH : String = "noteskins/";
-    public static var REPLAY_PATH : String = "replays/";
-    public static var SONG_CACHE_PATH : String = "song_cache/";
+    public static var MENU_MUSIC_PATH                              : Dynamic= "menu_music.swf";
+    public static var MENU_MUSIC_MP3_PATH                              : Dynamic= "menu_music.mp3";
+    public static var NOTESKIN_PATH                              : Dynamic= "noteskins/";
+    public static var REPLAY_PATH                              : Dynamic= "replays/";
+    public static var SONG_CACHE_PATH                              : Dynamic= "song_cache/";
     
-    public static var TEXT_FORMAT : TextFormat = new TextFormat(Fonts.BASE_FONT, 14, 0xFFFFFF, true);
-    public static var TEXT_FORMAT_12 : TextFormat = new TextFormat(Fonts.BASE_FONT, 12, 0xFFFFFF, true);
-    public static var TEXT_FORMAT_CENTER : TextFormat = new TextFormat(Fonts.BASE_FONT, 14, 0xFFFFFF, true, null, null, null, null, TextFormatAlign.CENTER);
-    public static var TEXT_FORMAT_CENTER_12 : TextFormat = new TextFormat(Fonts.BASE_FONT, 12, 0xFFFFFF, true, null, null, null, null, TextFormatAlign.CENTER);
-    public static var TEXT_FORMAT_UNICODE : TextFormat = new TextFormat(Fonts.BASE_FONT_CJK, 14, 0xFFFFFF, true);
-    public static var TEXT_FORMAT_UNICODE_12 : TextFormat = new TextFormat(Fonts.BASE_FONT_CJK, 12, 0xFFFFFF, true);
+    public static var TEXT_FORMAT                              : Dynamic= new TextFormat(Fonts.BASE_FONT, 14, 0xFFFFFF, true);
+    public static var TEXT_FORMAT_12                              : Dynamic= new TextFormat(Fonts.BASE_FONT, 12, 0xFFFFFF, true);
+    public static var TEXT_FORMAT_CENTER                              : Dynamic= new TextFormat(Fonts.BASE_FONT, 14, 0xFFFFFF, true, null, null, null, null, TextFormatAlign.CENTER);
+    public static var TEXT_FORMAT_CENTER_12                              : Dynamic= new TextFormat(Fonts.BASE_FONT, 12, 0xFFFFFF, true, null, null, null, null, TextFormatAlign.CENTER);
+    public static var TEXT_FORMAT_UNICODE                              : Dynamic= new TextFormat(Fonts.BASE_FONT_CJK, 14, 0xFFFFFF, true);
+    public static var TEXT_FORMAT_UNICODE_12                              : Dynamic= new TextFormat(Fonts.BASE_FONT_CJK, 12, 0xFFFFFF, true);
     
     // Other
-    public static inline var NOTESKIN_EDITOR_URL : String = "https://www.flashflashrevolution.com/~velocity/ffrjs/noteskin/";
-    public static inline var WEBSOCKET_OVERLAY_URL : String = "https://github.com/flashflashrevolution/web-stream-overlay";
-    public static inline var LEGACY_GENRE : Int = 13;
-    public static var JUDGE_WINDOW : Array<JudgeWindowTypedef> = [{
+    public static inline var NOTESKIN_EDITOR_URL                              : Dynamic= "https://www.flashflashrevolution.com/~velocity/ffrjs/noteskin/";
+    public static inline var WEBSOCKET_OVERLAY_URL                              : Dynamic= "https://github.com/flashflashrevolution/web-stream-overlay";
+    public static inline var LEGACY_GENRE                              : Dynamic= 13;
+    public static var JUDGE_WINDOW                              : Dynamic= [{
             t : -118,
             s : 5,
             f : -3
@@ -85,8 +85,8 @@ class Constant
     ];
     
     // Static Initializer
-    public static var GRADIENT_MATRIX : Matrix;
-    public static var STYLESHEET : StyleSheet;
+    public static var GRADIENT_MATRIX                              : Dynamic;
+    public static var STYLESHEET                              : Dynamic;
     
     
     // Functions
@@ -94,7 +94,7 @@ class Constant
      * Adds default URLVariables to the passed requestVars.
      * @param requestVars
      */
-    public static function addDefaultRequestVariables(requestVars : URLVariables) : Void
+    public static function addDefaultRequestVariables(requestVars                              : Dynamic) : Void
     {
         Reflect.setField(requestVars, "ver", Constant.ENGINE_VERSION);
         Reflect.setField(requestVars, "is_air", true);

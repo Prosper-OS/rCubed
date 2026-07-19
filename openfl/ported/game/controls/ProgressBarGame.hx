@@ -5,16 +5,16 @@ import openfl.display.Sprite;
 
 class ProgressBarGame extends GameControl
 {
-    private var top_mc : Sprite = new Sprite();
-    private var progress_mc : Sprite = new Sprite();
+    private var top_mc                       : Dynamic= new Sprite();
+    private var progress_mc                       : Dynamic= new Sprite();
     
-    public var barWidth : Int;
-    public var barHeight : Int;
+    public var barWidth                       : Dynamic;
+    public var barHeight                       : Dynamic;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, bWidth : Int = 458, bHeight : Int = 20, bSplits : Int = 4, borColor : Int = 0x545454, borSize : Float = 0.1, bColor : Int = 0x00BFFF)
+    public function new(parent                       : Dynamic= null, xpos                       : Dynamic= 0, ypos                       : Dynamic= 0, bWidth                       : Dynamic= 458, bHeight                       : Dynamic= 20, bSplits                       : Dynamic= 4, borColor                       : Dynamic= 0x545454, borSize                       : Dynamic= 0.1, bColor                       : Dynamic= 0x00BFFF)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -37,10 +37,10 @@ class ProgressBarGame extends GameControl
         // Draw Border
         top_mc.graphics.lineStyle(borSize, borColor, 1);
         top_mc.graphics.drawRect(0, 0, bWidth, bHeight);
-        if (bSplits > 0)
+        if (as3hx.Compat.truthy(bSplits > 0))
         {
             top_mc.graphics.lineStyle(borSize, borColor, 0.75);
-            var spacing : Float = bWidth / bSplits;
+            var spacing                       : Dynamic= bWidth / bSplits;
             for (sX in 0...bSplits)
             {
                 top_mc.graphics.moveTo(spacing * sX, 0);
@@ -64,13 +64,13 @@ class ProgressBarGame extends GameControl
         this.barHeight = height;
     }
     
-    public function update(value : Float = 0, useTween : Bool = true) : Void
+    public function update(value                       : Dynamic= 0, useTween                       : Dynamic= true) : Void
     {
-        if (value < 0)
+        if (as3hx.Compat.truthy(value < 0))
         {
             value = 0;
         }
-        if (value > 1)
+        if (as3hx.Compat.truthy(value > 1))
         {
             value = 1;
         }

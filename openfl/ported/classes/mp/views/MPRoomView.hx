@@ -8,9 +8,9 @@ import openfl.display.DisplayObjectContainer;
 
 class MPRoomView extends MPView
 {
-    private var roomButton : MPMenuRoomButton;
+    public var roomButton                             : Dynamic;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0)
     {
         super(parent, xpos, ypos);
         
@@ -50,37 +50,37 @@ class MPRoomView extends MPView
         onExit();
     }
     
-    public function setRoomButton(btn : MPMenuRoomButton) : Void
+    public function setRoomButton(btn                             : Dynamic) : Void
     {
         this.roomButton = btn;
         updateRoomButton();
     }
     
-    private function updateRoomButton() : Void
+    public function updateRoomButton() : Void
     {
     }
     
-    private function e_roomEdit(e : MPRoomEvent) : Void
+    public function e_roomEdit(e                             : Dynamic) : Void
     {
     }
     
-    private function e_roomUpdate(e : MPRoomEvent) : Void
+    public function e_roomUpdate(e                             : Dynamic) : Void
     {
     }
     
-    private function e_roomMessage(e : MPRoomEvent) : Void
+    public function e_roomMessage(e                             : Dynamic) : Void
     {
     }
     
-    private function e_teamUpdate(e : MPRoomEvent) : Void
+    public function e_teamUpdate(e                             : Dynamic) : Void
     {
     }
     
-    private function e_userLeave(e : MPRoomEvent) : Void
+    public function e_userLeave(e                             : Dynamic) : Void
     {
     }
     
-    private function e_userJoin(e : MPRoomEvent) : Void
+    public function e_userJoin(e                             : Dynamic) : Void
     {
     }
 }

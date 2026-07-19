@@ -11,16 +11,16 @@ import openfl.events.Event;
 
 class MPChatLogRoomInvite extends MPChatLogEntry
 {
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
     
-    private var user : MPUser;
-    private var joinCode : String;
-    private var roomName : String;
+    private var user                             : Dynamic;
+    private var joinCode                             : Dynamic;
+    private var roomName                             : Dynamic;
     
-    private var btn : BoxButton;
+    private var btn                             : Dynamic;
     
-    public function new(user : MPUser, data : Dynamic)
+    public function new(user                             : Dynamic, data                             : Dynamic)
     {
         super();
         this.user = user;
@@ -28,9 +28,9 @@ class MPChatLogRoomInvite extends MPChatLogEntry
         this.joinCode = data.code;
     }
     
-    override public function build(width : Float) : Void
+    override public function build(width                             : Dynamic) : Void
     {
-        if (built)
+        if (as3hx.Compat.truthy(built))
         {
             return;
         }
@@ -51,7 +51,7 @@ class MPChatLogRoomInvite extends MPChatLogEntry
         built = true;
     }
     
-    private function e_songSelect(e : Event) : Void
+    private function e_songSelect(e                             : Dynamic) : Void
     {
         _mp.sendCommand(new MPCRoomJoinCode(joinCode));
     }

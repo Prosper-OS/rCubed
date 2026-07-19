@@ -4,10 +4,10 @@ import classes.mp.MPUser;
 
 class MPCModMuteUser implements IMPCommand
 {
-    public var user : MPUser;
-    public var duration : Float;
+    public var user                             : Dynamic;
+    public var duration                             : Dynamic;
     
-    public function new(user : MPUser, duration : Int)
+    public function new(user                             : Dynamic, duration                             : Dynamic)
     {
         this.user = user;
         this.duration = duration;

@@ -53,70 +53,70 @@ import openfl.utils.Timer;
 
 class WebSocket extends EventDispatcher
 {
-    public var readyState(get, never) : Int;
-    public var bufferedAmount(get, never) : Int;
-    public var uri(get, never) : String;
-    public var protocol(get, never) : String;
-    public var extensions(get, never) : Array<Dynamic>;
-    public var host(get, never) : String;
-    public var port(get, never) : Int;
-    public var resource(get, never) : String;
-    public var secure(get, never) : Bool;
-    public var connected(get, never) : Bool;
-    public var useNullMask(get, set) : Bool;
+    public var readyState(get, never)                          : Dynamic;
+    public var bufferedAmount(get, never)                          : Dynamic;
+    public var uri(get, never)                          : Dynamic;
+    public var protocol(get, never)                          : Dynamic;
+    public var extensions(get, never)                          : Dynamic;
+    public var host(get, never)                          : Dynamic;
+    public var port(get, never)                          : Dynamic;
+    public var resource(get, never)                          : Dynamic;
+    public var secure(get, never)                          : Dynamic;
+    public var connected(get, never)                          : Dynamic;
+    public var useNullMask(get, set)                          : Dynamic;
 
-    private static inline var MODE_UTF8 : Int = 0;
-    private static inline var MODE_BINARY : Int = 0;
+    private static inline var MODE_UTF8                          : Dynamic= 0;
+    private static inline var MODE_BINARY                          : Dynamic= 0;
     
-    private static var MAX_HANDSHAKE_BYTES : Int = 10 * 1024;  // 10KiB  
-    private static var SEND_FRAME_BUFFER : ByteArray = new ByteArray();
+    private static var MAX_HANDSHAKE_BYTES                          : Dynamic= 10 * 1024;  // 10KiB  
+    private static var SEND_FRAME_BUFFER                          : Dynamic= new ByteArray();
     
-    private var _bufferedAmount : Int = 0;
+    private var _bufferedAmount                          : Dynamic= 0;
     
-    private var _readyState : Int;
-    private var _uri : WebSocketURI;
-    private var _protocols : Array<Dynamic>;
-    private var _serverProtocol : String;
-    private var _host : String;
-    private var _port : Int;
-    private var _resource : String;
-    private var _secure : Bool;
-    private var _origin : String;
-    private var _useNullMask : Bool = false;
+    private var _readyState                          : Dynamic;
+    private var _uri                          : Dynamic;
+    private var _protocols                          : Dynamic;
+    private var _serverProtocol                          : Dynamic;
+    private var _host                          : Dynamic;
+    private var _port                          : Dynamic;
+    private var _resource                          : Dynamic;
+    private var _secure                          : Dynamic;
+    private var _origin                          : Dynamic;
+    private var _useNullMask                          : Dynamic= false;
     
-    private var socket : Socket;
-    private var timeout : Int;
+    private var socket                          : Dynamic;
+    private var timeout                          : Dynamic;
     
-    private var fatalError : Bool = false;
+    private var fatalError                          : Dynamic= false;
     
-    private var nonce : ByteArray;
-    private var base64nonce : String;
-    private var serverHandshakeResponse : String;
-    private var serverExtensions : Array<Dynamic>;
-    private var serverSupportsDeflate : Bool;
-    private var currentFrame : WebSocketFrame;
-    private var frameQueue : Array<WebSocketFrame>;
-    private var fragmentationOpcode : Int = 0;
-    private var fragmentationSize : Int = 0;
+    private var nonce                          : Dynamic;
+    private var base64nonce                          : Dynamic;
+    private var serverHandshakeResponse                          : Dynamic;
+    private var serverExtensions                          : Dynamic;
+    private var serverSupportsDeflate                          : Dynamic;
+    private var currentFrame                          : Dynamic;
+    private var frameQueue                          : Dynamic;
+    private var fragmentationOpcode                          : Dynamic= 0;
+    private var fragmentationSize                          : Dynamic= 0;
     
-    private var waitingForServerClose : Bool = false;
-    private var closeTimeout : Int = 5000;
-    private var closeTimer : Timer;
+    private var waitingForServerClose                          : Dynamic= false;
+    private var closeTimeout                          : Dynamic= 5000;
+    private var closeTimer                          : Dynamic;
     
-    private var handshakeBytesReceived : Int;
-    private var handshakeTimer : Timer;
-    private var handshakeTimeout : Int = 10000;
+    private var handshakeBytesReceived                          : Dynamic;
+    private var handshakeTimer                          : Dynamic;
+    private var handshakeTimeout                          : Dynamic= 10000;
     
-    public var config : WebSocketConfig = new WebSocketConfig();
+    public var config                          : Dynamic= new WebSocketConfig();
     
-    public var debug : Bool = false;
+    public var debug                          : Dynamic= false;
     
-    public function new(uri : WebSocketURI, origin : String, protocols : Dynamic = null, timeout : Int = 10000)
+    public function new(uri                          : Dynamic, origin                          : Dynamic, protocols                          : Dynamic= null, timeout                          : Dynamic= 10000)
     {
         super(null);
         _uri = uri;
         
-        if (Std.is(protocols, String))
+        if (as3hx.Compat.truthy(Std.is(protocols, String)))
         {
             _protocols = [protocols];
         }
@@ -124,7 +124,7 @@ class WebSocket extends EventDispatcher
         {
             _protocols = protocols;
         }
-        if (_protocols != null)
+        if (as3hx.Compat.truthy(_protocols != null))
         {
             for (i in 0..._protocols.length)
             {
@@ -172,9 +172,9 @@ class WebSocket extends EventDispatcher
     
     private function validateProtocol() : Void
     {
-        if (_protocols != null)
+        if (as3hx.Compat.truthy(_protocols != null))
         {
-            var separators : Array<Dynamic> = ["(", ")", "<", ">", "@", 
+            var separators                          : Dynamic= ["(", ")", "<", ">", "@", 
             ",", ";", ":", "\\", "\"", 
             "/", "[", "]", "?", "=", 
             "{", "}", " ", String.fromCharCode(9)
@@ -182,12 +182,12 @@ class WebSocket extends EventDispatcher
             
             for (p in 0..._protocols.length)
             {
-                var protocol : String = _protocols[p];
+                var protocol                          : Dynamic= _protocols[p];
                 for (i in 0...protocol.length)
                 {
-                    var charCode : Int = protocol.charCodeAt(i);
-                    var char : String = protocol.charAt(i);
-                    if (charCode < 0x21 || charCode > 0x7E || Lambda.indexOf(separators, char) != -1)
+                    var charCode                          : Dynamic= protocol.charCodeAt(i);
+                    var char                          : Dynamic= protocol.charAt(i);
+                    if (as3hx.Compat.truthy(charCode < 0x21 || charCode > 0x7E || Lambda.indexOf(separators, char) != -1))
                     {
                         throw new WebSocketError("Illegal character '" + String.fromCharCode(char) + "' in subprotocol.");
                     }
@@ -198,28 +198,28 @@ class WebSocket extends EventDispatcher
     
     public function connect() : Void
     {
-        if (_readyState == WebSocketState.OPEN && !socket.connected)
+        if (as3hx.Compat.truthy(_readyState == WebSocketState.OPEN && !socket.connected))
         {
             _readyState = WebSocketState.CLOSED;
         }
         
-        if (_readyState == WebSocketState.INIT || _readyState == WebSocketState.CLOSED)
+        if (as3hx.Compat.truthy(_readyState == WebSocketState.INIT || _readyState == WebSocketState.CLOSED))
         {
             _readyState = WebSocketState.CONNECTING;
             generateNonce();
             handshakeBytesReceived = 0;
             
             socket.connect(_host, _port);
-            if (debug)
+            if (as3hx.Compat.truthy(debug))
             {
                 Logger.info(this, "Connecting to " + _host + " on port " + _port);
             }
         }
     }
     
-    public function addBinaryChainBuildingCertificate(certificate : ByteArray, trusted : Bool) : Void
+    public function addBinaryChainBuildingCertificate(certificate                          : Dynamic, trusted                          : Dynamic) : Void
     {
-        if (!secure)
+        if (as3hx.Compat.truthy(!secure))
         {
             throw new Error("addBinaryChainBuildingCertificate only available for secure websockets");
         }
@@ -230,13 +230,13 @@ class WebSocket extends EventDispatcher
     private function parseUrl() : Void
     {
         _host = _uri.host;
-        var scheme : String = _uri.scheme.toLocaleLowerCase();
-        if (scheme == "wss")
+        var scheme                          : Dynamic= _uri.scheme.toLowerCase();
+        if (as3hx.Compat.truthy(scheme == "wss"))
         {
             _secure = true;
             _port = 443;
         }
-        else if (scheme == "ws")
+        else if (as3hx.Compat.truthy(scheme == "ws"))
         {
             _secure = false;
             _port = 80;
@@ -246,7 +246,7 @@ class WebSocket extends EventDispatcher
             throw new Error("Unsupported scheme: " + scheme);
         }
         
-        if (!Math.isNaN(_uri.port) && _uri.port != 0)
+        if (as3hx.Compat.truthy(!Math.isNaN(_uri.port) && _uri.port != 0))
         {
             _port = _uri.port;
         }
@@ -277,10 +277,10 @@ class WebSocket extends EventDispatcher
     
     private function get_uri() : String
     {
-        var uri : String;
+        var uri                          : Dynamic= null;
         uri = (_secure) ? "wss://" : "ws://";
         uri += _host;
-        if ((_secure && _port != 443) || (!_secure && _port != 80))
+        if (as3hx.Compat.truthy((_secure && _port != 443) || (!_secure && _port != 80)))
         {
             uri += (":" + Std.string(_port));
         }
@@ -327,7 +327,7 @@ class WebSocket extends EventDispatcher
     // such as a self-contained AIR app for mobile where the client can be resonably sure of
     // not intending to screw up proxies by confusing them with HTTP commands in the frame body
     // Probably not a good idea to enable if being used on the web in general cases.
-    private function set_useNullMask(val : Bool) : Bool
+    private function set_useNullMask(val                          : Dynamic) : Bool
     {
         _useNullMask = val;
         return val;
@@ -340,71 +340,71 @@ class WebSocket extends EventDispatcher
     
     private function verifyConnectionForSend() : Void
     {
-        if (_readyState == WebSocketState.CONNECTING)
+        if (as3hx.Compat.truthy(_readyState == WebSocketState.CONNECTING))
         {
             throw new WebSocketError("Invalid State: Cannot send data before connected.");
         }
     }
     
-    public function sendUTF(data : String) : Void
+    public function sendUTF(data                          : Dynamic) : Void
     {
         verifyConnectionForSend();
-        var frame : WebSocketFrame = new WebSocketFrame();
+        var frame                          : Dynamic= new WebSocketFrame();
         frame.opcode = WebSocketOpcode.TEXT_FRAME;
         frame.binaryPayload = new ByteArray();
         frame.binaryPayload.writeMultiByte(data, "utf-8");
         fragmentAndSend(frame);
     }
     
-    public function sendBytes(data : ByteArray) : Void
+    public function sendBytes(data                          : Dynamic) : Void
     {
         verifyConnectionForSend();
-        var frame : WebSocketFrame = new WebSocketFrame();
+        var frame                          : Dynamic= new WebSocketFrame();
         frame.opcode = WebSocketOpcode.BINARY_FRAME;
         frame.binaryPayload = data;
         fragmentAndSend(frame);
     }
     
-    public function ping(payload : ByteArray = null) : Void
+    public function ping(payload                          : Dynamic= null) : Void
     {
         verifyConnectionForSend();
-        var frame : WebSocketFrame = new WebSocketFrame();
+        var frame                          : Dynamic= new WebSocketFrame();
         frame.fin = true;
         frame.opcode = WebSocketOpcode.PING;
-        if (payload != null)
+        if (as3hx.Compat.truthy(payload != null))
         {
             frame.binaryPayload = payload;
         }
         sendFrame(frame);
     }
     
-    private function pong(binaryPayload : ByteArray = null) : Void
+    private function pong(binaryPayload                          : Dynamic= null) : Void
     {
         verifyConnectionForSend();
-        var frame : WebSocketFrame = new WebSocketFrame();
+        var frame                          : Dynamic= new WebSocketFrame();
         frame.fin = true;
         frame.opcode = WebSocketOpcode.PONG;
         frame.binaryPayload = binaryPayload;
         sendFrame(frame);
     }
     
-    private function fragmentAndSend(frame : WebSocketFrame) : Void
+    private function fragmentAndSend(frame                          : Dynamic) : Void
     {
-        if (frame.opcode > 0x07)
+        if (as3hx.Compat.truthy(frame.opcode > 0x07))
         {
             throw new WebSocketError("You cannot fragment control frames.");
         }
         
-        var threshold : Int = config.fragmentationThreshold;
+        var threshold                          : Dynamic= config.fragmentationThreshold;
         
-        if (config.fragmentOutgoingMessages && frame.binaryPayload && frame.binaryPayload.length > threshold)
+        if (as3hx.Compat.truthy(config.fragmentOutgoingMessages && frame.binaryPayload && frame.binaryPayload.length > threshold))
         {
             frame.binaryPayload.position = 0;
-            var length : Int = frame.binaryPayload.length;
-            var numFragments : Int = Math.ceil(length / threshold);
+            var length                          : Dynamic= frame.binaryPayload.length;
+            var numFragments                          : Dynamic= Math.ceil(length / threshold);
             for (i in 1...numFragments + 1)
             {
-                var currentFrame : WebSocketFrame = new WebSocketFrame();
+                var currentFrame                          : Dynamic= new WebSocketFrame();
                 
                 // continuation opcode except for first frame.
                 currentFrame.opcode = ((i == 1)) ? frame.opcode : 0x00;
@@ -413,7 +413,7 @@ class WebSocket extends EventDispatcher
                 currentFrame.fin = (i == numFragments);
                 
                 // length is likely to be shorter on the last fragment
-                var currentLength : Int = ((i == numFragments)) ? length - (threshold * (i - 1)) : threshold;
+                var currentLength                          : Dynamic= ((i == numFragments)) ? length - (threshold * (i - 1)) : threshold;
                 frame.binaryPayload.position = threshold * (i - 1);
                 
                 // Slice the right portion of the original payload
@@ -430,7 +430,7 @@ class WebSocket extends EventDispatcher
         }
     }
     
-    private function sendFrame(frame : WebSocketFrame, force : Bool = false) : Void
+    private function sendFrame(frame                          : Dynamic, force                          : Dynamic= false) : Void
     {
         SEND_FRAME_BUFFER.length = 0;
         frame.mask = true;
@@ -439,9 +439,9 @@ class WebSocket extends EventDispatcher
         sendData(SEND_FRAME_BUFFER);
     }
     
-    private function sendData(data : ByteArray, fullFlush : Bool = false) : Void
+    private function sendData(data                          : Dynamic, fullFlush                          : Dynamic= false) : Void
     {
-        if (!connected)
+        if (as3hx.Compat.truthy(!connected))
         {
             return;
         }
@@ -451,9 +451,9 @@ class WebSocket extends EventDispatcher
         data.clear();
     }
     
-    public function close(waitForServer : Bool = true) : Void
+    public function close(waitForServer                          : Dynamic= true) : Void
     {
-        if (!socket.connected && _readyState == WebSocketState.CONNECTING)
+        if (as3hx.Compat.truthy(!socket.connected && _readyState == WebSocketState.CONNECTING))
         {
             _readyState = WebSocketState.CLOSED;
             try
@@ -467,19 +467,19 @@ class WebSocket extends EventDispatcher
                 
             }
         }
-        if (socket.connected)
+        if (as3hx.Compat.truthy(socket.connected))
         {
-            var frame : WebSocketFrame = new WebSocketFrame();
+            var frame                          : Dynamic= new WebSocketFrame();
             frame.rsv1 = frame.rsv2 = frame.rsv3 = frame.mask = false;
             frame.fin = true;
             frame.opcode = WebSocketOpcode.CONNECTION_CLOSE;
             frame.closeStatus = WebSocketCloseStatus.NORMAL;
-            var buffer : ByteArray = new ByteArray();
+            var buffer                          : Dynamic= new ByteArray();
             frame.mask = true;
             frame.send(buffer);
             sendData(buffer, true);
             
-            if (waitForServer)
+            if (as3hx.Compat.truthy(waitForServer))
             {
                 waitingForServerClose = true;
                 closeTimer.stop();
@@ -490,29 +490,29 @@ class WebSocket extends EventDispatcher
         }
     }
     
-    private function handleCloseTimer(event : TimerEvent) : Void
+    private function handleCloseTimer(event                          : Dynamic) : Void
     {
-        if (waitingForServerClose) {
+        if (as3hx.Compat.truthy(waitingForServerClose)) {
 // connection, so we'll just close it.
-            if (socket.connected)
+            if (as3hx.Compat.truthy(socket.connected))
             {
                 socket.close();
             }
         }
     }
     
-    private function handleSocketConnect(event : Event) : Void
+    private function handleSocketConnect(event                          : Dynamic) : Void
     {
-        if (debug)
+        if (as3hx.Compat.truthy(debug))
         {
             Logger.info(this, "Socket Connected");
         }
         sendHandshake();
     }
     
-    private function handleSocketClose(event : Event) : Void
+    private function handleSocketClose(event                          : Dynamic) : Void
     {
-        if (debug)
+        if (as3hx.Compat.truthy(debug))
         {
             Logger.info(this, "Socket Disconnected");
         }
@@ -520,9 +520,9 @@ class WebSocket extends EventDispatcher
         dispatchClosedEvent();
     }
     
-    private function handleSocketData(event : ProgressEvent = null) : Void
+    private function handleSocketData(event                          : Dynamic= null) : Void
     {
-        if (_readyState == WebSocketState.CONNECTING)
+        if (as3hx.Compat.truthy(_readyState == WebSocketState.CONNECTING))
         {
             readServerHandshake();
             return;
@@ -530,21 +530,21 @@ class WebSocket extends EventDispatcher
         
         // addData returns true if the frame is complete, and false
         // if more data is needed.
-        while (socket.connected && currentFrame.addData(socket, fragmentationOpcode, config) && !fatalError)
+        while (as3hx.Compat.truthy(socket.connected && currentFrame.addData(socket, fragmentationOpcode, config) && !fatalError))
         {
-            if (currentFrame.protocolError)
+            if (as3hx.Compat.truthy(currentFrame.protocolError))
             {
                 drop(WebSocketCloseStatus.PROTOCOL_ERROR, currentFrame.dropReason);
                 return;
             }
-            else if (currentFrame.frameTooLarge)
+            else if (as3hx.Compat.truthy(currentFrame.frameTooLarge))
             {
                 drop(WebSocketCloseStatus.MESSAGE_TOO_LARGE, currentFrame.dropReason);
                 return;
             }
-            if (!config.assembleFragments)
+            if (as3hx.Compat.truthy(!config.assembleFragments))
             {
-                var frameEvent : WebSocketEvent = new WebSocketEvent(WebSocketEvent.FRAME);
+                var frameEvent                          : Dynamic= new WebSocketEvent(WebSocketEvent.FRAME);
                 frameEvent.frame = currentFrame;
                 dispatchEvent(frameEvent);
             }
@@ -553,7 +553,7 @@ class WebSocket extends EventDispatcher
         }
     }
     
-    private function inflate(data : ByteArray) : Void
+    private function inflate(data                          : Dynamic) : Void
     {
         data.position = data.length;
         data.writeUnsignedInt(65535);  // 00 00 ff ff  
@@ -561,17 +561,17 @@ class WebSocket extends EventDispatcher
         data.inflate();
     }
     
-    private function processFrame(frame : WebSocketFrame) : Void
+    private function processFrame(frame                          : Dynamic) : Void
     {
-        var event : WebSocketEvent;
-        var i : Int;
-        var currentFrame : WebSocketFrame;
+        var event                          : Dynamic= null;
+        var i                          : Dynamic= null;
+        var currentFrame                          : Dynamic= null;
         
-        if (frame.rsv1 && !serverSupportsDeflate)
+        if (as3hx.Compat.truthy(frame.rsv1 && !serverSupportsDeflate))
         {
             drop(WebSocketCloseStatus.PROTOCOL_ERROR, "Received frame with rsv1 set without permessage-deflate negotiated.");
         }
-        if (frame.rsv2 || frame.rsv3)
+        if (as3hx.Compat.truthy(frame.rsv2 || frame.rsv3))
         {
             drop(WebSocketCloseStatus.PROTOCOL_ERROR, "Received frame with reserved bit set without a negotiated extension.");
             return;
@@ -582,23 +582,23 @@ class WebSocket extends EventDispatcher
         switch (_sw0_)
         {
             case WebSocketOpcode.BINARY_FRAME:
-                if (config.assembleFragments)
+                if (as3hx.Compat.truthy(config.assembleFragments))
                 {
-                    if (frameQueue.length == 0)
+                    if (as3hx.Compat.truthy(frameQueue.length == 0))
                     {
-                        if (frame.fin)
+                        if (as3hx.Compat.truthy(frame.fin))
                         {
                             event = new WebSocketEvent(WebSocketEvent.MESSAGE);
                             event.message = new WebSocketMessage();
                             event.message.type = WebSocketMessage.TYPE_BINARY;
-                            if (frame.rsv1)
+                            if (as3hx.Compat.truthy(frame.rsv1))
                             {
                                 inflate(frame.binaryPayload);
                             }
                             event.message.binaryData = frame.binaryPayload;
                             dispatchEvent(event);
                         }
-                        else if (frameQueue.length == 0) {
+                        else if (as3hx.Compat.truthy(frameQueue.length == 0)) {
 frameQueue.push(frame);
                             fragmentationOpcode = frame.opcode;
                         }
@@ -610,16 +610,16 @@ frameQueue.push(frame);
                     }
                 }
             case WebSocketOpcode.TEXT_FRAME:
-                if (config.assembleFragments)
+                if (as3hx.Compat.truthy(config.assembleFragments))
                 {
-                    if (frameQueue.length == 0)
+                    if (as3hx.Compat.truthy(frameQueue.length == 0))
                     {
-                        if (frame.fin)
+                        if (as3hx.Compat.truthy(frame.fin))
                         {
                             event = new WebSocketEvent(WebSocketEvent.MESSAGE);
                             event.message = new WebSocketMessage();
                             event.message.type = WebSocketMessage.TYPE_UTF8;
-                            if (frame.rsv1)
+                            if (as3hx.Compat.truthy(frame.rsv1))
                             {
                                 inflate(frame.binaryPayload);
                             }
@@ -641,9 +641,9 @@ frameQueue.push(frame);
                     }
                 }
             case WebSocketOpcode.CONTINUATION:
-                if (config.assembleFragments)
+                if (as3hx.Compat.truthy(config.assembleFragments))
                 {
-                    if (fragmentationOpcode == WebSocketOpcode.CONTINUATION && frame.opcode == WebSocketOpcode.CONTINUATION)
+                    if (as3hx.Compat.truthy(fragmentationOpcode == WebSocketOpcode.CONTINUATION && frame.opcode == WebSocketOpcode.CONTINUATION))
                     {
                         drop(WebSocketCloseStatus.PROTOCOL_ERROR, "Unexpected continuation frame.");
                         return;
@@ -651,7 +651,7 @@ frameQueue.push(frame);
                     
                     fragmentationSize += frame.length;
                     
-                    if (fragmentationSize > config.maxMessageSize)
+                    if (as3hx.Compat.truthy(fragmentationSize > config.maxMessageSize))
                     {
                         drop(WebSocketCloseStatus.MESSAGE_TOO_LARGE, "Maximum message size exceeded.");
                         return;
@@ -659,19 +659,19 @@ frameQueue.push(frame);
                     
                     frameQueue.push(frame);
                     
-                    if (frame.fin) {
+                    if (as3hx.Compat.truthy(frame.fin)) {
 // message now.  We also have to decode the utf-8 data
                         // for text frames after combining all the fragments.
                         event = new WebSocketEvent(WebSocketEvent.MESSAGE);
                         event.message = new WebSocketMessage();
-                        var messageOpcode : Int = frameQueue[0].opcode;
-                        var binaryData : ByteArray = new ByteArray();
-                        var totalLength : Int = 0;
+                        var messageOpcode                          : Dynamic= frameQueue[0].opcode;
+                        var binaryData                          : Dynamic= new ByteArray();
+                        var totalLength                          : Dynamic= 0;
                         for (i in 0...frameQueue.length)
                         {
                             totalLength += frameQueue[i].length;
                         }
-                        if (totalLength > config.maxMessageSize)
+                        if (as3hx.Compat.truthy(totalLength > config.maxMessageSize))
                         {
                             drop(WebSocketCloseStatus.MESSAGE_TOO_LARGE, "Message size of " + totalLength + " bytes exceeds maximum accepted message size of " + config.maxMessageSize + " bytes.");
                             return;
@@ -684,7 +684,7 @@ frameQueue.push(frame);
                         }
                         
                         // inflate if rsv1 is set in the first frame
-                        if (frameQueue[0].rsv1)
+                        if (as3hx.Compat.truthy(frameQueue[0].rsv1))
                         {
                             inflate(binaryData);
                         }
@@ -709,31 +709,31 @@ frameQueue.push(frame);
                     }
                 }
             case WebSocketOpcode.PING:
-                if (debug)
+                if (as3hx.Compat.truthy(debug))
                 {
                     Logger.info(this, "Received Ping");
                 }
-                var pingEvent : WebSocketEvent = new WebSocketEvent(WebSocketEvent.PING, false, true);
+                var pingEvent                          : Dynamic= new WebSocketEvent(WebSocketEvent.PING, false, true);
                 pingEvent.frame = frame;
-                if (dispatchEvent(pingEvent))
+                if (as3hx.Compat.truthy(dispatchEvent(pingEvent)))
                 {
                     pong(frame.binaryPayload);
                 }
             case WebSocketOpcode.PONG:
-                if (debug)
+                if (as3hx.Compat.truthy(debug))
                 {
                     Logger.info(this, "Received Pong");
                 }
-                var pongEvent : WebSocketEvent = new WebSocketEvent(WebSocketEvent.PONG);
+                var pongEvent                          : Dynamic= new WebSocketEvent(WebSocketEvent.PONG);
                 pongEvent.frame = frame;
                 dispatchEvent(pongEvent);
             case WebSocketOpcode.CONNECTION_CLOSE:
-                if (debug)
+                if (as3hx.Compat.truthy(debug))
                 {
                     Logger.info(this, "Received close frame");
                 }
-                if (waitingForServerClose) {
-if (debug)
+                if (as3hx.Compat.truthy(waitingForServerClose)) {
+if (as3hx.Compat.truthy(debug))
                     {
                         Logger.info(this, "Got close confirmation from server.");
                     }
@@ -743,7 +743,7 @@ if (debug)
                 }
                 else
                 {
-                    if (debug)
+                    if (as3hx.Compat.truthy(debug))
                     {
                         Logger.info(this, "Sending close response to server.");
                     }
@@ -751,7 +751,7 @@ if (debug)
                     socket.close();
                 }
             default:
-                if (debug)
+                if (as3hx.Compat.truthy(debug))
                 {
                     Logger.info(this, "Unrecognized Opcode: 0x" + Std.string(frame.opcode));
                 }
@@ -759,14 +759,14 @@ if (debug)
         }
     }
     
-    private function handleSocketIOError(event : IOErrorEvent) : Void
+    private function handleSocketIOError(event                          : Dynamic) : Void
     {
         Logger.error(this, "handleSocketIOError: " + Logger.event_error(event));
         dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, "IO Error", event.errorID));
         dispatchClosedEvent();
     }
     
-    private function handleSocketSecurityError(event : SecurityErrorEvent) : Void
+    private function handleSocketSecurityError(event                          : Dynamic) : Void
     {
         Logger.error(this, "handleSocketSecurityError: " + Logger.event_error(event));
         dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, "Security Error", event.errorID));
@@ -777,26 +777,26 @@ if (debug)
     {
         serverHandshakeResponse = "";
         
-        var hostValue : String = host;
-        if ((_secure && _port != 443) || (!_secure && _port != 80))
+        var hostValue                          : Dynamic= host;
+        if (as3hx.Compat.truthy((_secure && _port != 443) || (!_secure && _port != 80)))
         {
             hostValue += (":" + Std.string(_port));
         }
         
-        var text : String = "";
+        var text                          : Dynamic= "";
         text += "GET " + resource + " HTTP/1.1\r\n";
         text += "Host: " + hostValue + "\r\n";
         text += "Upgrade: websocket\r\n";
         text += "Connection: Upgrade\r\n";
         text += "Sec-WebSocket-Key: " + base64nonce + "\r\n";
-        if (_origin != null)
+        if (as3hx.Compat.truthy(_origin != null))
         {
             text += "Origin: " + _origin + "\r\n";
         }
         text += "Sec-WebSocket-Version: 13\r\n";
-        if (_protocols != null)
+        if (as3hx.Compat.truthy(_protocols != null))
         {
-            var protosList : String = _protocols.join(", ");
+            var protosList                          : Dynamic= _protocols.join(", ");
             text += "Sec-WebSocket-Protocol: " + protosList + "\r\n";
         }
         
@@ -808,7 +808,7 @@ if (debug)
         // TODO: Handle Extensions
         text += "\r\n";
         
-        if (debug)
+        if (as3hx.Compat.truthy(debug))
         {
             Logger.info(this, text);
         }
@@ -821,14 +821,14 @@ if (debug)
         handshakeTimer.start();
     }
     
-    private function failHandshake(message : String = "Unable to complete websocket handshake.") : Void
+    private function failHandshake(message                          : Dynamic= "Unable to complete websocket handshake.") : Void
     {
-        if (debug)
+        if (as3hx.Compat.truthy(debug))
         {
             Logger.error(this, message);
         }
         _readyState = WebSocketState.CLOSED;
-        if (socket.connected)
+        if (as3hx.Compat.truthy(socket.connected))
         {
             socket.close();
         }
@@ -836,39 +836,39 @@ if (debug)
         handshakeTimer.stop();
         handshakeTimer.reset();
         
-        var errorEvent : WebSocketErrorEvent = new WebSocketErrorEvent(WebSocketErrorEvent.CONNECTION_FAIL);
+        var errorEvent                          : Dynamic= new WebSocketErrorEvent(WebSocketErrorEvent.CONNECTION_FAIL);
         errorEvent.text = message;
         dispatchEvent(errorEvent);
         
-        var event : WebSocketEvent = new WebSocketEvent(WebSocketEvent.CLOSED);
+        var event                          : Dynamic= new WebSocketEvent(WebSocketEvent.CLOSED);
         dispatchEvent(event);
     }
     
-    private function failConnection(message : String) : Void
+    private function failConnection(message                          : Dynamic) : Void
     {
         _readyState = WebSocketState.CLOSED;
-        if (socket.connected)
+        if (as3hx.Compat.truthy(socket.connected))
         {
             socket.close();
         }
         
-        var errorEvent : WebSocketErrorEvent = new WebSocketErrorEvent(WebSocketErrorEvent.CONNECTION_FAIL);
+        var errorEvent                          : Dynamic= new WebSocketErrorEvent(WebSocketErrorEvent.CONNECTION_FAIL);
         errorEvent.text = message;
         dispatchEvent(errorEvent);
         
-        var event : WebSocketEvent = new WebSocketEvent(WebSocketEvent.CLOSED);
+        var event                          : Dynamic= new WebSocketEvent(WebSocketEvent.CLOSED);
         dispatchEvent(event);
     }
     
-    private function drop(closeReason : Int = WebSocketCloseStatus.PROTOCOL_ERROR, reasonText : String = null) : Void
+    private function drop(closeReason                          : Dynamic= WebSocketCloseStatus.PROTOCOL_ERROR, reasonText                          : Dynamic= null) : Void
     {
-        if (!connected)
+        if (as3hx.Compat.truthy(!connected))
         {
             return;
         }
         fatalError = true;
-        var logText : String = "WebSocket: Dropping Connection. Code: " + Std.string(closeReason);
-        if (reasonText != null)
+        var logText                          : Dynamic= "WebSocket: Dropping Connection. Code: " + Std.string(closeReason);
+        if (as3hx.Compat.truthy(reasonText != null))
         {
             logText += (" - " + reasonText);
         }
@@ -876,9 +876,9 @@ if (debug)
         
         frameQueue = new Array<WebSocketFrame>();
         fragmentationSize = 0;
-        if (closeReason != WebSocketCloseStatus.NORMAL)
+        if (as3hx.Compat.truthy(closeReason != WebSocketCloseStatus.NORMAL))
         {
-            var errorEvent : WebSocketErrorEvent = new WebSocketErrorEvent(WebSocketErrorEvent.ABNORMAL_CLOSE);
+            var errorEvent                          : Dynamic= new WebSocketErrorEvent(WebSocketErrorEvent.ABNORMAL_CLOSE);
             errorEvent.text = "Close reason: " + closeReason;
             dispatchEvent(errorEvent);
         }
@@ -887,13 +887,13 @@ if (debug)
         socket.close();
     }
     
-    private function sendCloseFrame(reasonCode : Int = WebSocketCloseStatus.NORMAL, reasonText : String = null, force : Bool = false) : Void
+    private function sendCloseFrame(reasonCode                          : Dynamic= WebSocketCloseStatus.NORMAL, reasonText                          : Dynamic= null, force                          : Dynamic= false) : Void
     {
-        var frame : WebSocketFrame = new WebSocketFrame();
+        var frame                          : Dynamic= new WebSocketFrame();
         frame.fin = true;
         frame.opcode = WebSocketOpcode.CONNECTION_CLOSE;
         frame.closeStatus = reasonCode;
-        if (reasonText != null)
+        if (as3hx.Compat.truthy(reasonText != null))
         {
             frame.binaryPayload = new ByteArray();
             frame.binaryPayload.writeUTFBytes(reasonText);
@@ -903,16 +903,16 @@ if (debug)
     
     private function readServerHandshake() : Void
     {
-        var upgradeHeader : Bool = false;
-        var connectionHeader : Bool = false;
-        var serverProtocolHeaderMatch : Bool = false;
-        var keyValidated : Bool = false;
-        var headersTerminatorIndex : Int = -1;
+        var upgradeHeader                          : Dynamic= false;
+        var connectionHeader                          : Dynamic= false;
+        var serverProtocolHeaderMatch                          : Dynamic= false;
+        var keyValidated                          : Dynamic= false;
+        var headersTerminatorIndex                          : Dynamic= -1;
         
         // Load in HTTP Header lines until we encounter a double-newline.
-        while (headersTerminatorIndex == -1 && readHandshakeLine())
+        while (as3hx.Compat.truthy(headersTerminatorIndex == -1 && readHandshakeLine()))
         {
-            if (handshakeBytesReceived > MAX_HANDSHAKE_BYTES)
+            if (as3hx.Compat.truthy(handshakeBytesReceived > MAX_HANDSHAKE_BYTES))
             {
                 failHandshake("Received more than " + MAX_HANDSHAKE_BYTES + " bytes during handshake.");
                 return;
@@ -920,12 +920,12 @@ if (debug)
             
             headersTerminatorIndex = serverHandshakeResponse.search(new as3hx.Compat.Regex('\\r?\\n\\r?\\n', ""));
         }
-        if (headersTerminatorIndex == -1)
+        if (as3hx.Compat.truthy(headersTerminatorIndex == -1))
         {
             return;
         }
         
-        if (debug)
+        if (as3hx.Compat.truthy(debug))
         {
             Logger.info(this, "Server Response Headers:\n" + serverHandshakeResponse);
         }
@@ -933,26 +933,26 @@ if (debug)
         // Slice off the trailing \r\n\r\n from the handshake data
         serverHandshakeResponse = serverHandshakeResponse.substring(0, headersTerminatorIndex);
         
-        var lines : Array<Dynamic> = serverHandshakeResponse.split(new as3hx.Compat.Regex('\\r?\\n', ""));
+        var lines                          : Dynamic= serverHandshakeResponse.split(new as3hx.Compat.Regex('\\r?\\n', ""));
         
         // Validate status line
-        var responseLine : String = lines.shift();
-        var responseLineMatch : Array<Dynamic> = responseLine.match(new as3hx.Compat.Regex('^(HTTP\\/\\d\\.\\d) (\\d{3}) ?(.*)$', "i"));
-        if (responseLineMatch.length == 0)
+        var responseLine                          : Dynamic= lines.shift();
+        var responseLineMatch                          : Dynamic= responseLine.match(new as3hx.Compat.Regex('^(HTTP\\/\\d\\.\\d) (\\d{3}) ?(.*)$', "i"));
+        if (as3hx.Compat.truthy(responseLineMatch.length == 0))
         {
             failHandshake("Unable to find correctly-formed HTTP status line.");
             return;
         }
-        var httpVersion : String = responseLineMatch[1];
-        var statusCode : Int = as3hx.Compat.parseInt(responseLineMatch[2]);
-        var statusDescription : String = responseLineMatch[3];
-        if (debug)
+        var httpVersion                          : Dynamic= responseLineMatch[1];
+        var statusCode                          : Dynamic= as3hx.Compat.parseInt(responseLineMatch[2]);
+        var statusDescription                          : Dynamic= responseLineMatch[3];
+        if (as3hx.Compat.truthy(debug))
         {
             Logger.info(this, "HTTP Status Received: " + statusCode + " " + statusDescription);
         }
         
         // Verify correct status code received
-        if (statusCode != 101)
+        if (as3hx.Compat.truthy(statusCode != 101))
         {
             failHandshake("An HTTP response code other than 101 was received.  Actual Response Code: " + statusCode + " " + statusDescription);
             return;
@@ -962,46 +962,46 @@ if (debug)
         serverExtensions = [];
         try
         {
-            while (lines.length > 0)
+            while (as3hx.Compat.truthy(lines.length > 0))
             {
                 responseLine = lines.shift();
-                var header : Dynamic = parseHTTPHeader(responseLine);
-                var lcName : String = header.name.toLocaleLowerCase();
-                var lcValue : String = header.value.toLocaleLowerCase();
-                if (lcName == "upgrade" && lcValue == "websocket")
+                var header                          : Dynamic= parseHTTPHeader(responseLine);
+                var lcName                          : Dynamic= header.name.toLowerCase();
+                var lcValue                          : Dynamic= header.value.toLowerCase();
+                if (as3hx.Compat.truthy(lcName == "upgrade" && lcValue == "websocket"))
                 {
                     upgradeHeader = true;
                 }
-                else if (lcName == "connection" && lcValue == "upgrade")
+                else if (as3hx.Compat.truthy(lcName == "connection" && lcValue == "upgrade"))
                 {
                     connectionHeader = true;
                 }
-                else if (lcName == "sec-websocket-extensions" && header.value)
+                else if (as3hx.Compat.truthy(lcName == "sec-websocket-extensions" && header.value))
                 {
-                    var extensionsThisLine : Array<Dynamic> = header.value.split(",");
+                    var extensionsThisLine                          : Dynamic= header.value.split(",");
                     serverExtensions = serverExtensions.concat(extensionsThisLine);
                 }
-                else if (lcName == "sec-websocket-accept")
+                else if (as3hx.Compat.truthy(lcName == "sec-websocket-accept"))
                 {
-                    var byteArray : ByteArray = new ByteArray();
+                    var byteArray                          : Dynamic= new ByteArray();
                     byteArray.writeUTFBytes(base64nonce + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
-                    var expectedKey : String = Base64.encode(SHA1.digest(byteArray));
-                    if (debug)
+                    var expectedKey                          : Dynamic= Base64.encode(SHA1.digest(byteArray));
+                    if (as3hx.Compat.truthy(debug))
                     {
                         Logger.info(this, "Expected Sec-WebSocket-Accept value: " + expectedKey);
                     }
-                    if (header.value == expectedKey)
+                    if (as3hx.Compat.truthy(header.value == expectedKey))
                     {
                         keyValidated = true;
                     }
                 }
-                else if (lcName == "sec-websocket-protocol")
+                else if (as3hx.Compat.truthy(lcName == "sec-websocket-protocol"))
                 {
-                    if (_protocols != null)
+                    if (as3hx.Compat.truthy(_protocols != null))
                     {
-                        for (protocol in _protocols)
+                        for (protocol in as3hx.Compat.iter(_protocols))
                         {
-                            if (protocol == header.value)
+                            if (as3hx.Compat.truthy(protocol == header.value))
                             {
                                 _serverProtocol = protocol;
                             }
@@ -1016,37 +1016,37 @@ if (debug)
             return;
         }
         
-        if (!upgradeHeader)
+        if (as3hx.Compat.truthy(!upgradeHeader))
         {
             failHandshake("The server response did not include a valid Upgrade: websocket header.");
             return;
         }
-        if (!connectionHeader)
+        if (as3hx.Compat.truthy(!connectionHeader))
         {
             failHandshake("The server response did not include a valid Connection: upgrade header.");
             return;
         }
-        if (!keyValidated)
+        if (as3hx.Compat.truthy(!keyValidated))
         {
             failHandshake("Unable to validate server response for Sec-Websocket-Accept header.");
             return;
         }
         
-        if (_protocols != null && _serverProtocol == null)
+        if (as3hx.Compat.truthy(_protocols != null && _serverProtocol == null))
         {
             failHandshake("The server can not respond in any of our requested protocols");
             return;
         }
         
-        if (debug)
+        if (as3hx.Compat.truthy(debug))
         {
             Logger.info(this, "Server Extensions: " + serverExtensions.join(" | "));
         }
         
         serverSupportsDeflate = false;
-        for (ext in serverExtensions)
+        for (ext in as3hx.Compat.iter(serverExtensions))
         {
-            if (ext.indexOf("permessage-deflate") != -1)
+            if (as3hx.Compat.truthy(ext.indexOf("permessage-deflate") != -1))
             {
                 serverSupportsDeflate = true;
             }
@@ -1070,14 +1070,14 @@ if (debug)
         return;
     }
     
-    private function handleHandshakeTimer(event : TimerEvent) : Void
+    private function handleHandshakeTimer(event                          : Dynamic) : Void
     {
         failHandshake("Timed out waiting for server response.");
     }
     
-    private function parseHTTPHeader(line : String) : Dynamic
+    private function parseHTTPHeader(line                          : Dynamic) : Dynamic
     {
-        var header : Array<Dynamic> = line.split(new as3hx.Compat.Regex('\\: +', ""));
+        var header                          : Dynamic= line.split(new as3hx.Compat.Regex('\\: +', ""));
         return (header.length == 2) ? {
             name : header[0],
             value : header[1]
@@ -1087,13 +1087,13 @@ if (debug)
     // Return true if the header is completely read
     private function readHandshakeLine() : Bool
     {
-        var char : String;
-        while (socket.bytesAvailable)
+        var char                          : Dynamic= null;
+        while (as3hx.Compat.truthy(socket.bytesAvailable))
         {
             char = socket.readMultiByte(1, "us-ascii");
             handshakeBytesReceived++;
             serverHandshakeResponse += char;
-            if (char == "\n")
+            if (as3hx.Compat.truthy(char == "\n"))
             {
                 return true;
             }
@@ -1103,14 +1103,14 @@ if (debug)
     
     private function dispatchClosedEvent() : Void
     {
-        if (handshakeTimer.running)
+        if (as3hx.Compat.truthy(handshakeTimer.running))
         {
             handshakeTimer.stop();
         }
-        if (_readyState != WebSocketState.CLOSED)
+        if (as3hx.Compat.truthy(_readyState != WebSocketState.CLOSED))
         {
             _readyState = WebSocketState.CLOSED;
-            var event : WebSocketEvent = new WebSocketEvent(WebSocketEvent.CLOSED);
+            var event                          : Dynamic= new WebSocketEvent(WebSocketEvent.CLOSED);
             dispatchEvent(event);
         }
     }

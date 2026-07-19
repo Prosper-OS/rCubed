@@ -10,26 +10,26 @@ import openfl.geom.Point;
 
 class ColorField extends Sprite
 {
-    public var color(get, set) : Int;
+    public var color(get, set)                             : Dynamic;
 
     
-    public var key_name : String;
+    public var key_name                             : Dynamic;
     
-    private var _color : Int = 0x000000;
-    private var _width : Float;
-    private var _height : Float;
+    private var _color                             : Dynamic= 0x000000;
+    private var _width                             : Dynamic;
+    private var _height                             : Dynamic;
     
-    private var _picker : Sprite;
-    private var _bmp : Bitmap;
-    private var _pickerColor : Int = 0x000000;
-    private var _pickerColorExample : Sprite;
+    private var _picker                             : Dynamic;
+    private var _bmp                             : Dynamic;
+    private var _pickerColor                             : Dynamic= 0x000000;
+    private var _pickerColorExample                             : Dynamic;
     
-    private var _listener : Dynamic = null;
+    private var _listener                             : Dynamic= null;
     
-    public function new(parent : DisplayObjectContainer = null, xpos : Float = 0, ypos : Float = 0, defaultColor : Int = 0x000000, dWidth : Float = 75, dHeight : Float = 20, listener : Dynamic = null)
+    public function new(parent                             : Dynamic= null, xpos                             : Dynamic= 0, ypos                             : Dynamic= 0, defaultColor                             : Dynamic= 0x000000, dWidth                             : Dynamic= 75, dHeight                             : Dynamic= 20, listener                             : Dynamic= null)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -48,21 +48,21 @@ class ColorField extends Sprite
         
         draw();
         
-        if (listener != null)
+        if (as3hx.Compat.truthy(listener != null))
         {
             this._listener = listener;
             this.addEventListener(Event.CHANGE, listener);
         }
     }
     
-    private function e_onClick(e : MouseEvent) : Void
+    private function e_onClick(e                             : Dynamic) : Void
     {
-        if (!this.parent || !this.parent.contains(this))
+        if (as3hx.Compat.truthy(this.parent == null || !this.parent.contains(this)))
         {
             return;
         }
         
-        if (_picker == null)
+        if (as3hx.Compat.truthy(_picker == null))
         {
             _picker = new Sprite();
             _bmp = new Bitmap(new ColorPickerBMP());
@@ -81,7 +81,7 @@ class ColorField extends Sprite
             _picker.graphics.endFill();
         }
         
-        if (this.parent.contains(_picker))
+        if (as3hx.Compat.truthy(this.parent.contains(_picker)))
         {
             removePicker();
         }
@@ -90,7 +90,7 @@ class ColorField extends Sprite
             _picker.addEventListener(MouseEvent.MOUSE_MOVE, e_pickerMove);
             _picker.addEventListener(MouseEvent.MOUSE_OUT, e_pickerOut);
             stage.addEventListener(MouseEvent.CLICK, e_pickerClick, true, 100);
-            var stagePoint : Point = this.localToGlobal(new Point(this.width + 5, 0));
+            var stagePoint                             : Dynamic= this.localToGlobal(new Point(this.width + 5, 0));
             stagePoint.x = Math.max(0, Math.min(stagePoint.x, Main.GAME_WIDTH - _picker.width - 5));
             stagePoint.y = Math.max(0, Math.min(stagePoint.y, Main.GAME_HEIGHT - _picker.height - 5));
             _picker.x = stagePoint.x;
@@ -115,7 +115,7 @@ class ColorField extends Sprite
         return _color;
     }
     
-    private function set_color(newColor : Int) : Int
+    private function set_color(newColor                             : Dynamic) : Int
     {
         this._color = this._pickerColor = newColor;
         draw();
@@ -124,7 +124,7 @@ class ColorField extends Sprite
     
     private function removePicker() : Void
     {
-        if (!stage || !stage.contains(_picker))
+        if (as3hx.Compat.truthy(stage == null || !stage.contains(_picker)))
         {
             return;
         }
@@ -137,7 +137,7 @@ class ColorField extends Sprite
     
     private function updateExampleColor() : Void
     {
-        if (_pickerColorExample == null || _bmp == null)
+        if (as3hx.Compat.truthy(_pickerColorExample == null || _bmp == null))
         {
             return;
         }
@@ -152,25 +152,25 @@ class ColorField extends Sprite
         _pickerColorExample.graphics.endFill();
     }
     
-    private function e_pickerOut(e : MouseEvent) : Void
+    private function e_pickerOut(e                             : Dynamic) : Void
     {
         _pickerColor = color;
         updateExampleColor();
     }
     
-    private function e_pickerMove(e : MouseEvent) : Void
+    private function e_pickerMove(e                             : Dynamic) : Void
     {
-        var newColor : Int = _bmp.bitmapData.getPixel(_bmp.mouseX, _bmp.mouseY);
-        var newColorS : String = Std.string(newColor);
+        var newColor                             : Dynamic= _bmp.bitmapData.getPixel(_bmp.mouseX, _bmp.mouseY);
+        var newColorS                             : Dynamic= Std.string(newColor);
         _pickerColor = newColor;
         updateExampleColor();
     }
     
-    private function e_pickerClick(e : MouseEvent) : Void
+    private function e_pickerClick(e                             : Dynamic) : Void
     {
         e.preventDefault();
         removePicker();
-        if (e.target == _picker)
+        if (as3hx.Compat.truthy(e.target == _picker))
         {
             this.color = this._pickerColor;
             this.dispatchEvent(new Event(Event.CHANGE));

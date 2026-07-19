@@ -9,58 +9,58 @@ import com.flashfla.utils.ObjectUtil;
 
 class GameOptions
 {
-    public var isolation(get, set) : Bool;
-    public var chartOffset(get, never) : Float;
+    public var isolation(get, set)                         : Dynamic;
+    public var chartOffset(get, never)                         : Dynamic;
 
-    public var frameRate : Int = 60;
-    public var songRate : Float = 1;
+    public var frameRate                         : Dynamic= 60;
+    public var songRate                         : Dynamic= 1;
     
-    public var scrollDirection : String = "up";
-    public var judgeSpeed : Float = 1;
-    public var scrollSpeed : Float = 1.5;
-    public var receptorSpacing : Int = 80;
-    public var receptorSpeed : Float = 1;
-    public var noteScale : Float = 1;
-    public var judgeScale : Float = 1;
-    public var screencutPosition : Float = 0.5;
-    public var mods : Array<Dynamic> = [];
-    public var noteskin : Int = 1;
-    public var accuracyBarFadeFactor : Float = 0.95;
+    public var scrollDirection                         : Dynamic= "up";
+    public var judgeSpeed                         : Dynamic= 1;
+    public var scrollSpeed                         : Dynamic= 1.5;
+    public var receptorSpacing                         : Dynamic= 80;
+    public var receptorSpeed                         : Dynamic= 1;
+    public var noteScale                         : Dynamic= 1;
+    public var judgeScale                         : Dynamic= 1;
+    public var screencutPosition                         : Dynamic= 0.5;
+    public var mods                         : Dynamic= [];
+    public var noteskin                         : Dynamic= 1;
+    public var accuracyBarFadeFactor                         : Dynamic= 0.95;
     
-    public var offsetGlobal : Float = 0;
-    public var visualDelay : Float = 0;
-    public var offsetJudge : Float = 0;
-    public var autoJudgeOffset : Bool = false;
+    public var offsetGlobal                         : Dynamic= 0;
+    public var visualDelay                         : Dynamic= 0;
+    public var offsetJudge                         : Dynamic= 0;
+    public var autoJudgeOffset                         : Dynamic= false;
     
-    public var displayGameTopBar : Bool = true;
-    public var displayGameBottomBar : Bool = true;
-    public var displayJudge : Bool = true;
-    public var displayJudgeAnimations : Bool = true;
-    public var displayReceptorAnimations : Bool = true;
-    public var displayHealth : Bool = true;
-    public var displayScore : Bool = true;
-    public var displayCombo : Bool = true;
-    public var displayRawGoods : Bool = false;
-    public var displayComboTotal : Bool = true;
-    public var displayAccuracyBar : Bool = true;
-    public var displayPA : Bool = true;
-    public var displayAmazing : Bool = true;
-    public var displayPerfect : Bool = true;
-    public var displayScreencut : Bool = false;
-    public var displaySongProgress : Bool = true;
-    public var displaySongProgressText : Bool = false;
-    public var displayMultiplayerScores : Bool = true;
-    public var visualHypeMode : String = "full";
+    public var displayGameTopBar                         : Dynamic= true;
+    public var displayGameBottomBar                         : Dynamic= true;
+    public var displayJudge                         : Dynamic= true;
+    public var displayJudgeAnimations                         : Dynamic= true;
+    public var displayReceptorAnimations                         : Dynamic= true;
+    public var displayHealth                         : Dynamic= true;
+    public var displayScore                         : Dynamic= true;
+    public var displayCombo                         : Dynamic= true;
+    public var displayRawGoods                         : Dynamic= false;
+    public var displayComboTotal                         : Dynamic= true;
+    public var displayAccuracyBar                         : Dynamic= true;
+    public var displayPA                         : Dynamic= true;
+    public var displayAmazing                         : Dynamic= true;
+    public var displayPerfect                         : Dynamic= true;
+    public var displayScreencut                         : Dynamic= false;
+    public var displaySongProgress                         : Dynamic= true;
+    public var displaySongProgressText                         : Dynamic= false;
+    public var displayMultiplayerScores                         : Dynamic= true;
+    public var visualHypeMode                         : Dynamic= "full";
     
-    public var judgeColors : Array<Dynamic> = [0x78ef29, 0x12e006, 0x01aa0f, 0xf99800, 0xfe0000, 0x804100];
-    public var comboColors : Array<Dynamic> = [0x0099CC, 0x00AD00, 0xFCC200, 0xC7FB30, 0x6C6C6C, 0xF99800, 0xB06100, 0x990000, 0xDC00C2];  // Normal, FC, AAA, SDG, BlackFlag, AvFlag, BooFlag, MissFlag, RawGood  
-    public var enableComboColors : Array<Bool> = [true, true, true, false, false, false, false, false, false];
-    public var receptorColors : Array<Dynamic> = [0xFFFFFF, 0xFFFFFF, 0x64FF64, 0xFFFF00, 0xBB8500, 0xA80000];
-    public var enableReceptorColors : Array<Bool> = [true, true, true, true, true, false];
-    public var gameColors : Array<Dynamic> = [0x1495BD, 0x033242, 0x0C6A88, 0x074B62, 0x000000];
-    public var noteDirections : Array<Dynamic> = ["D", "L", "U", "R"];
-    public var noteColors : Array<Dynamic> = ["red", "blue", "purple", "yellow", "pink", "orange", "cyan", "green", "white"];
-    public var noteSwapColors : Dynamic = {
+    public var judgeColors                         : Dynamic= [0x78ef29, 0x12e006, 0x01aa0f, 0xf99800, 0xfe0000, 0x804100];
+    public var comboColors                         : Dynamic= [0x0099CC, 0x00AD00, 0xFCC200, 0xC7FB30, 0x6C6C6C, 0xF99800, 0xB06100, 0x990000, 0xDC00C2];  // Normal, FC, AAA, SDG, BlackFlag, AvFlag, BooFlag, MissFlag, RawGood  
+    public var enableComboColors                         : Dynamic= [true, true, true, false, false, false, false, false, false];
+    public var receptorColors                         : Dynamic= [0xFFFFFF, 0xFFFFFF, 0x64FF64, 0xFFFF00, 0xBB8500, 0xA80000];
+    public var enableReceptorColors                         : Dynamic= [true, true, true, true, true, false];
+    public var gameColors                         : Dynamic= [0x1495BD, 0x033242, 0x0C6A88, 0x074B62, 0x000000];
+    public var noteDirections                         : Dynamic= ["D", "L", "U", "R"];
+    public var noteColors                         : Dynamic= ["red", "blue", "purple", "yellow", "pink", "orange", "cyan", "green", "white"];
+    public var noteSwapColors                         : Dynamic= {
             red : "red",
             blue : "blue",
             purple : "purple",
@@ -71,45 +71,45 @@ class GameOptions
             green : "green",
             white : "white"
         };
-    public var rawGoodTracker : Float = 0;
-    public var rawGoodsColor : Float = 0xDC00C2;
+    public var rawGoodTracker                         : Dynamic= 0;
+    public var rawGoodsColor                         : Dynamic= 0xDC00C2;
     
-    public var layout : Dynamic = { };
+    public var layout                         : Dynamic= { };
     
-    public var judgeWindow : Array<Dynamic> = null;
+    public var judgeWindow                         : Dynamic= null;
     
-    public var song : Song = null;
-    public var replay : Replay = null;
-    public var isEditor : Bool = false;
-    public var isAutoplay : Bool = false;
-    public var autofail : Array<Dynamic> = [0, 0, 0, 0, 0, 0, 0, 0];
-    public var autofail_restart : Bool = false;
-    public var personalBestMode : Bool = false;
-    public var personalBestTracker : Bool = false;
+    public var song                         : Dynamic= null;
+    public var replay                         : Dynamic= null;
+    public var isEditor                         : Dynamic= false;
+    public var isAutoplay                         : Dynamic= false;
+    public var autofail                         : Dynamic= [0, 0, 0, 0, 0, 0, 0, 0];
+    public var autofail_restart                         : Dynamic= false;
+    public var personalBestMode                         : Dynamic= false;
+    public var personalBestTracker                         : Dynamic= false;
     
-    public var isolationOffset : Int = 0;
-    public var isolationLength : Int = 0;
+    public var isolationOffset                         : Dynamic= 0;
+    public var isolationLength                         : Dynamic= 0;
     
     // Multiplayer
-    public var isMultiplayer : Bool = false;
-    public var isSpectator : Bool = false;
-    public var spectatorUser : MPUser;
+    public var isMultiplayer                         : Dynamic= false;
+    public var isSpectator                         : Dynamic= false;
+    public var spectatorUser                         : Dynamic;
     
     private function get_isolation() : Bool
     {
         return isolationOffset > 0 || isolationLength > 0;
     }
     
-    private function set_isolation(value : Bool) : Bool
+    private function set_isolation(value                         : Dynamic) : Bool
     {
-        if (!value)
+        if (as3hx.Compat.truthy(!value))
         {
             isolationOffset = isolationLength = 0;
         }
         return value;
     }
     
-    public function fillFromUser(user : User) : Void
+    public function fillFromUser(user                         : Dynamic) : Void
     {
         frameRate = user.frameRate;
         songRate = user.songRate;
@@ -181,8 +181,8 @@ class GameOptions
         personalBestMode = user.personalBestMode;
         personalBestTracker = user.personalBestTracker;
         
-        var layoutKey : String = (((isMultiplayer && !isSpectator)) ? "mp" : "sp");
-        if (user.gameLayout[layoutKey] == null)
+        var layoutKey                         : Dynamic= (((isMultiplayer && !isSpectator)) ? "mp" : "sp");
+        if (as3hx.Compat.truthy(user.gameLayout[layoutKey] == null))
         {
             user.gameLayout[layoutKey] = { };
         }
@@ -191,7 +191,7 @@ class GameOptions
     
     public function fillFromArcGlobals() : Void
     {
-        var avars : ArcGlobals = ArcGlobals.instance;
+        var avars                         : Dynamic= ArcGlobals.instance;
         
         isolationOffset = avars.configIsolationStart;
         isolationLength = avars.configIsolationLength;
@@ -199,13 +199,13 @@ class GameOptions
         judgeWindow = avars.configJudge;
     }
     
-    public function fillFromReplay(r : Dynamic = null) : Void
+    public function fillFromReplay(r                         : Dynamic= null) : Void
     {
-        if (r == null)
+        if (as3hx.Compat.truthy(r == null))
         {
             r = replay;
         }
-        if (r == null)
+        if (as3hx.Compat.truthy(r == null))
         {
             return;
         }
@@ -219,35 +219,35 @@ class GameOptions
         fillFromArcGlobals();
         
         // Force Disable Settings for multiplayer.
-        if (isMultiplayer)
+        if (as3hx.Compat.truthy(isMultiplayer))
         {
             judgeWindow = null;
             isolationOffset = isolationLength = 0;
         }
     }
     
-    public var modCache : Dynamic = null;
+    public var modCache                         : Dynamic= null;
     
-    public function setModBooleanState(mod : String, value : Bool) : Void
+    public function setModBooleanState(mod                         : Dynamic, value                         : Dynamic) : Void
     {
-        if (modEnabled(mod) && !value)
+        if (as3hx.Compat.truthy(modEnabled(mod) && !value))
         {
             mods.splice(Lambda.indexOf(mods, mod), 1)[0];
             Reflect.deleteField(modCache, mod);
         }
-        else if (!modEnabled(mod) && value)
+        else if (as3hx.Compat.truthy(!modEnabled(mod) && value))
         {
             mods.push(mod);
             Reflect.setField(modCache, mod, true);
         }
     }
     
-    public function modEnabled(mod : String) : Bool
+    public function modEnabled(mod                         : Dynamic) : Bool
     {
-        if (modCache == null)
+        if (as3hx.Compat.truthy(modCache == null))
         {
             modCache = { };
-            for (gameMod in mods)
+            for (gameMod in as3hx.Compat.iter(mods))
             {
                 Reflect.setField(modCache, Std.string(gameMod), true);
             }
@@ -257,8 +257,8 @@ class GameOptions
     
     public function settingsEncode() : Dynamic
     {
-        var i : Int;
-        var settings : Dynamic = { };
+        var i                         : Dynamic= null;
+        var settings                         : Dynamic= { };
         Reflect.setField(settings, "viewOffset", offsetGlobal);
         Reflect.setField(settings, "visualDelay", visualDelay);
         Reflect.setField(settings, "judgeOffset", offsetJudge);
@@ -297,7 +297,7 @@ class GameOptions
         Reflect.setField(settings, "visual", mods);
         Reflect.setField(settings, "accuracyBarFadeFactor", accuracyBarFadeFactor);
         
-        if (isolation)
+        if (as3hx.Compat.truthy(isolation))
         {
             Reflect.setField(settings, "isolationOffset", isolationOffset);
             Reflect.setField(settings, "isolationLength", isolationLength);
@@ -306,7 +306,7 @@ class GameOptions
         Reflect.setField(settings, "noteSwapColours", []);
         for (i in 0...noteColors.length)
         {
-            Reflect.setField(Reflect.field(settings, "noteSwapColours"), Std.string(i), Reflect.field(noteSwapColors, Std.string(noteColors[i])));
+            Reflect.setField(Reflect.field(settings, "noteSwapColours"), Std.string(i), as3hx.Compat.field(noteSwapColors, noteColors[i]));
         }
         
         Reflect.setField(settings, "judgeColors", []);
@@ -327,37 +327,37 @@ class GameOptions
             Reflect.setField(Reflect.field(settings, "enableReceptorColors"), Std.string(i), enableReceptorColors[i]);
         }
         
-        var user : User = GlobalVariables.instance.activeUser;
+        var user                         : Dynamic= GlobalVariables.instance.activeUser;
         Reflect.setField(settings, "keys", [user.keyLeft, user.keyDown, user.keyUp, user.keyRight, user.keyRestart, user.keyQuit, user.keyOptions]);
         
         return settings;
     }
     
-    public function settingsDecode(settings : Dynamic) : Void
+    public function settingsDecode(settings                         : Dynamic) : Void
     {
-        var i : Int;
+        var i                         : Dynamic= null;
         
-        songRate = Reflect.field(settings, "songRate") || 1;
+        songRate = as3hx.Compat.orValue(Reflect.field(settings, "songRate"), 1);
         
-        scrollDirection = Reflect.field(settings, "direction") || "up";
-        judgeSpeed = Reflect.field(settings, "judgeSpeed") || 1;
-        scrollSpeed = Reflect.field(settings, "speed") || 1.5;
-        receptorSpacing = (Reflect.field(settings, "gap") || 80) ? 1 : 0;
-        noteScale = Reflect.field(settings, "noteScale") || 1;
-        judgeScale = Reflect.field(settings, "judgeScale") || 1;
-        screencutPosition = Reflect.field(settings, "screencutPosition") || 0;
-        mods = Reflect.field(settings, "visual") || [];
+        scrollDirection = as3hx.Compat.orValue(Reflect.field(settings, "direction"), "up");
+        judgeSpeed = as3hx.Compat.orValue(Reflect.field(settings, "judgeSpeed"), 1);
+        scrollSpeed = as3hx.Compat.orValue(Reflect.field(settings, "speed"), 1.5);
+        receptorSpacing = as3hx.Compat.orValue(Reflect.field(settings, "gap"), 80);
+        noteScale = as3hx.Compat.orValue(Reflect.field(settings, "noteScale"), 1);
+        judgeScale = as3hx.Compat.orValue(Reflect.field(settings, "judgeScale"), 1);
+        screencutPosition = as3hx.Compat.orValue(Reflect.field(settings, "screencutPosition"), 0);
+        mods = as3hx.Compat.orValue(Reflect.field(settings, "visual"), []);
         modCache = null;
         noteskin = (Reflect.field(settings, "noteskin") != null) ? Reflect.field(settings, "noteskin") : 1;
-        accuracyBarFadeFactor = Reflect.field(settings, "accuracyBarFadeFactor") || 0.95;
+        accuracyBarFadeFactor = as3hx.Compat.orValue(Reflect.field(settings, "accuracyBarFadeFactor"), 0.95);
         
-        offsetGlobal = Reflect.field(settings, "viewOffset") || 0;
-        visualDelay = Reflect.field(settings, "visualDelay") || 0;
-        offsetJudge = Reflect.field(settings, "judgeOffset") || 0;
-        autoJudgeOffset = Reflect.field(settings, "autoJudgeOffset") || false;
+        offsetGlobal = as3hx.Compat.orValue(Reflect.field(settings, "viewOffset"), 0);
+        visualDelay = as3hx.Compat.orValue(Reflect.field(settings, "visualDelay"), 0);
+        offsetJudge = as3hx.Compat.orValue(Reflect.field(settings, "judgeOffset"), 0);
+        autoJudgeOffset = as3hx.Compat.orValue(Reflect.field(settings, "autoJudgeOffset"), false);
         
-        isolationOffset = (Reflect.field(settings, "isolationOffset") || 0) ? 1 : 0;
-        isolationLength = (Reflect.field(settings, "isolationLength") || 0) ? 1 : 0;
+        isolationOffset = as3hx.Compat.orValue(Reflect.field(settings, "isolationOffset"), 0);
+        isolationLength = as3hx.Compat.orValue(Reflect.field(settings, "isolationLength"), 0);
         
         displayJudge = Reflect.field(settings, "viewJudge");
         displayHealth = Reflect.field(settings, "viewHealth");
@@ -372,37 +372,37 @@ class GameOptions
         displaySongProgressText = Reflect.field(settings, "viewSongProgressText");
         displayMultiplayerScores = Reflect.field(settings, "viewMultiplayerScores");
         
-        if (Reflect.field(settings, "viewScore") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "viewScore") != null))
         {
             displayScore = Reflect.field(settings, "viewScore");
         }
-        if (Reflect.field(settings, "viewGameTopBar") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "viewGameTopBar") != null))
         {
             displayGameTopBar = Reflect.field(settings, "viewGameTopBar");
         }
-        if (Reflect.field(settings, "viewGameBottomBar") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "viewGameBottomBar") != null))
         {
             displayGameBottomBar = Reflect.field(settings, "viewGameBottomBar");
         }
-        if (Reflect.field(settings, "viewAccuracyBar") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "viewAccuracyBar") != null))
         {
             displayAccuracyBar = Reflect.field(settings, "viewAccuracyBar");
         }
-        if (Reflect.field(settings, "visualHypeMode") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "visualHypeMode") != null))
         {
             visualHypeMode = Reflect.field(settings, "visualHypeMode");
         }
         
-        if (Reflect.field(settings, "viewJudgeAnimations") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "viewJudgeAnimations") != null))
         {
             displayJudgeAnimations = Reflect.field(settings, "viewJudgeAnimations");
         }
-        if (Reflect.field(settings, "viewReceptorAnimations") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "viewReceptorAnimations") != null))
         {
             displayReceptorAnimations = Reflect.field(settings, "viewReceptorAnimations");
         }
         
-        if (Reflect.field(settings, "noteSwapColours") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "noteSwapColours") != null))
         {
             for (i in 0...noteColors.length)
             {
@@ -410,7 +410,7 @@ class GameOptions
             }
         }
         
-        if (Reflect.field(settings, "judgeColors") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "judgeColors") != null))
         {
             for (i in 0...judgeColors.length)
             {
@@ -418,7 +418,7 @@ class GameOptions
             }
         }
         
-        if (Reflect.field(settings, "receptorColors") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "receptorColors") != null))
         {
             for (i in 0...receptorColors.length)
             {
@@ -426,7 +426,7 @@ class GameOptions
             }
         }
         
-        if (Reflect.field(settings, "enableReceptorColors") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "enableReceptorColors") != null))
         {
             for (i in 0...enableReceptorColors.length)
             {
@@ -434,29 +434,29 @@ class GameOptions
             }
         }
         
-        if (Reflect.field(settings, "layout") != null)
+        if (as3hx.Compat.truthy(Reflect.field(settings, "layout") != null))
         {
             layout = Reflect.field(settings, "layout");
         }
     }
     
-    public function isScoreValid(score : Bool = true, replay : Bool = true) : Bool
+    public function isScoreValid(score                         : Dynamic= true, replay                         : Dynamic= true) : Bool
     {
-        var ret : Bool = false;
+        var ret                         : Dynamic= false;
         ret = (ret) ? ret : score && (isAutoplay || judgeWindow);
         ret = (ret) ? ret : replay && (modEnabled("reverse") || isolation);
         return !ret;
     }
     
-    public function isScoreUpdated(score : Bool = true, replay : Bool = true) : Bool
+    public function isScoreUpdated(score                         : Dynamic= true, replay                         : Dynamic= true) : Bool
     {
-        var ret : Bool = false;
+        var ret                         : Dynamic= false;
         ret = (ret) ? ret : score && (isAutoplay || modEnabled("shuffle") || modEnabled("random") || modEnabled("scramble") || judgeWindow);
         ret = (ret) ? ret : replay && (songRate != 1 || modEnabled("reverse"));
         return !ret;
     }
     
-    public function getNewNoteColor(color : String) : String
+    public function getNewNoteColor(color                         : Dynamic) : String
     {
         return Reflect.field(noteSwapColors, color);
     }
@@ -465,10 +465,9 @@ class GameOptions
     {
         return offsetGlobal + visualDelay;
     }
-
     public function new()
     {
-        super();
     }
+
 }
 

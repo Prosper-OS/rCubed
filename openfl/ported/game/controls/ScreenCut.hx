@@ -9,14 +9,14 @@ import game.GameOptions;
 
 class ScreenCut extends Sprite
 {
-    private var options : GameOptions;
+    private var options                       : Dynamic;
     
-    private var self : ScreenCut;
+    private var self                       : Dynamic;
     
-    public function new(options : GameOptions, parent : DisplayObjectContainer)
+    public function new(options                       : Dynamic, parent                       : Dynamic)
     {
         super();
-        if (parent != null)
+        if (as3hx.Compat.truthy(parent != null))
         {
             parent.addChild(this);
         }
@@ -36,13 +36,13 @@ class ScreenCut extends Sprite
                 this.y = options.screencutPosition * Main.GAME_HEIGHT;
                 this.graphics.drawRect(-Main.GAME_WIDTH, -(Main.GAME_HEIGHT * 3), Main.GAME_WIDTH * 3, Main.GAME_HEIGHT * 3);
                 
-                if (options.isEditor)
+                if (as3hx.Compat.truthy(options.isEditor))
                 {
-                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e                       : Dynamic) : Void
                             {
                                 self.startDrag(false, new Rectangle(0, 5, 0, Main.GAME_HEIGHT - 7));
                             });
-                    this.addEventListener(MouseEvent.MOUSE_UP, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_UP, function(e                       : Dynamic) : Void
                             {
                                 self.stopDrag();
                                 options.screencutPosition = (self.y / Main.GAME_HEIGHT);
@@ -53,13 +53,13 @@ class ScreenCut extends Sprite
                 this.y = 0;
                 this.graphics.drawRect(-Main.GAME_WIDTH * 3, -Main.GAME_HEIGHT, Main.GAME_WIDTH * 3, Main.GAME_HEIGHT * 3);
                 
-                if (options.isEditor)
+                if (as3hx.Compat.truthy(options.isEditor))
                 {
-                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e                       : Dynamic) : Void
                             {
                                 self.startDrag(false, new Rectangle(0, 0, Main.GAME_WIDTH - 7, 0));
                             });
-                    this.addEventListener(MouseEvent.MOUSE_UP, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_UP, function(e                       : Dynamic) : Void
                             {
                                 self.stopDrag();
                                 options.screencutPosition = (self.x / Main.GAME_WIDTH);
@@ -70,13 +70,13 @@ class ScreenCut extends Sprite
                 this.y = 0;
                 this.graphics.drawRect(0, -Main.GAME_HEIGHT, Main.GAME_WIDTH * 3, Main.GAME_HEIGHT * 3);
                 
-                if (options.isEditor)
+                if (as3hx.Compat.truthy(options.isEditor))
                 {
-                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e                       : Dynamic) : Void
                             {
                                 self.startDrag(false, new Rectangle(0, 0, Main.GAME_WIDTH - 7, 0));
                             });
-                    this.addEventListener(MouseEvent.MOUSE_UP, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_UP, function(e                       : Dynamic) : Void
                             {
                                 self.stopDrag();
                                 options.screencutPosition = 1 - (self.x / Main.GAME_WIDTH);
@@ -87,13 +87,13 @@ class ScreenCut extends Sprite
                 this.y = Main.GAME_HEIGHT - (options.screencutPosition * Main.GAME_HEIGHT);
                 this.graphics.drawRect(-Main.GAME_WIDTH, 0, Main.GAME_WIDTH * 3, Main.GAME_HEIGHT * 3);
                 
-                if (options.isEditor)
+                if (as3hx.Compat.truthy(options.isEditor))
                 {
-                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_DOWN, function(e                       : Dynamic) : Void
                             {
                                 self.startDrag(false, new Rectangle(0, 5, 0, Main.GAME_HEIGHT - 7));
                             });
-                    this.addEventListener(MouseEvent.MOUSE_UP, function(e : MouseEvent) : Void
+                    this.addEventListener(MouseEvent.MOUSE_UP, function(e                       : Dynamic) : Void
                             {
                                 self.stopDrag();
                                 options.screencutPosition = 1 - (self.y / Main.GAME_HEIGHT);
@@ -101,7 +101,7 @@ class ScreenCut extends Sprite
                 }
         }
         this.graphics.endFill();
-        if (options.isEditor)
+        if (as3hx.Compat.truthy(options.isEditor))
         {
             this.buttonMode = true;
             this.useHandCursor = true;

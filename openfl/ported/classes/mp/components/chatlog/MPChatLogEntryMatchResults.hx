@@ -11,25 +11,25 @@ import openfl.events.Event;
 
 class MPChatLogEntryMatchResults extends MPChatLogEntry
 {
-    private static var _lang : Language = Language.instance;
-    private static var _mp : Multiplayer = Multiplayer.instance;
+    private static var _lang                             : Dynamic= Language.instance;
+    private static var _mp                             : Dynamic= Multiplayer.instance;
     
-    private var room : MPRoomFFR;
-    private var results : MPMatchResultsFFR;
-    private var index : Int;
+    private var room                             : Dynamic;
+    private var results                             : Dynamic;
+    private var index                             : Dynamic;
     
-    private var btn : BoxButton;
+    private var btn                             : Dynamic;
     
-    public function new(room : MPRoomFFR, results : MPMatchResultsFFR)
+    public function new(room                             : Dynamic, results                             : Dynamic)
     {
         super();
         this.room = room;
         this.results = results;
     }
     
-    override public function build(width : Float) : Void
+    override public function build(width                             : Dynamic) : Void
     {
-        if (built)
+        if (as3hx.Compat.truthy(built))
         {
             return;
         }
@@ -41,7 +41,7 @@ class MPChatLogEntryMatchResults extends MPChatLogEntry
         
         new Text(this, 10, 7, _lang.string("mp_room_ffr_match_end"), 10, "#c3c3c3").setAreaParams(width - 120, 22);
         
-        if (results.wasTie)
+        if (as3hx.Compat.truthy(results.wasTie))
         {
             new Text(this, 9, 25, sprintf(results.winnerText), 12).setAreaParams(width - 110, 22);
         }
@@ -58,11 +58,11 @@ class MPChatLogEntryMatchResults extends MPChatLogEntry
         built = true;
     }
     
-    private function e_viewResults(e : Event) : Void
+    private function e_viewResults(e                             : Dynamic) : Void
     {
         room.lastMatchIndex = results.index;
         
-        Flags.VALUES[Flags.MP_MENU_RESULTS] = true;
+        Reflect.setField(Flags.VALUES, Flags.MP_MENU_RESULTS, true);
         GlobalVariables.instance.gameMain.switchTo(Main.GAME_PLAY_PANEL);
     }
 }
