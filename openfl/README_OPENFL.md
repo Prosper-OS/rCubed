@@ -56,3 +56,20 @@ The OpenFL scaffold accepts those arrow keys now, plus desktop fallback keys `A`
 6. Add native packaging for Windows, Linux/Steam Deck, and macOS.
 
 The current `Main.hx` is a compile-test and input/rendering foundation. It is not the full game yet.
+
+## Full Game Port
+
+The full ActionScript conversion is tracked in [PORTING_STATUS.md](PORTING_STATUS.md). Regenerate the broad converted tree with:
+
+```powershell
+.\scripts\openfl-port-as3.ps1
+.\scripts\openfl-generate-asset-stubs.ps1
+```
+
+Then typecheck the generated tree and compatibility layer with:
+
+```powershell
+.\scripts\openfl-check-port.ps1
+```
+
+`openfl-check-port.ps1` uses the real OpenFL/Lime native build path with the generated source forced into the compilation graph. It is expected to fail until the remaining ActionScript semantics are ported, but it now reports the actual Haxe type backlog instead of silently passing.
