@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <meta title="R3 OpenFL Port" package="com.flashflashrevolution.r3.openfl" version="0.1.0" company="Flash Flash Revolution" />
+
+  <app main="r3.Main" file="R3OpenFL" path="bin" />
+  <source path="src" />
+  <haxelib name="openfl" />
+
+  <window width="1280" height="720" fps="60" background="#05070B" hardware="true" resizable="true" />
+</project>

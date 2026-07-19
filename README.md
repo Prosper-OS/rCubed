@@ -148,6 +148,14 @@ Steam Deck / SteamOS packaging is handled by [steamdeck/README_STEAMDECK.md](ste
 .\scripts\package-steamdeck.ps1 -AirHome "C:\path\to\AIRSDK_Linux_x86_64" -Version "2.0.4"
 ```
 
+### Free Cross-Platform Port
+
+The free AIR replacement path starts in [openfl/README_OPENFL.md](openfl/README_OPENFL.md). It uses Haxe + OpenFL + Lime so development can target HTML5, Windows, Linux/Steam Deck, macOS, and mobile without a commercial AIR SDK.
+
+```powershell
+.\scripts\openfl-build.ps1 -Target html5
+```
+
 ---
 
 ## Contact
