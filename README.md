@@ -51,7 +51,7 @@ R^3 is the third and latest game engine for **[Flash Flash Revolution](http://ww
 
 ## Getting Started
 
-These instructions will get you a copy of the R^3 Engine up and running on **Windows** for development and testing purposes (Mac and Linux are not supported).
+These instructions will get you a copy of the R^3 Engine up and running on **Windows** for development and testing purposes. A native Steam Deck / SteamOS package target is available separately, but it requires the commercial HARMAN AIR SDK for Linux.
 
 ### Prerequisites
 
@@ -139,6 +139,14 @@ Please read through the [FFR Contribution Guidelines][CONTRIBUTING] before openi
 ## Packaging
 
 In order to package your app, AIR needs a certificate. Run [GenerateCertificate](certs/GenerateCertificate.ps1) to create it.
+
+### Steam Deck Native Package
+
+Steam Deck / SteamOS packaging is handled by [steamdeck/README_STEAMDECK.md](steamdeck/README_STEAMDECK.md). It builds a Linux x86_64 captive-runtime bundle when `AIR_HOME` points at a commercial HARMAN AIR SDK for Linux:
+
+```powershell
+.\scripts\package-steamdeck.ps1 -AirHome "C:\path\to\AIRSDK_Linux_x86_64" -Version "2.0.4"
+```
 
 ---
 

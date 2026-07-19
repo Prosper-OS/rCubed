@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=R3
+Comment=Flash Flash Revolution R3
+Exec=r3-steamdeck.sh
+Icon=data/icons/icon-512.png
+Terminal=false
+Categories=Game;ArcadeGame;
+StartupNotify=false
